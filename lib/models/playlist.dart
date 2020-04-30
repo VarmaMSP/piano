@@ -51,7 +51,10 @@ class Playlist {
       episodeCount: json['episode_count'],
       previewImage: json['preview_image'],
       updatedAt: json['updated_at'],
-      members: (json['members'] as List<dynamic>),
+      members: (json['members'] as List)
+          ?.cast<Map<String, dynamic>>()
+          ?.map((d) => PlaylistMember.fromJson(d))
+          ?.toList(),
     );
   }
 }
