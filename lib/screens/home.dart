@@ -30,13 +30,9 @@ class _HomePageState extends State<HomePage> {
             );
           }
 
-          return ListView.builder(
+          return ListView.separated(
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
-                leading: Text(
-                  '${state.episodes[index].id}',
-                  style: TextStyle(fontSize: 10.0),
-                ),
                 title: Text(state.episodes[index].title),
                 isThreeLine: true,
                 subtitle: Text(state.episodes[index].summary),
@@ -44,6 +40,7 @@ class _HomePageState extends State<HomePage> {
               );
             },
             itemCount: state.episodes.length,
+            separatorBuilder: (_, __) => Divider(),
           );
         }
 
