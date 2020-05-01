@@ -1,4 +1,6 @@
-class Episode {
+import 'package:equatable/equatable.dart';
+
+class Episode extends Equatable {
   final String id;
   final String urlParam;
   final String title;
@@ -51,8 +53,14 @@ class Episode {
       type: json['type'],
       titleHighlighted: json['title_highlighted'],
       descriptionHighlighted: json['description_highlighted'],
-      progress: json['progress'],
+      progress: (json['progress'] ?? 0) + .0,
       lastPlayedAt: json['last_played_at'],
     );
   }
+
+  @override
+  List<Object> get props => [id];
+
+  @override
+  String toString() => 'Episode: { id: $id }';
 }

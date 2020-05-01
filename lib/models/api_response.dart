@@ -22,29 +22,31 @@ class ApiResponse {
   });
 
   factory ApiResponse.fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic> data = json['data'];
+
     return ApiResponse(
-      users: (json['users'] as List)
+      users: (data['users'] as List)
           ?.cast<Map<String, dynamic>>()
           ?.map((d) => User.fromJson(d))
           ?.toList(),
-      podcasts: (json['podcasts'] as List)
+      podcasts: (data['podcasts'] as List)
           ?.cast<Map<String, dynamic>>()
           ?.map((d) => Podcast.fromJson(d))
           ?.toList(),
-      episodes: (json['episodes'] as List)
+      episodes: (data['episodes'] as List)
           ?.cast<Map<String, dynamic>>()
           ?.map((d) => Episode.fromJson(d))
           ?.toList(),
-      playlists: (json['playlists'] as List)
+      playlists: (data['playlists'] as List)
           ?.cast<Map<String, dynamic>>()
           ?.map((d) => Playlist.fromJson(d))
           ?.toList(),
-      categories: (json['categories'] as List)
+      categories: (data['categories'] as List)
           ?.cast<Map<String, dynamic>>()
           ?.map((d) => Category.fromJson(d))
           ?.toList(),
       searchResults: SearchResults.fromJson(
-        (json['search_results'] as Map ?? {})?.cast<String, dynamic>(),
+        (data['search_results'] as Map ?? {})?.cast<String, dynamic>(),
       ),
     );
   }

@@ -1,20 +1,3 @@
-class PlaylistMember {
-  final String episodeId;
-  final int position;
-
-  PlaylistMember({
-    this.episodeId,
-    this.position,
-  });
-
-  factory PlaylistMember.fromJson(Map<String, dynamic> json) {
-    return PlaylistMember(
-      episodeId: json['episode_id'],
-      position: json['position'],
-    );
-  }
-}
-
 class Playlist {
   final String id;
   final String urlParam;
@@ -55,6 +38,23 @@ class Playlist {
           ?.cast<Map<String, dynamic>>()
           ?.map((d) => PlaylistMember.fromJson(d))
           ?.toList(),
+    );
+  }
+}
+
+class PlaylistMember {
+  final String episodeId;
+  final int position;
+
+  PlaylistMember({
+    this.episodeId,
+    this.position,
+  });
+
+  factory PlaylistMember.fromJson(Map<String, dynamic> json) {
+    return PlaylistMember(
+      episodeId: json['episode_id'],
+      position: json['position'],
     );
   }
 }
