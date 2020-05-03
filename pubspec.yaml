@@ -13,6 +13,9 @@ dependencies:
   dio: ^3.0.9
   equatable: ^1.1.1
   flutter_bloc: ^4.0.0
+  rxdart: ^0.24.0
+  transparent_image: ^1.0.0
+  tailwind_colors: ^0.0.1
 
 dev_dependencies:
   flutter_test:

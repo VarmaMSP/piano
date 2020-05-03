@@ -25,28 +25,28 @@ class ApiResponse {
     Map<String, dynamic> data = json['data'];
 
     return ApiResponse(
-      users: (data['users'] as List)
-          ?.cast<Map<String, dynamic>>()
-          ?.map((d) => User.fromJson(d))
-          ?.toList(),
-      podcasts: (data['podcasts'] as List)
-          ?.cast<Map<String, dynamic>>()
-          ?.map((d) => Podcast.fromJson(d))
-          ?.toList(),
-      episodes: (data['episodes'] as List)
-          ?.cast<Map<String, dynamic>>()
-          ?.map((d) => Episode.fromJson(d))
-          ?.toList(),
-      playlists: (data['playlists'] as List)
-          ?.cast<Map<String, dynamic>>()
-          ?.map((d) => Playlist.fromJson(d))
-          ?.toList(),
-      categories: (data['categories'] as List)
-          ?.cast<Map<String, dynamic>>()
-          ?.map((d) => Category.fromJson(d))
-          ?.toList(),
+      users: (data['users'] as List ?? [])
+          .cast<Map<String, dynamic>>()
+          .map((d) => User.fromJson(d))
+          .toList(),
+      podcasts: (data['podcasts'] as List ?? [])
+          .cast<Map<String, dynamic>>()
+          .map((d) => Podcast.fromJson(d))
+          .toList(),
+      episodes: (data['episodes'] as List ?? [])
+          .cast<Map<String, dynamic>>()
+          .map((d) => Episode.fromJson(d))
+          .toList(),
+      playlists: (data['playlists'] as List ?? [])
+          .cast<Map<String, dynamic>>()
+          .map((d) => Playlist.fromJson(d))
+          .toList(),
+      categories: (data['categories'] as List ?? [])
+          .cast<Map<String, dynamic>>()
+          .map((d) => Category.fromJson(d))
+          .toList(),
       searchResults: SearchResults.fromJson(
-        (data['search_results'] as Map ?? {})?.cast<String, dynamic>(),
+        (data['search_results'] as Map ?? {}).cast<String, dynamic>(),
       ),
     );
   }
@@ -63,14 +63,14 @@ class SearchResults {
 
   factory SearchResults.fromJson(Map<String, dynamic> json) {
     return SearchResults(
-      podcasts: (json['podcasts'] as List)
-          ?.cast<Map<String, dynamic>>()
-          ?.map((d) => Podcast.fromJson(d))
-          ?.toList(),
-      episodes: (json['episodes'] as List)
-          ?.cast<Map<String, dynamic>>()
-          ?.map((d) => Episode.fromJson(d))
-          ?.toList(),
+      podcasts: (json['podcasts'] as List ?? [])
+          .cast<Map<String, dynamic>>()
+          .map((d) => Podcast.fromJson(d))
+          .toList(),
+      episodes: (json['episodes'] as List ?? [])
+          .cast<Map<String, dynamic>>()
+          .map((d) => Episode.fromJson(d))
+          .toList(),
     );
   }
 }

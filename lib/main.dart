@@ -1,25 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:piano/blocs/episodes/episodes_bloc.dart';
-import 'package:piano/screens/home.dart';
-import 'package:piano/utils/request.dart';
+import 'package:piano/screens/podcast.dart';
+import 'package:bloc/bloc.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Infinite Scroll',
+      title: 'Phenopod',
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Phenopod'),
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: AppBar(
+            backgroundColor: Colors.white,
+            bottom: PreferredSize(
+              child: Divider(
+                height: 10,
+                thickness: 1.0,
+              ),
+              preferredSize: Size.fromHeight(4),
+            ),
+            title: Text(
+              'Phenopod',
+              style: TextStyle(
+                color: Colors.purple,
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            elevation: 0.0,
+          ),
         ),
-        body: BlocProvider(
-          create: (context) => EpisodesBloc(request: Request())..add(Fetch()),
-          child: HomePage(),
-        ),
+        body: PodcastPage(),
       ),
     );
+  }
+}
+
+class SimpleBlocDelegate extends BlocDelegate {
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    print(transition);
+    super.onTransition(bloc, transition);
+  }
+
+  @override
+  void onError(Bloc bloc, Object error, StackTrace stackTrace) {
+    print(error);
+    super.onError(bloc, error, stackTrace);
   }
 }

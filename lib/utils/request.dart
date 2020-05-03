@@ -5,7 +5,7 @@ class Request {
   Dio _dio;
 
   Request() {
-    _dio = new Dio(BaseOptions(baseUrl: 'http://192.168.1.27:8080/api/'));
+    _dio = new Dio(BaseOptions(baseUrl: 'https://phenopod.com/api/'));
   }
 
   Future<ApiResponse> get(String path) async {
