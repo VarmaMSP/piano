@@ -19,7 +19,7 @@ class Thumbnail extends StatelessWidget {
   Widget build(BuildContext context) {
     var imageUrl =
         'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg';
-    var width = 96.0;
+    var width = 95.0;
 
     final image = ClipRRect(
       borderRadius: BorderRadius.circular(8.0),
@@ -70,33 +70,33 @@ class Thumbnail extends StatelessWidget {
       child: _duration(episode.duration),
     );
 
-    final progressbar = Container(
-      height: 5,
-      child: Stack(
-        children: <Widget>[
-          FractionallySizedBox(
-            heightFactor: 1.0,
-            widthFactor: 1.0,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(600)),
-                color: TWColors.gray.shade300,
-              ),
-            ),
-          ),
-          FractionallySizedBox(
-            heightFactor: 1.0,
-            widthFactor: 0.34,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(600)),
-                color: TWColors.red.shade700,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    // final progressbar = Container(
+    //   height: 5,
+    //   child: Stack(
+    //     children: <Widget>[
+    //       FractionallySizedBox(
+    //         heightFactor: 1.0,
+    //         widthFactor: 1.0,
+    //         child: Container(
+    //           decoration: BoxDecoration(
+    //             borderRadius: BorderRadius.all(Radius.circular(600)),
+    //             color: TWColors.gray.shade300,
+    //           ),
+    //         ),
+    //       ),
+    //       FractionallySizedBox(
+    //         heightFactor: 1.0,
+    //         widthFactor: 0.34,
+    //         child: Container(
+    //           decoration: BoxDecoration(
+    //             borderRadius: BorderRadius.all(Radius.circular(600)),
+    //             color: TWColors.red.shade700,
+    //           ),
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -111,8 +111,8 @@ class Thumbnail extends StatelessWidget {
         ),
         Container(
           width: width,
-          padding: EdgeInsets.only(top: 11),
-          child: progressbar,
+          padding: EdgeInsets.only(top: 10),
+          // child: progressbar,
         ),
       ],
     );

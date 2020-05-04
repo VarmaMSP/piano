@@ -54,8 +54,8 @@ class EpisodeListItem extends StatelessWidget {
       style: TextStyle(
         fontSize: 12.5,
         color: TWColors.gray.shade800,
-        height: 1.34,
-        letterSpacing: 0.3,
+        height: 1.33,
+        letterSpacing: 0.35,
       ),
       maxLines: 3,
       textAlign: TextAlign.left,
@@ -70,7 +70,7 @@ class EpisodeListItem extends StatelessWidget {
             Thumbnail(episode: episode, podcast: podcast),
             Expanded(
               child: Transform.translate(
-                offset: Offset(0, -3.5),
+                offset: Offset(0, -4),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: Column(
@@ -94,7 +94,7 @@ class EpisodeListItem extends StatelessWidget {
                             ),
                           ),
                           Transform.translate(
-                            offset: Offset(6, -10),
+                            offset: Offset(6, -12),
                             child: Menu(),
                           ),
                         ],
