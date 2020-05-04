@@ -26,14 +26,8 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size(double.infinity, 100),
-          child: Container(
-            height: 80,
-            child: Text('Phenopod'),
-            // decoration: BoxDecoration(
-            //   border: Border(bottom: BorderSide(color: Colors.black12)),
-            // ),
-          ),
+          preferredSize: Size(0, 0),
+          child: Container(),
         ),
         body: PodcastPage(),
         bottomNavigationBar: BottomNavigationBar(

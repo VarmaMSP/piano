@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:piano/blocs/podcast/podcast_bloc.dart';
 import 'package:piano/utils/request.dart';
 import 'package:piano/widgets/episode_list_item/episode_list_item.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 
 class PodcastPage extends StatefulWidget {
   const PodcastPage({Key key}) : super(key: key);
@@ -23,7 +24,8 @@ class _PodcastPageState extends State<PodcastPage> {
     _scrollController.addListener(_onScroll);
     _podcastBloc = PodcastBloc(
       request: Request(),
-      urlParam: 'slow-burn-dyoYza',
+      urlParam:
+          'sean-carrolls-mindscape-science-society-philosophy-culture-arts-and-ideas-ejYpWd',
     )..add(Load());
   }
 
@@ -52,31 +54,68 @@ class _PodcastPageState extends State<PodcastPage> {
         }
 
         final s = (state as PodcastLoaded);
-        return ListView.builder(
-          itemBuilder: (context, index) {
-            return index < s.episodes.length
-                ? EpisodeListItem(
-                    episode: s.episodes[index],
-                    podcast: s.podcast,
-                  )
-                : Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(vertical: 25.0),
-                    child: Center(
-                      child: SizedBox(
-                        width: 25,
-                        height: 25,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 3,
-                          valueColor:
-                              new AlwaysStoppedAnimation<Color>(Colors.black87),
-                        ),
-                      ),
-                    ),
-                  );
-          },
-          itemCount: s.loadedAll ? s.episodes.length : s.episodes.length + 1,
+        return CustomScrollView(
           controller: _scrollController,
+          slivers: <Widget>[
+            SliverAppBar(
+              floating: true,
+              pinned: false,
+              snap: true,
+              backgroundColor: Colors.white,
+              elevation: 1.0,
+              leading: Icon(
+                Icons.arrow_back,
+                size: 25.0,
+                color: TWColors.gray.shade700,
+              ),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: Icon(
+                    Icons.search,
+                    size: 25.0,
+                    color: TWColors.gray.shade700,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 7.0),
+                  child: Icon(
+                    Icons.more_vert,
+                    size: 25.0,
+                    color: TWColors.gray.shade700,
+                  ),
+                ),
+              ],
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return index < s.episodes.length
+                      ? EpisodeListItem(
+                          episode: s.episodes[index],
+                          podcast: s.podcast,
+                        )
+                      : Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(vertical: 25.0),
+                          child: Center(
+                            child: SizedBox(
+                              width: 25,
+                              height: 25,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3,
+                                valueColor: new AlwaysStoppedAnimation<Color>(
+                                    Colors.black87),
+                              ),
+                            ),
+                          ),
+                        );
+                },
+                childCount:
+                    s.loadedAll ? s.episodes.length : s.episodes.length + 1,
+              ),
+            ),
+          ],
         );
       },
     );
