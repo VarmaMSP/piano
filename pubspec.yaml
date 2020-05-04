@@ -16,6 +16,7 @@ dependencies:
   rxdart: ^0.24.0
   transparent_image: ^1.0.0
   tailwind_colors: ^0.0.1
+  timeago: ^2.0.26
 
 dev_dependencies:
   flutter_test:

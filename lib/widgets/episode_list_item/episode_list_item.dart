@@ -5,6 +5,7 @@ import 'package:piano/models/podcast.dart';
 import 'package:piano/widgets/episode_list_item/menu.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import './thumbnail.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class EpisodeListItem extends StatelessWidget {
   final Episode episode;
@@ -42,7 +43,7 @@ class EpisodeListItem extends StatelessWidget {
         ),
         children: <TextSpan>[
           ..._episodeNumber(episode),
-          TextSpan(text: '38 min ago'),
+          TextSpan(text: _episodePubDate(episode)),
         ],
       ),
     );
@@ -110,6 +111,11 @@ class EpisodeListItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _episodePubDate(Episode episode) {
+    var d = DateTime.parse('${episode.pubDate} +00:00');
+    return timeago.format(d);
   }
 
   List<TextSpan> _episodeNumber(Episode episode) {
