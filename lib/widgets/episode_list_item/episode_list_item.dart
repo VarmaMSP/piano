@@ -19,31 +19,28 @@ class EpisodeListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = Text(
-      episode.title,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        fontSize: 15.5,
-        color: TWColors.teal.shade900,
-        height: 1.3,
-        letterSpacing: 0.35,
-        fontWeight: FontWeight.w500,
-      ),
-      maxLines: 2,
-    );
+    final title = Text(episode.title,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontSize: 15.5,
+          color: TWColors.gray.shade900,
+          height: 1.3,
+          letterSpacing: 0.4,
+          fontWeight: FontWeight.w500,
+        ),
+        maxLines: 2);
 
     final info = RichText(
       overflow: TextOverflow.ellipsis,
       text: TextSpan(
         style: TextStyle(
-          fontSize: 13,
-          color: TWColors.gray.shade800,
-          height: 1.2,
-          letterSpacing: 0.3,
+          fontSize: 13.5,
+          color: TWColors.gray.shade900,
+          letterSpacing: 0.4,
         ),
         children: <TextSpan>[
           ..._episodeNumber(episode),
-          TextSpan(text: _episodePubDate(episode)),
+          ..._episodePubDate(episode),
         ],
       ),
     );
@@ -55,10 +52,10 @@ class EpisodeListItem extends StatelessWidget {
           .replaceAll('&amp', '&'),
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 12,
-        color: TWColors.teal.shade800,
-        height: 1.3,
-        letterSpacing: 0.35,
+        fontSize: 12.5,
+        color: TWColors.gray.shade800,
+        height: 1.34,
+        letterSpacing: 0.3,
       ),
       maxLines: 3,
       textAlign: TextAlign.left,
@@ -66,19 +63,20 @@ class EpisodeListItem extends StatelessWidget {
 
     return GestureDetector(
       child: Padding(
-        padding: const EdgeInsets.only(top: 15, bottom: 15, left: 12),
+        padding: const EdgeInsets.only(top: 16, bottom: 16, left: 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Thumbnail(episode: episode, podcast: podcast),
             Expanded(
               child: Transform.translate(
-                offset: Offset(0, -2.5),
+                offset: Offset(0, -3.5),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: Column(
                     children: <Widget>[
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Expanded(
                             child: Column(
@@ -89,14 +87,14 @@ class EpisodeListItem extends StatelessWidget {
                                   child: title,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 9.0),
+                                  padding: const EdgeInsets.only(bottom: 9),
                                   child: info,
                                 ),
                               ],
                             ),
                           ),
                           Transform.translate(
-                            offset: Offset(8, -16),
+                            offset: Offset(6, -10),
                             child: Menu(),
                           ),
                         ],
@@ -116,9 +114,9 @@ class EpisodeListItem extends StatelessWidget {
     );
   }
 
-  String _episodePubDate(Episode episode) {
+  List<TextSpan> _episodePubDate(Episode episode) {
     var d = DateTime.parse('${episode.pubDate} +00:00');
-    return timeago.format(d);
+    return [TextSpan(text: timeago.format(d))];
   }
 
   List<TextSpan> _episodeNumber(Episode episode) {
@@ -152,7 +150,7 @@ class EpisodeListItem extends StatelessWidget {
         ),
       ),
       TextSpan(
-        text: '  ·  ',
+        text: ' · ',
         style: TextStyle(
           fontWeight: FontWeight.w900,
         ),

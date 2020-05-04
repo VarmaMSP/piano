@@ -19,75 +19,139 @@ class Thumbnail extends StatelessWidget {
   Widget build(BuildContext context) {
     var imageUrl =
         'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg';
-    var width = 90.0;
+    var width = 96.0;
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+    final image = ClipRRect(
+      borderRadius: BorderRadius.circular(8.0),
+      child: FadeInImage.memoryNetwork(
+        placeholder: kTransparentImage,
+        image: imageUrl,
+        height: width,
+        width: width,
+      ),
+    );
+
+    final playIconBg = Container(
+      height: width,
+      width: width,
+      alignment: Alignment.center,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(600.0),
+        child: Container(
+          color: Color.fromRGBO(0, 0, 0, 0.45),
+          height: 38.0,
+          width: 38.0,
+        ),
+      ),
+    );
+
+    final playIcon = Container(
+      height: width,
+      width: width,
+      alignment: Alignment.center,
+      child: Icon(
+        Icons.play_arrow,
+        color: Colors.white,
+        size: 28,
+      ),
+    );
+
+    final duration = Container(
+      height: width,
+      width: width,
+      alignment: Alignment(0.96, 0.96),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: TWColors.gray.shade400,
+          width: 0.4,
+        ),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: _duration(episode.duration),
+    );
+
+    final progressbar = Container(
+      height: 5,
       child: Stack(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: imageUrl,
-              height: width,
-              width: width,
-            ),
-          ),
-          Container(
-            height: width,
-            width: width,
-            alignment: Alignment.center,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(600.0),
-              child: Container(
-                color: Color.fromRGBO(0, 0, 0, 0.45),
-                height: 38.0,
-                width: 38.0,
+          FractionallySizedBox(
+            heightFactor: 1.0,
+            widthFactor: 1.0,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(600)),
+                color: TWColors.gray.shade300,
               ),
             ),
           ),
-          Container(
-            height: width,
-            width: width,
-            alignment: Alignment.center,
-            child: Icon(
-              Icons.play_arrow,
-              color: Colors.white,
-              size: 28,
-            ),
-          ),
-          Container(
-            height: width,
-            width: width,
-            alignment: Alignment(0.89, 0.92),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: TWColors.gray.shade400,
-                width: 0.4,
-              ),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(5.0),
-              child: Container(
-                color: Color.fromRGBO(0, 0, 0, 0.75),
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  '04:78',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                    height: 1.3,
-                    letterSpacing: 0.3,
-                  ),
-                ),
+          FractionallySizedBox(
+            heightFactor: 1.0,
+            widthFactor: 0.34,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(600)),
+                color: TWColors.red.shade700,
               ),
             ),
           ),
         ],
       ),
     );
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Stack(
+          children: <Widget>[
+            image,
+            playIconBg,
+            playIcon,
+            duration,
+          ],
+        ),
+        Container(
+          width: width,
+          padding: EdgeInsets.only(top: 11),
+          child: progressbar,
+        ),
+      ],
+    );
+  }
+
+  Widget _duration(int sec) {
+    RegExp regex;
+    if (sec < 60 * 60) {
+      regex = RegExp(r'\d\d:(\d\d:\d\d)');
+    } else if (sec < 10 * 60 * 60) {
+      regex = RegExp(r'\d(\d:\d\d:\d\d)');
+    } else {
+      regex = RegExp(r'(\d\d:\d\d:\d\d)');
+    }
+
+    var res = regex
+        .firstMatch(DateTime(0, 0, 0, 0, 0, sec).toIso8601String())
+        ?.group(1);
+
+    if (res != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(5.0),
+        child: Container(
+          color: Color.fromRGBO(0, 0, 0, 0.75),
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text(
+            res ?? '00:00',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+              height: 1.35,
+              letterSpacing: 0.35,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return null;
   }
 }

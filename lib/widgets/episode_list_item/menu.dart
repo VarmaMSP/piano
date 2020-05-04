@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 
 class Menu extends StatelessWidget {
   const Menu({Key key}) : super(key: key);
@@ -9,8 +10,8 @@ class Menu extends StatelessWidget {
     return PopupMenuButton(
       icon: Icon(
         Icons.more_vert,
-        color: Colors.black45,
-        size: 20,
+        color: TWColors.gray.shade600,
+        size: 22,
       ),
       padding: EdgeInsets.all(0),
       elevation: 3,

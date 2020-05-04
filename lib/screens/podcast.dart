@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:piano/blocs/podcast/podcast_bloc.dart';
 import 'package:piano/utils/request.dart';
 import 'package:piano/widgets/episode_list_item/episode_list_item.dart';
+import 'package:piano/widgets/podcast_header/podcast_header.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class PodcastPage extends StatefulWidget {
@@ -24,8 +25,7 @@ class _PodcastPageState extends State<PodcastPage> {
     _scrollController.addListener(_onScroll);
     _podcastBloc = PodcastBloc(
       request: Request(),
-      urlParam:
-          'sean-carrolls-mindscape-science-society-philosophy-culture-arts-and-ideas-ejYpWd',
+      urlParam: 'youre-wrong-about-ejqjYd',
     )..add(Load());
   }
 
@@ -65,23 +65,23 @@ class _PodcastPageState extends State<PodcastPage> {
               elevation: 1.0,
               leading: Icon(
                 Icons.arrow_back,
-                size: 25.0,
+                size: 26.0,
                 color: TWColors.gray.shade700,
               ),
               actions: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(right: 15.0),
+                  padding: const EdgeInsets.only(right: 20.0),
                   child: Icon(
                     Icons.search,
-                    size: 25.0,
+                    size: 26.0,
                     color: TWColors.gray.shade700,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 7.0),
+                  padding: const EdgeInsets.only(right: 18.0),
                   child: Icon(
-                    Icons.more_vert,
-                    size: 25.0,
+                    Icons.share,
+                    size: 24.0,
                     color: TWColors.gray.shade700,
                   ),
                 ),
@@ -90,29 +90,35 @@ class _PodcastPageState extends State<PodcastPage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  return index < s.episodes.length
-                      ? EpisodeListItem(
-                          episode: s.episodes[index],
-                          podcast: s.podcast,
-                        )
-                      : Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(vertical: 25.0),
-                          child: Center(
-                            child: SizedBox(
-                              width: 25,
-                              height: 25,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 3,
-                                valueColor: new AlwaysStoppedAnimation<Color>(
-                                    Colors.black87),
-                              ),
-                            ),
-                          ),
-                        );
+                  if (index == 0) {
+                    return PodcastHeader(podcast: s.podcast);
+                  }
+
+                  if (index >= 1 && index <= s.episodes.length) {
+                    return EpisodeListItem(
+                      episode: s.episodes[index - 1],
+                      podcast: s.podcast,
+                    );
+                  }
+
+                  return Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 25.0),
+                    child: Center(
+                      child: SizedBox(
+                        width: 25,
+                        height: 25,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(Colors.black87),
+                        ),
+                      ),
+                    ),
+                  );
                 },
                 childCount:
-                    s.loadedAll ? s.episodes.length : s.episodes.length + 1,
+                    s.loadedAll ? s.episodes.length + 1 : s.episodes.length + 2,
               ),
             ),
           ],
