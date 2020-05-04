@@ -49,11 +49,14 @@ class EpisodeListItem extends StatelessWidget {
     );
 
     final summary = Text(
-      episode.summary.replaceAll("\n", " ").replaceAll("&nbsp;", " "),
+      episode.summary
+          .replaceAll('\n', ' ')
+          .replaceAll('&nbsp;', ' ')
+          .replaceAll('&amp', '&'),
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: 12,
-        color: TWColors.teal.shade700,
+        color: TWColors.teal.shade800,
         height: 1.3,
         letterSpacing: 0.35,
       ),

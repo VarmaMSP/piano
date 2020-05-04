@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:piano/models/episode.dart';
 import 'package:piano/models/podcast.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class Thumbnail extends StatelessWidget {
@@ -60,22 +61,30 @@ class Thumbnail extends StatelessWidget {
             height: width,
             width: width,
             alignment: Alignment(0.89, 0.92),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: TWColors.gray.shade400,
+                width: 0.4,
+              ),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(5.0),
-                child: Container(
-                  color: Color.fromRGBO(0, 0, 0, 0.75),
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  child: Text(
-                    '04:78',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      height: 1.3,
-                      letterSpacing: 0.3,
-                    ),
+              borderRadius: BorderRadius.circular(5.0),
+              child: Container(
+                color: Color.fromRGBO(0, 0, 0, 0.75),
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  '04:78',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                    height: 1.3,
+                    letterSpacing: 0.3,
                   ),
-                )),
+                ),
+              ),
+            ),
           ),
         ],
       ),

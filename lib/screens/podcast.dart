@@ -23,8 +23,7 @@ class _PodcastPageState extends State<PodcastPage> {
     _scrollController.addListener(_onScroll);
     _podcastBloc = PodcastBloc(
       request: Request(),
-      urlParam:
-          'sean-carrolls-mindscape-science-society-philosophy-culture-arts-and-ideas-ejYpWd',
+      urlParam: 'slow-burn-dyoYza',
     )..add(Load());
   }
 
