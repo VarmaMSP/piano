@@ -6,32 +6,29 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: Offset(8, -16),
-      child: PopupMenuButton(
-        icon: Icon(
-          Icons.more_vert,
-          color: Colors.black45,
-          size: 20,
-        ),
-        padding: EdgeInsets.all(0),
-        elevation: 3,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        ),
-        itemBuilder: (context) {
-          return <String>[
-            'Save to playlist',
-            'Save to Listen later',
-            'Add to queue',
-          ].map((t) {
-            return PopupMenuItem(
-              value: t,
-              child: Text(t),
-            );
-          }).toList();
-        },
+    return PopupMenuButton(
+      icon: Icon(
+        Icons.more_vert,
+        color: Colors.black45,
+        size: 20,
       ),
+      padding: EdgeInsets.all(0),
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      ),
+      itemBuilder: (context) {
+        return <String>[
+          'Save to playlist',
+          'Save to Listen later',
+          'Add to queue',
+        ].map((t) {
+          return PopupMenuItem(
+            value: t,
+            child: Text(t),
+          );
+        }).toList();
+      },
     );
   }
 }

@@ -16,6 +16,19 @@ class Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final title = Text(
+      episode.title,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        fontSize: 15.5,
+        color: TWColors.teal.shade900,
+        height: 1.3,
+        letterSpacing: 0.28,
+        fontWeight: FontWeight.w500,
+      ),
+      maxLines: 2,
+    );
+
     return Transform.translate(
       offset: Offset(0, -2.5),
       child: Column(
@@ -23,18 +36,7 @@ class Details extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
-            child: Text(
-              episode.title,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 15.5,
-                color: TWColors.teal.shade900,
-                height: 1.3,
-                letterSpacing: 0.28,
-                fontWeight: FontWeight.w500,
-              ),
-              maxLines: 2,
-            ),
+            child: title,
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
