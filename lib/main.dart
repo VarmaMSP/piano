@@ -1,42 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:piano/screens/podcast.dart';
 import 'package:bloc/bloc.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
+
     return MaterialApp(
       title: 'Phenopod',
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: AppBar(
-            backgroundColor: Colors.white,
-            bottom: PreferredSize(
-              child: Divider(
-                height: 10,
-                thickness: 1.0,
-              ),
-              preferredSize: Size.fromHeight(4),
-            ),
-            title: Text(
-              'Phenopod',
-              style: TextStyle(
-                color: Colors.purple,
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            elevation: 0.0,
+          preferredSize: Size(double.infinity, 100),
+          child: Container(
+            height: 80,
+            child: Text('Phenopod'),
+            // decoration: BoxDecoration(
+            //   border: Border(bottom: BorderSide(color: Colors.black12)),
+            // ),
           ),
         ),
         body: PodcastPage(),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          elevation: 8,
+          selectedIconTheme: IconThemeData(size: 21),
+          selectedLabelStyle: TextStyle(
+            height: 1.5,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.45,
+          ),
+          selectedItemColor: TWColors.blue.shade700,
+          unselectedIconTheme: IconThemeData(size: 21),
+          showUnselectedLabels: false,
+          unselectedItemColor: TWColors.gray.shade600,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Home'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.rss_feed),
+              title: Text('Feeds'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.playlist_play),
+              title: Text('Playlists'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.face),
+              title: Text('Profile'),
+            ),
+          ],
+        ),
       ),
     );
   }

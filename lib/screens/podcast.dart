@@ -21,9 +21,10 @@ class _PodcastPageState extends State<PodcastPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _podcastBloc =
-        PodcastBloc(request: Request(), urlParam: 'alice-isnt-dead-e0gp7d')
-          ..add(Load());
+    _podcastBloc = PodcastBloc(
+      request: Request(),
+      urlParam: 'making-sense-with-sam-harris-b27gNd',
+    )..add(Load());
   }
 
   @override
@@ -51,7 +52,7 @@ class _PodcastPageState extends State<PodcastPage> {
         }
 
         final s = (state as PodcastLoaded);
-        return ListView.separated(
+        return ListView.builder(
           itemBuilder: (context, index) {
             return index < s.episodes.length
                 ? EpisodeListItem(
@@ -76,7 +77,6 @@ class _PodcastPageState extends State<PodcastPage> {
           },
           itemCount: s.loadedAll ? s.episodes.length : s.episodes.length + 1,
           controller: _scrollController,
-          separatorBuilder: (_, __) => Divider(),
         );
       },
     );

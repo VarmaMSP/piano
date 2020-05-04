@@ -7,9 +7,13 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: Offset(8, -10),
+      offset: Offset(8, -16),
       child: PopupMenuButton(
-        icon: Icon(Icons.more_vert, color: Colors.black54),
+        icon: Icon(
+          Icons.more_vert,
+          color: Colors.black45,
+          size: 20,
+        ),
         padding: EdgeInsets.all(0),
         elevation: 3,
         shape: RoundedRectangleBorder(
