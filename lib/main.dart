@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:piano/screens/podcast.dart';
+import 'package:piano/screens/podcast/podcast.dart';
 import 'package:bloc/bloc.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
+import 'package:piano/widgets/app_bottom_navigation_bar.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -30,39 +30,7 @@ class MyApp extends StatelessWidget {
           child: Container(),
         ),
         body: PodcastPage(),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          elevation: 8,
-          selectedIconTheme: IconThemeData(size: 22),
-          selectedLabelStyle: TextStyle(
-            height: 1.5,
-            fontSize: 12,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 0.45,
-          ),
-          selectedItemColor: TWColors.blue.shade700,
-          unselectedIconTheme: IconThemeData(size: 22),
-          unselectedItemColor: TWColors.gray.shade600,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.rss_feed),
-              title: Text('Feeds'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.playlist_play),
-              title: Text('Playlists'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.face),
-              title: Text('Profile'),
-            ),
-          ],
-        ),
+        bottomNavigationBar: AppBottomNavigationBar(),
       ),
     );
   }

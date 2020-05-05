@@ -18,8 +18,8 @@ class PodcastHeader extends StatelessWidget {
       child: FadeInImage.memoryNetwork(
         placeholder: kTransparentImage,
         image: 'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg',
-        height: 100.0,
-        width: 100.0,
+        height: 130.0,
+        width: 130.0,
       ),
     );
 
@@ -47,16 +47,6 @@ class PodcastHeader extends StatelessWidget {
         letterSpacing: 0.4,
       ),
     );
-
-    // final description = Text(
-    //   podcast.description,
-    //   style: TextStyle(
-    //     height: 1.4,
-    //     fontSize: 14,
-    //     color: TWColors.gray.shade800,
-    //     letterSpacing: 0.3,
-    //   ),
-    // );
 
     return Container(
       padding: EdgeInsets.only(top: 0, right: 12, bottom: 0, left: 12),

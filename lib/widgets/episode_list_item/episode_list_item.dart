@@ -19,16 +19,18 @@ class EpisodeListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = Text(episode.title,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          fontSize: 14.5,
-          color: TWColors.gray.shade900,
-          height: 1.3,
-          letterSpacing: 0.4,
-          fontWeight: FontWeight.w500,
-        ),
-        maxLines: 2);
+    final title = Text(
+      episode.title,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        fontSize: 14.5,
+        color: TWColors.gray.shade900,
+        height: 1.3,
+        letterSpacing: 0.4,
+        fontWeight: FontWeight.w500,
+      ),
+      maxLines: 2,
+    );
 
     final info = RichText(
       overflow: TextOverflow.ellipsis,
@@ -63,7 +65,7 @@ class EpisodeListItem extends StatelessWidget {
 
     return GestureDetector(
       child: Padding(
-        padding: const EdgeInsets.only(top: 16, bottom: 16, left: 12),
+        padding: const EdgeInsets.only(top: 26, bottom: 10, left: 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -74,6 +76,7 @@ class EpisodeListItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
