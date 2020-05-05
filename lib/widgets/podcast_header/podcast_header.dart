@@ -29,7 +29,7 @@ class PodcastHeader extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         height: 1.35,
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: FontWeight.w500,
         color: TWColors.gray.shade900,
         letterSpacing: 0.4,
@@ -38,7 +38,7 @@ class PodcastHeader extends StatelessWidget {
 
     final author = Text(
       podcast.author,
-      maxLines: 2,
+      maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         height: 1.35,
@@ -48,18 +48,18 @@ class PodcastHeader extends StatelessWidget {
       ),
     );
 
-    final description = Text(
-      podcast.description,
-      style: TextStyle(
-        height: 1.4,
-        fontSize: 14,
-        color: TWColors.gray.shade800,
-        letterSpacing: 0.3,
-      ),
-    );
+    // final description = Text(
+    //   podcast.description,
+    //   style: TextStyle(
+    //     height: 1.4,
+    //     fontSize: 14,
+    //     color: TWColors.gray.shade800,
+    //     letterSpacing: 0.3,
+    //   ),
+    // );
 
     return Container(
-      padding: EdgeInsets.only(top: 8, right: 12, bottom: 10, left: 12),
+      padding: EdgeInsets.only(top: 0, right: 12, bottom: 0, left: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -87,20 +87,6 @@ class PodcastHeader extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 24),
-            child: description,
-          ),
-          Text(
-            'Episodes',
-            style: TextStyle(
-              height: 1.35,
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-              color: TWColors.gray.shade800,
-              letterSpacing: 0.7,
-            ),
           ),
         ],
       ),

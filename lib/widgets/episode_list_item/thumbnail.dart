@@ -19,7 +19,7 @@ class Thumbnail extends StatelessWidget {
   Widget build(BuildContext context) {
     var imageUrl =
         'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg';
-    var width = 95.0;
+    var width = 85.0;
 
     final image = ClipRRect(
       borderRadius: BorderRadius.circular(8.0),
@@ -38,7 +38,7 @@ class Thumbnail extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(600.0),
         child: Container(
-          color: Color.fromRGBO(0, 0, 0, 0.45),
+          color: Color.fromRGBO(0, 0, 0, 0.55),
           height: 38.0,
           width: 38.0,
         ),
@@ -142,7 +142,7 @@ class Thumbnail extends StatelessWidget {
             res ?? '00:00',
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
               color: Colors.white,
               height: 1.35,
               letterSpacing: 0.35,

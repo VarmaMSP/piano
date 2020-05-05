@@ -22,7 +22,7 @@ class EpisodeListItem extends StatelessWidget {
     final title = Text(episode.title,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          fontSize: 15.5,
+          fontSize: 14.5,
           color: TWColors.gray.shade900,
           height: 1.3,
           letterSpacing: 0.4,
@@ -53,9 +53,9 @@ class EpisodeListItem extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: 12.5,
-        color: TWColors.gray.shade800,
-        height: 1.33,
-        letterSpacing: 0.35,
+        color: TWColors.teal.shade800,
+        height: 1.32,
+        letterSpacing: 0.25,
       ),
       maxLines: 3,
       textAlign: TextAlign.left,
@@ -70,7 +70,7 @@ class EpisodeListItem extends StatelessWidget {
             Thumbnail(episode: episode, podcast: podcast),
             Expanded(
               child: Transform.translate(
-                offset: Offset(0, -4),
+                offset: Offset(0, -2),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: Column(
