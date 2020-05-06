@@ -10,14 +10,11 @@ class AboutTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final overlapInjector = SliverOverlapInjector(
-      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-        context,
-      ),
-    );
-
     final description = Text(
-      podcast.description,
+      podcast.description
+          .replaceAll('\n', ' ')
+          .replaceAll('&nbsp;', ' ')
+          .replaceAll('&amp', '&'),
       style: TextStyle(
         height: 1.65,
         fontSize: 14,
@@ -36,22 +33,21 @@ class AboutTab extends StatelessWidget {
       ),
     );
 
-    return CustomScrollView(
-      slivers: <Widget>[
-        overlapInjector,
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 18, right: 12, left: 12),
-            child: Column(
-              children: <Widget>[
-                description,
-                Container(height: 12),
-                links,
-              ],
-            ),
-          ),
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 113, horizontal: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            description,
+            Container(height: 12),
+            links,
+          ],
         ),
-      ],
+      ),
     );
   }
 

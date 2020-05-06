@@ -23,11 +23,11 @@ class EpisodeListItem extends StatelessWidget {
       episode.title,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 14.5,
+        fontSize: 15.5,
         color: TWColors.gray.shade900,
         height: 1.3,
-        letterSpacing: 0.4,
-        fontWeight: FontWeight.w500,
+        letterSpacing: 0.42,
+        fontWeight: FontWeight.w600,
       ),
       maxLines: 2,
     );
@@ -37,7 +37,7 @@ class EpisodeListItem extends StatelessWidget {
       text: TextSpan(
         style: TextStyle(
           fontSize: 13.5,
-          color: TWColors.gray.shade900,
+          color: TWColors.teal.shade900,
           letterSpacing: 0.4,
         ),
         children: <TextSpan>[
@@ -54,10 +54,10 @@ class EpisodeListItem extends StatelessWidget {
           .replaceAll('&amp', '&'),
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 12.5,
-        color: TWColors.teal.shade800,
-        height: 1.32,
-        letterSpacing: 0.25,
+        fontSize: 12.2,
+        color: TWColors.teal.shade700,
+        height: 1.35,
+        letterSpacing: 0.3,
       ),
       maxLines: 3,
       textAlign: TextAlign.left,
@@ -65,7 +65,7 @@ class EpisodeListItem extends StatelessWidget {
 
     return GestureDetector(
       child: Padding(
-        padding: const EdgeInsets.only(top: 26, bottom: 10, left: 12),
+        padding: const EdgeInsets.only(top: 24, bottom: 4, left: 14, right: 2),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -97,7 +97,7 @@ class EpisodeListItem extends StatelessWidget {
                             ),
                           ),
                           Transform.translate(
-                            offset: Offset(6, -12),
+                            offset: Offset(6, -13),
                             child: Menu(),
                           ),
                         ],
@@ -131,23 +131,23 @@ class EpisodeListItem extends StatelessWidget {
     Color color;
     if (episode.type == 'BONUS') {
       text = 'BONUS';
-      color = TWColors.orange.shade800;
+      color = TWColors.orange.shade700;
     } else if (episode.type == 'TRAILER') {
       text = 'TRAILER';
-      color = TWColors.red.shade800;
+      color = TWColors.red.shade700;
     } else if (episode.season > 0) {
       text = 'S${episode.season} E${episode.episode}';
-      color = TWColors.teal.shade900;
+      color = TWColors.teal.shade800;
     } else {
       text = 'E${episode.episode}';
-      color = TWColors.teal.shade900;
+      color = TWColors.teal.shade800;
     }
 
     return [
       TextSpan(
         text: text,
         style: TextStyle(
-          fontSize: 12.3,
+          fontSize: 12.8,
           color: color,
           fontWeight: FontWeight.w500,
         ),

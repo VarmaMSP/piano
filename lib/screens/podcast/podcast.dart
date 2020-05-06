@@ -5,7 +5,7 @@ import 'package:piano/blocs/podcast/podcast_bloc.dart';
 import 'package:piano/screens/loading.dart';
 import 'package:piano/screens/podcast/tabs/about.dart';
 import 'package:piano/screens/podcast/tabs/episodes.dart';
-import 'package:piano/screens/podcast/widgets/app_bar.dart';
+import 'package:piano/widgets/app_bar/podcast.dart';
 import 'package:piano/utils/request.dart';
 
 class PodcastPage extends StatefulWidget {
@@ -24,12 +24,12 @@ class _PodcastPageState extends State<PodcastPage>
   @override
   void initState() {
     final request = Request();
-    final urlParam = 'reply-all-epZEXb';
+    final urlParam = 'heavyweight-e79vOb';
 
     super.initState();
     _podcastBloc = PodcastBloc(request: request, urlParam: urlParam);
     _tabController = TabController(vsync: this, length: 2);
-    _scrollController = ScrollController()..addListener(_onScroll);
+    _scrollController = ScrollController();
 
     _podcastBloc.add(Load());
   }
@@ -68,8 +68,17 @@ class _PodcastPageState extends State<PodcastPage>
           body: TabBarView(
             controller: _tabController,
             children: <Widget>[
-              EpisodesTab(podcast: s.podcast, episodes: s.episodes),
-              AboutTab(podcast: s.podcast),
+              EpisodesTab(
+                key: PageStorageKey<String>('  Episodes  '),
+                podcast: s.podcast,
+                episodes: s.episodes,
+                receivedAll: s.loadedAll,
+                loadMore: () => _podcastBloc.add(Load()),
+              ),
+              AboutTab(
+                key: PageStorageKey<String>('  About  '),
+                podcast: s.podcast,
+              ),
             ],
           ),
         );
@@ -83,13 +92,5 @@ class _PodcastPageState extends State<PodcastPage>
     _tabController.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void _onScroll() {
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    if (maxScroll - currentScroll <= 200.0) {
-      _podcastBloc.add(Load());
-    }
   }
 }

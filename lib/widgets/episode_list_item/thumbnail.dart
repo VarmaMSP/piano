@@ -6,8 +6,8 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class Thumbnail extends StatelessWidget {
-  final Episode episode;
-  final Podcast podcast;
+  static final double thumbnailSize = 92.0;
+  static final String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
 
   const Thumbnail({
     Key key,
@@ -15,25 +15,25 @@ class Thumbnail extends StatelessWidget {
     @required this.podcast,
   }) : super(key: key);
 
+  final Episode episode;
+  final Podcast podcast;
+
   @override
   Widget build(BuildContext context) {
-    var imageUrl =
-        'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg';
-    var width = 85.0;
-
     final image = ClipRRect(
-      borderRadius: BorderRadius.circular(8.0),
+      borderRadius: BorderRadius.circular(7.0),
       child: FadeInImage.memoryNetwork(
         placeholder: kTransparentImage,
-        image: imageUrl,
-        height: width,
-        width: width,
+        image: '$thumbnailUrl/${podcast.urlParam}.jpg',
+        fit: BoxFit.fill,
+        height: thumbnailSize,
+        width: thumbnailSize,
       ),
     );
 
     final playIconBg = Container(
-      height: width,
-      width: width,
+      height: thumbnailSize,
+      width: thumbnailSize,
       alignment: Alignment.center,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(600.0),
@@ -46,8 +46,8 @@ class Thumbnail extends StatelessWidget {
     );
 
     final playIcon = Container(
-      height: width,
-      width: width,
+      height: thumbnailSize,
+      width: thumbnailSize,
       alignment: Alignment.center,
       child: Icon(
         Icons.play_arrow,
@@ -57,46 +57,18 @@ class Thumbnail extends StatelessWidget {
     );
 
     final duration = Container(
-      height: width,
-      width: width,
+      height: thumbnailSize,
+      width: thumbnailSize,
       alignment: Alignment(0.96, 0.96),
       decoration: BoxDecoration(
         border: Border.all(
           color: TWColors.gray.shade400,
-          width: 0.4,
+          width: 0.3,
         ),
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(7.0),
       ),
       child: _duration(episode.duration),
     );
-
-    // final progressbar = Container(
-    //   height: 5,
-    //   child: Stack(
-    //     children: <Widget>[
-    //       FractionallySizedBox(
-    //         heightFactor: 1.0,
-    //         widthFactor: 1.0,
-    //         child: Container(
-    //           decoration: BoxDecoration(
-    //             borderRadius: BorderRadius.all(Radius.circular(600)),
-    //             color: TWColors.gray.shade300,
-    //           ),
-    //         ),
-    //       ),
-    //       FractionallySizedBox(
-    //         heightFactor: 1.0,
-    //         widthFactor: 0.34,
-    //         child: Container(
-    //           decoration: BoxDecoration(
-    //             borderRadius: BorderRadius.all(Radius.circular(600)),
-    //             color: TWColors.red.shade700,
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -109,11 +81,9 @@ class Thumbnail extends StatelessWidget {
             duration,
           ],
         ),
-        Container(
-          width: width,
-          padding: EdgeInsets.only(top: 10),
-          // child: progressbar,
-        ),
+        Container(height: 8),
+        _progressbar(),
+        Container(height: 9),
       ],
     );
   }
@@ -153,5 +123,31 @@ class Thumbnail extends StatelessWidget {
     }
 
     return null;
+  }
+
+  Widget _progressbar() {
+    if (episode.lastPlayedAt == "") {
+      return Container(height: 4.5);
+    }
+
+    return Container(
+      height: 4.5,
+      width: thumbnailSize,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(600)),
+        color: TWColors.gray.shade300,
+      ),
+      alignment: Alignment.centerLeft,
+      child: FractionallySizedBox(
+        heightFactor: 1.0,
+        widthFactor: episode.progress,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(600)),
+            color: TWColors.red.shade700,
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -29,7 +29,7 @@ class PodcastHeader extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         height: 1.35,
-        fontSize: 16,
+        fontSize: 16.5,
         fontWeight: FontWeight.w500,
         color: TWColors.gray.shade900,
         letterSpacing: 0.4,
