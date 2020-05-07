@@ -55,7 +55,6 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.arrow_back, size: 24, color: TWColors.gray.shade800),
-          Text('${appBarHeight - shrinkOffset}'),
           if ((shrinkOffset - flexibleAreaHeight).abs() < 0.0001)
             Container(
               child: Row(
@@ -69,7 +68,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                     ),
                     onPressed: null,
                   ),
-                  Container(width: 4),
+                  Container(width: 6),
                   IconButton(
                     icon: Icon(
                       Icons.share,
