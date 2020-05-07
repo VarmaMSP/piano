@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:piano/models/podcast.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutTab extends StatelessWidget {
@@ -16,9 +15,9 @@ class AboutTab extends StatelessWidget {
           .replaceAll('&nbsp;', ' ')
           .replaceAll('&amp', '&'),
       style: TextStyle(
-        height: 1.65,
-        fontSize: 14,
-        color: TWColors.gray.shade900,
+        height: 1.5,
+        fontSize: 14.5,
+        color: Colors.black,
         letterSpacing: 0.18,
       ),
     );

@@ -23,11 +23,11 @@ class EpisodeListItem extends StatelessWidget {
       episode.title,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 15.5,
-        color: TWColors.gray.shade900,
-        height: 1.3,
-        letterSpacing: 0.42,
-        fontWeight: FontWeight.w600,
+        fontSize: 15,
+        color: TWColors.gray.shade800,
+        height: 1.4,
+        letterSpacing: 0.2,
+        fontWeight: FontWeight.w500,
       ),
       maxLines: 2,
     );
@@ -97,7 +97,7 @@ class EpisodeListItem extends StatelessWidget {
                             ),
                           ),
                           Transform.translate(
-                            offset: Offset(6, -13),
+                            offset: Offset(6, -12),
                             child: Menu(),
                           ),
                         ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:piano/screens/podcast/podcast.dart';
+import 'package:piano/screens/podcast/screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:piano/widgets/app_bottom_navigation_bar.dart';
 

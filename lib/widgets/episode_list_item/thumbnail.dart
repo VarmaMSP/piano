@@ -6,7 +6,7 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class Thumbnail extends StatelessWidget {
-  static final double thumbnailSize = 92.0;
+  static final double thumbnailSize = 85.0;
   static final String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
 
   const Thumbnail({

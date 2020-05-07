@@ -3,10 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:piano/blocs/podcast/podcast_bloc.dart';
 import 'package:piano/screens/loading.dart';
-import 'package:piano/screens/podcast/tabs/about.dart';
-import 'package:piano/screens/podcast/tabs/episodes.dart';
-import 'package:piano/widgets/app_bar/podcast.dart';
 import 'package:piano/utils/request.dart';
+import './about_tab.dart';
+import './episodes_tab.dart';
+import './header.dart';
 
 class PodcastPage extends StatefulWidget {
   const PodcastPage({Key key}) : super(key: key);
@@ -24,7 +24,7 @@ class _PodcastPageState extends State<PodcastPage>
   @override
   void initState() {
     final request = Request();
-    final urlParam = 'heavyweight-e79vOb';
+    final urlParam = 'full-stack-radio-el5EO5';
 
     super.initState();
     _podcastBloc = PodcastBloc(request: request, urlParam: urlParam);
@@ -58,9 +58,13 @@ class _PodcastPageState extends State<PodcastPage>
                 handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                   context,
                 ),
-                child: PodcastAppBar(
-                  podcast: s.podcast,
-                  tabController: _tabController,
+                child: SliverPersistentHeader(
+                  pinned: true,
+                  floating: false,
+                  delegate: PodcastHeaderDelegate(
+                    podcast: s.podcast,
+                    tabController: _tabController,
+                  ),
                 ),
               )
             ];

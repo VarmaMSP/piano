@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:piano/models/podcast.dart';
@@ -7,35 +5,12 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter/foundation.dart';
 
-class PodcastAppBar extends StatelessWidget {
-  const PodcastAppBar({
-    Key key,
-    @required this.podcast,
-    @required this.tabController,
-  }) : super(key: key);
-
-  final Podcast podcast;
-  final TabController tabController;
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverPersistentHeader(
-      pinned: true,
-      floating: false,
-      delegate: _PodcastHeaderDelegate(
-        podcast: podcast,
-        tabController: tabController,
-      ),
-    );
-  }
-}
-
-class _PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
+class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   static final double appBarHeight = 55;
   static final double tabBarHeight = 40;
   static final double flexibleAreaHeight = 150;
 
-  _PodcastHeaderDelegate({
+  PodcastHeaderDelegate({
     @required this.podcast,
     @required this.tabController,
   });
@@ -51,13 +26,11 @@ class _PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    log('$overlapsContent - $shrinkOffset');
-
     return Container(
       height: maxExtent - shrinkOffset,
       padding: EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: overlapsContent ? Colors.black : Colors.white,
+        color: Colors.white,
         border: Border(
           bottom: BorderSide(color: TWColors.gray.shade400),
         ),
@@ -66,7 +39,7 @@ class _PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         overflow: Overflow.visible,
         children: <Widget>[
           _appBar(shrinkOffset),
-          if (shrinkOffset < flexibleAreaHeight) _flexibleArea(shrinkOffset),
+          _flexibleArea(shrinkOffset),
           _tabBar(shrinkOffset),
         ],
       ),
@@ -82,16 +55,31 @@ class _PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.arrow_back, size: 24, color: TWColors.gray.shade800),
+          Text('${appBarHeight - shrinkOffset}'),
           if ((shrinkOffset - flexibleAreaHeight).abs() < 0.0001)
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(Icons.add, size: 24, color: TWColors.gray.shade800),
-                Container(
-                  width: 20,
-                ),
-                Icon(Icons.share, size: 22, color: TWColors.gray.shade800),
-              ],
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.add_box,
+                      size: 24,
+                      color: TWColors.gray.shade800,
+                    ),
+                    onPressed: null,
+                  ),
+                  Container(width: 4),
+                  IconButton(
+                    icon: Icon(
+                      Icons.share,
+                      size: 24,
+                      color: TWColors.gray.shade800,
+                    ),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ),
         ],
       ),
@@ -136,35 +124,62 @@ class _PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       ),
     );
 
-    final title = Text(
-      podcast.title,
-      maxLines: 3,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        height: 1.35,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        color: TWColors.gray.shade900,
-        letterSpacing: 0.25,
-      ),
+    final details = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          podcast.title,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            height: 1.35,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: TWColors.gray.shade800,
+            letterSpacing: 0.25,
+          ),
+        ),
+        Container(height: 6),
+        Text(
+          podcast.author,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            height: 1.35,
+            fontSize: 14,
+            color: TWColors.gray.shade900,
+            letterSpacing: 0.25,
+          ),
+        ),
+      ],
     );
 
-    final author = Text(
-      podcast.author,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        height: 1.35,
-        fontSize: 14,
-        color: TWColors.gray.shade900,
-        letterSpacing: 0.25,
-      ),
+    final actions = Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.add_box,
+            size: 24,
+            color: TWColors.gray.shade800,
+          ),
+          onPressed: null,
+        ),
+        Container(width: 6),
+        IconButton(
+          icon: Icon(
+            Icons.share,
+            size: 24,
+            color: TWColors.gray.shade800,
+          ),
+          onPressed: null,
+        ),
+      ],
     );
 
-    return Container(
+    var widget = Container(
       height: flexibleAreaHeight,
       padding: EdgeInsets.only(top: 8),
-      transform: Matrix4.translationValues(0, appBarHeight - shrinkOffset, 0),
       child: Opacity(
         opacity: 1.0 - shrinkOffset / flexibleAreaHeight,
         child: Row(
@@ -173,14 +188,14 @@ class _PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             thumbnail,
             Expanded(
               child: Container(
+                height: flexibleAreaHeight,
                 padding: const EdgeInsets.only(left: 14),
                 transform: Matrix4.translationValues(0, -4, 0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    title,
-                    Container(height: 6),
-                    author,
+                    details,
+                    Spacer(),
+                    actions,
                   ],
                 ),
               ),
@@ -188,6 +203,23 @@ class _PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           ],
         ),
       ),
+    );
+
+    final offset = appBarHeight - shrinkOffset;
+
+    return Transform.translate(
+      offset: Offset(0, offset),
+      child: widget,
+      // child: offset >= 0
+      //     ? widget
+      //     : ClipRect(
+      //         child: Align(
+      //           alignment: Alignment.topLeft,
+      //           heightFactor:
+      //               (flexibleAreaHeight - offset) / flexibleAreaHeight,
+      //           child: widget,
+      //         ),
+      //       ),
     );
   }
 
