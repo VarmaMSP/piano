@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piano/models/podcast.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutTab extends StatelessWidget {
@@ -16,9 +17,9 @@ class AboutTab extends StatelessWidget {
           .replaceAll('&amp', '&'),
       style: TextStyle(
         height: 1.5,
-        fontSize: 14.5,
-        color: Colors.black,
-        letterSpacing: 0.18,
+        fontSize: 14,
+        color: TWColors.gray.shade800,
+        letterSpacing: 0.15,
       ),
     );
 
@@ -36,7 +37,7 @@ class AboutTab extends StatelessWidget {
       top: false,
       bottom: false,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 113, horizontal: 16),
+        padding: EdgeInsets.symmetric(vertical: 110, horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

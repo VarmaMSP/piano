@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:piano/blocs/podcast/podcast_bloc.dart';
 import 'package:piano/screens/loading.dart';
 import 'package:piano/utils/request.dart';
+import 'package:piano/widgets/app_bottom_navigation_bar.dart';
 import './about_tab.dart';
 import './episodes_tab.dart';
 import './header.dart';
@@ -66,7 +67,6 @@ class _PodcastPageState extends State<PodcastPage>
                   ),
                   child: SliverPersistentHeader(
                     pinned: true,
-                    floating: false,
                     delegate: PodcastHeaderDelegate(
                       podcast: s.podcast,
                       tabController: _tabController,
@@ -79,14 +79,14 @@ class _PodcastPageState extends State<PodcastPage>
               controller: _tabController,
               children: <Widget>[
                 EpisodesTab(
-                  key: PageStorageKey<String>('  Episodes  '),
+                  key: PageStorageKey<String>('   Episodes   '),
                   podcast: s.podcast,
                   episodes: s.episodes,
                   receivedAll: s.loadedAll,
                   loadMore: () => _podcastBloc.add(Load()),
                 ),
                 AboutTab(
-                  key: PageStorageKey<String>('  About  '),
+                  key: PageStorageKey<String>('   About   '),
                   podcast: s.podcast,
                 ),
               ],
@@ -94,6 +94,7 @@ class _PodcastPageState extends State<PodcastPage>
           );
         },
       ),
+      bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 

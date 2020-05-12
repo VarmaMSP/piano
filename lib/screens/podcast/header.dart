@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:piano/models/podcast.dart';
@@ -6,7 +7,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter/foundation.dart';
 
 class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
-  static final double appBarHeight = 55;
+  static final double appBarHeight = 50;
   static final double tabBarHeight = 40;
   static final double flexibleAreaHeight = 150;
 
@@ -38,7 +39,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       child: Stack(
         overflow: Overflow.visible,
         children: <Widget>[
-          _appBar(shrinkOffset),
+          _appBar(context, shrinkOffset),
           _flexibleArea(shrinkOffset),
           _tabBar(shrinkOffset),
         ],
@@ -46,7 +47,30 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     );
   }
 
-  Widget _appBar(double shrinkOffset) {
+  Widget _appBar(BuildContext context, double shrinkOffset) {
+    final actions = Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.add,
+            size: 28,
+            color: TWColors.gray.shade800,
+          ),
+          onPressed: null,
+        ),
+        Container(width: 10),
+        IconButton(
+          icon: Icon(
+            Icons.share,
+            size: 22,
+            color: TWColors.gray.shade800,
+          ),
+          onPressed: null,
+        ),
+      ],
+    );
+
     return Container(
       height: appBarHeight,
       child: Row(
@@ -54,30 +78,27 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Icon(Icons.arrow_back, size: 24, color: TWColors.gray.shade800),
+          Transform.translate(
+            offset: Offset(-12, 0),
+            child: Material(
+              color: Colors.white,
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  size: 24,
+                  color: TWColors.gray.shade800,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ),
           if ((shrinkOffset - flexibleAreaHeight).abs() < 0.0001)
             Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.add_box,
-                      size: 24,
-                      color: TWColors.gray.shade800,
-                    ),
-                    onPressed: null,
-                  ),
-                  Container(width: 6),
-                  IconButton(
-                    icon: Icon(
-                      Icons.share,
-                      size: 24,
-                      color: TWColors.gray.shade800,
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
+              child: Transform.translate(
+                offset: Offset(6, 0),
+                child: actions,
               ),
             ),
         ],
@@ -95,17 +116,17 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         isScrollable: true,
         indicatorColor: TWColors.green.shade900,
         indicatorSize: TabBarIndicatorSize.label,
-        indicatorWeight: 2.8,
+        indicatorWeight: 2.4,
         labelColor: TWColors.teal.shade900,
         labelStyle: TextStyle(
-          fontSize: 15,
-          letterSpacing: 0.6,
-          fontWeight: FontWeight.w600,
+          fontSize: 14,
+          letterSpacing: 0.5,
+          fontWeight: FontWeight.w500,
         ),
         controller: tabController,
         tabs: <Widget>[
-          Tab(text: '  Episodes  '),
-          Tab(text: '  About  '),
+          Tab(text: '   Episodes   '),
+          Tab(text: '   About   '),
         ],
       ),
     );
@@ -113,13 +134,17 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
   Widget _flexibleArea(double shrinkOffset) {
     final thumbnail = ClipRRect(
-      borderRadius: BorderRadius.circular(8.0),
-      child: FadeInImage.memoryNetwork(
-        placeholder: kTransparentImage,
-        image: 'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg',
+      borderRadius: BorderRadius.circular(6.0),
+      child: CachedNetworkImage(
+        imageUrl: 'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg',
         fit: BoxFit.fill,
         height: 130,
         width: 130,
+        placeholder: (context, url) => Container(
+          height: 130,
+          width: 130,
+          color: TWColors.gray.shade300,
+        ),
       ),
     );
 
@@ -128,14 +153,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       children: <Widget>[
         Text(
           podcast.title,
-          maxLines: 3,
+          maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            height: 1.35,
-            fontSize: 16,
+            height: 1.4,
+            fontSize: 16.5,
             fontWeight: FontWeight.w500,
-            color: TWColors.gray.shade800,
-            letterSpacing: 0.25,
+            color: TWColors.gray.shade900,
+            letterSpacing: 0.2,
           ),
         ),
         Container(height: 6),
@@ -158,13 +183,13 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       children: <Widget>[
         IconButton(
           icon: Icon(
-            Icons.add_box,
-            size: 24,
+            Icons.add,
+            size: 32,
             color: TWColors.gray.shade800,
           ),
           onPressed: null,
         ),
-        Container(width: 6),
+        Container(width: 10),
         IconButton(
           icon: Icon(
             Icons.share,
@@ -194,7 +219,10 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                   children: <Widget>[
                     details,
                     Spacer(),
-                    actions,
+                    Transform.translate(
+                      offset: Offset(6, 0),
+                      child: actions,
+                    ),
                   ],
                 ),
               ),

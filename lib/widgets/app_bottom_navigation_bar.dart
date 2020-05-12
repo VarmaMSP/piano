@@ -9,7 +9,7 @@ class AppBottomNavigationBar extends StatelessWidget {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.white,
-      elevation: 8,
+      elevation: 6,
       selectedIconTheme: IconThemeData(size: 22),
       selectedLabelStyle: TextStyle(
         height: 1.5,

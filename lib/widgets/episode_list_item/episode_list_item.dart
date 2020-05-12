@@ -23,10 +23,10 @@ class EpisodeListItem extends StatelessWidget {
       episode.title,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 15,
+        fontSize: 15.35,
         color: TWColors.gray.shade800,
-        height: 1.4,
-        letterSpacing: 0.2,
+        height: 1.3,
+        letterSpacing: 0.16,
         fontWeight: FontWeight.w500,
       ),
       maxLines: 2,
@@ -36,9 +36,9 @@ class EpisodeListItem extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       text: TextSpan(
         style: TextStyle(
-          fontSize: 13.5,
-          color: TWColors.teal.shade900,
-          letterSpacing: 0.4,
+          fontSize: 13,
+          color: TWColors.gray.shade800,
+          letterSpacing: 0.25,
         ),
         children: <TextSpan>[
           ..._episodeNumber(episode),
@@ -57,22 +57,22 @@ class EpisodeListItem extends StatelessWidget {
         fontSize: 12.2,
         color: TWColors.teal.shade700,
         height: 1.35,
-        letterSpacing: 0.2,
+        letterSpacing: 0.15,
       ),
-      maxLines: 3,
+      maxLines: 3, //episode.title.length > 36 ? 2 : 3,
       textAlign: TextAlign.left,
     );
 
     return GestureDetector(
       child: Padding(
-        padding: const EdgeInsets.only(top: 24, bottom: 4, left: 14, right: 2),
+        padding: const EdgeInsets.only(top: 24, bottom: 2, left: 14, right: 2),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Thumbnail(episode: episode, podcast: podcast),
             Expanded(
               child: Transform.translate(
-                offset: Offset(0, -2),
+                offset: Offset(0, -4),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: Column(
@@ -86,18 +86,18 @@ class EpisodeListItem extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 4.5),
+                                  padding: const EdgeInsets.only(bottom: 6),
                                   child: title,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 9),
+                                  padding: const EdgeInsets.only(bottom: 6),
                                   child: info,
                                 ),
                               ],
                             ),
                           ),
                           Transform.translate(
-                            offset: Offset(6, -12),
+                            offset: Offset(6, -7),
                             child: Menu(),
                           ),
                         ],
@@ -131,29 +131,29 @@ class EpisodeListItem extends StatelessWidget {
     Color color;
     if (episode.type == 'BONUS') {
       text = 'BONUS';
-      color = TWColors.orange.shade700;
+      color = TWColors.orange.shade600;
     } else if (episode.type == 'TRAILER') {
       text = 'TRAILER';
-      color = TWColors.red.shade700;
+      color = TWColors.red.shade600;
     } else if (episode.season > 0) {
       text = 'S${episode.season} E${episode.episode}';
-      color = TWColors.teal.shade800;
+      color = TWColors.teal.shade700;
     } else {
       text = 'E${episode.episode}';
-      color = TWColors.teal.shade800;
+      color = TWColors.teal.shade700;
     }
 
     return [
       TextSpan(
         text: text,
         style: TextStyle(
-          fontSize: 12.8,
           color: color,
+          fontSize: 12.5,
           fontWeight: FontWeight.w500,
         ),
       ),
       TextSpan(
-        text: ' · ',
+        text: '  ·  ',
         style: TextStyle(
           fontWeight: FontWeight.w900,
         ),

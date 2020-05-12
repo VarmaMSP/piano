@@ -1,12 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:piano/models/episode.dart';
 import 'package:piano/models/podcast.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-import 'package:transparent_image/transparent_image.dart';
+// import 'package:transparent_image/transparent_image.dart';
 
 class Thumbnail extends StatelessWidget {
-  static final double thumbnailSize = 85.0;
+  static final double thumbnailSize = 88;
   static final String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
 
   const Thumbnail({
@@ -21,13 +22,17 @@ class Thumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final image = ClipRRect(
-      borderRadius: BorderRadius.circular(7.0),
-      child: FadeInImage.memoryNetwork(
-        placeholder: kTransparentImage,
-        image: '$thumbnailUrl/${podcast.urlParam}.jpg',
+      borderRadius: BorderRadius.circular(6.0),
+      child: CachedNetworkImage(
+        imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
         fit: BoxFit.fill,
         height: thumbnailSize,
         width: thumbnailSize,
+        placeholder: (context, url) => Container(
+          height: thumbnailSize,
+          width: thumbnailSize,
+          color: TWColors.gray.shade300,
+        ),
       ),
     );
 
@@ -38,7 +43,7 @@ class Thumbnail extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(600.0),
         child: Container(
-          color: Color.fromRGBO(0, 0, 0, 0.55),
+          color: Color.fromRGBO(0, 0, 0, 0.45),
           height: 38.0,
           width: 38.0,
         ),
@@ -59,13 +64,13 @@ class Thumbnail extends StatelessWidget {
     final duration = Container(
       height: thumbnailSize,
       width: thumbnailSize,
-      alignment: Alignment(0.96, 0.96),
+      alignment: Alignment(1, 1),
       decoration: BoxDecoration(
         border: Border.all(
           color: TWColors.gray.shade400,
           width: 0.3,
         ),
-        borderRadius: BorderRadius.circular(7.0),
+        borderRadius: BorderRadius.circular(6.0),
       ),
       child: _duration(episode.duration),
     );
@@ -140,7 +145,7 @@ class Thumbnail extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: FractionallySizedBox(
         heightFactor: 1.0,
-        widthFactor: episode.progress,
+        widthFactor: episode.progress + 0.5,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(600)),
