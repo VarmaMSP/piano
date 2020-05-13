@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:piano/blocs/audio_player/audio_player_bloc.dart';
 import 'package:piano/route_generator.dart';
-import 'package:piano/widgets/app_bottom_navigation_bar.dart';
+import 'package:piano/widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 
 class App extends StatefulWidget {
   App({Key key}) : super(key: key);
@@ -24,23 +26,29 @@ class _AppState extends State<App> {
           preferredSize: Size(0, 0),
           child: Container(),
         ),
-        body: Stack(
-          children: <Widget>[
-            Container(
-              color: Colors.white,
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(bottom: 56),
-              child: Navigator(
-                key: navigatorKey,
-                initialRoute: '/',
-                onGenerateRoute: RouteGenerator.generateRoute,
-              ),
-            ),
-            Container(
-              alignment: Alignment.bottomLeft,
-              child: AppBottomNavigationBar(),
+        body: MultiBlocProvider(
+          providers: [
+            BlocProvider<AudioPlayerBloc>(
+              create: (context) => AudioPlayerBloc(),
             ),
           ],
+          child: Stack(
+            children: <Widget>[
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.only(bottom: 56),
+                child: Navigator(
+                  key: navigatorKey,
+                  initialRoute: '/',
+                  onGenerateRoute: RouteGenerator.generateRoute,
+                ),
+              ),
+              Container(
+                alignment: Alignment.bottomCenter,
+                child: AppBottomNavigationBar(),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:piano/blocs/audio_player/audio_player_bloc.dart';
 import 'package:piano/models/episode.dart';
 import 'package:piano/models/podcast.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -78,13 +80,19 @@ class Thumbnail extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Stack(
-          children: <Widget>[
-            image,
-            playIconBg,
-            playIcon,
-            duration,
-          ],
+        GestureDetector(
+          onTap: () {
+            BlocProvider.of<AudioPlayerBloc>(context)
+                ?.add(Load(episode: episode, podcast: podcast));
+          },
+          child: Stack(
+            children: <Widget>[
+              image,
+              playIconBg,
+              playIcon,
+              duration,
+            ],
+          ),
         ),
         Container(height: 8),
         _progressbar(),
