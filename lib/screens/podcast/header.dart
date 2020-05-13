@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:piano/models/podcast.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter/foundation.dart';
 
 class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {

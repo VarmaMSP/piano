@@ -37,64 +37,77 @@ class _PodcastPageState extends State<PodcastPage>
 
   @override
   Widget build(BuildContext context) {
+    final scrollable = BlocBuilder<PodcastBloc, PodcastState>(
+      bloc: _podcastBloc,
+      builder: (context, state) {
+        if (state is PodcastInitial) {
+          return LoadingPage();
+        }
+
+        if (state is PodcastError) {
+          return Center(
+            child: Text(state.errMsg),
+          );
+        }
+
+        final s = state as PodcastLoaded;
+        return NestedScrollView(
+          controller: _scrollController,
+          headerSliverBuilder: (context, _) {
+            return <Widget>[
+              SliverOverlapAbsorber(
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                  context,
+                ),
+                child: SliverPersistentHeader(
+                  pinned: true,
+                  delegate: PodcastHeaderDelegate(
+                    podcast: s.podcast,
+                    tabController: _tabController,
+                  ),
+                ),
+              )
+            ];
+          },
+          body: TabBarView(
+            controller: _tabController,
+            children: <Widget>[
+              EpisodesTab(
+                key: PageStorageKey<String>('   Episodes   '),
+                podcast: s.podcast,
+                episodes: s.episodes,
+                receivedAll: s.loadedAll,
+                loadMore: () => _podcastBloc.add(Load()),
+              ),
+              AboutTab(
+                key: PageStorageKey<String>('   About   '),
+                podcast: s.podcast,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size(0, 0),
         child: Container(),
       ),
-      body: BlocBuilder<PodcastBloc, PodcastState>(
-        bloc: _podcastBloc,
-        builder: (context, state) {
-          if (state is PodcastInitial) {
-            return LoadingPage();
-          }
-
-          if (state is PodcastError) {
-            return Center(
-              child: Text(state.errMsg),
-            );
-          }
-
-          final s = state as PodcastLoaded;
-          return NestedScrollView(
-            controller: _scrollController,
-            headerSliverBuilder: (context, _) {
-              return <Widget>[
-                SliverOverlapAbsorber(
-                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                    context,
-                  ),
-                  child: SliverPersistentHeader(
-                    pinned: true,
-                    delegate: PodcastHeaderDelegate(
-                      podcast: s.podcast,
-                      tabController: _tabController,
-                    ),
-                  ),
-                )
-              ];
-            },
-            body: TabBarView(
-              controller: _tabController,
-              children: <Widget>[
-                EpisodesTab(
-                  key: PageStorageKey<String>('   Episodes   '),
-                  podcast: s.podcast,
-                  episodes: s.episodes,
-                  receivedAll: s.loadedAll,
-                  loadMore: () => _podcastBloc.add(Load()),
-                ),
-                AboutTab(
-                  key: PageStorageKey<String>('   About   '),
-                  podcast: s.podcast,
-                ),
-              ],
-            ),
-          );
-        },
+      body: Stack(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.only(bottom: 56),
+            child: scrollable,
+          ),
+          Container(
+            alignment: Alignment.bottomLeft,
+            child: AppBottomNavigationBar(),
+          )
+        ],
       ),
-      bottomNavigationBar: AppBottomNavigationBar(),
     );
   }
 
