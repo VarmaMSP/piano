@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:piano/blocs/podcast/podcast_bloc.dart';
 import 'package:piano/screens/loading.dart';
 import 'package:piano/utils/request.dart';
-import 'package:piano/widgets/app_bottom_navigation_bar.dart';
+// import 'package:piano/widgets/app_bottom_navigation_bar.dart';
 import './about_tab.dart';
 import './episodes_tab.dart';
 import './header.dart';
@@ -89,26 +89,7 @@ class _PodcastPageState extends State<PodcastPage>
       },
     );
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size(0, 0),
-        child: Container(),
-      ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.topLeft,
-            padding: EdgeInsets.only(bottom: 56),
-            child: scrollable,
-          ),
-          Container(
-            alignment: Alignment.bottomLeft,
-            child: AppBottomNavigationBar(),
-          )
-        ],
-      ),
-    );
+    return scrollable;
   }
 
   @override

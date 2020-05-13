@@ -97,27 +97,43 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size(0, 0),
-        child: Container(),
-      ),
-      body: ListView.separated(
-        itemCount: podcasts.length,
-        separatorBuilder: (_, __) => Divider(),
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(podcasts[index]),
-            onTap: () {
-              Navigator.of(context).pushNamed(
-                '/podcast',
-                arguments: {'urlParam': urlParams[podcasts[index]]},
-              );
-            },
-          );
-        },
-      ),
+    return ListView.separated(
+      itemCount: podcasts.length,
+      separatorBuilder: (_, __) => Divider(),
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(podcasts[index]),
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              '/podcast',
+              arguments: {'urlParam': urlParams[podcasts[index]]},
+            );
+          },
+        );
+      },
     );
+
+    // return Scaffold(
+    //   backgroundColor: Colors.white,
+    //   appBar: PreferredSize(
+    //     preferredSize: Size(0, 0),
+    //     child: Container(),
+    //   ),
+    //   body: ListView.separated(
+    //     itemCount: podcasts.length,
+    //     separatorBuilder: (_, __) => Divider(),
+    //     itemBuilder: (context, index) {
+    //       return ListTile(
+    //         title: Text(podcasts[index]),
+    //         onTap: () {
+    //           Navigator.of(context).pushNamed(
+    //             '/podcast',
+    //             arguments: {'urlParam': urlParams[podcasts[index]]},
+    //           );
+    //         },
+    //       );
+    //     },
+    //   ),
+    // );
   }
 }

@@ -54,11 +54,11 @@ class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
       // Load more episodes
       if (event is Load && state is PodcastLoaded && !state.loadedAll) {
         final response = await request.get(
-            '/ajax/browse?endpoint=podcast_episodes&&podcast_id=${state.podcast.id}&&offset=${state.episodes.length}&&limit=20&&order=pub_date_desc');
+            '/ajax/browse?endpoint=podcast_episodes&&podcast_id=${state.podcast.id}&&offset=${state.episodes.length}&&limit=30&&order=pub_date_desc');
         yield PodcastLoaded(
           podcast: state.podcast,
           episodes: state.episodes + response.episodes,
-          loadedAll: response.episodes.length < 20,
+          loadedAll: response.episodes.length < 30,
         );
       }
     } catch (err) {

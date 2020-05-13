@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:piano/route_generator.dart';
-import 'package:piano/screens/home/page.dart';
+import 'package:piano/app.dart';
+// import 'package:piano/route_generator.dart';
+// import 'package:piano/screens/home/page.dart';
 import 'package:bloc/bloc.dart';
 
 void main() {
@@ -23,16 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Phenopod',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: PreferredSize(
-          preferredSize: Size(0, 0),
-          child: Container(),
-        ),
-        body: HomePage(),
-      ),
+      home: App(),
     );
   }
 }
