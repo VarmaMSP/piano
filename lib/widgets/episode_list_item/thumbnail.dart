@@ -9,7 +9,7 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 // import 'package:transparent_image/transparent_image.dart';
 
 class Thumbnail extends StatelessWidget {
-  static final double thumbnailSize = 88;
+  static final double thumbnailSize = 90;
   static final String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
 
   const Thumbnail({
@@ -96,7 +96,7 @@ class Thumbnail extends StatelessWidget {
         ),
         Container(height: 8),
         _progressbar(),
-        Container(height: 9),
+        Container(height: 3),
       ],
     );
   }

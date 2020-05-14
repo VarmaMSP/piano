@@ -23,7 +23,7 @@ class EpisodeListItem extends StatelessWidget {
       episode.title,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 15.35,
+        fontSize: 14.5,
         color: TWColors.gray.shade800,
         height: 1.3,
         letterSpacing: 0.16,
@@ -54,9 +54,9 @@ class EpisodeListItem extends StatelessWidget {
           .replaceAll('&amp', '&'),
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 12.2,
+        fontSize: 12,
         color: TWColors.teal.shade700,
-        height: 1.35,
+        height: 1.3,
         letterSpacing: 0.15,
       ),
       maxLines: 3, //episode.title.length > 36 ? 2 : 3,
