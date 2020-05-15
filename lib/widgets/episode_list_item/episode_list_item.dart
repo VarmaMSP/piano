@@ -25,8 +25,8 @@ class EpisodeListItem extends StatelessWidget {
       style: TextStyle(
         fontSize: 14.5,
         color: TWColors.gray.shade800,
-        height: 1.3,
-        letterSpacing: 0.16,
+        height: 1.275,
+        letterSpacing: 0.15,
         fontWeight: FontWeight.w500,
       ),
       maxLines: 2,
@@ -57,24 +57,24 @@ class EpisodeListItem extends StatelessWidget {
         fontSize: 12,
         color: TWColors.teal.shade700,
         height: 1.3,
-        letterSpacing: 0.15,
+        letterSpacing: 0.03,
       ),
-      maxLines: 3, //episode.title.length > 36 ? 2 : 3,
+      maxLines: 2,
       textAlign: TextAlign.left,
     );
 
     return GestureDetector(
       child: Padding(
-        padding: const EdgeInsets.only(top: 24, bottom: 2, left: 14, right: 2),
+        padding: const EdgeInsets.only(top: 13, bottom: 13, left: 14, right: 2),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Thumbnail(episode: episode, podcast: podcast),
             Expanded(
               child: Transform.translate(
-                offset: Offset(0, -4),
+                offset: Offset(0, -3),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 12),
+                  padding: const EdgeInsets.only(left: 11),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -86,7 +86,7 @@ class EpisodeListItem extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 6),
+                                  padding: const EdgeInsets.only(bottom: 5),
                                   child: title,
                                 ),
                                 Padding(

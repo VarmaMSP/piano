@@ -11,7 +11,7 @@ part 'audio_player_event.dart';
 part 'audio_player_state.dart';
 
 class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
-  AP.AudioPlayer player;
+  final AP.AudioPlayer player = AP.AudioPlayer();
 
   @override
   AudioPlayerState get initialState => AudioPlayerInitial();
@@ -29,19 +29,23 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
           return;
         }
 
-        player?.stop();
-        player?.release();
-        player = AP.AudioPlayer();
+        player.stop();
         if (await player.play(event.episode.mediaUrl) == 1) {
           yield AudioPlayerLoaded(
             episode: event.episode,
             podcast: event.podcast,
-            currentTime: player.onAudioPositionChanged,
-            duration: ConcatStream([
+            currentTime: Rx.concat([
+              Stream.fromIterable([Duration.zero]),
+              player.onAudioPositionChanged,
+            ]),
+            duration: Rx.concat([
               Stream.fromIterable([Duration.zero]),
               player.onDurationChanged,
             ]),
-            playerState: player.onPlayerStateChanged,
+            playerState: Rx.concat([
+              // Stream.fromIterable([AP.AudioPlayerState.PAUSED]),
+              player.onPlayerStateChanged,
+            ]),
           );
         } else {
           yield AudioPlayerError();

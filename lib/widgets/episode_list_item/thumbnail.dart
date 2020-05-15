@@ -45,9 +45,9 @@ class Thumbnail extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(600.0),
         child: Container(
-          color: Color.fromRGBO(0, 0, 0, 0.45),
-          height: 38.0,
-          width: 38.0,
+          color: Color.fromRGBO(0, 0, 0, 0.55),
+          height: 34.0,
+          width: 34.0,
         ),
       ),
     );
@@ -59,45 +59,39 @@ class Thumbnail extends StatelessWidget {
       child: Icon(
         Icons.play_arrow,
         color: Colors.white,
-        size: 28,
+        size: 26,
       ),
     );
 
     final duration = Container(
-      height: thumbnailSize,
-      width: thumbnailSize,
-      alignment: Alignment(1, 1),
+      alignment: Alignment(0.87, 0.85),
       decoration: BoxDecoration(
-        border: Border.all(
-          color: TWColors.gray.shade400,
-          width: 0.3,
-        ),
-        borderRadius: BorderRadius.circular(6.0),
+        borderRadius: BorderRadius.circular(1.0),
       ),
       child: _duration(episode.duration),
     );
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {
-            BlocProvider.of<AudioPlayerBloc>(context)
-                ?.add(Load(episode: episode, podcast: podcast));
-          },
-          child: Stack(
-            children: <Widget>[
-              image,
-              playIconBg,
-              playIcon,
-              duration,
-            ],
-          ),
+    return GestureDetector(
+      onTap: () {
+        BlocProvider.of<AudioPlayerBloc>(context)
+            ?.add(Load(episode: episode, podcast: podcast));
+      },
+      child: Container(
+        height: thumbnailSize,
+        width: thumbnailSize,
+        child: Stack(
+          children: <Widget>[
+            image,
+            playIconBg,
+            playIcon,
+            duration,
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: _progressbar(),
+            )
+          ],
         ),
-        Container(height: 8),
-        _progressbar(),
-        Container(height: 3),
-      ],
+      ),
     );
   }
 
@@ -120,15 +114,15 @@ class Thumbnail extends StatelessWidget {
         borderRadius: BorderRadius.circular(5.0),
         child: Container(
           color: Color.fromRGBO(0, 0, 0, 0.75),
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             res ?? '00:00',
             style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
               color: Colors.white,
-              height: 1.35,
-              letterSpacing: 0.35,
+              height: 1.3,
+              letterSpacing: 0.7,
             ),
           ),
         ),
@@ -140,24 +134,31 @@ class Thumbnail extends StatelessWidget {
 
   Widget _progressbar() {
     if (episode.lastPlayedAt == "") {
-      return Container(height: 4.5);
+      return Container(height: 0);
     }
 
     return Container(
-      height: 4.5,
+      height: 6.25,
       width: thumbnailSize,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(600)),
-        color: TWColors.gray.shade300,
+        border: Border.all(color: TWColors.gray.shade300, width: 1),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(2),
+          bottomRight: Radius.circular(2),
+        ),
+        color: TWColors.gray.shade100,
       ),
       alignment: Alignment.centerLeft,
       child: FractionallySizedBox(
         heightFactor: 1.0,
-        widthFactor: episode.progress + 0.5,
+        widthFactor: episode.progress + 0.67,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(600)),
-            color: TWColors.red.shade700,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(2),
+              bottomRight: Radius.circular(2),
+            ),
+            color: TWColors.red.shade600,
           ),
         ),
       ),

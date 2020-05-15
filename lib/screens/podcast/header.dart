@@ -6,8 +6,8 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:flutter/foundation.dart';
 
 class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
-  static final double appBarHeight = 50;
-  static final double tabBarHeight = 40;
+  static final double appBarHeight = 45;
+  static final double tabBarHeight = 35;
   static final double flexibleAreaHeight = 150;
 
   PodcastHeaderDelegate({

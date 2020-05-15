@@ -30,7 +30,7 @@ class EpisodesTab extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 if (index == 0) {
-                  return Container(height: 95);
+                  return Container(height: 90);
                 }
 
                 if (index >= 1 && index <= episodes.length) {

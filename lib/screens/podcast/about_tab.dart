@@ -37,7 +37,7 @@ class AboutTab extends StatelessWidget {
       top: false,
       bottom: false,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 110, horizontal: 16),
+        padding: EdgeInsets.symmetric(vertical: 95, horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -36,7 +36,7 @@ class _AppState extends State<App> {
             children: <Widget>[
               Container(
                 color: Colors.white,
-                padding: EdgeInsets.only(bottom: 56),
+                padding: EdgeInsets.only(bottom: 0),
                 child: Navigator(
                   key: navigatorKey,
                   initialRoute: '/',
