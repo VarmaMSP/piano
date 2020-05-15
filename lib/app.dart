@@ -34,14 +34,30 @@ class _AppState extends State<App> {
           ],
           child: Stack(
             children: <Widget>[
-              Container(
-                color: Colors.white,
-                padding: EdgeInsets.only(bottom: 0),
-                child: Navigator(
-                  key: navigatorKey,
-                  initialRoute: '/',
-                  onGenerateRoute: RouteGenerator.generateRoute,
-                ),
+              Builder(
+                builder: (context) {
+                  return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
+                    bloc: BlocProvider.of<AudioPlayerBloc>(context),
+                    builder: (context, state) {
+                      double padding;
+                      if (state is AudioPlayerLoaded) {
+                        padding = 106;
+                      } else {
+                        padding = 56;
+                      }
+
+                      return Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.only(bottom: padding),
+                        child: Navigator(
+                          key: navigatorKey,
+                          initialRoute: '/',
+                          onGenerateRoute: RouteGenerator.generateRoute,
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
               Container(
                 alignment: Alignment.bottomCenter,

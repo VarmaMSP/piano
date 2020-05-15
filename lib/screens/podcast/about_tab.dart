@@ -36,17 +36,23 @@ class AboutTab extends StatelessWidget {
     return SafeArea(
       top: false,
       bottom: false,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 95, horizontal: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            description,
-            Container(height: 12),
-            links,
-          ],
-        ),
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverPadding(
+            padding: EdgeInsets.only(top: 95, left: 16, right: 16),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  description,
+                  Container(height: 12),
+                  links,
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -11,8 +11,8 @@ class AppBottomNavigationBar extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.black26,
-            blurRadius: 1.0,
+            color: TWColors.gray.shade300,
+            blurRadius: 2.0,
           ),
         ],
         color: Colors.white,
@@ -22,7 +22,7 @@ class AppBottomNavigationBar extends StatelessWidget {
         children: <Widget>[
           AudioPlayer(),
           Container(
-            height: 52,
+            height: 56,
             child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               backgroundColor: Colors.white,
