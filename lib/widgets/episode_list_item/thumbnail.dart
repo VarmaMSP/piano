@@ -6,7 +6,6 @@ import 'package:piano/blocs/audio_player/audio_player_bloc.dart';
 import 'package:piano/models/episode.dart';
 import 'package:piano/models/podcast.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-// import 'package:transparent_image/transparent_image.dart';
 
 class Thumbnail extends StatelessWidget {
   static final double thumbnailSize = 90;
@@ -114,15 +113,15 @@ class Thumbnail extends StatelessWidget {
         borderRadius: BorderRadius.circular(5.0),
         child: Container(
           color: Color.fromRGBO(0, 0, 0, 0.75),
-          padding: EdgeInsets.symmetric(horizontal: 4),
+          padding: EdgeInsets.only(left: 4, right: 4, bottom: 0.9),
           child: Text(
             res ?? '00:00',
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 11.5,
               fontWeight: FontWeight.w700,
               color: Colors.white,
               height: 1.3,
-              letterSpacing: 0.7,
+              letterSpacing: 0.5,
             ),
           ),
         ),

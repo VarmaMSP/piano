@@ -19,7 +19,7 @@ class AboutTab extends StatelessWidget {
         height: 1.5,
         fontSize: 14,
         color: TWColors.gray.shade800,
-        letterSpacing: 0.15,
+        letterSpacing: 0.25,
       ),
     );
 
@@ -36,23 +36,18 @@ class AboutTab extends StatelessWidget {
     return SafeArea(
       top: false,
       bottom: false,
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverPadding(
-            padding: EdgeInsets.only(top: 95, left: 16, right: 16),
-            sliver: SliverToBoxAdapter(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  description,
-                  Container(height: 12),
-                  links,
-                ],
-              ),
-            ),
-          )
-        ],
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(height: 95),
+            description,
+            Container(height: 12),
+            links,
+          ],
+        ),
       ),
     );
   }

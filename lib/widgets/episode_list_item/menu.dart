@@ -13,7 +13,7 @@ class Menu extends StatelessWidget {
         icon: Icon(
           Icons.more_vert,
           color: TWColors.gray.shade600,
-          size: 22,
+          size: 20,
         ),
         padding: EdgeInsets.all(0),
         elevation: 3,

@@ -50,20 +50,21 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     final actions = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        IconButton(
-          icon: Icon(
-            Icons.add,
-            size: 28,
-            color: TWColors.gray.shade800,
+        if ((shrinkOffset - flexibleAreaHeight).abs() < 0.0001)
+          IconButton(
+            icon: Icon(
+              Icons.more_horiz,
+              size: 23,
+              color: TWColors.gray.shade700,
+            ),
+            onPressed: null,
           ),
-          onPressed: null,
-        ),
-        Container(width: 10),
+        Container(width: 2),
         IconButton(
           icon: Icon(
-            Icons.share,
-            size: 22,
-            color: TWColors.gray.shade800,
+            Icons.search,
+            size: 23,
+            color: TWColors.gray.shade700,
           ),
           onPressed: null,
         ),
@@ -84,8 +85,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               child: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  size: 24,
-                  color: TWColors.gray.shade800,
+                  size: 23,
+                  color: TWColors.gray.shade700,
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -93,13 +94,12 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          if ((shrinkOffset - flexibleAreaHeight).abs() < 0.0001)
-            Container(
-              child: Transform.translate(
-                offset: Offset(6, 0),
-                child: actions,
-              ),
+          Container(
+            child: Transform.translate(
+              offset: Offset(10, 0),
+              child: actions,
             ),
+          ),
         ],
       ),
     );
@@ -116,16 +116,16 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         indicatorColor: TWColors.green.shade900,
         indicatorSize: TabBarIndicatorSize.label,
         indicatorWeight: 2.4,
-        labelColor: TWColors.teal.shade900,
+        labelColor: TWColors.gray.shade700,
         labelStyle: TextStyle(
-          fontSize: 14,
+          fontSize: 13.5,
           letterSpacing: 0.5,
           fontWeight: FontWeight.w500,
         ),
         controller: tabController,
         tabs: <Widget>[
-          Tab(text: '   Episodes   '),
-          Tab(text: '   About   '),
+          Tab(text: '  Episodes  '),
+          Tab(text: '  About  '),
         ],
       ),
     );
@@ -156,10 +156,10 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             height: 1.4,
-            fontSize: 16.5,
+            fontSize: 15.5,
             fontWeight: FontWeight.w500,
-            color: TWColors.gray.shade900,
-            letterSpacing: 0.2,
+            color: TWColors.gray.shade800,
+            letterSpacing: 0.4,
           ),
         ),
         Container(height: 6),
@@ -178,13 +178,13 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     );
 
     final actions = Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         IconButton(
           icon: Icon(
             Icons.add,
-            size: 32,
-            color: TWColors.gray.shade800,
+            size: 26,
+            color: TWColors.gray.shade700,
           ),
           onPressed: null,
         ),
@@ -192,8 +192,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         IconButton(
           icon: Icon(
             Icons.share,
-            size: 24,
-            color: TWColors.gray.shade800,
+            size: 22,
+            color: TWColors.gray.shade700,
           ),
           onPressed: null,
         ),

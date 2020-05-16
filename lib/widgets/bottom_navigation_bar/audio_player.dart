@@ -39,7 +39,7 @@ class AudioPlayer extends StatelessWidget {
                   s.episode.title,
                   maxLines: 1,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 14,
                     letterSpacing: 0.2,
                   ),
                 ),
