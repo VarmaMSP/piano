@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:piano/app.dart';
+import 'package:piano/app/main.dart';
 // import 'package:piano/route_generator.dart';
 // import 'package:piano/screens/home/page.dart';
 import 'package:bloc/bloc.dart';
