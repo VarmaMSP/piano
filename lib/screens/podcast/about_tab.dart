@@ -42,7 +42,7 @@ class AboutTab extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(height: 95),
+            Container(height: 92),
             description,
             Container(height: 12),
             links,

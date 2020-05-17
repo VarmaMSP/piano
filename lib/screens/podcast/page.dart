@@ -59,7 +59,7 @@ class _PodcastPageState extends State<PodcastPage>
                 handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                   context,
                 ),
-                child: SliverPersistentHeader(
+                sliver: SliverPersistentHeader(
                   pinned: true,
                   delegate: PodcastHeaderDelegate(
                     podcast: s.podcast,

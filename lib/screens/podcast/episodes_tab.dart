@@ -26,7 +26,7 @@ class EpisodesTab extends StatelessWidget {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverPadding(
-            padding: EdgeInsets.only(top: 95),
+            padding: EdgeInsets.only(top: 90),
             sliver: SliverList(
               key: key,
               delegate: SliverChildBuilderDelegate(

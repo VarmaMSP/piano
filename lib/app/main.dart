@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:piano/blocs/audio_player/audio_player_bloc.dart';
-import 'package:piano/widgets/audio_player.dart';
+import 'package:piano/widgets/audio_player/main.dart';
 import 'package:piano/widgets/navigation_bar.dart';
 
 import '../route_generator.dart';
@@ -53,7 +53,7 @@ class _AppState extends State<App> with TickerProviderStateMixin {
                     builder: (context, state) {
                       double padding;
                       if (state is AudioPlayerLoaded) {
-                        padding = 105;
+                        padding = 106;
                       } else {
                         padding = 56;
                       }
