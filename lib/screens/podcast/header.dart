@@ -200,52 +200,40 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       ],
     );
 
-    var widget = Container(
-      height: flexibleAreaHeight,
+    Widget widget = Container(
+      constraints: BoxConstraints.expand(height: flexibleAreaHeight),
       padding: EdgeInsets.only(top: 8),
-      child: Opacity(
-        opacity: 1.0 - shrinkOffset / flexibleAreaHeight,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            thumbnail,
-            Expanded(
-              child: Container(
-                height: flexibleAreaHeight,
-                padding: const EdgeInsets.only(left: 14),
-                transform: Matrix4.translationValues(0, -4, 0),
-                child: Column(
-                  children: <Widget>[
-                    details,
-                    Spacer(),
-                    Transform.translate(
-                      offset: Offset(6, 0),
-                      child: actions,
-                    ),
-                  ],
-                ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          thumbnail,
+          Expanded(
+            child: Container(
+              height: flexibleAreaHeight,
+              padding: const EdgeInsets.only(left: 14),
+              transform: Matrix4.translationValues(0, -4, 0),
+              child: Column(
+                children: <Widget>[
+                  details,
+                  Spacer(),
+                  Transform.translate(
+                    offset: Offset(6, 0),
+                    child: actions,
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
 
-    final offset = appBarHeight - shrinkOffset;
-
     return Transform.translate(
-      offset: Offset(0, offset),
-      child: widget,
-      // child: offset >= 0
-      //     ? widget
-      //     : ClipRect(
-      //         child: Align(
-      //           alignment: Alignment.topLeft,
-      //           heightFactor:
-      //               (flexibleAreaHeight - offset) / flexibleAreaHeight,
-      //           child: widget,
-      //         ),
-      //       ),
+      offset: Offset(0, appBarHeight - shrinkOffset),
+      child: Opacity(
+        opacity: 1.0 - shrinkOffset / flexibleAreaHeight,
+        child: widget,
+      ),
     );
   }
 

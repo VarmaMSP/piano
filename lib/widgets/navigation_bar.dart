@@ -11,11 +11,7 @@ class NavigationBar extends StatelessWidget {
     final animation = Tween(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(
-          0.000,
-          0.500,
-          curve: Curves.ease,
-        ),
+        curve: Interval(0.0, 0.55, curve: Curves.linear),
       ),
     );
 
@@ -32,36 +28,40 @@ class NavigationBar extends StatelessWidget {
               type: BottomNavigationBarType.fixed,
               elevation: 0,
               backgroundColor: Colors.white,
-              selectedIconTheme: IconThemeData(size: 22),
-              unselectedIconTheme: IconThemeData(size: 22),
               selectedItemColor: TWColors.purple.shade600,
               unselectedItemColor: TWColors.gray.shade600,
               selectedLabelStyle: TextStyle(
                 height: 1.5,
                 fontSize: 12,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
                 letterSpacing: 0.45,
               ),
-              showUnselectedLabels: false,
+              unselectedLabelStyle: TextStyle(
+                height: 1.5,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 0.45,
+              ),
+              // showUnselectedLabels: false,
               items: [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
+                  icon: Icon(Icons.home, size: 20.0),
                   title: Text('Home'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.explore),
+                  icon: Icon(Icons.explore, size: 18.0),
                   title: Text('Explore'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.rss_feed),
+                  icon: Icon(Icons.rss_feed, size: 18.0),
                   title: Text('Feeds'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.playlist_play),
+                  icon: Icon(Icons.playlist_play, size: 20.0),
                   title: Text('Playlists'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.face),
+                  icon: Icon(Icons.face, size: 18.0),
                   title: Text('Profile'),
                 ),
               ],

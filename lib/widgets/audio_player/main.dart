@@ -98,7 +98,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
-              BoxShadow(color: TWColors.gray.shade400, blurRadius: 3.0)
+              BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
             ],
           ),
           child: body != null

@@ -49,33 +49,38 @@ class MiniAudioPlayer extends StatelessWidget {
   Widget _buildBody() {
     return Container(
       height: 50,
-      padding: const EdgeInsets.only(left: 12, right: 16),
+      padding: const EdgeInsets.only(left: 16, right: 16),
       child: Row(
         children: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.expand_less,
-              color: TWColors.gray.shade800,
-              size: 22,
-            ),
-            onPressed: () {
-              controller.forward(from: 0.0);
-            },
+          Icon(
+            Icons.expand_less,
+            color: TWColors.gray.shade700,
+            size: 20,
           ),
-          Container(width: 10.0),
+          Container(width: 15.0),
           Expanded(
-            child: Text(
-              state.episode.title,
-              maxLines: 1,
-              style: TextStyle(
-                fontSize: 14,
-                letterSpacing: 0.2,
+            child: GestureDetector(
+              onTap: () {
+                controller.animateBack(
+                  1.0,
+                  duration: Duration(milliseconds: 250),
+                  curve: Curves.ease,
+                );
+              },
+              child: Text(
+                state.episode.title,
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: 14,
+                  letterSpacing: 0.2,
+                ),
               ),
             ),
           ),
+          Container(width: 15.0),
           SizedBox(
-            height: 31,
-            width: 31,
+            height: 30,
+            width: 30,
             child: Stack(
               children: <Widget>[
                 _buildCircularProgressIndicator(),
@@ -115,7 +120,7 @@ class MiniAudioPlayer extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton({double size: 30}) {
+  Widget _buildActionButton() {
     return StreamBuilder<AP.AudioPlayerState>(
       stream: state.playerState,
       initialData: AP.AudioPlayerState.PAUSED,
@@ -145,7 +150,7 @@ class MiniAudioPlayer extends StatelessWidget {
             icon: Icon(
               iconData,
               color: TWColors.gray.shade600,
-              size: size * 0.7,
+              size: 18,
             ),
             onPressed: onPressed,
           ),
