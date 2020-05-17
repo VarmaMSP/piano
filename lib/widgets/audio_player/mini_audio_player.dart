@@ -22,27 +22,28 @@ class MiniAudioPlayer extends StatelessWidget {
     final sizeAnimation = Tween(begin: 1.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(0.5, 1.0, curve: Curves.ease),
+        curve: Interval(0.5, 1.0, curve: Curves.linear),
       ),
     );
 
-    final opacityAnimation = Tween(begin: 1.0, end: 0.0).animate(
+    final opacityAnimation = Tween(begin: 1.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(0.0, 1.0, curve: Curves.ease),
+        curve: Interval(0.0, 1.0, curve: Curves.linear),
       ),
     );
 
     return SizeTransition(
-        axis: Axis.vertical,
-        axisAlignment: 1.0,
-        sizeFactor: sizeAnimation,
-        child: FadeTransition(
-          opacity: opacityAnimation,
-          child: GestureDetector(
-            child: _buildBody(),
-          ),
-        ));
+      axis: Axis.vertical,
+      axisAlignment: 1.0,
+      sizeFactor: sizeAnimation,
+      child: FadeTransition(
+        opacity: opacityAnimation,
+        child: GestureDetector(
+          child: _buildBody(),
+        ),
+      ),
+    );
   }
 
   Widget _buildBody() {
@@ -103,8 +104,9 @@ class MiniAudioPlayer extends StatelessWidget {
             return CircularProgressIndicator(
               value: duration > 0 ? currentTime / duration : null,
               strokeWidth: 2.5,
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(TWColors.purple.shade600),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                TWColors.purple.shade600,
+              ),
               backgroundColor: TWColors.gray.shade300,
             );
           },

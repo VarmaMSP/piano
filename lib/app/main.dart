@@ -13,7 +13,7 @@ class App extends StatefulWidget {
   _AppState createState() => _AppState();
 }
 
-class _AppState extends State<App> with TickerProviderStateMixin {
+class _AppState extends State<App> with SingleTickerProviderStateMixin {
   AnimationController _bottomAppBarController;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -21,7 +21,6 @@ class _AppState extends State<App> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _bottomAppBarController = new AnimationController(
-      duration: const Duration(milliseconds: 20000),
       vsync: this,
     );
   }
@@ -51,12 +50,7 @@ class _AppState extends State<App> with TickerProviderStateMixin {
                   return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
                     bloc: BlocProvider.of<AudioPlayerBloc>(context),
                     builder: (context, state) {
-                      double padding;
-                      if (state is AudioPlayerLoaded) {
-                        padding = 106;
-                      } else {
-                        padding = 56;
-                      }
+                      double padding = state is AudioPlayerLoaded ? 102 : 56;
 
                       return Container(
                         color: Colors.white,
@@ -84,5 +78,11 @@ class _AppState extends State<App> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _bottomAppBarController.dispose();
+    super.dispose();
   }
 }

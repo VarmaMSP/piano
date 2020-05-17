@@ -43,7 +43,7 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
               player.onDurationChanged,
             ]),
             playerState: Rx.concat([
-              // Stream.fromIterable([AP.AudioPlayerState.PAUSED]),
+              Stream.fromIterable([AP.AudioPlayerState.PLAYING]),
               player.onPlayerStateChanged,
             ]),
           );
