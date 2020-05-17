@@ -19,17 +19,17 @@ class MiniAudioPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sizeAnimation = Tween(begin: 1.0, end: 1.0).animate(
+    final sizeAnimation = Tween(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(0.5, 1.0, curve: Curves.linear),
+        curve: Interval(0.9, 1.0, curve: Curves.linear),
       ),
     );
 
-    final opacityAnimation = Tween(begin: 1.0, end: 1.0).animate(
+    final opacityAnimation = Tween(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(0.0, 1.0, curve: Curves.linear),
+        curve: Interval(0.0, 1.0, curve: Curves.easeOut),
       ),
     );
 
@@ -61,15 +61,13 @@ class MiniAudioPlayer extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                controller.animateBack(
-                  1.0,
-                  duration: Duration(milliseconds: 250),
-                  curve: Curves.ease,
-                );
+                controller.animateBack(1.0,
+                    duration: Duration(milliseconds: 250), curve: Curves.ease);
               },
               child: Text(
                 state.episode.title,
                 maxLines: 1,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
                   letterSpacing: 0.2,
@@ -108,7 +106,7 @@ class MiniAudioPlayer extends StatelessWidget {
 
             return CircularProgressIndicator(
               value: duration > 0 ? currentTime / duration : null,
-              strokeWidth: 2.5,
+              strokeWidth: 2.25,
               valueColor: AlwaysStoppedAnimation<Color>(
                 TWColors.purple.shade600,
               ),

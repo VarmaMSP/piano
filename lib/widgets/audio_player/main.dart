@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:piano/blocs/audio_player/audio_player_bloc.dart';
+import 'package:piano/widgets/audio_player/full_audio_player.dart';
 import 'package:piano/widgets/audio_player/mini_audio_player.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -83,11 +84,16 @@ class _AudioPlayerState extends State<AudioPlayer> {
                     curve: Curves.ease,
                   );
                 },
-                child: MiniAudioPlayer(
-                  controller: widget.controller,
-                  state: state,
-                  onPlay: () => audioPlayerBloc.add(Play()),
-                  onPause: () => audioPlayerBloc.add(Pause()),
+                child: Column(
+                  children: <Widget>[
+                    MiniAudioPlayer(
+                      controller: widget.controller,
+                      state: state,
+                      onPlay: () => audioPlayerBloc.add(Play()),
+                      onPause: () => audioPlayerBloc.add(Pause()),
+                    ),
+                    FullAudioPlayer(),
+                  ],
                 ),
               ),
             ],

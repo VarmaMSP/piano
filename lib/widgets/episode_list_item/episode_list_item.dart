@@ -37,7 +37,7 @@ class EpisodeListItem extends StatelessWidget {
       text: TextSpan(
         style: TextStyle(
           fontSize: 13,
-          color: TWColors.gray.shade800,
+          color: TWColors.gray.shade900,
           letterSpacing: 0.25,
         ),
         children: <TextSpan>[
@@ -55,7 +55,7 @@ class EpisodeListItem extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: 12,
-        color: TWColors.gray.shade600,
+        color: const Color(0xff657389), //TWColors.gray.shade600,
         height: 1.3,
         letterSpacing: 0.03,
       ),
@@ -137,10 +137,10 @@ class EpisodeListItem extends StatelessWidget {
       color = TWColors.red.shade600;
     } else if (episode.season > 0) {
       text = 'S${episode.season} E${episode.episode}';
-      color = TWColors.teal.shade700;
+      color = TWColors.gray.shade700;
     } else {
       text = 'E${episode.episode}';
-      color = TWColors.teal.shade700;
+      color = TWColors.gray.shade700;
     }
 
     return [

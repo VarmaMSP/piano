@@ -150,7 +150,7 @@ class Thumbnail extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: FractionallySizedBox(
         heightFactor: 1.0,
-        widthFactor: episode.progress + 0.67,
+        widthFactor: episode.progress + 0.27,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
