@@ -6,5 +6,5 @@ abstract class PodcastEvent extends Equatable {
 
 class Load extends PodcastEvent {
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }

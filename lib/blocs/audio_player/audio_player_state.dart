@@ -6,7 +6,7 @@ abstract class AudioPlayerState extends Equatable {
 
 class AudioPlayerInitial extends AudioPlayerState {
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class AudioPlayerLoaded extends AudioPlayerState {
@@ -22,10 +22,10 @@ class AudioPlayerLoaded extends AudioPlayerState {
   final Podcast podcast;
   final Stream<Duration> currentTime;
   final Stream<Duration> duration;
-  final Stream<AP.AudioPlayerState> playerState;
+  final Stream<audio.AudioPlayerState> playerState;
 
   @override
-  List<Object> get props => [episode];
+  List<Object> get props => <Object>[episode];
 
   @override
   String toString() => 'AudioPlayerLoaded';
@@ -33,5 +33,5 @@ class AudioPlayerLoaded extends AudioPlayerState {
 
 class AudioPlayerError extends AudioPlayerState {
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }

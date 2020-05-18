@@ -5,13 +5,6 @@ import 'package:piano/models/podcast.dart';
 import 'package:piano/models/user.dart';
 
 class ApiResponse {
-  final List<User> users;
-  final List<Podcast> podcasts;
-  final List<Episode> episodes;
-  final List<Playlist> playlists;
-  final List<Category> categories;
-  final SearchResults searchResults;
-
   ApiResponse({
     this.users,
     this.podcasts,
@@ -22,40 +15,46 @@ class ApiResponse {
   });
 
   factory ApiResponse.fromJson(Map<String, dynamic> json) {
-    Map<String, dynamic> data = json['data'];
+    final Map<String, dynamic> data = json['data'] as Map<String, dynamic>;
 
     return ApiResponse(
-      users: (data['users'] as List ?? [])
+      users: (data['users'] as List<dynamic> ?? <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map((d) => User.fromJson(d))
+          .map((Map<String, dynamic> d) => User.fromJson(d))
           .toList(),
-      podcasts: (data['podcasts'] as List ?? [])
+      podcasts: (data['podcasts'] as List<dynamic> ?? <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map((d) => Podcast.fromJson(d))
+          .map((Map<String, dynamic> d) => Podcast.fromJson(d))
           .toList(),
-      episodes: (data['episodes'] as List ?? [])
+      episodes: (data['episodes'] as List<dynamic> ?? <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map((d) => Episode.fromJson(d))
+          .map((Map<String, dynamic> d) => Episode.fromJson(d))
           .toList(),
-      playlists: (data['playlists'] as List ?? [])
+      playlists: (data['playlists'] as List<dynamic> ?? <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map((d) => Playlist.fromJson(d))
+          .map((Map<String, dynamic> d) => Playlist.fromJson(d))
           .toList(),
-      categories: (data['categories'] as List ?? [])
+      categories: (data['categories'] as List<dynamic> ?? <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map((d) => Category.fromJson(d))
+          .map((Map<String, dynamic> d) => Category.fromJson(d))
           .toList(),
       searchResults: SearchResults.fromJson(
-        (data['search_results'] as Map ?? {}).cast<String, dynamic>(),
+        (data['search_results'] as Map<dynamic, dynamic> ??
+                <dynamic, dynamic>{})
+            .cast<String, dynamic>(),
       ),
     );
   }
+
+  final List<User> users;
+  final List<Podcast> podcasts;
+  final List<Episode> episodes;
+  final List<Playlist> playlists;
+  final List<Category> categories;
+  final SearchResults searchResults;
 }
 
 class SearchResults {
-  final List<Podcast> podcasts;
-  final List<Episode> episodes;
-
   SearchResults({
     this.podcasts,
     this.episodes,
@@ -63,14 +62,17 @@ class SearchResults {
 
   factory SearchResults.fromJson(Map<String, dynamic> json) {
     return SearchResults(
-      podcasts: (json['podcasts'] as List ?? [])
+      podcasts: (json['podcasts'] as List<dynamic> ?? <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map((d) => Podcast.fromJson(d))
+          .map((Map<String, dynamic> d) => Podcast.fromJson(d))
           .toList(),
-      episodes: (json['episodes'] as List ?? [])
+      episodes: (json['episodes'] as List<dynamic> ?? <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map((d) => Episode.fromJson(d))
+          .map((Map<String, dynamic> d) => Episode.fromJson(d))
           .toList(),
     );
   }
+
+  final List<Podcast> podcasts;
+  final List<Episode> episodes;
 }

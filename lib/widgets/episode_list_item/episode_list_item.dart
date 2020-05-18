@@ -4,22 +4,22 @@ import 'package:piano/models/episode.dart';
 import 'package:piano/models/podcast.dart';
 import 'package:piano/widgets/episode_list_item/menu.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-import './thumbnail.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import './thumbnail.dart';
 
 class EpisodeListItem extends StatelessWidget {
-  final Episode episode;
-  final Podcast podcast;
-
   const EpisodeListItem({
     Key key,
     @required this.episode,
     @required this.podcast,
   }) : super(key: key);
 
+  final Episode episode;
+  final Podcast podcast;
+
   @override
   Widget build(BuildContext context) {
-    final title = Text(
+    final Widget title = Text(
       episode.title,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
@@ -32,7 +32,7 @@ class EpisodeListItem extends StatelessWidget {
       maxLines: 2,
     );
 
-    final info = RichText(
+    final Widget info = RichText(
       overflow: TextOverflow.ellipsis,
       text: TextSpan(
         style: TextStyle(
@@ -47,15 +47,15 @@ class EpisodeListItem extends StatelessWidget {
       ),
     );
 
-    final summary = Text(
+    final Widget summary = Text(
       episode.summary
           .replaceAll('\n', ' ')
           .replaceAll('&nbsp;', ' ')
           .replaceAll('&amp', '&'),
       overflow: TextOverflow.ellipsis,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 12,
-        color: const Color(0xff657389), //TWColors.gray.shade600,
+        color: Color(0xff657389), //TWColors.gray.shade600,
         height: 1.3,
         letterSpacing: 0.1,
       ),
@@ -72,7 +72,7 @@ class EpisodeListItem extends StatelessWidget {
             Thumbnail(episode: episode, podcast: podcast),
             Expanded(
               child: Transform.translate(
-                offset: Offset(0, -4),
+                offset: const Offset(0, -4),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 11),
                   child: Column(
@@ -97,8 +97,8 @@ class EpisodeListItem extends StatelessWidget {
                             ),
                           ),
                           Transform.translate(
-                            offset: Offset(6, -9),
-                            child: Menu(),
+                            offset: const Offset(6, -9),
+                            child: const Menu(),
                           ),
                         ],
                       ),
@@ -118,13 +118,13 @@ class EpisodeListItem extends StatelessWidget {
   }
 
   List<TextSpan> _episodePubDate(Episode episode) {
-    var d = DateTime.parse('${episode.pubDate} +00:00');
-    return [TextSpan(text: timeago.format(d))];
+    final DateTime d = DateTime.parse('${episode.pubDate} +00:00');
+    return <TextSpan>[TextSpan(text: timeago.format(d))];
   }
 
   List<TextSpan> _episodeNumber(Episode episode) {
     if (episode.type == 'FULL' && episode.episode == 0) {
-      return [];
+      return <TextSpan>[];
     }
 
     String text;
@@ -143,7 +143,7 @@ class EpisodeListItem extends StatelessWidget {
       color = TWColors.gray.shade700;
     }
 
-    return [
+    return <TextSpan>[
       TextSpan(
         text: text,
         style: TextStyle(

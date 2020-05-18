@@ -5,7 +5,7 @@ abstract class AudioPlayerEvent extends Equatable {
 }
 
 class Load extends AudioPlayerEvent {
-  Load({
+  const Load({
     this.episode,
     this.podcast,
   });
@@ -14,15 +14,15 @@ class Load extends AudioPlayerEvent {
   final Podcast podcast;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class Play extends AudioPlayerEvent {
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class Pause extends AudioPlayerEvent {
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }

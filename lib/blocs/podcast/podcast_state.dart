@@ -6,35 +6,35 @@ abstract class PodcastState extends Equatable {
 
 class PodcastInitial extends PodcastState {
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 class PodcastLoaded extends PodcastState {
-  final Podcast podcast;
-  final List<Episode> episodes;
-  final bool loadedAll;
-
   const PodcastLoaded({
     this.podcast,
     this.episodes,
     this.loadedAll,
   });
 
+  final Podcast podcast;
+  final List<Episode> episodes;
+  final bool loadedAll;
+
   @override
-  List<Object> get props => [podcast, episodes, loadedAll];
+  List<Object> get props => <Object>[podcast, episodes, loadedAll];
 
   @override
   String toString() =>
-      'PodcastLoaded { podcast: ${podcast.title}, episodesCount: ${episodes.length}} ';
+      'PodcastLoaded { podcast: ${podcast.title}, episodesCount: ${episodes.length}}';
 }
 
 class PodcastError extends PodcastState {
-  final String errMsg;
-
   const PodcastError({this.errMsg});
 
+  final String errMsg;
+
   @override
-  List<Object> get props => [errMsg];
+  List<Object> get props => <Object>[errMsg];
 
   @override
   String toString() => 'PodcastError { errMsg: $errMsg }';

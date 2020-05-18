@@ -26,11 +26,11 @@ class EpisodesTab extends StatelessWidget {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverPadding(
-            padding: EdgeInsets.only(top: 90),
+            padding: const EdgeInsets.only(top: 90),
             sliver: SliverList(
               key: key,
               delegate: SliverChildBuilderDelegate(
-                (context, index) {
+                (BuildContext context, int index) {
                   if (index < episodes.length) {
                     return EpisodeListItem(
                       episode: episodes[index],
@@ -41,13 +41,13 @@ class EpisodesTab extends StatelessWidget {
                   loadMore();
                   return Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Container(
                       height: 30,
                       width: 30,
                       child: CircularProgressIndicator(
                         strokeWidth: 3,
-                        valueColor: new AlwaysStoppedAnimation<Color>(
+                        valueColor: AlwaysStoppedAnimation<Color>(
                           TWColors.gray.shade800,
                         ),
                       ),

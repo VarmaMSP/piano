@@ -1,16 +1,7 @@
-class Playlist {
-  final String id;
-  final String urlParam;
-  final String userId;
-  final String title;
-  final String description;
-  final String privacy;
-  final int episodeCount;
-  final String previewImage;
-  final String updatedAt;
-  final List<PlaylistMember> members;
+import 'package:equatable/equatable.dart';
 
-  Playlist({
+class Playlist extends Equatable {
+  const Playlist({
     this.id,
     this.urlParam,
     this.userId,
@@ -25,27 +16,41 @@ class Playlist {
 
   factory Playlist.fromJson(Map<String, dynamic> json) {
     return Playlist(
-      id: json['id'],
-      urlParam: json['url_param'],
-      userId: json['user_id'],
-      title: json['title'],
-      description: json['description'],
-      privacy: json['privacy'],
-      episodeCount: json['episode_count'],
-      previewImage: json['preview_image'],
-      updatedAt: json['updated_at'],
-      members: (json['members'] as List)
-          ?.cast<Map<String, dynamic>>()
-          ?.map((d) => PlaylistMember.fromJson(d))
-          ?.toList(),
+      id: json['id'] as String,
+      urlParam: json['url_param'] as String,
+      userId: json['user_id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String ?? '',
+      privacy: json['privacy'] as String ?? 'PUBLIC',
+      episodeCount: json['episode_count'] as int ?? 0,
+      previewImage: json['preview_image'] as String ?? '',
+      updatedAt: json['updated_at'] as String ?? '',
+      members: (json['members'] as List<dynamic> ?? <dynamic>[])
+          .cast<Map<String, dynamic>>()
+          .map((Map<String, dynamic> d) => PlaylistMember.fromJson(d))
+          .toList(),
     );
   }
+
+  final String id;
+  final String urlParam;
+  final String userId;
+  final String title;
+  final String description;
+  final String privacy;
+  final int episodeCount;
+  final String previewImage;
+  final String updatedAt;
+  final List<PlaylistMember> members;
+
+  @override
+  List<Object> get props => <String>[id];
+
+  @override
+  String toString() => 'Playlist: { id: $id }';
 }
 
 class PlaylistMember {
-  final String episodeId;
-  final int position;
-
   PlaylistMember({
     this.episodeId,
     this.position,
@@ -53,8 +58,11 @@ class PlaylistMember {
 
   factory PlaylistMember.fromJson(Map<String, dynamic> json) {
     return PlaylistMember(
-      episodeId: json['episode_id'],
-      position: json['position'],
+      episodeId: json['episode_id'] as String,
+      position: json['position'] as int,
     );
   }
+
+  final String episodeId;
+  final int position;
 }

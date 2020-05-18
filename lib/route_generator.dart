@@ -4,15 +4,15 @@ import 'package:piano/screens/podcast/page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final args = settings.arguments as Map<String, String>;
+    final Map<String, String> args = settings.arguments as Map<String, String>;
 
     switch (settings.name) {
       case '/podcast':
-        return MaterialPageRoute(
+        return MaterialPageRoute<dynamic>(
             builder: (_) => PodcastPage(urlParam: args['urlParam']));
 
       default:
-        return MaterialPageRoute(builder: (_) => HomePage());
+        return MaterialPageRoute<dynamic>(builder: (_) => const HomePage());
     }
   }
 }

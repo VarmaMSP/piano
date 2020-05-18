@@ -10,7 +10,7 @@ class AboutTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final description = Text(
+    final Widget description = Text(
       podcast.description
           .replaceAll('\n', ' ')
           .replaceAll('&nbsp;', ' ')
@@ -23,8 +23,8 @@ class AboutTab extends StatelessWidget {
       ),
     );
 
-    final links = Transform.translate(
-      offset: Offset(-10, 0),
+    final Widget links = Transform.translate(
+      offset: const Offset(-10, 0),
       child: Row(
         children: <Widget>[
           _link(podcast.link, 'Website', Icons.launch),
@@ -61,7 +61,7 @@ class AboutTab extends StatelessWidget {
             await launch(url);
           }
         },
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

@@ -21,25 +21,36 @@ class _AudioPlayerState extends State<AudioPlayer> {
   double _dragDistance = 0.0;
 
   double _mapRange(double x1, double x2, double y1, double y2, double value) {
-    if (value <= x1) return y1;
-    if (value >= x2) return y2;
+    if (value <= x1) {
+      return y1;
+    }
+
+    if (value >= x2) {
+      return y2;
+    }
+
     return y1 + ((y2 - y1) / (x2 - x1)) * (value - x1);
   }
 
   @override
   Widget build(BuildContext context) {
     //ignore: close_sinks
-    final audioPlayerBloc = BlocProvider.of<AudioPlayerBloc>(context);
+    final AudioPlayerBloc audioPlayerBloc =
+        BlocProvider.of<AudioPlayerBloc>(context);
 
     return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
       bloc: audioPlayerBloc,
-      builder: (context, state) {
-        final padding = MediaQuery.of(context).padding;
-        final screenHeight = MediaQuery.of(context).size.height - padding.top;
-        final animation = Tween(begin: 106.0 / screenHeight, end: 1.0).animate(
+      builder: (BuildContext context, AudioPlayerState state) {
+        final EdgeInsets padding = MediaQuery.of(context).padding;
+        final double screenHeight =
+            MediaQuery.of(context).size.height - padding.top;
+        final Animation<double> animation = Tween<double>(
+          begin: 106.0 / screenHeight,
+          end: 1.0,
+        ).animate(
           CurvedAnimation(
             parent: widget.controller,
-            curve: Interval(0.0, 1.0, curve: Curves.linear),
+            curve: const Interval(0.0, 1.0, curve: Curves.linear),
           ),
         );
 
@@ -51,12 +62,12 @@ class _AudioPlayerState extends State<AudioPlayer> {
             children: <Widget>[
               GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onVerticalDragStart: (details) {
+                onVerticalDragStart: (DragStartDetails details) {
                   _dragDistance = widget.controller.value > 0.0
                       ? screenHeight - 106.0
                       : 0.0;
                 },
-                onVerticalDragUpdate: (details) {
+                onVerticalDragUpdate: (DragUpdateDetails details) {
                   _dragDistance -= details.delta.dy;
 
                   widget.controller.animateTo(
@@ -65,7 +76,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
                     curve: Curves.linear,
                   );
                 },
-                onVerticalDragEnd: (details) {
+                onVerticalDragEnd: (DragEndDetails details) {
                   bool openPlayer;
                   // If less than 2/5 of the animation in complete close player only if
                   // pointer is moving up with velocity greater than 1300
@@ -80,7 +91,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
 
                   widget.controller.animateBack(
                     openPlayer ? 1.0 : 0.0,
-                    duration: Duration(milliseconds: 250),
+                    duration: const Duration(milliseconds: 250),
                     curve: Curves.ease,
                   );
                 },
@@ -92,7 +103,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
                       onPlay: () => audioPlayerBloc.add(Play()),
                       onPause: () => audioPlayerBloc.add(Pause()),
                     ),
-                    FullAudioPlayer(),
+                    const FullAudioPlayer(),
                   ],
                 ),
               ),
@@ -103,7 +114,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
         return Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: [
+            boxShadow: <BoxShadow>[
               BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
             ],
           ),
@@ -118,7 +129,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
                   ),
                 )
               : Container(
-                  constraints: BoxConstraints.expand(height: 56),
+                  constraints: const BoxConstraints.expand(height: 56),
                 ),
         );
       },

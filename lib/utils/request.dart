@@ -2,22 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:piano/models/api_response.dart';
 
 class Request {
-  Dio _dio;
-
-  Request() {
-    _dio = new Dio(BaseOptions(baseUrl: 'https://phenopod.com/api/'));
-  }
+  final Dio _dio = Dio(BaseOptions(baseUrl: 'https://phenopod.com/api/'));
 
   Future<ApiResponse> get(String path) async {
-    Response response = await this
-        ._dio
-        .get(path, options: Options(responseType: ResponseType.json));
+    final Response<Map<String, dynamic>> response =
+        await _dio.get(path, options: Options(responseType: ResponseType.json));
 
     return ApiResponse.fromJson(response.data);
   }
 
   Future<ApiResponse> post(String path) async {
-    Response<Map<String, dynamic>> response = await this._dio.post(path);
+    final Response<Map<String, dynamic>> response = await _dio.post(path);
     return ApiResponse.fromJson(response.data);
   }
 }

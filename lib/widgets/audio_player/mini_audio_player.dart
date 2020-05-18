@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piano/blocs/audio_player/audio_player_bloc.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-import 'package:audioplayers/audioplayers.dart' as AP;
+import 'package:audioplayers/audioplayers.dart' as audio;
 
 class MiniAudioPlayer extends StatelessWidget {
   const MiniAudioPlayer({
@@ -19,17 +19,23 @@ class MiniAudioPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sizeAnimation = Tween(begin: 1.0, end: 0.0).animate(
+    final Animation<double> sizeAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(0.9, 1.0, curve: Curves.linear),
+        curve: const Interval(0.9, 1.0, curve: Curves.linear),
       ),
     );
 
-    final opacityAnimation = Tween(begin: 1.0, end: 0.0).animate(
+    final Animation<double> opacityAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(0.0, 1.0, curve: Curves.easeOut),
+        curve: const Interval(0.0, 1.0, curve: Curves.easeOut),
       ),
     );
 
@@ -61,14 +67,17 @@ class MiniAudioPlayer extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                controller.animateBack(1.0,
-                    duration: Duration(milliseconds: 250), curve: Curves.ease);
+                controller.animateBack(
+                  1.0,
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.ease,
+                );
               },
               child: Text(
                 state.episode.title,
                 maxLines: 1,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   letterSpacing: 0.2,
                 ),
@@ -95,14 +104,14 @@ class MiniAudioPlayer extends StatelessWidget {
     return StreamBuilder<Duration>(
       stream: state.duration,
       initialData: Duration.zero,
-      builder: (context, snapshot) {
-        final duration = snapshot.data.inSeconds;
+      builder: (BuildContext context, AsyncSnapshot<Duration> snapshot) {
+        final int duration = snapshot.data.inSeconds;
 
         return StreamBuilder<Duration>(
           stream: state.currentTime,
           initialData: Duration.zero,
-          builder: (context, snapshot2) {
-            final currentTime = snapshot2.data.inSeconds;
+          builder: (BuildContext context, AsyncSnapshot<Duration> snapshot2) {
+            final int currentTime = snapshot2.data.inSeconds;
 
             return CircularProgressIndicator(
               value: duration > 0 ? currentTime / duration : null,
@@ -119,24 +128,27 @@ class MiniAudioPlayer extends StatelessWidget {
   }
 
   Widget _buildActionButton() {
-    return StreamBuilder<AP.AudioPlayerState>(
+    return StreamBuilder<audio.AudioPlayerState>(
       stream: state.playerState,
-      initialData: AP.AudioPlayerState.PAUSED,
-      builder: (context, snapshot3) {
-        final playerState = snapshot3.data;
+      initialData: audio.AudioPlayerState.PAUSED,
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<audio.AudioPlayerState> snapshot3,
+      ) {
+        final audio.AudioPlayerState playerState = snapshot3.data;
 
         IconData iconData;
         Function onPressed;
-        if (playerState == AP.AudioPlayerState.PLAYING) {
+        if (playerState == audio.AudioPlayerState.PLAYING) {
           iconData = Icons.pause;
           onPressed = onPause;
-        } else if (playerState == AP.AudioPlayerState.PAUSED) {
+        } else if (playerState == audio.AudioPlayerState.PAUSED) {
           iconData = Icons.play_arrow;
           onPressed = onPlay;
-        } else if (playerState == AP.AudioPlayerState.COMPLETED) {
+        } else if (playerState == audio.AudioPlayerState.COMPLETED) {
           iconData = Icons.play_arrow;
           onPressed = onPlay;
-        } else if (playerState == AP.AudioPlayerState.STOPPED) {
+        } else if (playerState == audio.AudioPlayerState.STOPPED) {
           iconData = Icons.stop;
           onPressed = onPlay;
         }
@@ -144,7 +156,7 @@ class MiniAudioPlayer extends StatelessWidget {
         return Material(
           color: Colors.transparent,
           child: IconButton(
-            padding: new EdgeInsets.all(0.0),
+            padding: const EdgeInsets.all(0.0),
             icon: Icon(
               iconData,
               color: TWColors.gray.shade600,

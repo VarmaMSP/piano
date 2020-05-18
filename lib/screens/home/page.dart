@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  static final List<String> podcasts = [
+  const HomePage({Key key}) : super(key: key);
+
+  static final List<String> podcasts = <String>[
     'Planet Money',
     'Heavyweight',
     'Past Gas by Donut Media',
@@ -43,7 +45,7 @@ class HomePage extends StatelessWidget {
     'Stephen Frys 7 Deadly Sins'
   ];
 
-  static final Map<String, String> urlParams = {
+  static final Map<String, String> urlParams = <String, String>{
     'Planet Money': 'planet-money-mbk0Ed',
     'Heavyweight': 'heavyweight-e79vOb',
     'Past Gas by Donut Media': 'past-gas-by-donut-media-boVZNa',
@@ -93,47 +95,24 @@ class HomePage extends StatelessWidget {
     'Stephen Frys 7 Deadly Sins': 'stephen-frys-7-deadly-sins-b663Nl',
   };
 
-  const HomePage({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       itemCount: podcasts.length,
-      separatorBuilder: (_, __) => Divider(),
-      itemBuilder: (context, index) {
+      separatorBuilder: (_, __) => const Divider(),
+      itemBuilder: (BuildContext context, int index) {
         return ListTile(
           title: Text(podcasts[index]),
           onTap: () {
             Navigator.of(context).pushNamed(
               '/podcast',
-              arguments: {'urlParam': urlParams[podcasts[index]]},
+              arguments: <String, String>{
+                'urlParam': urlParams[podcasts[index]],
+              },
             );
           },
         );
       },
     );
-
-    // return Scaffold(
-    //   backgroundColor: Colors.white,
-    //   appBar: PreferredSize(
-    //     preferredSize: Size(0, 0),
-    //     child: Container(),
-    //   ),
-    //   body: ListView.separated(
-    //     itemCount: podcasts.length,
-    //     separatorBuilder: (_, __) => Divider(),
-    //     itemBuilder: (context, index) {
-    //       return ListTile(
-    //         title: Text(podcasts[index]),
-    //         onTap: () {
-    //           Navigator.of(context).pushNamed(
-    //             '/podcast',
-    //             arguments: {'urlParam': urlParams[podcasts[index]]},
-    //           );
-    //         },
-    //       );
-    //     },
-    //   ),
-    // );
   }
 }

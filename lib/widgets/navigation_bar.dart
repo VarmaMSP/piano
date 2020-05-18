@@ -8,16 +8,19 @@ class NavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final animation = Tween(begin: 1.0, end: 0.0).animate(
+    final Animation<double> animation = Tween<double>(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(0.0, 0.55, curve: Curves.linear),
+        curve: const Interval(0.0, 0.55, curve: Curves.linear),
       ),
     );
 
     return AnimatedBuilder(
       animation: controller,
-      builder: (context, child) {
+      builder: (BuildContext context, Widget child) {
         return SizeTransition(
           axis: Axis.vertical,
           axisAlignment: -1.0,
@@ -43,26 +46,26 @@ class NavigationBar extends StatelessWidget {
                 letterSpacing: 0.45,
               ),
               // showUnselectedLabels: false,
-              items: [
+              items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home, size: 21.0),
-                  title: Text('Home'),
+                  title: const Text('Home'),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.explore, size: 19.0),
-                  title: Text('Explore'),
+                  title: const Text('Explore'),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.rss_feed, size: 19.0),
-                  title: Text('Feeds'),
+                  title: const Text('Feeds'),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.playlist_play, size: 21.0),
-                  title: Text('Playlists'),
+                  title: const Text('Playlists'),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.face, size: 19.0),
-                  title: Text('Profile'),
+                  title: const Text('Profile'),
                 ),
               ],
             ),

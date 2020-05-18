@@ -9,24 +9,24 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 39,
-      child: PopupMenuButton(
+      child: PopupMenuButton<String>(
         icon: Icon(
           Icons.more_vert,
           color: TWColors.gray.shade600,
           size: 20,
         ),
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         elevation: 3,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
         ),
-        itemBuilder: (context) {
+        itemBuilder: (BuildContext context) {
           return <String>[
             'Save to playlist',
             'Save to Listen later',
             'Add to queue',
-          ].map((t) {
-            return PopupMenuItem(
+          ].map((String t) {
+            return PopupMenuItem<String>(
               value: t,
               child: Text(t),
             );

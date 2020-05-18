@@ -1,26 +1,7 @@
-class Podcast {
-  final String id;
-  final String urlParam;
-  final String title;
-  final String summary;
-  final String description;
-  final String language;
-  final bool explicit;
-  final String author;
-  final String type;
-  final bool complete;
-  final String link;
-  final String copyright;
-  final int totalEpisodes;
-  final int totalSeasons;
-  final String earliestEpisodePubDate;
-  final String titleHighlighted;
-  final String authorHighlighted;
-  final String descriptionHiglighted;
-  final String feedUrl;
-  final String feedLastRefreshAt;
+import 'package:equatable/equatable.dart';
 
-  Podcast({
+class Podcast extends Equatable {
+  const Podcast({
     this.id,
     this.urlParam,
     this.title,
@@ -45,26 +26,53 @@ class Podcast {
 
   factory Podcast.fromJson(Map<String, dynamic> json) {
     return Podcast(
-      id: json['id'],
-      urlParam: json['url_param'],
-      title: json['title'],
-      summary: json['summary'],
-      description: json['description'],
-      language: json['language'],
-      explicit: json['explicit'],
-      author: json['author'],
-      type: json['type'],
-      complete: json['complete'],
-      link: json['link'],
-      copyright: json['copyright'],
-      totalEpisodes: json['total_episodes'],
-      totalSeasons: json['total_seasons'],
-      earliestEpisodePubDate: json['earliest_episode_pub_date'],
-      titleHighlighted: json['title_highlighted'],
-      authorHighlighted: json['author_highlighted'],
-      descriptionHiglighted: json['description_highlighted'],
-      feedUrl: json['feed_url'],
-      feedLastRefreshAt: json['feed_last_refresh_at'],
+      id: json['id'] as String,
+      urlParam: json['url_param'] as String,
+      title: json['title'] as String,
+      summary: json['summary'] as String ?? '',
+      description: json['description'] as String ?? '',
+      language: json['language'] as String ?? '',
+      explicit: json['explicit'] as bool ?? false,
+      author: json['author'] as String ?? '',
+      type: json['type'] as String ?? '',
+      complete: json['complete'] as bool ?? false,
+      link: json['link'] as String ?? '',
+      copyright: json['copyright'] as String ?? '',
+      totalEpisodes: json['total_episodes'] as int ?? 0,
+      totalSeasons: json['total_seasons'] as int ?? 0,
+      earliestEpisodePubDate: json['earliest_episode_pub_date'] as String ?? '',
+      titleHighlighted: json['title_highlighted'] as String ?? '',
+      authorHighlighted: json['author_highlighted'] as String ?? '',
+      descriptionHiglighted: json['description_highlighted'] as String ?? '',
+      feedUrl: json['feed_url'] as String ?? '',
+      feedLastRefreshAt: json['feed_last_refresh_at'] as String ?? '',
     );
   }
+
+  final String id;
+  final String urlParam;
+  final String title;
+  final String summary;
+  final String description;
+  final String language;
+  final bool explicit;
+  final String author;
+  final String type;
+  final bool complete;
+  final String link;
+  final String copyright;
+  final int totalEpisodes;
+  final int totalSeasons;
+  final String earliestEpisodePubDate;
+  final String titleHighlighted;
+  final String authorHighlighted;
+  final String descriptionHiglighted;
+  final String feedUrl;
+  final String feedLastRefreshAt;
+
+  @override
+  List<Object> get props => <String>[id];
+
+  @override
+  String toString() => 'Podcast: { id: $id }';
 }

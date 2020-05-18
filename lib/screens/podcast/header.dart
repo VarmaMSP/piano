@@ -6,18 +6,21 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:flutter/foundation.dart';
 
 class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
-  static final double appBarHeight = 45;
-  static final double tabBarHeight = 35;
-  static final double flexibleAreaHeight = 150;
-
   PodcastHeaderDelegate({
     @required this.podcast,
     @required this.tabController,
   });
 
+  static const double appBarHeight = 45;
+  static const double tabBarHeight = 35;
+  static const double flexibleAreaHeight = 150;
+
   final Podcast podcast;
   final TabController tabController;
+
+  @override
   final double minExtent = appBarHeight + tabBarHeight + 1;
+  @override
   final double maxExtent = appBarHeight + tabBarHeight + flexibleAreaHeight + 1;
 
   @override
@@ -28,7 +31,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   ) {
     return Container(
       height: maxExtent - shrinkOffset,
-      padding: EdgeInsets.symmetric(horizontal: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -47,7 +50,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   }
 
   Widget _appBar(BuildContext context, double shrinkOffset) {
-    final actions = Row(
+    final Widget actions = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         if ((shrinkOffset - flexibleAreaHeight).abs() < 0.0001)
@@ -79,7 +82,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Transform.translate(
-            offset: Offset(-12, 0),
+            offset: const Offset(-12, 0),
             child: Material(
               color: Colors.white,
               child: IconButton(
@@ -96,7 +99,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           ),
           Container(
             child: Transform.translate(
-              offset: Offset(10, 0),
+              offset: const Offset(10, 0),
               child: actions,
             ),
           ),
@@ -123,7 +126,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           fontWeight: FontWeight.w500,
         ),
         controller: tabController,
-        tabs: <Widget>[
+        tabs: const <Widget>[
           Tab(text: '  Episodes  '),
           Tab(text: '  About  '),
         ],
@@ -132,14 +135,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   }
 
   Widget _flexibleArea(double shrinkOffset) {
-    final thumbnail = ClipRRect(
+    final Widget thumbnail = ClipRRect(
       borderRadius: BorderRadius.circular(6.0),
       child: CachedNetworkImage(
         imageUrl: 'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg',
         fit: BoxFit.fill,
         height: 130,
         width: 130,
-        placeholder: (context, url) => Container(
+        placeholder: (BuildContext context, String url) => Container(
           height: 130,
           width: 130,
           color: TWColors.gray.shade300,
@@ -147,7 +150,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       ),
     );
 
-    final details = Column(
+    final Widget details = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
@@ -177,7 +180,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       ],
     );
 
-    final actions = Row(
+    final Widget actions = Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         IconButton(
@@ -200,9 +203,9 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       ],
     );
 
-    Widget widget = Container(
-      constraints: BoxConstraints.expand(height: flexibleAreaHeight),
-      padding: EdgeInsets.only(top: 8),
+    final Widget widget = Container(
+      constraints: const BoxConstraints.expand(height: flexibleAreaHeight),
+      padding: const EdgeInsets.only(top: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -215,9 +218,9 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               child: Column(
                 children: <Widget>[
                   details,
-                  Spacer(),
+                  const Spacer(),
                   Transform.translate(
-                    offset: Offset(6, 0),
+                    offset: const Offset(6, 0),
                     child: actions,
                   ),
                 ],

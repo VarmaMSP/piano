@@ -8,28 +8,28 @@ import 'package:piano/models/podcast.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class Thumbnail extends StatelessWidget {
-  static final double thumbnailSize = 88;
-  static final String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
-
   const Thumbnail({
     Key key,
     @required this.episode,
     @required this.podcast,
   }) : super(key: key);
 
+  static const double thumbnailSize = 88;
+  static const String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
+
   final Episode episode;
   final Podcast podcast;
 
   @override
   Widget build(BuildContext context) {
-    final image = ClipRRect(
+    final Widget image = ClipRRect(
       borderRadius: BorderRadius.circular(6.0),
       child: CachedNetworkImage(
         imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
         fit: BoxFit.fill,
         height: thumbnailSize,
         width: thumbnailSize,
-        placeholder: (context, url) => Container(
+        placeholder: (BuildContext context, String url) => Container(
           height: thumbnailSize,
           width: thumbnailSize,
           color: TWColors.gray.shade300,
@@ -37,21 +37,21 @@ class Thumbnail extends StatelessWidget {
       ),
     );
 
-    final playIconBg = Container(
+    final Widget playIconBg = Container(
       height: thumbnailSize,
       width: thumbnailSize,
       alignment: Alignment.center,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(600.0),
         child: Container(
-          color: Color.fromRGBO(0, 0, 0, 0.55),
+          color: const Color.fromRGBO(0, 0, 0, 0.55),
           height: 34.0,
           width: 34.0,
         ),
       ),
     );
 
-    final playIcon = Container(
+    final Widget playIcon = Container(
       height: thumbnailSize,
       width: thumbnailSize,
       alignment: Alignment.center,
@@ -62,8 +62,8 @@ class Thumbnail extends StatelessWidget {
       ),
     );
 
-    final duration = Container(
-      alignment: Alignment(0.87, 0.85),
+    final Widget duration = Container(
+      alignment: const Alignment(0.87, 0.85),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(1.0),
       ),
@@ -104,7 +104,7 @@ class Thumbnail extends StatelessWidget {
       regex = RegExp(r'(\d\d:\d\d:\d\d)');
     }
 
-    var res = regex
+    final String res = regex
         .firstMatch(DateTime(0, 0, 0, 0, 0, sec).toIso8601String())
         ?.group(1);
 
@@ -112,8 +112,8 @@ class Thumbnail extends StatelessWidget {
       return ClipRRect(
         borderRadius: BorderRadius.circular(5.0),
         child: Container(
-          color: Color.fromRGBO(0, 0, 0, 0.75),
-          padding: EdgeInsets.only(left: 4, right: 4, bottom: 0.9),
+          color: const Color.fromRGBO(0, 0, 0, 0.75),
+          padding: const EdgeInsets.only(left: 4, right: 4, bottom: 0.9),
           child: Text(
             res ?? '00:00',
             style: TextStyle(
@@ -132,7 +132,7 @@ class Thumbnail extends StatelessWidget {
   }
 
   Widget _progressbar() {
-    if (episode.lastPlayedAt == "") {
+    if (episode.lastPlayedAt == '') {
       return Container(height: 0);
     }
 
@@ -141,7 +141,7 @@ class Thumbnail extends StatelessWidget {
       width: thumbnailSize,
       decoration: BoxDecoration(
         border: Border.all(color: TWColors.gray.shade300, width: 1),
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(2),
           bottomRight: Radius.circular(2),
         ),
@@ -153,7 +153,7 @@ class Thumbnail extends StatelessWidget {
         widthFactor: episode.progress + 0.27,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(2),
               bottomRight: Radius.circular(2),
             ),

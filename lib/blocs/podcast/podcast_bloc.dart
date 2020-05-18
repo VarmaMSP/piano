@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 // import 'package:rxdart/rxdart.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:piano/models/api_response.dart';
 import 'package:piano/models/episode.dart';
 import 'package:piano/models/podcast.dart';
 import 'package:piano/utils/request.dart';
@@ -12,13 +13,13 @@ part 'podcast_event.dart';
 part 'podcast_state.dart';
 
 class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
-  final String urlParam;
-  final Request request;
-
   PodcastBloc({
     @required this.urlParam,
     @required this.request,
   });
+
+  final String urlParam;
+  final Request request;
 
   @override
   PodcastState get initialState => PodcastInitial();
@@ -32,7 +33,7 @@ class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
     try {
       // Load initial data
       if (event is Load && state is PodcastInitial) {
-        final response = await request.get('/podcasts/$urlParam');
+        final ApiResponse response = await request.get('/podcasts/$urlParam');
         yield PodcastLoaded(
           podcast: response.podcasts[0],
           episodes: response.episodes,
@@ -42,7 +43,7 @@ class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
 
       // Load more episodes
       if (event is Load && state is PodcastLoaded && !state.loadedAll) {
-        final response = await request.get(
+        final ApiResponse response = await request.get(
             '/ajax/browse?endpoint=podcast_episodes&&podcast_id=${state.podcast.id}&&offset=${state.episodes.length}&&limit=30&&order=pub_date_desc');
         yield PodcastLoaded(
           podcast: state.podcast,

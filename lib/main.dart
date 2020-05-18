@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
 
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Phenopod',
       debugShowCheckedModeBanner: false,
       home: App(),
@@ -31,13 +31,15 @@ class MyApp extends StatelessWidget {
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
-  void onTransition(Bloc bloc, Transition transition) {
+  void onTransition(
+      Bloc<dynamic, dynamic> bloc, Transition<dynamic, dynamic> transition) {
     print(transition);
     super.onTransition(bloc, transition);
   }
 
   @override
-  void onError(Bloc bloc, Object error, StackTrace stackTrace) {
+  void onError(
+      Bloc<dynamic, dynamic> bloc, Object error, StackTrace stackTrace) {
     print(error);
     super.onError(bloc, error, stackTrace);
   }

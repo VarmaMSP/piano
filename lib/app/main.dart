@@ -7,7 +7,7 @@ import 'package:piano/widgets/navigation_bar.dart';
 import '../route_generator.dart';
 
 class App extends StatefulWidget {
-  App({Key key}) : super(key: key);
+  const App({Key key}) : super(key: key);
 
   @override
   _AppState createState() => _AppState();
@@ -20,9 +20,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _bottomAppBarController = new AnimationController(
-      vsync: this,
-    );
+    _bottomAppBarController = AnimationController(vsync: this);
   }
 
   @override
@@ -34,23 +32,24 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size(0, 0),
+          preferredSize: const Size(0, 0),
           child: Container(),
         ),
         body: MultiBlocProvider(
-          providers: [
+          providers: <BlocProvider<dynamic>>[
             BlocProvider<AudioPlayerBloc>(
-              create: (context) => AudioPlayerBloc(),
+              create: (BuildContext context) => AudioPlayerBloc(),
             ),
           ],
           child: Stack(
             children: <Widget>[
               Builder(
-                builder: (context) {
+                builder: (BuildContext context) {
                   return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
                     bloc: BlocProvider.of<AudioPlayerBloc>(context),
-                    builder: (context, state) {
-                      double padding = state is AudioPlayerLoaded ? 102 : 56;
+                    builder: (BuildContext context, AudioPlayerState state) {
+                      final double padding =
+                          state is AudioPlayerLoaded ? 102 : 56;
 
                       return Container(
                         color: Colors.white,

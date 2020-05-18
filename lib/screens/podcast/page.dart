@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:piano/blocs/podcast/podcast_bloc.dart';
 import 'package:piano/screens/loading.dart';
 import 'package:piano/utils/request.dart';
-// import 'package:piano/widgets/app_bottom_navigation_bar.dart';
 import './about_tab.dart';
 import './episodes_tab.dart';
 import './header.dart';
@@ -37,11 +36,11 @@ class _PodcastPageState extends State<PodcastPage>
 
   @override
   Widget build(BuildContext context) {
-    final scrollable = BlocBuilder<PodcastBloc, PodcastState>(
+    final Widget scrollable = BlocBuilder<PodcastBloc, PodcastState>(
       bloc: _podcastBloc,
-      builder: (context, state) {
+      builder: (BuildContext context, PodcastState state) {
         if (state is PodcastInitial) {
-          return LoadingPage();
+          return const LoadingPage();
         }
 
         if (state is PodcastError) {
@@ -50,10 +49,10 @@ class _PodcastPageState extends State<PodcastPage>
           );
         }
 
-        final s = state as PodcastLoaded;
+        final PodcastLoaded s = state as PodcastLoaded;
         return NestedScrollView(
           controller: _scrollController,
-          headerSliverBuilder: (context, _) {
+          headerSliverBuilder: (BuildContext context, _) {
             return <Widget>[
               SliverOverlapAbsorber(
                 handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
@@ -73,14 +72,14 @@ class _PodcastPageState extends State<PodcastPage>
             controller: _tabController,
             children: <Widget>[
               EpisodesTab(
-                key: PageStorageKey<String>('   Episodes   '),
+                key: const PageStorageKey<String>('   Episodes   '),
                 podcast: s.podcast,
                 episodes: s.episodes,
                 receivedAll: s.loadedAll,
                 loadMore: () => _podcastBloc.add(Load()),
               ),
               AboutTab(
-                key: PageStorageKey<String>('   About   '),
+                key: const PageStorageKey<String>('   About   '),
                 podcast: s.podcast,
               ),
             ],
