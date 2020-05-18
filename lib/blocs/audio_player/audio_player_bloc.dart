@@ -29,7 +29,7 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
           return;
         }
 
-        player.stop();
+        await player.stop();
         if (await player.play(event.episode.mediaUrl) == 1) {
           yield AudioPlayerLoaded(
             episode: event.episode,

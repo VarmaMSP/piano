@@ -138,19 +138,19 @@ class MiniAudioPlayer extends StatelessWidget {
         final audio.AudioPlayerState playerState = snapshot3.data;
 
         IconData iconData;
-        Function onPressed;
+        void Function() onPressed;
         if (playerState == audio.AudioPlayerState.PLAYING) {
           iconData = Icons.pause;
-          onPressed = onPause;
+          onPressed = () => onPause();
         } else if (playerState == audio.AudioPlayerState.PAUSED) {
           iconData = Icons.play_arrow;
-          onPressed = onPlay;
+          onPressed = () => onPlay();
         } else if (playerState == audio.AudioPlayerState.COMPLETED) {
           iconData = Icons.play_arrow;
-          onPressed = onPlay;
+          onPressed = () => onPlay();
         } else if (playerState == audio.AudioPlayerState.STOPPED) {
           iconData = Icons.stop;
-          onPressed = onPlay;
+          onPressed = () => onPlay();
         }
 
         return Material(
