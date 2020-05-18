@@ -1,8 +1,8 @@
-import 'package:piano/models/category.dart';
-import 'package:piano/models/episode.dart';
-import 'package:piano/models/playlist.dart';
-import 'package:piano/models/podcast.dart';
-import 'package:piano/models/user.dart';
+import 'package:phenopod/models/category.dart';
+import 'package:phenopod/models/episode.dart';
+import 'package:phenopod/models/playlist.dart';
+import 'package:phenopod/models/podcast.dart';
+import 'package:phenopod/models/user.dart';
 
 class ApiResponse {
   ApiResponse({

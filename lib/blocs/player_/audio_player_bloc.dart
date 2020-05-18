@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart' as audio;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:piano/models/episode.dart';
-import 'package:piano/models/podcast.dart';
+import 'package:phenopod/models/episode.dart';
+import 'package:phenopod/models/podcast.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'audio_player_event.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:piano/screens/home/page.dart';
-import 'package:piano/screens/podcast/page.dart';
+import 'package:phenopod/screens/home/page.dart';
+import 'package:phenopod/screens/podcast/page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

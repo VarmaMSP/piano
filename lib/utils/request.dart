@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:piano/models/api_response.dart';
+import 'package:phenopod/models/api_response.dart';
 
 class Request {
   final Dio _dio = Dio(BaseOptions(baseUrl: 'https://phenopod.com/api/'));

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:piano/blocs/podcast/podcast_bloc.dart';
-import 'package:piano/screens/loading.dart';
-import 'package:piano/utils/request.dart';
+import 'package:phenopod/blocs/podcast/podcast_bloc.dart';
+import 'package:phenopod/screens/loading.dart';
+import 'package:phenopod/utils/request.dart';
 import './about_tab.dart';
 import './episodes_tab.dart';
 import './header.dart';

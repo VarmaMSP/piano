@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FullAudioPlayer extends StatelessWidget {
-  const FullAudioPlayer({Key key}) : super(key: key);
+class AudioPlayer extends StatelessWidget {
+  const AudioPlayer({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

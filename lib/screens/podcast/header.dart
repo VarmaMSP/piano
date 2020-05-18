@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:piano/models/podcast.dart';
+import 'package:phenopod/models/podcast.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:flutter/foundation.dart';
 

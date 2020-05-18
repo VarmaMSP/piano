@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:piano/blocs/audio_player/audio_player_bloc.dart';
-import 'package:piano/widgets/audio_player/full_audio_player.dart';
-import 'package:piano/widgets/audio_player/mini_audio_player.dart';
+import 'package:phenopod/blocs/audio_player/main.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+
+import 'audio_player.dart' as full_audio_player;
+import 'audio_player_preview.dart';
 
 class AudioPlayer extends StatefulWidget {
   const AudioPlayer({
@@ -55,7 +56,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
         );
 
         Widget body;
-        if (state is AudioPlayerLoaded) {
+        if (state is AudioPlayerActive) {
           body = Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -97,13 +98,13 @@ class _AudioPlayerState extends State<AudioPlayer> {
                 },
                 child: Column(
                   children: <Widget>[
-                    MiniAudioPlayer(
+                    AudioPlayerPreview(
                       controller: widget.controller,
                       state: state,
-                      onPlay: () => audioPlayerBloc.add(Play()),
-                      onPause: () => audioPlayerBloc.add(Pause()),
+                      onPlay: () => audioPlayerBloc.add(ResumePlayback()),
+                      onPause: () => audioPlayerBloc.add(PausePlayback()),
                     ),
-                    const FullAudioPlayer(),
+                    const full_audio_player.AudioPlayer(),
                   ],
                 ),
               ),

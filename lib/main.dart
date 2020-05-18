@@ -1,8 +1,9 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:piano/app/main.dart';
-// import 'package:piano/route_generator.dart';
-// import 'package:piano/screens/home/page.dart';
+import 'package:phenopod/app/main.dart';
+// import 'package:phenopod/route_generator.dart';
+// import 'package:phenopod/screens/home/page.dart';
 import 'package:bloc/bloc.dart';
 
 void main() {
@@ -21,10 +22,10 @@ class MyApp extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
 
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Phenopod',
       debugShowCheckedModeBanner: false,
-      home: App(),
+      home: AudioServiceWidget(child: const App()),
     );
   }
 }

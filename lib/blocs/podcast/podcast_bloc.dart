@@ -4,10 +4,10 @@ import 'package:bloc/bloc.dart';
 // import 'package:rxdart/rxdart.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:piano/models/api_response.dart';
-import 'package:piano/models/episode.dart';
-import 'package:piano/models/podcast.dart';
-import 'package:piano/utils/request.dart';
+import 'package:phenopod/models/api_response.dart';
+import 'package:phenopod/models/episode.dart';
+import 'package:phenopod/models/podcast.dart';
+import 'package:phenopod/utils/request.dart';
 
 part 'podcast_event.dart';
 part 'podcast_state.dart';
