@@ -45,23 +45,23 @@ class NavigationBar extends StatelessWidget {
               // showUnselectedLabels: false,
               items: [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home, size: 20.0),
+                  icon: Icon(Icons.home, size: 21.0),
                   title: Text('Home'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.explore, size: 18.0),
+                  icon: Icon(Icons.explore, size: 19.0),
                   title: Text('Explore'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.rss_feed, size: 18.0),
+                  icon: Icon(Icons.rss_feed, size: 19.0),
                   title: Text('Feeds'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.playlist_play, size: 20.0),
+                  icon: Icon(Icons.playlist_play, size: 21.0),
                   title: Text('Playlists'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.face, size: 18.0),
+                  icon: Icon(Icons.face, size: 19.0),
                   title: Text('Profile'),
                 ),
               ],

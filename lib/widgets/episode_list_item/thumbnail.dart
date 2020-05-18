@@ -8,7 +8,7 @@ import 'package:piano/models/podcast.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class Thumbnail extends StatelessWidget {
-  static final double thumbnailSize = 90;
+  static final double thumbnailSize = 88;
   static final String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
 
   const Thumbnail({
