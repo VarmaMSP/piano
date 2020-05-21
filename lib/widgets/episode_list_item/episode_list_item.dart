@@ -23,10 +23,10 @@ class EpisodeListItem extends StatelessWidget {
       episode.title,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 14.45,
-        color: const Color(0xff2a303b),
+        fontSize: 14.4,
+        color: TWColors.gray.shade900, //const Color(0xff2a303b),
         height: 1.32,
-        letterSpacing: 0.25,
+        letterSpacing: 0.26,
         fontWeight: FontWeight.w500,
       ),
       maxLines: 2,
@@ -53,11 +53,12 @@ class EpisodeListItem extends StatelessWidget {
           .replaceAll('&nbsp;', ' ')
           .replaceAll('&amp', '&'),
       overflow: TextOverflow.ellipsis,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 12,
-        color: Color(0xff657389), //TWColors.gray.shade600,
-        height: 1.3,
-        letterSpacing: 0.1,
+        color: TWColors
+            .gray.shade600, // Color(0xff657389), //TWColors.gray.shade600,
+        height: 1.295,
+        letterSpacing: 0.12,
       ),
       maxLines: 2,
       textAlign: TextAlign.left,

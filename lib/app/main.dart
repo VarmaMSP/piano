@@ -35,44 +35,46 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
           preferredSize: const Size(0, 0),
           child: Container(),
         ),
-        body: MultiBlocProvider(
-          providers: <BlocProvider<dynamic>>[
-            BlocProvider<AudioPlayerBloc>(
-              create: (BuildContext context) => AudioPlayerBloc(),
-            ),
-          ],
-          child: Stack(
-            children: <Widget>[
-              Builder(
-                builder: (BuildContext context) {
-                  return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
-                    bloc: BlocProvider.of<AudioPlayerBloc>(context),
-                    builder: (BuildContext context, AudioPlayerState state) {
-                      final double padding =
-                          state is AudioPlayerActive ? 102 : 56;
-
-                      return Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.only(bottom: padding),
-                        child: Navigator(
-                          key: navigatorKey,
-                          initialRoute: '/',
-                          onGenerateRoute: RouteGenerator.generateRoute,
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: AudioPlayer(controller: _bottomAppBarController),
-              ),
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: NavigationBar(controller: _bottomAppBarController),
+        body: SafeArea(
+          child: MultiBlocProvider(
+            providers: <BlocProvider<dynamic>>[
+              BlocProvider<AudioPlayerBloc>(
+                create: (BuildContext context) => AudioPlayerBloc(),
               ),
             ],
+            child: Stack(
+              children: <Widget>[
+                Builder(
+                  builder: (BuildContext context) {
+                    return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
+                      bloc: BlocProvider.of<AudioPlayerBloc>(context),
+                      builder: (BuildContext context, AudioPlayerState state) {
+                        final double padding =
+                            state is AudioPlayerActive ? 102 : 56;
+
+                        return Container(
+                          color: Colors.white,
+                          padding: EdgeInsets.only(bottom: padding),
+                          child: Navigator(
+                            key: navigatorKey,
+                            initialRoute: '/',
+                            onGenerateRoute: RouteGenerator.generateRoute,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: AudioPlayer(controller: _bottomAppBarController),
+                ),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: NavigationBar(controller: _bottomAppBarController),
+                ),
+              ],
+            ),
           ),
         ),
       ),

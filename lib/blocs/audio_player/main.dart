@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:bloc/bloc.dart';
@@ -29,7 +30,8 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
       if (state is AudioPlayerInactive) {
         await _startAudioService();
       }
-      await _playEpisode(event.episode, event.podcast);
+
+      _playEpisode(event.episode, event.podcast);
 
       yield AudioPlayerActive(
         episode: event.episode,
@@ -44,23 +46,21 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
       if (state is AudioPlayerActive) {
         await AudioService.play();
       }
-      return;
     }
 
     if (event is PausePlayback) {
       if (state is AudioPlayerActive) {
         await AudioService.pause();
       }
-      return;
     }
 
     if (event is StopPlayback) {
       if (state is AudioPlayerActive) {
         await AudioService.stop();
       }
-      return;
     }
 
+    // Map Internal Events to state
     if (event is ResetState) {
       yield AudioPlayerInactive();
     }
@@ -78,8 +78,10 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
     }
   }
 
-  Future<void> dispose() async {
+  @override
+  Future<void> close() async {
     await _playbackStateListener?.cancel();
+    await super.close();
   }
 
   Future<void> _startAudioService() async {
@@ -91,51 +93,52 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
       enableQueue: true,
     );
 
+    await _playbackStateListener?.cancel();
     _playbackStateListener = AudioService.playbackStateStream.listen(
-      (PlaybackState state) async {
+      (PlaybackState state) {
+        log('Bloc.PlaybackStateListner: ${state?.basicState} ${state?.position}');
         final BasicPlaybackState basicState = state?.basicState;
 
-        if (basicState == BasicPlaybackState.buffering ||
-            basicState == BasicPlaybackState.connecting ||
-            basicState == BasicPlaybackState.rewinding ||
-            basicState == BasicPlaybackState.fastForwarding) {
-          add(
-            UpdateActiveState(
-              playbackState: 'LOADING',
-              currentTime: Duration(milliseconds: state.currentPosition),
-            ),
-          );
-        }
-
         if (basicState == BasicPlaybackState.none) {
-          add(
-            UpdateActiveState(
-              duration: Duration(milliseconds: state.position),
-            ),
-          );
+          add(ResetState());
         }
 
-        if (basicState == BasicPlaybackState.playing) {
-          add(
-            UpdateActiveState(
-              playbackState: 'PLAYING',
-              currentTime: Duration(milliseconds: state.currentPosition),
-            ),
-          );
+        if (basicState == BasicPlaybackState.skippingToQueueItem) {
+          add(UpdateActiveState(
+            duration: Duration(milliseconds: state.currentPosition),
+          ));
+        }
+
+        if (basicState == BasicPlaybackState.connecting) {
+          add(const UpdateActiveState(playbackState: 'LOADING'));
+        }
+
+        if (basicState == BasicPlaybackState.buffering) {
+          add(UpdateActiveState(
+            playbackState: 'LOADING',
+            currentTime: Duration(milliseconds: state.currentPosition),
+          ));
         }
 
         if (basicState == BasicPlaybackState.paused) {
-          add(
-            UpdateActiveState(
-              playbackState: 'PAUSED',
-              currentTime: Duration(milliseconds: state.currentPosition),
-            ),
-          );
+          add(UpdateActiveState(
+            playbackState: 'PAUSED',
+            currentTime: Duration(milliseconds: state.currentPosition),
+          ));
+        }
+
+        if (basicState == BasicPlaybackState.playing) {
+          add(UpdateActiveState(
+            playbackState: 'PLAYING',
+            currentTime: Duration(milliseconds: state.currentPosition),
+          ));
         }
 
         if (basicState == BasicPlaybackState.stopped) {
-          await _playbackStateListener.cancel();
-          add(ResetState());
+          add(UpdateActiveState(
+            playbackState: 'COMPLETED',
+            currentTime: Duration(milliseconds: state.currentPosition),
+          ));
         }
       },
     );

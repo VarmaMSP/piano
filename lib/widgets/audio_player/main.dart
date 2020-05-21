@@ -104,7 +104,11 @@ class _AudioPlayerState extends State<AudioPlayer> {
                       onPlay: () => audioPlayerBloc.add(ResumePlayback()),
                       onPause: () => audioPlayerBloc.add(PausePlayback()),
                     ),
-                    const full_audio_player.AudioPlayer(),
+                    full_audio_player.AudioPlayer(
+                      state: state,
+                      onPlay: () => audioPlayerBloc.add(ResumePlayback()),
+                      onPause: () => audioPlayerBloc.add(PausePlayback()),
+                    ),
                   ],
                 ),
               ),

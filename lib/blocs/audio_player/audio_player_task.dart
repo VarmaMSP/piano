@@ -4,61 +4,98 @@ import 'dart:developer';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 
+/// * States set by AudioTask
+/// * -----------------------
+/// * [BasicPlaybackState.none] -> audioplayer has not loaded anything or closed
+/// * [BasicPlaybackState.skippingToQueueItem] -> Using this to send duration to UI
+
+/// * States set by AudioPlayer
+/// * -----------------------
+/// * [BasicPlaybackState.connecting] with duration -> duration is loaded
+/// * [BasicPlaybackState.buffering] -> audio is buffering
+/// * [BasicPlaybackState.paused] -> audio is paused
+/// * [BasicPlaybackState.playing] -> audio is playing
+/// * [BasicPlaybackState.stopped] -> audio playback is complete
+
+class AudioPlayerEvent {
+  const AudioPlayerEvent({
+    this.buffering,
+    this.position,
+    this.audioPlaybackState,
+  });
+
+  final bool buffering;
+  final Duration position;
+  final AudioPlaybackState audioPlaybackState;
+
+  bool get isValid =>
+      buffering != null && position != null && audioPlaybackState != null;
+}
+
 class AudioPlayerTask extends BackgroundAudioTask {
   final AudioPlayer _audioPlayer = AudioPlayer();
   final Completer<void> _completer = Completer<void>();
 
   @override
   Future<void> onStart() async {
-    final Stream<AudioPlaybackEvent> s = _audioPlayer.playbackEventStream;
-    final StreamSubscription<AudioPlaybackEvent> updateState = s.listen(
-      (AudioPlaybackEvent event) {
-        log('something ${event.toString()}');
-        final BasicPlaybackState state = _toBasicPlaybackState(event);
-        if (state == BasicPlaybackState.error) {
-          _setState(state, position: Duration.zero);
-        }
-
-        if (state != BasicPlaybackState.stopped &&
-            state != BasicPlaybackState.none) {
-          _setState(state, position: event.position);
-        }
-      },
-    );
-
-    log('onStart');
+    final StreamSubscription<AudioPlaybackEvent> eventSubscription =
+        _audioPlayer.playbackEventStream.listen((AudioPlaybackEvent event) {
+      // We dont care if audioPlayer is stopped and none
+      if (event.state != AudioPlaybackState.stopped &&
+          event.state != AudioPlaybackState.none) {
+        _setState(
+          _toBasicPlaybackState(event.buffering, event.state),
+          position: event.position,
+        );
+      }
+    });
 
     await _completer.future;
-    updateState.cancel();
+    eventSubscription.cancel();
   }
 
   @override
   Future<void> onPlayMediaItem(MediaItem mediaItem) async {
-    log('on Play Media Item ${mediaItem.toString()}');
+    if (_canStopCurrentPlayback()) {
+      await _audioPlayer.stop();
+    }
+
     try {
-      await AudioServiceBackground.setMediaItem(mediaItem);
-      await _setState(
-        BasicPlaybackState.none,
-        duration: await _audioPlayer.setUrl(mediaItem.id),
+      // Show Item without duration
+      AudioServiceBackground.setMediaItem(mediaItem);
+      // AudioPlayerState: connecting -> stopped
+      final Duration duration =
+          await _audioPlayer.setUrl(mediaItem.id).catchError((dynamic error) {
+        log('AudioPlayerTaskError: ${error.toString()}');
+      });
+      // Show Item in notification tray with duration
+      AudioServiceBackground.setMediaItem(
+        mediaItem.copyWith(duration: duration?.inMilliseconds),
       );
-      await onPlay();
+      // Notify UI of duration and pause for onPlay to work
+      _setState(
+        BasicPlaybackState.skippingToQueueItem,
+        duration: duration,
+      );
+      // Play Audio
+      onPlay();
     } catch (err) {
-      log(err.toString());
-      await _setState(
-        BasicPlaybackState.error,
-        position: Duration.zero,
-      );
+      _setState(BasicPlaybackState.error, position: Duration.zero);
     }
   }
 
   @override
-  Future<void> onPlay() async {
-    await _audioPlayer.play();
+  void onPlay() {
+    if (_canPlayCurrentPlayback()) {
+      _audioPlayer.play();
+    }
   }
 
   @override
-  Future<void> onPause() async {
-    await _audioPlayer.pause();
+  void onPause() {
+    if (_canPauseCurrentPlayback()) {
+      _audioPlayer.pause();
+    }
   }
 
   @override
@@ -70,51 +107,62 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   Future<void> onStop() async {
-    log('on Stop');
-    await _audioPlayer.stop();
-    _setState(
-      BasicPlaybackState.stopped,
-      position: _audioPlayer.playbackEvent.position,
-    );
-
+    // stopped and none events from audioplayer will be skipped
+    if (_canStopCurrentPlayback()) {
+      await _audioPlayer.stop();
+    }
     await _audioPlayer.dispose();
+    // Notify UI to close
+    _setState(BasicPlaybackState.none);
+    // Close this isolate
     _completer.complete();
   }
 
-  BasicPlaybackState _toBasicPlaybackState(AudioPlaybackEvent event) {
-    if (event.buffering) {
-      return BasicPlaybackState.buffering;
-    }
+  bool _canPauseCurrentPlayback() {
+    final AudioPlaybackState audioPlaybackState = _audioPlayer.playbackState;
+    return audioPlaybackState == AudioPlaybackState.playing;
+  }
 
-    switch (event.state) {
-      case AudioPlaybackState.none:
-        return BasicPlaybackState.none;
+  bool _canPlayCurrentPlayback() {
+    final AudioPlaybackState audioPlaybackState = _audioPlayer.playbackState;
+    return audioPlaybackState != AudioPlaybackState.connecting &&
+        audioPlaybackState != AudioPlaybackState.none;
+  }
 
-      case AudioPlaybackState.stopped:
-        return BasicPlaybackState.stopped;
+  bool _canStopCurrentPlayback() {
+    final AudioPlaybackState audioPlaybackState = _audioPlayer.playbackState;
+    return audioPlaybackState == AudioPlaybackState.paused ||
+        audioPlaybackState == AudioPlaybackState.playing ||
+        audioPlaybackState == AudioPlaybackState.completed;
+  }
 
+  BasicPlaybackState _toBasicPlaybackState(
+    bool buffering,
+    AudioPlaybackState audioPlaybackstate,
+  ) {
+    switch (audioPlaybackstate) {
       case AudioPlaybackState.paused:
         return BasicPlaybackState.paused;
-
       case AudioPlaybackState.playing:
         return BasicPlaybackState.playing;
-
       case AudioPlaybackState.connecting:
         return BasicPlaybackState.connecting;
-
       case AudioPlaybackState.completed:
         return BasicPlaybackState.stopped;
-
       default:
-        return BasicPlaybackState.error;
+        if (buffering) {
+          return BasicPlaybackState.buffering;
+        } else {
+          throw Exception('Invalid input for this method $audioPlaybackstate');
+        }
     }
   }
 
-  Future<void> _setState(
+  void _setState(
     BasicPlaybackState state, {
     Duration duration,
     Duration position,
-  }) async {
+  }) {
     const MediaControl playControl = MediaControl(
       androidIcon: 'drawable/ic_play_circle_outline',
       label: 'Play',
@@ -145,7 +193,9 @@ class AudioPlayerTask extends BackgroundAudioTask {
       action: MediaAction.stop,
     );
 
-    await AudioServiceBackground.setState(
+    log('AudioPlayerTask._setState: $state ${duration?.inMilliseconds ?? position?.inMilliseconds ?? 0}');
+
+    AudioServiceBackground.setState(
       controls: <MediaControl>[
         rewindControl,
         if (state == BasicPlaybackState.playing) pauseControl else playControl,
