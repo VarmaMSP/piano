@@ -2,8 +2,6 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phenopod/app/main.dart';
-// import 'package:phenopod/route_generator.dart';
-// import 'package:phenopod/screens/home/page.dart';
 import 'package:bloc/bloc.dart';
 
 void main() {
@@ -12,7 +10,40 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    AudioService.connect();
+  }
+
+  @override
+  void dispose() {
+    AudioService.disconnect();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        AudioService.connect();
+        break;
+      case AppLifecycleState.paused:
+        AudioService.disconnect();
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -22,10 +53,10 @@ class MyApp extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
 
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Phenopod',
       debugShowCheckedModeBanner: false,
-      home: AudioServiceWidget(child: const App()),
+      home: App(),
     );
   }
 }
