@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/blocs/audio_player/main.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-import 'package:audio_service/audio_service.dart';
 
 class AudioPlayerPreview extends StatelessWidget {
   const AudioPlayerPreview({
@@ -63,37 +62,27 @@ class AudioPlayerPreview extends StatelessWidget {
             color: TWColors.gray.shade700,
             size: 20,
           ),
-          // Text('${state.currentTime.inSeconds} / ${state.duration}'),
           Container(width: 15.0),
           Expanded(
-            child: StreamBuilder<PlaybackState>(
-              stream: AudioService.playbackStateStream,
-              builder: (BuildContext context,
-                  AsyncSnapshot<PlaybackState> snapshot) {
-                return Text(snapshot.data?.basicState.toString());
+            child: GestureDetector(
+              onTap: () {
+                controller.animateBack(
+                  1.0,
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.ease,
+                );
               },
+              child: Text(
+                state.episode.title,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 14,
+                  letterSpacing: 0.2,
+                ),
+              ),
             ),
           ),
-          // Expanded(
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       controller.animateBack(
-          //         1.0,
-          //         duration: const Duration(milliseconds: 250),
-          //         curve: Curves.ease,
-          //       );
-          //     },
-          //     child: Text(
-          //       state.episode.title,
-          //       maxLines: 1,
-          //       textAlign: TextAlign.center,
-          //       style: const TextStyle(
-          //         fontSize: 14,
-          //         letterSpacing: 0.2,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Container(width: 15.0),
           SizedBox(
             height: 30,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/blocs/audio_player/main.dart';
-import 'package:audio_service/audio_service.dart';
 
 class AudioPlayer extends StatelessWidget {
   const AudioPlayer({
@@ -25,13 +24,6 @@ class AudioPlayer extends StatelessWidget {
           children: <Widget>[
             Text(state.episode.title),
             Container(height: 40),
-            StreamBuilder<PlaybackState>(
-              stream: AudioService.playbackStateStream,
-              builder: (BuildContext context,
-                  AsyncSnapshot<PlaybackState> snapshot) {
-                return Text(snapshot.data?.basicState.toString());
-              },
-            )
           ],
         ),
       ),
