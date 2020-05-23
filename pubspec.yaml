@@ -11,6 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  hydrated_bloc: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -25,6 +26,7 @@ dev_dependencies:
   cached_network_image: ^2.2.0+1
   audio_service: ^0.8.0
   just_audio: ^0.1.9
+  pedantic: ^1.9.0
 
 flutter:
   uses-material-design: true

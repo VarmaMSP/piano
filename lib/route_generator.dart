@@ -4,7 +4,7 @@ import 'package:phenopod/screens/podcast/page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final Map<String, String> args = settings.arguments as Map<String, String>;
+    final args = settings.arguments as Map<String, String>;
 
     switch (settings.name) {
       case '/podcast':
