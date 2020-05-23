@@ -32,12 +32,18 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
     log(event.toString());
 
     if (event is SetQueue) {
-      yield AudioPlayerDormant(queue: event.queue);
+      if (state is AudioPlayerDormant) {
+        yield AudioPlayerDormant(queue: event.queue);
+      }
+
+      if (state is AudioPlayerActive) {
+        yield state.copyWith(queue: event.queue);
+      }
     }
 
     if (event is PlayEpisodeFromQueue) {
-      final mediaItem =
-          state.queue.getQueueItem(episodeId: event.episodeId)?.toMediaItem();
+      final queueItem = state.queue.getQueueItem(episodeId: event.episodeId);
+      final mediaItem = queueItem?.toMediaItem();
       if (mediaItem != null) {
         await audio.play(mediaItem);
       }

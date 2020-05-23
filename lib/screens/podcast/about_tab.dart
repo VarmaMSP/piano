@@ -17,7 +17,7 @@ class AboutTab extends StatelessWidget {
           .replaceAll('&amp', '&'),
       style: TextStyle(
         height: 1.5,
-        fontSize: 14,
+        fontSize: 13.5,
         color: TWColors.gray.shade800,
         letterSpacing: 0.25,
       ),

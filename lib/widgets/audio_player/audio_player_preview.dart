@@ -123,7 +123,7 @@ class AudioPlayerPreview extends StatelessWidget {
       iconData = Icons.play_arrow;
       onPressed = () => onPlay();
     } else {
-      iconData = Icons.pause;
+      iconData = Icons.play_arrow;
       onPressed = () {};
     }
 

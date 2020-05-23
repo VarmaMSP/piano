@@ -82,7 +82,7 @@ Future<void> pause() async {
 
 Future<void> resume() async {
   if (AudioService.running) {
-    await AudioService.pause();
+    await AudioService.play();
   }
 }
 
