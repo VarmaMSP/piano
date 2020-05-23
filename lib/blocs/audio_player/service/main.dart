@@ -9,20 +9,28 @@ class AudioState extends Equatable {
   final MediaItem mediaItem;
   final PlaybackState playbackState;
 
+  int get duration => mediaItem.duration;
+
+  int get currentTime => playbackState.currentPosition;
+
   bool get isActive => playbackState.basicState != BasicPlaybackState.none;
 
-  int get duration => mediaItem?.duration ?? 0;
+  bool get isPaused => playbackState.basicState == BasicPlaybackState.paused;
 
-  bool get isPaused => playbackState?.basicState == BasicPlaybackState.paused;
-
-  bool get isPlaying => playbackState?.basicState == BasicPlaybackState.playing;
+  bool get isPlaying => playbackState.basicState == BasicPlaybackState.playing;
 
   bool get isLoading =>
-      playbackState?.basicState == BasicPlaybackState.connecting ||
-      playbackState?.basicState == BasicPlaybackState.buffering;
+      mediaItem.duration == 0 ||
+      playbackState.basicState == BasicPlaybackState.connecting ||
+      playbackState.basicState == BasicPlaybackState.buffering;
 
   @override
-  List<Object> get props => <Object>[mediaItem.id, playbackState?.basicState];
+  List<Object> get props => <Object>[
+        mediaItem.id,
+        playbackState.basicState,
+        playbackState.position,
+        playbackState.updateTime
+      ];
 }
 
 Stream<AudioState> stateStream =
@@ -32,6 +40,7 @@ Stream<AudioState> stateStream =
   (mediaItem, playbackState) {
     if (mediaItem == null && playbackState == null) {
       return AudioState(
+        mediaItem: MediaItem(id: '', title: '', album: '', duration: 0),
         playbackState: PlaybackState(
           basicState: BasicPlaybackState.none,
           actions: {},

@@ -100,16 +100,32 @@ class AudioPlayerPreview extends StatelessWidget {
   }
 
   Widget _buildCircularProgressIndicator() {
-    final duration = state.audioState.mediaItem.duration;
-    // final int currentTime = state.currentTime.inSeconds;
+    if (state.audioState.isLoading) {
+      return CircularProgressIndicator(
+        value: null,
+        strokeWidth: 2.25,
+        valueColor: AlwaysStoppedAnimation<Color>(
+          TWColors.purple.shade600,
+        ),
+        backgroundColor: TWColors.gray.shade300,
+      );
+    }
 
-    return CircularProgressIndicator(
-      value: state.audioState.isLoading || duration == 0 ? null : 0.5,
-      strokeWidth: 2.25,
-      valueColor: AlwaysStoppedAnimation<Color>(
-        TWColors.purple.shade600,
-      ),
-      backgroundColor: TWColors.gray.shade300,
+    return StreamBuilder(
+      stream: Stream.periodic(Duration(seconds: 1)),
+      builder: (context, snapshot) {
+        final duration = state.audioState.duration;
+        final currentTime = state.audioState.currentTime;
+
+        return CircularProgressIndicator(
+          value: currentTime / duration,
+          strokeWidth: 2.25,
+          valueColor: AlwaysStoppedAnimation<Color>(
+            TWColors.purple.shade600,
+          ),
+          backgroundColor: TWColors.gray.shade300,
+        );
+      },
     );
   }
 
