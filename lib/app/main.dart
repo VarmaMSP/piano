@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:phenopod/blocs/audio_player/main.dart';
+import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import 'package:phenopod/widgets/audio_player/main.dart';
 import 'package:phenopod/widgets/navigation_bar.dart';
 
@@ -49,8 +49,8 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                     return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
                       bloc: BlocProvider.of<AudioPlayerBloc>(context),
                       builder: (BuildContext context, AudioPlayerState state) {
-                        final double padding =
-                            state is AudioPlayerActive ? 102 : 56;
+                        final padding =
+                            state is AudioPlayerActive ? 102.0 : 56.0;
 
                         return Container(
                           color: Colors.white,

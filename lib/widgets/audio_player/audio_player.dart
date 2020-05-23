@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/blocs/audio_player/main.dart';
+import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 
 class AudioPlayer extends StatelessWidget {
   const AudioPlayer({
@@ -22,7 +22,7 @@ class AudioPlayer extends StatelessWidget {
         color: Colors.black45,
         child: Column(
           children: <Widget>[
-            Text(state.episode.title),
+            // Text(state.episode.title),
             Container(height: 40),
           ],
         ),

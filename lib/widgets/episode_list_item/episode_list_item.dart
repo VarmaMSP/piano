@@ -118,8 +118,8 @@ class EpisodeListItem extends StatelessWidget {
   }
 
   List<TextSpan> _episodePubDate(Episode episode) {
-    final DateTime d = DateTime.parse('${episode.pubDate} +00:00');
-    return <TextSpan>[TextSpan(text: timeago.format(d))];
+    final dateTime = DateTime.parse('${episode.pubDate} +00:00');
+    return <TextSpan>[TextSpan(text: timeago.format(dateTime))];
   }
 
   List<TextSpan> _episodeNumber(Episode episode) {

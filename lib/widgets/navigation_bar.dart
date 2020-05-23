@@ -8,7 +8,7 @@ class NavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Animation<double> animation = Tween<double>(
+    final animation = Tween<double>(
       begin: 1.0,
       end: 0.0,
     ).animate(

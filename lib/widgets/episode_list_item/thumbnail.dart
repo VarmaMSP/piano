@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:phenopod/blocs/audio_player/main.dart';
+import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import 'package:phenopod/models/episode.dart';
+import 'package:phenopod/models/main.dart';
 import 'package:phenopod/models/podcast.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -72,8 +73,14 @@ class Thumbnail extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        BlocProvider.of<AudioPlayerBloc>(context)
-            ?.add(PlayEpisode(episode: episode, podcast: podcast));
+        final bloc = BlocProvider.of<AudioPlayerBloc>(context);
+
+        bloc.add(SetQueue(
+          queue: Queue(
+            items: <QueueItem>[QueueItem(episode: episode, podcast: podcast)],
+          ),
+        ));
+        bloc.add(PlayEpisodeFromQueue(episodeId: episode.id));
       },
       child: Container(
         height: thumbnailSize,
@@ -104,7 +111,7 @@ class Thumbnail extends StatelessWidget {
       regex = RegExp(r'(\d\d:\d\d:\d\d)');
     }
 
-    final String res = regex
+    final res = regex
         .firstMatch(DateTime(0, 0, 0, 0, 0, sec).toIso8601String())
         ?.group(1);
 

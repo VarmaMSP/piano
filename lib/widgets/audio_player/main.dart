@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:phenopod/blocs/audio_player/main.dart';
+import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 import 'audio_player.dart' as full_audio_player;
@@ -36,16 +36,14 @@ class _AudioPlayerState extends State<AudioPlayer> {
   @override
   Widget build(BuildContext context) {
     //ignore: close_sinks
-    final AudioPlayerBloc audioPlayerBloc =
-        BlocProvider.of<AudioPlayerBloc>(context);
+    final audioPlayerBloc = BlocProvider.of<AudioPlayerBloc>(context);
 
     return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
       bloc: audioPlayerBloc,
       builder: (BuildContext context, AudioPlayerState state) {
-        final EdgeInsets padding = MediaQuery.of(context).padding;
-        final double screenHeight =
-            MediaQuery.of(context).size.height - padding.top;
-        final Animation<double> animation = Tween<double>(
+        final padding = MediaQuery.of(context).padding;
+        final screenHeight = MediaQuery.of(context).size.height - padding.top;
+        final animation = Tween<double>(
           begin: 106.0 / screenHeight,
           end: 1.0,
         ).animate(

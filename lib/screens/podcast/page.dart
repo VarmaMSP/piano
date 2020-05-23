@@ -49,7 +49,7 @@ class _PodcastPageState extends State<PodcastPage>
           );
         }
 
-        final PodcastLoaded s = state as PodcastLoaded;
+        final s = state as PodcastLoaded;
         return NestedScrollView(
           controller: _scrollController,
           headerSliverBuilder: (BuildContext context, _) {

@@ -15,7 +15,7 @@ class ApiResponse {
   });
 
   factory ApiResponse.fromJson(Map<String, dynamic> json) {
-    final Map<String, dynamic> data = json['data'] as Map<String, dynamic>;
+    final data = json['data'] as Map<String, dynamic>;
 
     return ApiResponse(
       users: (data['users'] as List<dynamic> ?? <dynamic>[])

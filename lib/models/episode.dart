@@ -58,6 +58,66 @@ class Episode extends Equatable {
   final double progress;
   final String lastPlayedAt;
 
+  Episode copyWith({
+    String id,
+    String urlParam,
+    String title,
+    String mediaUrl,
+    String pubDate,
+    String summary,
+    String description,
+    int duration,
+    int explicit,
+    int episode,
+    int season,
+    String type,
+    String titleHighlighted,
+    String descriptionHighlighted,
+    double progress,
+    String lastPlayedAt,
+  }) {
+    return Episode(
+      id: id ?? this.id,
+      urlParam: urlParam ?? this.urlParam,
+      title: title ?? this.title,
+      mediaUrl: mediaUrl ?? this.mediaUrl,
+      pubDate: pubDate ?? this.pubDate,
+      summary: summary ?? this.summary,
+      description: description ?? this.description,
+      duration: duration ?? this.duration,
+      explicit: explicit ?? this.explicit,
+      episode: episode ?? this.episode,
+      season: season ?? this.season,
+      type: type ?? this.type,
+      titleHighlighted: titleHighlighted ?? this.titleHighlighted,
+      descriptionHighlighted:
+          descriptionHighlighted ?? this.descriptionHighlighted,
+      progress: progress ?? this.progress,
+      lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'url_param': urlParam,
+      'title': title,
+      'media_url': mediaUrl,
+      'pub_date': pubDate,
+      'summary': summary,
+      'description': description,
+      'duration': duration,
+      'explicit': explicit,
+      'episode': episode,
+      'season': season,
+      'type': type,
+      'title_highlighted': titleHighlighted,
+      'description_highlighted': descriptionHighlighted,
+      'progress': progress,
+      'lastPlayedAt': lastPlayedAt,
+    };
+  }
+
   @override
   List<Object> get props => <String>[id];
 

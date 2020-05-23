@@ -10,26 +10,15 @@ import 'package:just_audio/just_audio.dart';
 /// * [BasicPlaybackState.skippingToQueueItem] -> Using this to send duration to UI
 
 /// * States set by AudioPlayer
-/// * -----------------------
+/// * -------------------------
 /// * [BasicPlaybackState.connecting] with duration -> duration is loaded
 /// * [BasicPlaybackState.buffering] -> audio is buffering
 /// * [BasicPlaybackState.paused] -> audio is paused
 /// * [BasicPlaybackState.playing] -> audio is playing
 /// * [BasicPlaybackState.stopped] -> audio playback is complete
 
-class AudioPlayerEvent {
-  const AudioPlayerEvent({
-    this.buffering,
-    this.position,
-    this.audioPlaybackState,
-  });
-
-  final bool buffering;
-  final Duration position;
-  final AudioPlaybackState audioPlaybackState;
-
-  bool get isValid =>
-      buffering != null && position != null && audioPlaybackState != null;
+void backgroundTaskEntrypoint() {
+  AudioServiceBackground.run(() => AudioPlayerTask());
 }
 
 class AudioPlayerTask extends BackgroundAudioTask {
@@ -38,20 +27,22 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   @override
   Future<void> onStart() async {
-    final StreamSubscription<AudioPlaybackEvent> eventSubscription =
+    final eventSubscription =
         _audioPlayer.playbackEventStream.listen((AudioPlaybackEvent event) {
-      // We dont care if audioPlayer is stopped and none
-      if (event.state != AudioPlaybackState.stopped &&
-          event.state != AudioPlaybackState.none) {
-        _setState(
-          _toBasicPlaybackState(event.buffering, event.state),
-          position: event.position,
-        );
+      // Stopping is controlled manually
+      if (event.state == AudioPlaybackState.stopped ||
+          event.state == AudioPlaybackState.none) {
+        return;
       }
+
+      _setState(
+        _toBasicPlaybackState(event.buffering, event.state),
+        position: event.position,
+      );
     });
 
     await _completer.future;
-    eventSubscription.cancel();
+    await eventSubscription.cancel();
   }
 
   @override
@@ -62,20 +53,12 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
     try {
       // Show Item without duration
-      AudioServiceBackground.setMediaItem(mediaItem);
+      await AudioServiceBackground.setMediaItem(mediaItem);
       // AudioPlayerState: connecting -> stopped
-      final Duration duration =
-          await _audioPlayer.setUrl(mediaItem.id).catchError((dynamic error) {
-        log('AudioPlayerTaskError: ${error.toString()}');
-      });
+      final duration = await _audioPlayer.setUrl(mediaItem.id);
       // Show Item in notification tray with duration
-      AudioServiceBackground.setMediaItem(
+      await AudioServiceBackground.setMediaItem(
         mediaItem.copyWith(duration: duration?.inMilliseconds),
-      );
-      // Notify UI of duration and pause for onPlay to work
-      _setState(
-        BasicPlaybackState.skippingToQueueItem,
-        duration: duration,
       );
       // Play Audio
       onPlay();
@@ -119,18 +102,18 @@ class AudioPlayerTask extends BackgroundAudioTask {
   }
 
   bool _canPauseCurrentPlayback() {
-    final AudioPlaybackState audioPlaybackState = _audioPlayer.playbackState;
+    final audioPlaybackState = _audioPlayer.playbackState;
     return audioPlaybackState == AudioPlaybackState.playing;
   }
 
   bool _canPlayCurrentPlayback() {
-    final AudioPlaybackState audioPlaybackState = _audioPlayer.playbackState;
+    final audioPlaybackState = _audioPlayer.playbackState;
     return audioPlaybackState != AudioPlaybackState.connecting &&
         audioPlaybackState != AudioPlaybackState.none;
   }
 
   bool _canStopCurrentPlayback() {
-    final AudioPlaybackState audioPlaybackState = _audioPlayer.playbackState;
+    final audioPlaybackState = _audioPlayer.playbackState;
     return audioPlaybackState == AudioPlaybackState.paused ||
         audioPlaybackState == AudioPlaybackState.playing ||
         audioPlaybackState == AudioPlaybackState.completed;
@@ -163,31 +146,31 @@ class AudioPlayerTask extends BackgroundAudioTask {
     Duration duration,
     Duration position,
   }) {
-    const MediaControl playControl = MediaControl(
+    const playControl = MediaControl(
       androidIcon: 'drawable/ic_play_circle_outline',
       label: 'Play',
       action: MediaAction.play,
     );
 
-    const MediaControl pauseControl = MediaControl(
+    const pauseControl = MediaControl(
       androidIcon: 'drawable/ic_pause_circle_outline',
       label: 'Pause',
       action: MediaAction.pause,
     );
 
-    const MediaControl rewindControl = MediaControl(
+    const rewindControl = MediaControl(
       androidIcon: 'drawable/ic_fast_rewind',
       label: 'Previous',
       action: MediaAction.rewind,
     );
 
-    const MediaControl fastForwardControl = MediaControl(
+    const fastForwardControl = MediaControl(
       androidIcon: 'drawable/ic_fast_forward',
       label: 'Next',
       action: MediaAction.fastForward,
     );
 
-    const MediaControl stopControl = MediaControl(
+    const stopControl = MediaControl(
       androidIcon: 'drawable/ic_stop',
       label: 'Stop',
       action: MediaAction.stop,

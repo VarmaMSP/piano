@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 // import 'package:rxdart/rxdart.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:phenopod/models/api_response.dart';
 import 'package:phenopod/models/episode.dart';
 import 'package:phenopod/models/podcast.dart';
 import 'package:phenopod/utils/request.dart';
@@ -28,12 +27,12 @@ class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
   Stream<PodcastState> mapEventToState(
     PodcastEvent event,
   ) async* {
-    final PodcastState state = this.state;
+    final state = this.state;
 
     try {
       // Load initial data
       if (event is Load && state is PodcastInitial) {
-        final ApiResponse response = await request.get('/podcasts/$urlParam');
+        final response = await request.get('/podcasts/$urlParam');
         yield PodcastLoaded(
           podcast: response.podcasts[0],
           episodes: response.episodes,
@@ -43,7 +42,7 @@ class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
 
       // Load more episodes
       if (event is Load && state is PodcastLoaded && !state.loadedAll) {
-        final ApiResponse response = await request.get(
+        final response = await request.get(
             '/ajax/browse?endpoint=podcast_episodes&&podcast_id=${state.podcast.id}&&offset=${state.episodes.length}&&limit=30&&order=pub_date_desc');
         yield PodcastLoaded(
           podcast: state.podcast,

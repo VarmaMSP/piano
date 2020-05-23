@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/blocs/audio_player/main.dart';
+import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class AudioPlayerPreview extends StatelessWidget {
@@ -18,7 +18,7 @@ class AudioPlayerPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Animation<double> sizeAnimation = Tween<double>(
+    final sizeAnimation = Tween<double>(
       begin: 1.0,
       end: 0.0,
     ).animate(
@@ -28,7 +28,7 @@ class AudioPlayerPreview extends StatelessWidget {
       ),
     );
 
-    final Animation<double> opacityAnimation = Tween<double>(
+    final opacityAnimation = Tween<double>(
       begin: 1.0,
       end: 0.0,
     ).animate(
@@ -73,7 +73,7 @@ class AudioPlayerPreview extends StatelessWidget {
                 );
               },
               child: Text(
-                state.episode.title,
+                state.playingNow.episode.title,
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
@@ -100,14 +100,11 @@ class AudioPlayerPreview extends StatelessWidget {
   }
 
   Widget _buildCircularProgressIndicator() {
-    final int duration = state.duration.inSeconds;
-    final int currentTime = state.currentTime.inSeconds;
-    final String playbackState = state.playbackState;
+    final duration = state.audioState.mediaItem.duration;
+    // final int currentTime = state.currentTime.inSeconds;
 
     return CircularProgressIndicator(
-      value: playbackState == 'LOADING' || duration == 0
-          ? null
-          : currentTime / duration,
+      value: state.audioState.isLoading || duration == 0 ? null : 0.5,
       strokeWidth: 2.25,
       valueColor: AlwaysStoppedAnimation<Color>(
         TWColors.purple.shade600,
@@ -117,18 +114,16 @@ class AudioPlayerPreview extends StatelessWidget {
   }
 
   Widget _buildActionButton() {
-    final String playbackState = state.playbackState;
-
     IconData iconData;
     void Function() onPressed;
-    if (playbackState == 'PLAYING') {
+    if (state.audioState.isPlaying) {
       iconData = Icons.pause;
       onPressed = () => onPause();
-    } else if (playbackState == 'PAUSED') {
+    } else if (state.audioState.isPaused) {
       iconData = Icons.play_arrow;
       onPressed = () => onPlay();
     } else {
-      iconData = Icons.play_arrow;
+      iconData = Icons.pause;
       onPressed = () {};
     }
 
