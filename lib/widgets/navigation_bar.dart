@@ -14,7 +14,7 @@ class NavigationBar extends StatelessWidget {
     ).animate(
       CurvedAnimation(
         parent: controller,
-        curve: const Interval(0.0, 0.55, curve: Curves.linear),
+        curve: const Interval(0.0, 0.3, curve: Curves.linear),
       ),
     );
 
@@ -34,16 +34,16 @@ class NavigationBar extends StatelessWidget {
               selectedItemColor: TWColors.purple.shade600,
               unselectedItemColor: TWColors.gray.shade600,
               selectedLabelStyle: TextStyle(
-                height: 1.5,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 0.45,
+                height: 1.45,
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.4,
               ),
               unselectedLabelStyle: TextStyle(
-                height: 1.5,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 0.45,
+                height: 1.45,
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.4,
               ),
               // showUnselectedLabels: false,
               items: <BottomNavigationBarItem>[
@@ -52,11 +52,11 @@ class NavigationBar extends StatelessWidget {
                   title: const Text('Home'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.explore, size: 19.0),
+                  icon: Icon(Icons.explore, size: 21.0),
                   title: const Text('Explore'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.rss_feed, size: 19.0),
+                  icon: Icon(Icons.rss_feed, size: 21.0),
                   title: const Text('Feeds'),
                 ),
                 BottomNavigationBarItem(
@@ -64,7 +64,7 @@ class NavigationBar extends StatelessWidget {
                   title: const Text('Playlists'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.face, size: 19.0),
+                  icon: Icon(Icons.face, size: 22.0),
                   title: const Text('Profile'),
                 ),
               ],

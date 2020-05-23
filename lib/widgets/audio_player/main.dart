@@ -103,6 +103,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
                       onPause: () => audioPlayerBloc.add(PausePlayback()),
                     ),
                     full_audio_player.AudioPlayer(
+                      controller: widget.controller,
                       state: state,
                       onPlay: () => audioPlayerBloc.add(ResumePlayback()),
                       onPause: () => audioPlayerBloc.add(PausePlayback()),

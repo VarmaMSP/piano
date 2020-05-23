@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
+const fadeTill = 0.3;
+
 class AudioPlayerPreview extends StatelessWidget {
   const AudioPlayerPreview({
     Key key,
@@ -18,84 +20,137 @@ class AudioPlayerPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sizeAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.0,
+    final colorAnimation = ColorTween(
+      begin: Colors.white,
+      end: TWColors.gray.shade200,
     ).animate(
       CurvedAnimation(
         parent: controller,
-        curve: const Interval(0.9, 1.0, curve: Curves.linear),
+        curve: const Interval(fadeTill, 0.8, curve: Curves.linear),
       ),
     );
 
-    final opacityAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.0,
-    ).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: const Interval(0.0, 1.0, curve: Curves.easeOut),
-      ),
-    );
-
-    return SizeTransition(
-      axis: Axis.vertical,
-      axisAlignment: 1.0,
-      sizeFactor: sizeAnimation,
-      child: FadeTransition(
-        opacity: opacityAnimation,
-        child: GestureDetector(
+    return AnimatedBuilder(
+      animation: colorAnimation,
+      builder: (context, child) {
+        return Container(
+          height: 50,
+          color: colorAnimation.value,
+          padding: const EdgeInsets.only(left: 4, right: 16),
           child: _buildBody(),
-        ),
-      ),
+        );
+      },
     );
   }
 
   Widget _buildBody() {
-    return Container(
-      height: 50,
-      padding: const EdgeInsets.only(left: 16, right: 16),
-      child: Row(
+    final opacityAnimationMin = Tween<double>(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(0.0, fadeTill - 0.001, curve: Curves.easeOut),
+      ),
+    );
+
+    final opacityAnimationMax = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(fadeTill, 1.0, curve: Curves.easeOut),
+      ),
+    );
+
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        if (controller.value < fadeTill) {
+          return FadeTransition(
+            opacity: opacityAnimationMin,
+            child: _buildBodyMinimized(),
+          );
+        } else {
+          return FadeTransition(
+            opacity: opacityAnimationMax,
+            child: _buildBodyMaximised(),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildBodyMinimized() {
+    final expandAudioPlayer = () => controller.animateBack(1.0,
+        duration: const Duration(milliseconds: 250), curve: Curves.ease);
+
+    final expandButton = IconButton(
+      padding: const EdgeInsets.all(0.0),
+      icon: Icon(
+        Icons.expand_less,
+        color: TWColors.gray.shade700,
+        size: 20,
+      ),
+      onPressed: expandAudioPlayer,
+    );
+
+    final episodeTitle = GestureDetector(
+      onTap: expandAudioPlayer,
+      child: Text(
+        state.playingNow.episode.title,
+        maxLines: 1,
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 14, letterSpacing: 0.2),
+      ),
+    );
+
+    final actionButton = SizedBox(
+      height: 30,
+      width: 30,
+      child: Stack(
         children: <Widget>[
-          Icon(
-            Icons.expand_less,
-            color: TWColors.gray.shade700,
-            size: 20,
-          ),
-          Container(width: 15.0),
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                controller.animateBack(
-                  1.0,
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.ease,
-                );
-              },
-              child: Text(
-                state.playingNow.episode.title,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 14,
-                  letterSpacing: 0.2,
-                ),
-              ),
-            ),
-          ),
-          Container(width: 15.0),
-          SizedBox(
-            height: 30,
-            width: 30,
-            child: Stack(
-              children: <Widget>[
-                _buildCircularProgressIndicator(),
-                _buildActionButton(),
-              ],
-            ),
-          ),
+          _buildCircularProgressIndicator(),
+          _buildActionButton(),
         ],
       ),
+    );
+
+    return Row(
+      children: <Widget>[
+        expandButton,
+        Expanded(child: episodeTitle),
+        Container(width: 15.0),
+        actionButton,
+      ],
+    );
+  }
+
+  Widget _buildBodyMaximised() {
+    final collapseAudioPlayer = () => controller.animateBack(0.0,
+        duration: const Duration(milliseconds: 250), curve: Curves.ease);
+
+    final collapseButton = IconButton(
+      padding: const EdgeInsets.all(0.0),
+      icon: Icon(
+        Icons.expand_more,
+        color: TWColors.gray.shade700,
+        size: 20,
+      ),
+      onPressed: collapseAudioPlayer,
+    );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        collapseButton,
+        Icon(
+          Icons.share,
+          color: TWColors.gray.shade700,
+          size: 20,
+        ),
+      ],
     );
   }
 
@@ -103,7 +158,7 @@ class AudioPlayerPreview extends StatelessWidget {
     if (state.audioState.isLoading) {
       return CircularProgressIndicator(
         value: null,
-        strokeWidth: 2.25,
+        strokeWidth: 2.4,
         valueColor: AlwaysStoppedAnimation<Color>(
           TWColors.purple.shade600,
         ),
@@ -119,7 +174,7 @@ class AudioPlayerPreview extends StatelessWidget {
 
         return CircularProgressIndicator(
           value: currentTime / duration,
-          strokeWidth: 2.25,
+          strokeWidth: 2.5,
           valueColor: AlwaysStoppedAnimation<Color>(
             TWColors.purple.shade600,
           ),
@@ -150,7 +205,7 @@ class AudioPlayerPreview extends StatelessWidget {
         icon: Icon(
           iconData,
           color: TWColors.gray.shade600,
-          size: 18,
+          size: 20,
         ),
         onPressed: onPressed,
       ),

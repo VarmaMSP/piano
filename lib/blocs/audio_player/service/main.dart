@@ -6,19 +6,33 @@ import 'background_task.dart';
 class AudioState extends Equatable {
   const AudioState({this.mediaItem, this.playbackState});
 
+  factory AudioState.notRunning() {
+    return AudioState(
+      playbackState: PlaybackState(
+        basicState: BasicPlaybackState.none,
+        actions: {},
+      ),
+    );
+  }
+
+  factory AudioState.loadingMediaItem(MediaItem mediaItem) {
+    return AudioState(
+      mediaItem: mediaItem,
+      playbackState: PlaybackState(
+        basicState: BasicPlaybackState.connecting,
+        actions: {},
+      ),
+    );
+  }
+
   final MediaItem mediaItem;
   final PlaybackState playbackState;
 
   int get duration => mediaItem.duration;
-
   int get currentTime => playbackState.currentPosition;
-
   bool get isActive => playbackState.basicState != BasicPlaybackState.none;
-
   bool get isPaused => playbackState.basicState == BasicPlaybackState.paused;
-
   bool get isPlaying => playbackState.basicState == BasicPlaybackState.playing;
-
   bool get isLoading =>
       mediaItem.duration == 0 ||
       playbackState.basicState == BasicPlaybackState.connecting ||
@@ -39,23 +53,11 @@ Stream<AudioState> stateStream =
   AudioService.playbackStateStream,
   (mediaItem, playbackState) {
     if (mediaItem == null && playbackState == null) {
-      return AudioState(
-        mediaItem: MediaItem(id: '', title: '', album: '', duration: 0),
-        playbackState: PlaybackState(
-          basicState: BasicPlaybackState.none,
-          actions: {},
-        ),
-      );
+      return AudioState.notRunning();
     }
 
     if (mediaItem != null && playbackState == null) {
-      return AudioState(
-        mediaItem: mediaItem,
-        playbackState: PlaybackState(
-          basicState: BasicPlaybackState.connecting,
-          actions: {},
-        ),
-      );
+      return AudioState.loadingMediaItem(mediaItem);
     }
 
     if (mediaItem != null && playbackState != null) {

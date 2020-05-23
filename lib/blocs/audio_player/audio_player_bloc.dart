@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
+import 'package:phenopod/blocs/audio_player/service/main.dart';
 import 'package:phenopod/models/main.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'service/main.dart' as audio;
@@ -44,8 +45,19 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
     if (event is PlayEpisodeFromQueue) {
       final queueItem = state.queue.getQueueItem(episodeId: event.episodeId);
       final mediaItem = queueItem?.toMediaItem();
+
       if (mediaItem != null) {
         await audio.play(mediaItem);
+      }
+
+      // starting background task takes time.
+      // use this hack to show use audio_player
+      if (state is AudioPlayerDormant) {
+        yield AudioPlayerActive(
+          queue: state.queue,
+          playingNow: queueItem,
+          audioState: AudioState.loadingMediaItem(mediaItem),
+        );
       }
     }
 
