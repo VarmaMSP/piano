@@ -28,13 +28,14 @@ class AudioState extends Equatable {
   final MediaItem mediaItem;
   final PlaybackState playbackState;
 
-  int get duration => mediaItem.duration;
-  int get currentTime => playbackState.currentPosition;
+  int get duration => mediaItem.duration ?? 0;
+  int get currentTime => playbackState.currentPosition ?? 0;
   bool get isActive => playbackState.basicState != BasicPlaybackState.none;
   bool get isPaused => playbackState.basicState == BasicPlaybackState.paused;
   bool get isPlaying => playbackState.basicState == BasicPlaybackState.playing;
   bool get isLoading =>
       mediaItem.duration == 0 ||
+      mediaItem.duration == null ||
       playbackState.basicState == BasicPlaybackState.connecting ||
       playbackState.basicState == BasicPlaybackState.buffering;
 
@@ -94,6 +95,12 @@ Future<void> pause() async {
 Future<void> resume() async {
   if (AudioService.running) {
     await AudioService.play();
+  }
+}
+
+Future<void> seekTo(int position) async {
+  if (AudioService.running) {
+    await AudioService.seekTo(position);
   }
 }
 

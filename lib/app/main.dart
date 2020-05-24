@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
-import 'package:phenopod/widgets/audio_player/main.dart';
-import 'package:phenopod/widgets/navigation_bar.dart';
+import '../widgets/bottom_app_bar/main.dart' as appbar;
 
 import '../route_generator.dart';
 
@@ -67,11 +66,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 ),
                 Container(
                   alignment: Alignment.bottomCenter,
-                  child: AudioPlayer(controller: _bottomAppBarController),
-                ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: NavigationBar(controller: _bottomAppBarController),
+                  child: appbar.BottomAppBar(),
                 ),
               ],
             ),

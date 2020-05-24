@@ -12,7 +12,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   });
 
   static const double appBarHeight = 45;
-  static const double tabBarHeight = 35;
+  static const double tabBarHeight = 36;
   static const double flexibleAreaHeight = 150;
 
   final Podcast podcast;
@@ -113,18 +113,25 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       height: tabBarHeight,
       alignment: Alignment.bottomLeft,
       transform: Matrix4.translationValues(
-          -15, appBarHeight + flexibleAreaHeight - shrinkOffset, 0),
+          -6, appBarHeight + flexibleAreaHeight - shrinkOffset, 0),
       child: TabBar(
         isScrollable: true,
         indicatorColor: TWColors.green.shade900,
         indicatorSize: TabBarIndicatorSize.label,
         indicatorWeight: 2.4,
-        labelColor: TWColors.gray.shade700,
+        labelColor: TWColors.green.shade900,
         labelStyle: TextStyle(
-          fontSize: 13.5,
-          letterSpacing: 0.5,
+          fontSize: 14,
+          letterSpacing: 0.8,
           fontWeight: FontWeight.w500,
         ),
+        unselectedLabelColor: TWColors.gray.shade600,
+        unselectedLabelStyle: TextStyle(
+          fontSize: 14,
+          letterSpacing: 0.8,
+          fontWeight: FontWeight.w500,
+        ),
+        labelPadding: EdgeInsets.only(bottom: 5, right: 8, left: 8),
         controller: tabController,
         tabs: const <Widget>[
           Tab(text: '  Episodes  '),
@@ -159,10 +166,10 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             height: 1.4,
-            fontSize: 15.5,
+            fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: TWColors.gray.shade800,
-            letterSpacing: 0.4,
+            color: Colors.black,
+            letterSpacing: 0.2,
           ),
         ),
         Container(height: 6),

@@ -69,6 +69,10 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
       await audio.resume();
     }
 
+    if (event is SeekPlayback) {
+      await audio.seekTo(event.position);
+    }
+
     if (event is StopPlayback) {
       await audio.stop();
     }

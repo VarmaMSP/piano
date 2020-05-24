@@ -29,6 +29,15 @@ class PausePlayback extends AudioPlayerEvent {}
 
 class ResumePlayback extends AudioPlayerEvent {}
 
+class SeekPlayback extends AudioPlayerEvent {
+  SeekPlayback(this.position);
+
+  final int position;
+
+  @override
+  List<Object> get props => <Object>[position];
+}
+
 class StopPlayback extends AudioPlayerEvent {}
 
 // Internal Events
