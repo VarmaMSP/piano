@@ -110,7 +110,7 @@ class AudioPlayerPreview extends StatelessWidget {
       icon: Icon(
         Icons.expand_more,
         color: TWColors.gray.shade700,
-        size: 20,
+        size: 24,
       ),
       onPressed: animations.collapseBottomAppBar,
     );
@@ -148,7 +148,7 @@ class AudioPlayerPreview extends StatelessWidget {
 
         return CircularProgressIndicator(
           value: currentTime / duration,
-          strokeWidth: 2.5,
+          strokeWidth: 3,
           valueColor: AlwaysStoppedAnimation<Color>(
             TWColors.purple.shade600,
           ),

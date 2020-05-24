@@ -61,7 +61,7 @@ class BottomAppBarAnimations {
 
     playerBackgroundColor = ColorTween(
       begin: Colors.white,
-      end: TWColors.gray.shade200,
+      end: TWColors.gray.shade100,
     ).animate(
       CurvedAnimation(
         parent: controller,

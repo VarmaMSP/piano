@@ -168,7 +168,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             height: 1.4,
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: Colors.black87,
             letterSpacing: 0.2,
           ),
         ),

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
 import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 
 class AudioPlayer extends StatefulWidget {
   const AudioPlayer({
@@ -42,7 +44,49 @@ class _AudioPlayerState extends State<AudioPlayer> {
               constraints: const BoxConstraints.expand(height: 350),
               padding: const EdgeInsets.only(left: 16, right: 16),
               color: widget.animations.playerBackgroundColor.value,
-              child: _seekBar(),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      widget.state.playingNow.episode.title,
+                      style: TextStyle(
+                          fontSize: 17,
+                          height: 1.4,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.15),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Container(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(4.0),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                'https://cdn.phenopod.com/thumbnails/${widget.state.playingNow.podcast.urlParam}.jpg',
+                            fit: BoxFit.fill,
+                            height: 100,
+                            width: 100,
+                            placeholder: (BuildContext context, String url) =>
+                                Container(
+                              height: 100,
+                              width: 100,
+                              color: TWColors.gray.shade300,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(height: 32),
+                  _seekBar(),
+                ],
+              ),
             ),
             Expanded(
                 child: FlatButton(

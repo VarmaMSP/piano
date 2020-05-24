@@ -24,9 +24,9 @@ class EpisodeListItem extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: 14.5,
-        color: Colors.black, //const Color(0xff2a303b),
+        color: TWColors.gray.shade800,
         height: 1.32,
-        letterSpacing: 0.2,
+        letterSpacing: 0.225,
         fontWeight: FontWeight.w500,
       ),
       maxLines: 2,
@@ -54,7 +54,7 @@ class EpisodeListItem extends StatelessWidget {
           .replaceAll('&amp', '&'),
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(
-        fontSize: 12,
+        fontSize: 12.1,
         color: Color(0xff657389), //TWColors.gray.shade600,
         height: 1.295,
         letterSpacing: 0.12,
@@ -73,10 +73,12 @@ class EpisodeListItem extends StatelessWidget {
             Expanded(
               child: Transform.translate(
                 offset: const Offset(0, -4),
-                child: Padding(
+                child: Container(
                   padding: const EdgeInsets.only(left: 11),
                   child: Column(
+                    mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +88,7 @@ class EpisodeListItem extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 4),
+                                  padding: const EdgeInsets.only(bottom: 5),
                                   child: title,
                                 ),
                                 Padding(
@@ -97,7 +99,7 @@ class EpisodeListItem extends StatelessWidget {
                             ),
                           ),
                           Transform.translate(
-                            offset: const Offset(6, -9),
+                            offset: const Offset(6, -4),
                             child: const Menu(),
                           ),
                         ],

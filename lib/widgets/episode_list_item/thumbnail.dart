@@ -15,7 +15,7 @@ class Thumbnail extends StatelessWidget {
     @required this.podcast,
   }) : super(key: key);
 
-  static const double thumbnailSize = 88;
+  static const double thumbnailSize = 90;
   static const String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
 
   final Episode episode;
@@ -119,7 +119,7 @@ class Thumbnail extends StatelessWidget {
       return ClipRRect(
         borderRadius: BorderRadius.circular(5.0),
         child: Container(
-          color: const Color.fromRGBO(0, 0, 0, 0.75),
+          color: const Color.fromRGBO(0, 0, 0, 0.65),
           padding: const EdgeInsets.only(left: 4, right: 4, bottom: 0.9),
           child: Text(
             res ?? '00:00',
