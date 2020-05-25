@@ -26,13 +26,7 @@ class _BottomAppBarState extends State<BottomAppBar>
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding;
-    final screenHeight = MediaQuery.of(context).size.height - padding.top;
-
-    final animations = BottomAppBarAnimations(
-      screenHeight: screenHeight,
-      controller: _controller,
-    );
+    final animations = BottomAppBarAnimations.New(context, _controller);
 
     final body = Stack(
       overflow: Overflow.clip,
