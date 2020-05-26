@@ -66,7 +66,9 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 ),
                 Container(
                   alignment: Alignment.bottomCenter,
-                  child: appbar.BottomAppBar(),
+                  child: appbar.BottomAppBar(
+                    controller: _bottomAppBarController,
+                  ),
                 ),
               ],
             ),

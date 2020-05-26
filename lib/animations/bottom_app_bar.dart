@@ -113,8 +113,8 @@ class BottomAppBarAnimations {
       _showAudioPlayer = true;
       controller.animateTo(
         controllerBeginValue,
-        duration: Duration(milliseconds: 200),
-        curve: Curves.linearToEaseOut,
+        duration: Duration(milliseconds: 150),
+        curve: Curves.linear,
       );
     }
   }
@@ -124,8 +124,8 @@ class BottomAppBarAnimations {
       _showAudioPlayer = false;
       controller.animateTo(
         controllerBeginValue,
-        duration: Duration(milliseconds: 200),
-        curve: Curves.linearToEaseOut,
+        duration: Duration(milliseconds: 150),
+        curve: Curves.linear,
       );
     }
   }
@@ -133,7 +133,7 @@ class BottomAppBarAnimations {
   void expandBottomAppBar() {
     controller.animateTo(
       1.0,
-      duration: Duration(milliseconds: 200),
+      duration: Duration(milliseconds: 400),
       curve: Curves.linearToEaseOut,
     );
   }
@@ -141,7 +141,7 @@ class BottomAppBarAnimations {
   void collapseBottomAppBar() {
     controller.animateTo(
       controllerBeginValue,
-      duration: Duration(milliseconds: 200),
+      duration: Duration(milliseconds: 400),
       curve: Curves.linearToEaseOut,
     );
   }
@@ -171,7 +171,6 @@ class BottomAppBarAnimations {
       controller.animateTo(
         mapRange(0, maxDragDistance, controllerBeginValue, 1.0, _dragDistance),
         duration: Duration.zero,
-        curve: Curves.linear,
       );
     };
   }
@@ -183,7 +182,7 @@ class BottomAppBarAnimations {
       }
 
       // collapse ot expand app bar
-      if (controller.value <= 0.3) {
+      if (controller.value <= 0.45) {
         details.primaryVelocity <= -1300
             ? expandBottomAppBar()
             : collapseBottomAppBar();

@@ -7,29 +7,17 @@ import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 
 import 'navigation_bar.dart';
 
-class BottomAppBar extends StatefulWidget {
-  BottomAppBar({Key key}) : super(key: key);
+class BottomAppBar extends StatelessWidget {
+  BottomAppBar({Key key, this.controller}) : super(key: key);
 
-  @override
-  _BottomAppBarState createState() => _BottomAppBarState();
-}
-
-class _BottomAppBarState extends State<BottomAppBar>
-    with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this);
-  }
+  final AnimationController controller;
 
   @override
   Widget build(BuildContext context) {
-    final animations = BottomAppBarAnimations.New(context, _controller);
+    final animations = BottomAppBarAnimations.New(context, controller);
 
     final body = Stack(
-      overflow: Overflow.clip,
+      overflow: Overflow.visible,
       children: <Widget>[
         Positioned(
             top: 0.0,
@@ -74,11 +62,5 @@ class _BottomAppBarState extends State<BottomAppBar>
         },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }

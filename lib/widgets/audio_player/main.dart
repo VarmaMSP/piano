@@ -7,19 +7,11 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'audio_player.dart' as full_audio_player;
 import 'audio_player_preview.dart';
 
-class AudioPlayer extends StatefulWidget {
-  const AudioPlayer({
-    Key key,
-    @required this.animations,
-  }) : super(key: key);
+class AudioPlayer extends StatelessWidget {
+  AudioPlayer({Key key, @required this.animations}) : super(key: key);
 
   final BottomAppBarAnimations animations;
 
-  @override
-  _AudioPlayerState createState() => _AudioPlayerState();
-}
-
-class _AudioPlayerState extends State<AudioPlayer> {
   @override
   Widget build(BuildContext context) {
     //ignore: close_sinks
@@ -36,14 +28,14 @@ class _AudioPlayerState extends State<AudioPlayer> {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               AudioPlayerPreview(
-                animations: widget.animations,
+                animations: animations,
                 state: state,
                 onPlay: () => audioPlayerBloc.add(ResumePlayback()),
                 onPause: () => audioPlayerBloc.add(PausePlayback()),
               ),
               Expanded(
                 child: full_audio_player.AudioPlayer(
-                  animations: widget.animations,
+                  animations: animations,
                   state: state,
                   onPlay: () => audioPlayerBloc.add(ResumePlayback()),
                   onPause: () => audioPlayerBloc.add(PausePlayback()),

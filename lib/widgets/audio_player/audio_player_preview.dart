@@ -119,11 +119,6 @@ class AudioPlayerPreview extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         collapseButton,
-        Icon(
-          Icons.share,
-          color: TWColors.gray.shade700,
-          size: 20,
-        ),
       ],
     );
   }
