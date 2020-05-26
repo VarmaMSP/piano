@@ -26,7 +26,7 @@ class EpisodeListItem extends StatelessWidget {
         fontSize: 14.5,
         color: TWColors.gray.shade800,
         height: 1.35,
-        letterSpacing: 0.1,
+        letterSpacing: 0.15,
         fontWeight: FontWeight.w500,
       ),
       maxLines: 2,
