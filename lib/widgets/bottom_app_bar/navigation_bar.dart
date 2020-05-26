@@ -20,6 +20,7 @@ class NavigationBar extends StatelessWidget {
       child: Container(
         height: 56.0,
         padding: EdgeInsets.only(top: 2),
+        color: Colors.white,
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           elevation: 0,

@@ -1,14 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
 import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
-import 'package:phenopod/widgets/audio_player/widgets/description.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:phenopod/widgets/audio_player/widgets/playback_controls.dart';
+// import 'package:phenopod/widgets/html.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
-class AudioPlayer extends StatefulWidget {
+class AudioPlayer extends StatelessWidget {
   const AudioPlayer({
     Key key,
     @required this.animations,
@@ -25,32 +23,31 @@ class AudioPlayer extends StatefulWidget {
   final void Function(int) onSeek;
 
   @override
-  _AudioPlayerState createState() => _AudioPlayerState();
-}
-
-class _AudioPlayerState extends State<AudioPlayer> {
-  final BehaviorSubject<double> _dragPositionSubject =
-      BehaviorSubject.seeded(null);
-
-  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: widget.animations.playerBackgroundColor,
+      animation: animations.playerBackgroundColor,
       builder: (context, child) {
         return Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Container(
               padding: const EdgeInsets.only(left: 14, right: 14),
-              color: widget.animations.playerBackgroundColor.value,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: TWColors.gray.shade200),
+                ),
+                color: animations.playerBackgroundColor.value,
+              ),
               child: Column(
                 children: <Widget>[
                   _buildDetails(),
-                  Container(height: 24),
-                  _seekBar(),
-                  Container(height: 20),
-                  _buildPlaybackControls(),
-                  Container(height: 20),
+                  Container(height: 18),
+                  PlaybackControls(
+                    state: state,
+                    onPlay: onPlay,
+                    onPause: onPause,
+                    onSeek: onSeek,
+                  ),
                 ],
               ),
             ),
@@ -60,12 +57,14 @@ class _AudioPlayerState extends State<AudioPlayer> {
                   SliverToBoxAdapter(
                     child: Container(
                       padding: EdgeInsets.only(
-                        top: 24,
+                        top: 16,
                         left: 14,
                         right: 14,
                         bottom: 48,
                       ),
-                      child: Description(),
+                      // child: HTML(
+                      //   document: state.playingNow.episode.description,
+                      // ),
                     ),
                   )
                 ],
@@ -79,10 +78,11 @@ class _AudioPlayerState extends State<AudioPlayer> {
 
   Widget _buildDetails() {
     final episodeTitle = Container(
-      alignment: Alignment.bottomLeft,
-      padding: EdgeInsets.only(bottom: 22),
+      height: 70,
+      alignment: Alignment.topCenter,
       child: Text(
-        widget.state.playingNow.episode.title,
+        state.playingNow.episode.title,
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 18,
           height: 1.4,
@@ -99,7 +99,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
       borderRadius: BorderRadius.circular(4.0),
       child: CachedNetworkImage(
         imageUrl:
-            'https://cdn.phenopod.com/thumbnails/${widget.state.playingNow.podcast.urlParam}.jpg',
+            'https://cdn.phenopod.com/thumbnails/${state.playingNow.podcast.urlParam}.jpg',
         fit: BoxFit.fill,
         height: 105,
         width: 105,
@@ -126,7 +126,16 @@ class _AudioPlayerState extends State<AudioPlayer> {
       text: TextSpan(
         children: <TextSpan>[
           TextSpan(
-            text: widget.state.playingNow.podcast.title,
+            text: 'by ',
+            style: TextStyle(
+              fontSize: 13,
+              letterSpacing: 0.25,
+              color: TWColors.gray.shade700,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          TextSpan(
+            text: state.playingNow.podcast.title,
             style: TextStyle(
               fontSize: 14,
               letterSpacing: 0.25,
@@ -183,14 +192,14 @@ class _AudioPlayerState extends State<AudioPlayer> {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 9),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           episodeTitle,
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               artWork,
@@ -224,182 +233,5 @@ class _AudioPlayerState extends State<AudioPlayer> {
         ],
       ),
     );
-  }
-
-  Widget _seekBar() {
-    double _tmpSeekPosition;
-
-    return StreamBuilder<double>(
-      stream: Rx.combineLatest2<double, double, double>(
-        Stream.periodic(Duration(milliseconds: 200)),
-        _dragPositionSubject.stream,
-        (_, x) => x,
-      ),
-      builder: (context, snapshot) {
-        var duration = widget.state.audioState.duration?.toDouble() ?? 0.0;
-        var currentTime = _tmpSeekPosition ??
-            snapshot.data ??
-            widget.state.audioState.currentTime?.toDouble() ??
-            0.0;
-        currentTime = max(0.0, min(currentTime, duration));
-
-        var parsedDurations =
-            _parseDuration(currentTime.toInt(), duration.toInt());
-
-        return Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              parsedDurations[0],
-              style: TextStyle(
-                fontSize: 13,
-                letterSpacing: 0.2,
-                color: TWColors.gray.shade800,
-              ),
-            ),
-            Expanded(
-              child: SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  activeTrackColor: Colors.red[700],
-                  inactiveTrackColor: Colors.red[100],
-                  trackHeight: 2.5,
-                  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6),
-                  thumbColor: Colors.redAccent,
-                  overlayColor: Colors.red.withAlpha(32),
-                  overlayShape: RoundSliderOverlayShape(overlayRadius: 16.0),
-                  inactiveTickMarkColor: Colors.red[100],
-                ),
-                child: Slider(
-                  min: 0.0,
-                  max: duration,
-                  value: currentTime,
-                  onChanged: (value) {
-                    _dragPositionSubject.add(value);
-                  },
-                  onChangeEnd: (value) {
-                    _tmpSeekPosition = value.toInt().toDouble();
-                    widget.onSeek(value.toInt());
-                    _dragPositionSubject.add(null);
-                  },
-                ),
-              ),
-            ),
-            Text(
-              parsedDurations[1],
-              style: TextStyle(
-                fontSize: 13,
-                letterSpacing: 0.2,
-                color: TWColors.gray.shade800,
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildPlaybackControls() {
-    final actionButton = Container(
-      height: 64,
-      width: 64,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            height: 64,
-            width: 64,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: TWColors.purple.shade600,
-              // boxShadow: <BoxShadow>[
-              //   BoxShadow(
-              //     color: TWColors.gray.shade300,
-              //     blurRadius: 1,
-              //     spreadRadius: 2,
-              //   ),
-              // ],
-              borderRadius: BorderRadius.circular(900),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: _buildActionButton(),
-          ),
-        ],
-      ),
-    );
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(right: 16),
-          child: Icon(Icons.skip_previous, size: 32),
-        ),
-        Container(
-          padding: EdgeInsets.only(right: 16),
-          child: Icon(Icons.fast_rewind, size: 32),
-        ),
-        actionButton,
-        Container(
-          padding: EdgeInsets.only(left: 16),
-          child: Icon(Icons.fast_forward, size: 32),
-        ),
-        Container(
-          padding: EdgeInsets.only(left: 16),
-          child: Icon(Icons.skip_next, size: 32),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionButton() {
-    IconData iconData;
-    void Function() onPressed;
-    if (widget.state.audioState.isPlaying) {
-      iconData = Icons.pause;
-      onPressed = () => widget.onPause();
-    } else if (widget.state.audioState.isPaused) {
-      iconData = Icons.play_arrow;
-      onPressed = () => widget.onPlay();
-    } else {
-      iconData = Icons.play_arrow;
-      onPressed = () {};
-    }
-
-    return Material(
-      color: Colors.transparent,
-      child: IconButton(
-        padding: const EdgeInsets.all(0.0),
-        icon: Icon(
-          iconData,
-          color: TWColors.gray.shade100,
-          size: 36,
-        ),
-        onPressed: onPressed,
-      ),
-    );
-  }
-
-  List<String> _parseDuration(int currentTime, int duration) {
-    RegExp regex;
-    if (duration < 60 * 60 * 1000) {
-      regex = RegExp(r'\d\d:(\d\d:\d\d)');
-    } else if (duration < 10 * 60 * 60 * 1000) {
-      regex = RegExp(r'\d(\d:\d\d:\d\d)');
-    } else {
-      regex = RegExp(r'(\d\d:\d\d:\d\d)');
-    }
-
-    return <String>[
-      regex
-          .firstMatch(DateTime(0, 0, 0, 0, 0, 0, currentTime).toIso8601String())
-          ?.group(1),
-      regex
-          .firstMatch(DateTime(0, 0, 0, 0, 0, 0, duration).toIso8601String())
-          ?.group(1)
-    ];
   }
 }

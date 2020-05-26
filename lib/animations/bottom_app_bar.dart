@@ -64,12 +64,13 @@ class BottomAppBarAnimations {
   ) {
     final screenHeight = getScreenHeight(context);
     final controllerBeginWhenShow = mapRange(
-      bottomNavigationBarHeight,
-      screenHeight,
-      0.0,
-      1.0,
-      bottomAppBarHeight,
-    );
+          bottomNavigationBarHeight,
+          screenHeight,
+          0.0,
+          1.0,
+          bottomAppBarHeight,
+        ) +
+        0.002;
 
     return BottomAppBarAnimations(
       controller: controller,
