@@ -29,7 +29,7 @@ class PlaybackControls extends StatelessWidget {
     return Column(
       children: <Widget>[
         _buildSeekBar(),
-        Container(height: 18),
+        Container(height: 10),
         _buildControls(),
         Container(height: 20),
       ],
@@ -110,11 +110,11 @@ class PlaybackControls extends StatelessWidget {
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(right: 16),
-          child: Icon(Icons.skip_previous, size: 32),
+          child: Icon(Icons.skip_previous, size: 28),
         ),
         Container(
           padding: EdgeInsets.only(right: 16),
-          child: Icon(Icons.fast_rewind, size: 32),
+          child: Icon(Icons.fast_rewind, size: 28),
         ),
         ActionButton(
           state: state,
@@ -124,11 +124,11 @@ class PlaybackControls extends StatelessWidget {
         ),
         Container(
           padding: EdgeInsets.only(left: 16),
-          child: Icon(Icons.fast_forward, size: 32),
+          child: Icon(Icons.fast_forward, size: 28),
         ),
         Container(
           padding: EdgeInsets.only(left: 16),
-          child: Icon(Icons.skip_next, size: 32),
+          child: Icon(Icons.skip_next, size: 28),
         ),
       ],
     );

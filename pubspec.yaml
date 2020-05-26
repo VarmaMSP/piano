@@ -23,6 +23,7 @@ dependencies:
   cached_network_image: ^2.2.0+1
   audio_service: ^0.8.0
   just_audio: ^0.1.9
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:

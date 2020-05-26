@@ -20,13 +20,13 @@ class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     if (fullSized) {
       return SizedBox(
-        height: 64,
-        width: 64,
+        height: 56,
+        width: 56,
         child: Stack(
           children: <Widget>[
             Container(
-              height: 64,
-              width: 64,
+              height: 56,
+              width: 56,
               decoration: BoxDecoration(
                 color: TWColors.purple.shade600,
                 borderRadius: BorderRadius.circular(900),
@@ -85,7 +85,7 @@ class ActionButton extends StatelessWidget {
     var size = 20.0;
     if (fullSized) {
       color = TWColors.gray.shade100;
-      size = 36;
+      size = 32;
     }
 
     IconData iconData;

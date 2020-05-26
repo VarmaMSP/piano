@@ -41,7 +41,7 @@ class AudioPlayer extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   _buildDetails(),
-                  Container(height: 18),
+                  Container(height: 10),
                   PlaybackControls(
                     state: state,
                     onPlay: onPlay,
@@ -74,13 +74,14 @@ class AudioPlayer extends StatelessWidget {
 
   Widget _buildDetails() {
     final episodeTitle = Container(
-      height: 70,
+      height: 62,
+      transform: Matrix4.translationValues(0, -4, 0),
       alignment: Alignment.topCenter,
       child: Text(
         state.playingNow.episode.title,
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 17,
           height: 1.4,
           fontWeight: FontWeight.w500,
           letterSpacing: 0.15,
