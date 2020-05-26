@@ -4,7 +4,24 @@ import 'package:flutter_html/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
-class HTML extends StatelessWidget {
+final Map<String, Style> htmlStyle = {
+  '*': Style(
+    letterSpacing: 0.17,
+  ),
+  'h1, h2, h3, h4': Style(
+    fontSize: FontSize.large,
+    color: TWColors.gray.shade700,
+  ),
+  'p': Style(
+    fontSize: FontSize.percent(98),
+    color: TWColors.gray.shade700,
+  ),
+  'a': Style(
+    color: TWColors.blue.shade600,
+  ),
+};
+
+class HTML extends StatefulWidget {
   const HTML({
     Key key,
     @required this.document,
@@ -13,30 +30,24 @@ class HTML extends StatelessWidget {
   final String document;
 
   @override
+  _HTMLState createState() => _HTMLState();
+}
+
+class _HTMLState extends State<HTML> {
+  Widget _lastWidget;
+
+  @override
   Widget build(BuildContext context) {
-    return Html(
-      data: document,
+    _lastWidget ??= Html(
+      data: widget.document,
       onLinkTap: (url) async {
         if (await canLaunch(url)) {
           await launch(url);
         }
       },
-      style: {
-        '*': Style(
-          letterSpacing: 0.17,
-        ),
-        'h1, h2, h3, h4': Style(
-          fontSize: FontSize.large,
-          color: TWColors.gray.shade700,
-        ),
-        'p': Style(
-          fontSize: FontSize.percent(98),
-          color: TWColors.gray.shade700,
-        ),
-        'a': Style(
-          color: TWColors.blue.shade600,
-        ),
-      },
+      style: htmlStyle,
     );
+
+    return _lastWidget;
   }
 }

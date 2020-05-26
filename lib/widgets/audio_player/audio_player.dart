@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
 import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import 'package:phenopod/widgets/audio_player/widgets/playback_controls.dart';
-// import 'package:phenopod/widgets/html.dart';
+import 'package:phenopod/widgets/html.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -52,22 +52,18 @@ class AudioPlayer extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        top: 16,
-                        left: 14,
-                        right: 14,
-                        bottom: 48,
-                      ),
-                      // child: HTML(
-                      //   document: state.playingNow.episode.description,
-                      // ),
-                    ),
-                  )
-                ],
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    top: 16,
+                    left: 14,
+                    right: 14,
+                    bottom: 48,
+                  ),
+                  child: HTML(
+                    document: state.playingNow.episode.description,
+                  ),
+                ),
               ),
             ),
           ],
