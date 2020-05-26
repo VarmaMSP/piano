@@ -1,8 +1,9 @@
-import 'package:phenopod/models/category.dart';
-import 'package:phenopod/models/episode.dart';
-import 'package:phenopod/models/playlist.dart';
-import 'package:phenopod/models/podcast.dart';
-import 'package:phenopod/models/user.dart';
+import 'category.dart';
+import 'curation.dart';
+import 'episode.dart';
+import 'playlist.dart';
+import 'podcast.dart';
+import 'user.dart';
 
 class ApiResponse {
   ApiResponse({
@@ -12,36 +13,35 @@ class ApiResponse {
     this.playlists,
     this.categories,
     this.searchResults,
+    this.raw,
   });
 
   factory ApiResponse.fromJson(Map<String, dynamic> json) {
     final data = json['data'] as Map<String, dynamic>;
 
     return ApiResponse(
-      users: (data['users'] as List<dynamic> ?? <dynamic>[])
+      users: (data['users'] as List ?? [])
           .cast<Map<String, dynamic>>()
-          .map((Map<String, dynamic> d) => User.fromJson(d))
+          .map((d) => User.fromJson(d))
           .toList(),
-      podcasts: (data['podcasts'] as List<dynamic> ?? <dynamic>[])
+      podcasts: (data['podcasts'] as List ?? [])
           .cast<Map<String, dynamic>>()
-          .map((Map<String, dynamic> d) => Podcast.fromJson(d))
+          .map((d) => Podcast.fromJson(d))
           .toList(),
-      episodes: (data['episodes'] as List<dynamic> ?? <dynamic>[])
+      episodes: (data['episodes'] as List ?? [])
           .cast<Map<String, dynamic>>()
-          .map((Map<String, dynamic> d) => Episode.fromJson(d))
+          .map((d) => Episode.fromJson(d))
           .toList(),
-      playlists: (data['playlists'] as List<dynamic> ?? <dynamic>[])
+      playlists: (data['playlists'] as List ?? [])
           .cast<Map<String, dynamic>>()
-          .map((Map<String, dynamic> d) => Playlist.fromJson(d))
+          .map((d) => Playlist.fromJson(d))
           .toList(),
-      categories: (data['categories'] as List<dynamic> ?? <dynamic>[])
+      categories: (data['categories'] as List ?? [])
           .cast<Map<String, dynamic>>()
-          .map((Map<String, dynamic> d) => Category.fromJson(d))
+          .map((d) => Category.fromJson(d))
           .toList(),
       searchResults: SearchResults.fromJson(
-        (data['search_results'] as Map<dynamic, dynamic> ??
-                <dynamic, dynamic>{})
-            .cast<String, dynamic>(),
+        (data['search_results'] as Map ?? {}).cast<String, dynamic>(),
       ),
     );
   }
@@ -52,6 +52,11 @@ class ApiResponse {
   final List<Playlist> playlists;
   final List<Category> categories;
   final SearchResults searchResults;
+  final dynamic raw;
+
+  List<Curation> get curations => (raw as List ?? [])
+      .cast<Map<String, dynamic>>()
+      .map((d) => Curation.fromJson(d));
 }
 
 class SearchResults {
@@ -62,13 +67,13 @@ class SearchResults {
 
   factory SearchResults.fromJson(Map<String, dynamic> json) {
     return SearchResults(
-      podcasts: (json['podcasts'] as List<dynamic> ?? <dynamic>[])
+      podcasts: (json['podcasts'] as List ?? [])
           .cast<Map<String, dynamic>>()
-          .map((Map<String, dynamic> d) => Podcast.fromJson(d))
+          .map((d) => Podcast.fromJson(d))
           .toList(),
-      episodes: (json['episodes'] as List<dynamic> ?? <dynamic>[])
+      episodes: (json['episodes'] as List ?? [])
           .cast<Map<String, dynamic>>()
-          .map((Map<String, dynamic> d) => Episode.fromJson(d))
+          .map((d) => Episode.fromJson(d))
           .toList(),
     );
   }
