@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/screens/home/page.dart';
+import 'package:phenopod/screens/home.dart';
 import 'package:phenopod/screens/podcast/page.dart';
 
 class RouteGenerator {
@@ -12,7 +12,7 @@ class RouteGenerator {
             builder: (_) => PodcastPage(urlParam: args['urlParam']));
 
       default:
-        return MaterialPageRoute<dynamic>(builder: (_) => const HomePage());
+        return MaterialPageRoute<dynamic>(builder: (_) => HomeScreen());
     }
   }
 }

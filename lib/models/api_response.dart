@@ -43,6 +43,7 @@ class ApiResponse {
       searchResults: SearchResults.fromJson(
         (data['search_results'] as Map ?? {}).cast<String, dynamic>(),
       ),
+      raw: json['raw'],
     );
   }
 
@@ -56,7 +57,8 @@ class ApiResponse {
 
   List<Curation> get curations => (raw as List ?? [])
       .cast<Map<String, dynamic>>()
-      .map((d) => Curation.fromJson(d));
+      .map((d) => Curation.fromJson(d))
+      .toList();
 }
 
 class SearchResults {

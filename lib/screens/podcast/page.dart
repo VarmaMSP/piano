@@ -18,7 +18,7 @@ class PodcastPage extends StatefulWidget {
 }
 
 class _PodcastPageState extends State<PodcastPage>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   PodcastBloc _podcastBloc;
   TabController _tabController;
   ScrollController _scrollController;
