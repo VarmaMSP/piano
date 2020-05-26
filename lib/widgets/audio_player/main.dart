@@ -51,7 +51,7 @@ class AudioPlayer extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: <BoxShadow>[
-              BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
+              BoxShadow(color: TWColors.gray.shade100, blurRadius: 3)
             ],
           ),
           child: body ??
