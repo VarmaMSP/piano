@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phenopod/animations/bottom_app_bar.dart';
 import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import '../widgets/bottom_app_bar/main.dart' as appbar;
 
@@ -24,8 +25,18 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final bottomAppBarAnimations = BottomAppBarAnimations.New(
+      context,
+      _bottomAppBarController,
+    );
+
     return WillPopScope(
       onWillPop: () async {
+        if (bottomAppBarAnimations.controller.value == 1.0) {
+          bottomAppBarAnimations.collapseBottomAppBar();
+          return false;
+        }
+
         return !await navigatorKey.currentState.maybePop();
       },
       child: Scaffold(
@@ -67,7 +78,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 Container(
                   alignment: Alignment.bottomCenter,
                   child: appbar.BottomAppBar(
-                    controller: _bottomAppBarController,
+                    animations: bottomAppBarAnimations,
                   ),
                 ),
               ],

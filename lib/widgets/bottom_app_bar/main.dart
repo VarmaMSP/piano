@@ -8,14 +8,12 @@ import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import 'navigation_bar.dart';
 
 class BottomAppBar extends StatelessWidget {
-  BottomAppBar({Key key, this.controller}) : super(key: key);
+  BottomAppBar({Key key, this.animations}) : super(key: key);
 
-  final AnimationController controller;
+  final BottomAppBarAnimations animations;
 
   @override
   Widget build(BuildContext context) {
-    final animations = BottomAppBarAnimations.New(context, controller);
-
     final body = Stack(
       overflow: Overflow.visible,
       children: <Widget>[
