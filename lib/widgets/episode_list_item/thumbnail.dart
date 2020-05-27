@@ -24,7 +24,7 @@ class Thumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Widget image = ClipRRect(
-      borderRadius: BorderRadius.circular(6.0),
+      borderRadius: BorderRadius.circular(10.0),
       child: CachedNetworkImage(
         imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
         fit: BoxFit.fill,

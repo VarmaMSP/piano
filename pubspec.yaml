@@ -24,6 +24,7 @@ dependencies:
   audio_service: ^0.8.0
   just_audio: ^0.1.9
   intl: ^0.16.1
+  modal_bottom_sheet: ^0.1.6+1
 
 dev_dependencies:
   flutter_test:

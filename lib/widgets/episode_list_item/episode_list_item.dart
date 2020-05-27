@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:phenopod/models/episode.dart';
 import 'package:phenopod/models/podcast.dart';
+import 'package:phenopod/widgets/bottom_sheet/episode_details.dart';
 import 'package:phenopod/widgets/episode_list_item/menu.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -23,10 +24,11 @@ class EpisodeListItem extends StatelessWidget {
       episode.title,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 14.5,
-        color: TWColors.gray.shade800,
-        height: 1.35,
-        letterSpacing: 0.15,
+        fontSize: 13.8,
+        color: TWColors.gray.shade900,
+        height: 1.325,
+        letterSpacing: 0.2,
+        wordSpacing: 0.4,
         fontWeight: FontWeight.w500,
       ),
       maxLines: 2,
@@ -38,7 +40,7 @@ class EpisodeListItem extends StatelessWidget {
         style: TextStyle(
           fontSize: 13,
           color: TWColors.gray.shade900,
-          letterSpacing: 0.25,
+          letterSpacing: 0.2,
         ),
         children: <TextSpan>[
           ..._episodeNumber(episode),
@@ -53,68 +55,77 @@ class EpisodeListItem extends StatelessWidget {
           .replaceAll('&nbsp;', ' ')
           .replaceAll('&amp', '&'),
       overflow: TextOverflow.ellipsis,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 12.1,
         color: Color(0xff657389), //TWColors.gray.shade600,
-        height: 1.295,
-        letterSpacing: 0.12,
+        height: 1.3,
+        letterSpacing: 0.175,
+        wordSpacing: 0.3,
       ),
       maxLines: 2,
       textAlign: TextAlign.left,
     );
 
-    return GestureDetector(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 13, bottom: 13, left: 14, right: 2),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Thumbnail(episode: episode, podcast: podcast),
-            Expanded(
-              child: Transform.translate(
-                offset: const Offset(0, -4),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 11),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 5),
-                                  child: title,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 6),
-                                  child: info,
-                                ),
-                              ],
-                            ),
+    return Container(
+      padding: const EdgeInsets.only(top: 13, bottom: 13, left: 18, right: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Thumbnail(episode: episode, podcast: podcast),
+          Expanded(
+            child: Transform.translate(
+              offset: const Offset(0, -2),
+              child: Container(
+                padding: const EdgeInsets.only(left: 12),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 4.5),
+                                child: title,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 4.5),
+                                child: info,
+                              ),
+                            ],
                           ),
-                          Transform.translate(
-                            offset: const Offset(6, -4),
-                            child: const Menu(),
-                          ),
-                        ],
-                      ),
-                      Padding(
+                        ),
+                        Transform.translate(
+                          offset: const Offset(6, -8),
+                          child: const Menu(),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        showEpisodeDetailsBottomSheet(
+                          context: context,
+                          episode: episode,
+                          podcast: podcast,
+                        );
+                      },
+                      child: Padding(
                         padding: const EdgeInsets.only(right: 16.0),
                         child: summary,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -150,9 +161,9 @@ class EpisodeListItem extends StatelessWidget {
         text: text,
         style: TextStyle(
           color: color,
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: FontWeight.w500,
-          letterSpacing: 0.25,
+          letterSpacing: 0.3,
         ),
       ),
       TextSpan(

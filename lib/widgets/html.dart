@@ -6,14 +6,15 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 
 final Map<String, Style> htmlStyle = {
   '*': Style(
-    letterSpacing: 0.17,
+    letterSpacing: 0.2,
+    wordSpacing: 0.2,
   ),
   'h1, h2, h3, h4': Style(
     fontSize: FontSize.large,
     color: TWColors.gray.shade700,
   ),
   'p': Style(
-    fontSize: FontSize.percent(98),
+    fontSize: FontSize.percent(95),
     color: TWColors.gray.shade700,
   ),
   'a': Style(
