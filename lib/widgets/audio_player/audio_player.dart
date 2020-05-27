@@ -61,6 +61,7 @@ class AudioPlayer extends StatelessWidget {
                     bottom: 48,
                   ),
                   child: HTML(
+                    id: state.playingNow.episode.id,
                     document: state.playingNow.episode.description,
                   ),
                 ),

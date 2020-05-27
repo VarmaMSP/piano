@@ -24,9 +24,11 @@ final Map<String, Style> htmlStyle = {
 class HTML extends StatefulWidget {
   const HTML({
     Key key,
+    @required this.id,
     @required this.document,
   }) : super(key: key);
 
+  final String id;
   final String document;
 
   @override
@@ -34,19 +36,23 @@ class HTML extends StatefulWidget {
 }
 
 class _HTMLState extends State<HTML> {
+  String _lastId;
   Widget _lastWidget;
 
   @override
   Widget build(BuildContext context) {
-    _lastWidget ??= Html(
-      data: widget.document,
-      onLinkTap: (url) async {
-        if (await canLaunch(url)) {
-          await launch(url);
-        }
-      },
-      style: htmlStyle,
-    );
+    if (_lastId != widget.id || _lastWidget == null) {
+      _lastId = widget.id;
+      _lastWidget = Html(
+        data: widget.document,
+        onLinkTap: (url) async {
+          if (await canLaunch(url)) {
+            await launch(url);
+          }
+        },
+        style: htmlStyle,
+      );
+    }
 
     return _lastWidget;
   }
