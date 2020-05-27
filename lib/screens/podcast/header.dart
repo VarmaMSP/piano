@@ -19,9 +19,9 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   final TabController tabController;
 
   @override
-  final double minExtent = appBarHeight + tabBarHeight + 1;
+  final double minExtent = appBarHeight + tabBarHeight;
   @override
-  final double maxExtent = appBarHeight + tabBarHeight + flexibleAreaHeight + 1;
+  final double maxExtent = appBarHeight + tabBarHeight + flexibleAreaHeight;
 
   @override
   Widget build(
@@ -31,13 +31,11 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   ) {
     return Container(
       height: maxExtent - shrinkOffset,
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          bottom: BorderSide(color: TWColors.gray.shade400),
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 18),
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        if ((maxExtent - shrinkOffset - minExtent).abs() <= 0.001)
+          BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
+      ]),
       child: Stack(
         overflow: Overflow.visible,
         children: <Widget>[
@@ -113,25 +111,25 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       height: tabBarHeight,
       alignment: Alignment.bottomLeft,
       transform: Matrix4.translationValues(
-          -6, appBarHeight + flexibleAreaHeight - shrinkOffset, 0),
+          -14, appBarHeight + flexibleAreaHeight - shrinkOffset, 0),
       child: TabBar(
         isScrollable: true,
-        indicatorColor: TWColors.green.shade900,
+        indicatorColor: TWColors.yellow.shade400,
         indicatorSize: TabBarIndicatorSize.label,
-        indicatorWeight: 2.4,
-        labelColor: TWColors.green.shade900,
+        indicatorWeight: 4,
+        labelColor: Colors.black,
         labelStyle: TextStyle(
           fontSize: 14,
           letterSpacing: 0.8,
           fontWeight: FontWeight.w500,
+          color: Colors.black,
         ),
-        unselectedLabelColor: TWColors.gray.shade600,
+        unselectedLabelColor: TWColors.gray.shade500,
         unselectedLabelStyle: TextStyle(
           fontSize: 14,
           letterSpacing: 0.8,
           fontWeight: FontWeight.w500,
         ),
-        labelPadding: EdgeInsets.only(bottom: 5, right: 8, left: 8),
         controller: tabController,
         tabs: const <Widget>[
           Tab(text: '  Episodes  '),
@@ -143,7 +141,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
   Widget _flexibleArea(double shrinkOffset) {
     final Widget thumbnail = ClipRRect(
-      borderRadius: BorderRadius.circular(6.0),
+      borderRadius: BorderRadius.circular(10.0),
       child: CachedNetworkImage(
         imageUrl: 'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg',
         fit: BoxFit.fill,
