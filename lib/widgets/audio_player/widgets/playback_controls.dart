@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:phenopod/utils/format.dart';
+import 'package:phenopod/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
