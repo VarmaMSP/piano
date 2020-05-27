@@ -1,7 +1,7 @@
 name: phenopod
 description: Phenopods mobile client.
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -25,6 +25,7 @@ dependencies:
   just_audio: ^0.1.9
   intl: ^0.16.1
   modal_bottom_sheet: ^0.1.6+1
+  page_transition: ^1.1.5
 
 dev_dependencies:
   flutter_test:
