@@ -10,10 +10,10 @@ class Category extends Equatable {
 
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      id: json['id'] as String,
-      urlParam: json['url_param'] as String,
-      name: json['name'] as String,
-      parentId: json['parent_id'] as String,
+      id: json['id'] as String ?? '',
+      urlParam: json['url_param'] as String ?? '',
+      name: json['name'] as String ?? '',
+      parentId: json['parent_id'] as String ?? '',
     );
   }
 

@@ -12,9 +12,11 @@ class HomeScreenInitial extends HomeScreenState {
 class HomeScreenLoaded extends HomeScreenState {
   const HomeScreenLoaded({
     this.curations,
+    this.categories,
   });
 
   final List<Curation> curations;
+  final List<Category> categories;
 
   @override
   List<Object> get props => <Object>[curations];

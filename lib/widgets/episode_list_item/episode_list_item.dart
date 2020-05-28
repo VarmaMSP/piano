@@ -24,10 +24,10 @@ class EpisodeListItem extends StatelessWidget {
       episode.title,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 13.8,
+        fontSize: 13.6,
         color: TWColors.gray.shade900,
         height: 1.325,
-        letterSpacing: 0.2,
+        letterSpacing: 0.25,
         wordSpacing: 0.4,
         fontWeight: FontWeight.w500,
       ),

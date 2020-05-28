@@ -5,6 +5,7 @@ import 'package:phenopod/blocs/home_screen/home_screen_bloc.dart';
 import 'package:phenopod/models/main.dart';
 import 'package:phenopod/screens/loading.dart';
 import 'package:phenopod/utils/request.dart';
+import 'package:phenopod/widgets/home_view/main.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,14 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         final s = state as HomeScreenLoaded;
-        return CustomScrollView(
-          slivers: s.curations.fold<List<Widget>>(
-            [],
-            (acc, curation) => [
-              ...acc,
-              ..._buildCuration(context, curation),
-            ],
-          ),
+        return HomeView(
+          curations: s.curations,
+          categories: s.categories,
         );
       },
     );
@@ -58,45 +54,45 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  List<Widget> _buildCuration(BuildContext context, Curation curation) {
-    return [
-      SliverToBoxAdapter(
-        child: Container(
-          padding: EdgeInsets.only(top: 20, bottom: 16, left: 16, right: 16),
-          child: Text(
-            curation.title,
-            style: TextStyle(
-              fontSize: 18,
-              color: TWColors.gray.shade900,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.15,
-            ),
-          ),
-        ),
-      ),
-      SliverPadding(
-        padding: EdgeInsets.only(bottom: 20),
-        sliver: SliverToBoxAdapter(
-          child: Container(
-            height: 110,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return _buildPodcastThumbnail(
-                  context,
-                  curation.podcasts[index],
-                  110,
-                  isFirst: index == 0,
-                  isLast: index == curation.podcasts.length - 1,
-                );
-              },
-              itemCount: curation.podcasts.length,
-            ),
-          ),
-        ),
-      )
-    ];
-  }
+  // List<Widget> _buildCuration(BuildContext context, Curation curation) {
+  //   return [
+  //     SliverToBoxAdapter(
+  //       child: Container(
+  //         padding: EdgeInsets.only(top: 20, bottom: 16, left: 16, right: 16),
+  //         child: Text(
+  //           curation.title,
+  //           style: TextStyle(
+  //             fontSize: 18,
+  //             color: TWColors.gray.shade900,
+  //             fontWeight: FontWeight.w500,
+  //             letterSpacing: 0.15,
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //     SliverPadding(
+  //       padding: EdgeInsets.only(bottom: 20),
+  //       sliver: SliverToBoxAdapter(
+  //         child: Container(
+  //           height: 110,
+  //           child: ListView.builder(
+  //             scrollDirection: Axis.horizontal,
+  //             itemBuilder: (context, index) {
+  //               return _buildPodcastThumbnail(
+  //                 context,
+  //                 curation.podcasts[index],
+  //                 110,
+  //                 isFirst: index == 0,
+  //                 isLast: index == curation.podcasts.length - 1,
+  //               );
+  //             },
+  //             itemCount: curation.podcasts.length,
+  //           ),
+  //         ),
+  //       ),
+  //     )
+  //   ];
+  // }
 
   Widget _buildPodcastThumbnail(
     BuildContext context,

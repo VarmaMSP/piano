@@ -27,7 +27,10 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       /// Load initial data
       if (event is Load && state is HomeScreenInitial) {
         final response = await request.get('/');
-        yield HomeScreenLoaded(curations: response.curations);
+        yield HomeScreenLoaded(
+          curations: response.curations,
+          categories: response.primaryCategories,
+        );
       }
     } catch (err) {
       yield HomeScreenError(errMsg: err.toString());

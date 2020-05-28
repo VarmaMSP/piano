@@ -59,6 +59,9 @@ class ApiResponse {
       .cast<Map<String, dynamic>>()
       .map((d) => Curation.fromJson(d))
       .toList();
+
+  List<Category> get primaryCategories =>
+      categories.where((c) => c.parentId == '').toList();
 }
 
 class SearchResults {

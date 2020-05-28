@@ -43,6 +43,11 @@ double getScreenHeight(BuildContext context) {
   return MediaQuery.of(context).size.height - padding.top - padding.bottom;
 }
 
+/// getScreenWidth returns width of screen
+double getScreenWidth(BuildContext context) {
+  return MediaQuery.of(context).size.width;
+}
+
 /// mapRange maps a value from range [x1, x2] to [y1, y2]
 double mapRange(double x1, double x2, double y1, double y2, double value) {
   if (value <= x1) {
