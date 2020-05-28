@@ -5,8 +5,12 @@ class LoadingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return Container(
+      color: Colors.white,
+      constraints: BoxConstraints.expand(),
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

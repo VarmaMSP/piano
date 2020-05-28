@@ -36,7 +36,8 @@ class AboutTab extends StatelessWidget {
     return SafeArea(
       top: false,
       bottom: false,
-      child: Padding(
+      child: Container(
+        color: Colors.white,
         padding: const EdgeInsets.only(left: 16, right: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

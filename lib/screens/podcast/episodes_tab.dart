@@ -24,42 +24,46 @@ class EpisodesTab extends StatelessWidget {
     return SafeArea(
       top: false,
       bottom: false,
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverPadding(
-            padding: const EdgeInsets.only(top: 90),
-            sliver: SliverList(
-              key: key,
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  if (index < episodes.length) {
-                    return EpisodeListItem(
-                      episode: episodes[index],
-                      podcast: podcast,
-                    );
-                  }
+      child: Container(
+        color: Colors.white,
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverPadding(
+              padding: const EdgeInsets.only(top: 90),
+              sliver: SliverList(
+                key: key,
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    if (index < episodes.length) {
+                      return EpisodeListItem(
+                        episode: episodes[index],
+                        podcast: podcast,
+                      );
+                    }
 
-                  loadMore();
-                  return Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Container(
-                      height: 30,
-                      width: 30,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 3,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          TWColors.gray.shade800,
+                    loadMore();
+                    return Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            TWColors.gray.shade800,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                childCount: receivedAll ? episodes.length : episodes.length + 1,
+                    );
+                  },
+                  childCount:
+                      receivedAll ? episodes.length : episodes.length + 1,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
