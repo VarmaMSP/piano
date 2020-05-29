@@ -16,6 +16,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> with SingleTickerProviderStateMixin {
   AnimationController _bottomAppBarController;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  final RouteObserver<PageRoute> routeObserver = RouteObserver();
 
   @override
   void initState() {
@@ -68,7 +69,9 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                           child: Navigator(
                             key: navigatorKey,
                             initialRoute: '/',
-                            onGenerateRoute: RouteGenerator.generateRoute,
+                            observers: [routeObserver],
+                            onGenerateRoute:
+                                RouteGenerator.makeGenerateRoute(routeObserver),
                           ),
                         );
                       },

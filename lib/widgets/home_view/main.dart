@@ -9,14 +9,31 @@ class HomeView extends StatelessWidget {
     Key key,
     @required this.curations,
     @required this.categories,
+    @required this.controller,
   }) : super(key: key);
 
   final List<Curation> curations;
   final List<Category> categories;
+  final ScrollController controller;
 
   @override
   Widget build(BuildContext context) {
+    // return NestedScrollView(
+    //   controller: controller,
+    //   headerSliverBuilder: (BuildContext context, _) {
+    //     return <Widget>[
+    //       SliverOverlapAbsorber(
+    //          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+    //           context,
+    //         ),
+    //         sliver: ,
+    //       ),
+    //     ];
+    //   },
+    // )
+
     return CustomScrollView(
+      controller: controller,
       slivers: <Widget>[
         SliverToBoxAdapter(
           child: TrendingPodcasts(trending: curations[0].podcasts),
