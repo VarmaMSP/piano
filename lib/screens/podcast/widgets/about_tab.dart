@@ -38,12 +38,12 @@ class AboutTab extends StatelessWidget {
       bottom: false,
       child: Container(
         color: Colors.white,
-        padding: const EdgeInsets.only(left: 16, right: 16),
+        padding: const EdgeInsets.only(left: 18, right: 18),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(height: 92),
+            Container(height: 98),
             description,
             Container(height: 12),
             links,

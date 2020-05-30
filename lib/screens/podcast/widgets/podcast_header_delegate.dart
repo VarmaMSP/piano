@@ -32,10 +32,13 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     return Container(
       height: maxExtent - shrinkOffset,
       padding: const EdgeInsets.symmetric(horizontal: 18),
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-        if ((maxExtent - shrinkOffset - minExtent).abs() <= 0.001)
-          BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
-      ]),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          if ((maxExtent - shrinkOffset - minExtent).abs() <= 0.001)
+            BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
+        ],
+      ),
       child: Stack(
         overflow: Overflow.visible,
         children: <Widget>[
@@ -97,7 +100,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           ),
           Container(
             child: Transform.translate(
-              offset: const Offset(10, 0),
+              offset: const Offset(16, 0),
               child: actions,
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:phenopod/screens/home.dart';
-import 'package:phenopod/screens/podcast.dart';
+import 'package:phenopod/screens/home/main.dart';
+import 'package:phenopod/screens/podcast/main.dart';
 
 class RouteGenerator {
   static Route<dynamic> Function(RouteSettings) makeGenerateRoute(
@@ -15,13 +15,13 @@ class RouteGenerator {
           return PageTransition(
             child: PodcastScreen(urlParam: args['urlParam']),
             type: PageTransitionType.fade,
-            duration: Duration(milliseconds: 150),
-            curve: Curves.easeInOutExpo,
+            duration: Duration(milliseconds: 100),
+            curve: Curves.decelerate,
           );
 
         default:
           return PageTransition(
-            child: HomeScreen(routeObserver: routeObserver),
+            child: HomeScreen(),
             type: PageTransitionType.fade,
             duration: Duration(milliseconds: 150),
             curve: Curves.easeInOutExpo,

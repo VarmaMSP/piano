@@ -24,19 +24,26 @@ class PodcastThumbnail extends StatelessWidget {
     if (size == PodcastThumbnailSize.xs) {
       thumbnailSize = 45.0;
       borderRadius = 6.0;
+    } else if (size == PodcastThumbnailSize.sm) {
+      thumbnailSize = 80.0;
+      borderRadius = 10.0;
     }
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: CachedNetworkImage(
-        imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
-        fit: BoxFit.fill,
-        height: thumbnailSize,
-        width: thumbnailSize,
-        placeholder: (BuildContext context, String url) => Container(
+    return Container(
+      height: thumbnailSize,
+      width: thumbnailSize,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: CachedNetworkImage(
+          imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
+          fit: BoxFit.fill,
           height: thumbnailSize,
           width: thumbnailSize,
-          color: TWColors.gray.shade300,
+          placeholder: (BuildContext context, String url) => Container(
+            height: thumbnailSize,
+            width: thumbnailSize,
+            color: TWColors.gray.shade300,
+          ),
         ),
       ),
     );
