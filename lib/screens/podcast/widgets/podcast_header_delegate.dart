@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:phenopod/models/podcast.dart';
+import 'package:phenopod/utils/request.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:flutter/foundation.dart';
 
@@ -146,7 +147,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     final Widget thumbnail = ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
       child: CachedNetworkImage(
-        imageUrl: 'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg',
+        imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
         fit: BoxFit.fill,
         height: 130,
         width: 130,

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:phenopod/models/main.dart';
+import 'package:phenopod/utils/request.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 enum PodcastThumbnailSize { xs, sm, md }
@@ -11,8 +12,6 @@ class PodcastThumbnail extends StatelessWidget {
     @required this.podcast,
     this.size = PodcastThumbnailSize.md,
   }) : super(key: key);
-
-  static const String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
 
   final Podcast podcast;
   final PodcastThumbnailSize size;

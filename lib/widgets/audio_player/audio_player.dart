@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
 import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
+import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/widgets/audio_player/widgets/playback_controls.dart';
 import 'package:phenopod/widgets/html.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -96,8 +97,7 @@ class AudioPlayer extends StatelessWidget {
     final artWork = ClipRRect(
       borderRadius: BorderRadius.circular(4.0),
       child: CachedNetworkImage(
-        imageUrl:
-            'https://cdn.phenopod.com/thumbnails/${state.playingNow.podcast.urlParam}.jpg',
+        imageUrl: '$thumbnailUrl/${state.playingNow.podcast.urlParam}.jpg',
         fit: BoxFit.fill,
         height: 105,
         width: 105,

@@ -6,6 +6,7 @@ import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import 'package:phenopod/models/episode.dart';
 import 'package:phenopod/models/main.dart';
 import 'package:phenopod/models/podcast.dart';
+import 'package:phenopod/utils/request.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class Thumbnail extends StatelessWidget {
@@ -16,7 +17,6 @@ class Thumbnail extends StatelessWidget {
   }) : super(key: key);
 
   static const double thumbnailSize = 90;
-  static const String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
 
   final Episode episode;
   final Podcast podcast;

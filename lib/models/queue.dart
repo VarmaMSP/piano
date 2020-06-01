@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:audio_service/audio_service.dart';
+import 'package:phenopod/utils/request.dart';
 
 import 'episode.dart';
 import 'podcast.dart';
@@ -39,7 +40,7 @@ class QueueItem extends Equatable {
       id: episode.mediaUrl,
       album: podcast.title,
       title: episode.title,
-      artUri: 'https://cdn.phenopod.com/thumbnails/${podcast.urlParam}.jpg',
+      artUri: '$thumbnailUrl/${podcast.urlParam}.jpg',
     );
   }
 
