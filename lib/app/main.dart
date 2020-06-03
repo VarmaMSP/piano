@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
 import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
-import '../widgets/bottom_app_bar/main.dart' as appbar;
+import 'package:phenopod/widgets/bottom_app_bar/main.dart' as appbar;
+import 'package:phenopod/route_generator.dart';
 
-import '../route_generator.dart';
-
-class AppContent extends StatefulWidget {
-  const AppContent({Key key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key key}) : super(key: key);
 
   @override
-  _AppContentState createState() => _AppContentState();
+  _AppState createState() => _AppState();
 }
 
-class _AppContentState extends State<AppContent>
-    with SingleTickerProviderStateMixin {
+class _AppState extends State<App> with SingleTickerProviderStateMixin {
   AnimationController _bottomAppBarController;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final RouteObserver<PageRoute> routeObserver = RouteObserver();
