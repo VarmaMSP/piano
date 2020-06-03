@@ -19,5 +19,3 @@ class SessionAuthenticated extends SessionState {
 }
 
 class SessionUnauthenticated extends SessionState {}
-
-class SessionLoading extends SessionState {}

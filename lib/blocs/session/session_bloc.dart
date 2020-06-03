@@ -19,9 +19,8 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     SessionEvent event,
   ) async* {
     if (event is AppStarted || event is SignedIn) {
-      yield SessionLoading();
-
       final user = await _sessionService.loadSession();
+
       if (user != null) {
         yield SessionAuthenticated(user);
       } else {

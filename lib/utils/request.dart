@@ -6,13 +6,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:phenopod/models/api_response.dart';
 
 const String thumbnailUrl = kReleaseMode
-    ? 'https://cdn.phenopod.com/thumbnails'
+    // ? 'https://cdn.phenopod.com/thumbnails'
+    ? 'http://192.168.1.27:8080/thumbnails'
     : 'http://192.168.1.27:8080/thumbnails';
 
 final Future<Dio> dioF = () async {
   final baseOptions = BaseOptions(
     baseUrl: kReleaseMode
-        ? 'https://phenopod.com/api'
+        // ? 'https://phenopod.com/api'
+        ? 'http://192.168.1.27:8080/api'
         : 'http://192.168.1.27:8080/api',
     connectTimeout: 5000,
     receiveTimeout: 3000,
@@ -32,6 +34,7 @@ Future<ApiResponse> makeRequest({
   Map<String, String> queryParams,
   Map<String, dynamic> body,
 }) async {
+  print('$method - $path');
   final dio = await dioF;
   final response = await dio.request(
     path,
@@ -42,6 +45,8 @@ Future<ApiResponse> makeRequest({
       responseType: ResponseType.json,
     ),
   );
+
+  print(response.data);
 
   return ApiResponse.fromJson(response.data);
 }
