@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -27,7 +28,7 @@ class SessionService {
     await credentials.load();
     await makeRequest(
       method: 'POST',
-      path: '/signin/guest',
+      path: '/mobile/signin/guest',
       body: credentials.toJson(),
     );
   }
@@ -58,11 +59,14 @@ class GuestCredentials {
   }
 
   Map<String, dynamic> toJson() {
+    log('$_id $_deviceUuid $_deviceOs $_deviceModel');
     return <String, dynamic>{
-      'id': _id,
-      'device_uuid': _deviceUuid ?? '',
-      'device_os': _deviceOs,
-      'device_model': _deviceModel,
+      'guest_account': <String, dynamic>{
+        'id': _id,
+        'device_uuid': _deviceUuid ?? '',
+        'device_os': _deviceOs,
+        'device_model': _deviceModel,
+      },
     };
   }
 
