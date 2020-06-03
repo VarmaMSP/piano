@@ -13,11 +13,9 @@ part 'podcast_state.dart';
 class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
   PodcastBloc({
     @required this.urlParam,
-    @required this.request,
   });
 
   final String urlParam;
-  final Request request;
 
   @override
   PodcastState get initialState => PodcastInitial();
@@ -31,7 +29,10 @@ class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
     try {
       // Load initial data
       if (event is Load && state is PodcastInitial) {
-        final response = await request.get('/podcasts/$urlParam');
+        final response = await makeRequest(
+          method: 'GET',
+          path: '/podcasts/$urlParam',
+        );
         yield PodcastLoaded(
           podcast: response.podcasts[0],
           episodes: response.episodes,
@@ -41,8 +42,11 @@ class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
 
       // Load more episodes
       if (event is Load && state is PodcastLoaded && !state.loadedAll) {
-        final response = await request.get(
-            '/ajax/browse?endpoint=podcast_episodes&&podcast_id=${state.podcast.id}&&offset=${state.episodes.length}&&limit=30&&order=pub_date_desc');
+        final response = await makeRequest(
+          method: 'GET',
+          path:
+              '/ajax/browse?endpoint=podcast_episodes&&podcast_id=${state.podcast.id}&&offset=${state.episodes.length}&&limit=30&&order=pub_date_desc',
+        );
         yield PodcastLoaded(
           podcast: state.podcast,
           episodes: state.episodes + response.episodes,

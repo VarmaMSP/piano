@@ -1,5 +1,4 @@
 import 'dart:async';
-// import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -10,10 +9,6 @@ part 'home_screen_event.dart';
 part 'home_screen_state.dart';
 
 class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
-  HomeScreenBloc({this.request});
-
-  final Request request;
-
   @override
   HomeScreenState get initialState => HomeScreenInitial();
 
@@ -26,7 +21,7 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     try {
       /// Load initial data
       if (event is Load && state is HomeScreenInitial) {
-        final response = await request.get('/');
+        final response = await makeRequest(method: 'GET', path: '/');
         yield HomeScreenLoaded(
           curations: response.curations,
           categories: response.primaryCategories,

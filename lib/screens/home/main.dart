@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:phenopod/blocs/home_screen/home_screen_bloc.dart';
 import 'package:phenopod/models/main.dart';
 import 'package:phenopod/screens/home/widgets/trending.dart';
-import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/widgets/screen/header/tab_screen.dart';
 import 'package:phenopod/widgets/screen/layout.dart';
 import 'package:phenopod/widgets/screen/loading_layout.dart';
 
 import 'widgets/categories.dart';
+import 'bloc/home_screen_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({
@@ -25,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _homeScreenBloc = HomeScreenBloc(request: Request())..add(Load());
+    _homeScreenBloc = HomeScreenBloc()..add(Load());
   }
 
   @override

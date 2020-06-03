@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/widgets/screen/layout.dart';
 import 'package:phenopod/widgets/screen/loading_layout.dart';
 
@@ -30,7 +29,7 @@ class _PodcastScreenState extends State<PodcastScreen>
   @override
   void initState() {
     super.initState();
-    _podcastBloc = PodcastBloc(request: Request(), urlParam: widget.urlParam);
+    _podcastBloc = PodcastBloc(urlParam: widget.urlParam);
     _tabController = TabController(vsync: this, length: 2);
     _podcastBloc.add(Load());
   }
