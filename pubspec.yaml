@@ -26,6 +26,12 @@ dependencies:
   intl: ^0.16.1
   modal_bottom_sheet: ^0.1.6+1
   page_transition: ^1.1.5
+  uuid: ^2.0.4
+  flutter_secure_storage: ^3.3.3
+  device_info: ^0.4.2+4
+  dio_cookie_manager: ^1.0.0
+  cookie_jar: ^1.0.1
+  path_provider: ^1.6.9
 
 dev_dependencies:
   flutter_test:
