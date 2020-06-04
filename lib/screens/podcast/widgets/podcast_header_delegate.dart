@@ -52,29 +52,29 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   }
 
   Widget _appBar(BuildContext context, double shrinkOffset) {
-    final Widget actions = Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        if ((shrinkOffset - flexibleAreaHeight).abs() < 0.0001)
-          IconButton(
-            icon: Icon(
-              Icons.more_horiz,
-              size: 23,
-              color: TWColors.gray.shade700,
-            ),
-            onPressed: null,
-          ),
-        Container(width: 2),
-        IconButton(
-          icon: Icon(
-            Icons.search,
-            size: 23,
-            color: TWColors.gray.shade700,
-          ),
-          onPressed: null,
-        ),
-      ],
-    );
+    // final Widget actions = Row(
+    //   mainAxisAlignment: MainAxisAlignment.end,
+    //   children: <Widget>[
+    //     if ((shrinkOffset - flexibleAreaHeight).abs() < 0.0001)
+    //       IconButton(
+    //         icon: Icon(
+    //           Icons.search,
+    //           size: 23,
+    //           color: TWColors.gray.shade700,
+    //         ),
+    //         onPressed: null,
+    //       ),
+    //     Container(width: 2),
+    //     IconButton(
+    //       icon: Icon(
+    //         Icons.more_vert,
+    //         size: 23,
+    //         color: TWColors.gray.shade700,
+    //       ),
+    //       onPressed: null,
+    //     ),
+    //   ],
+    // );
 
     return Container(
       height: appBarHeight,
@@ -84,7 +84,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Transform.translate(
-            offset: const Offset(-12, 0),
+            offset: const Offset(-16, 0),
             child: Material(
               color: Colors.white,
               child: IconButton(
@@ -99,10 +99,28 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          Container(
-            child: Transform.translate(
-              offset: const Offset(16, 0),
-              child: actions,
+          Transform.translate(
+            offset: const Offset(20, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    size: 23,
+                    color: TWColors.gray.shade700,
+                  ),
+                  onPressed: null,
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.more_vert,
+                    size: 23,
+                    color: TWColors.gray.shade700,
+                  ),
+                  onPressed: null,
+                ),
+              ],
             ),
           ),
         ],
@@ -214,7 +232,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
     final Widget widget = Container(
       constraints: const BoxConstraints.expand(height: flexibleAreaHeight),
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
