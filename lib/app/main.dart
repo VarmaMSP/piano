@@ -40,6 +40,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
           preferredSize: const Size(0, 0),
           child: Container(),

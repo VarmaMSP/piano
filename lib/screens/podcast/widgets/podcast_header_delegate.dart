@@ -52,30 +52,6 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   }
 
   Widget _appBar(BuildContext context, double shrinkOffset) {
-    // final Widget actions = Row(
-    //   mainAxisAlignment: MainAxisAlignment.end,
-    //   children: <Widget>[
-    //     if ((shrinkOffset - flexibleAreaHeight).abs() < 0.0001)
-    //       IconButton(
-    //         icon: Icon(
-    //           Icons.search,
-    //           size: 23,
-    //           color: TWColors.gray.shade700,
-    //         ),
-    //         onPressed: null,
-    //       ),
-    //     Container(width: 2),
-    //     IconButton(
-    //       icon: Icon(
-    //         Icons.more_vert,
-    //         size: 23,
-    //         color: TWColors.gray.shade700,
-    //       ),
-    //       onPressed: null,
-    //     ),
-    //   ],
-    // );
-
     return Container(
       height: appBarHeight,
       child: Row(
@@ -110,7 +86,9 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                     size: 23,
                     color: TWColors.gray.shade700,
                   ),
-                  onPressed: null,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/search');
+                  },
                 ),
                 IconButton(
                   icon: Icon(

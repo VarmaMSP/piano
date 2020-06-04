@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:phenopod/screens/home/main.dart';
 import 'package:phenopod/screens/podcast/main.dart';
+import 'package:phenopod/screens/search/main.dart';
 
 class RouteGenerator {
   static Route<dynamic> Function(RouteSettings) makeGenerateRoute(
@@ -17,6 +18,14 @@ class RouteGenerator {
             type: PageTransitionType.fade,
             duration: Duration(milliseconds: 150),
             curve: Curves.easeIn,
+          );
+
+        case '/search':
+          return PageTransition(
+            child: SearchScreen(),
+            type: PageTransitionType.fade,
+            duration: Duration(milliseconds: 150),
+            curve: Curves.easeInExpo,
           );
 
         default:
