@@ -75,6 +75,7 @@ class AudioPlayerPreview extends StatelessWidget {
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 14, letterSpacing: 0.2),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -91,7 +92,7 @@ class AudioPlayerPreview extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Transform.translate(
-          offset: Offset(-8, 0),
+          offset: Offset(-4, 0),
           child: IconButton(
             padding: const EdgeInsets.all(0.0),
             icon: Icon(
