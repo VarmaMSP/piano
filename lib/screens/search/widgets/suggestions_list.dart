@@ -39,6 +39,7 @@ class SuggestionsList extends StatelessWidget {
     SearchSuggestion suggestion,
   ) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         Navigator.of(context).pushReplacementNamed(
           '/podcast',
