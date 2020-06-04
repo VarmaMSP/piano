@@ -34,7 +34,6 @@ Future<ApiResponse> makeRequest({
   Map<String, String> queryParams,
   Map<String, dynamic> body,
 }) async {
-  print('$method - $path');
   final dio = await dioF;
   final response = await dio.request(
     path,
@@ -45,8 +44,6 @@ Future<ApiResponse> makeRequest({
       responseType: ResponseType.json,
     ),
   );
-
-  print(response.data);
 
   return ApiResponse.fromJson(response.data);
 }

@@ -32,7 +32,7 @@ class AudioPlayer extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.only(left: 14, right: 14),
+              padding: const EdgeInsets.only(left: 18, right: 18),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: TWColors.gray.shade200),
@@ -95,7 +95,7 @@ class AudioPlayer extends StatelessWidget {
     );
 
     final artWork = ClipRRect(
-      borderRadius: BorderRadius.circular(4.0),
+      borderRadius: BorderRadius.circular(8),
       child: CachedNetworkImage(
         imageUrl: '$thumbnailUrl/${state.playingNow.podcast.urlParam}.jpg',
         fit: BoxFit.fill,
@@ -137,7 +137,7 @@ class AudioPlayer extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               letterSpacing: 0.25,
-              color: TWColors.gray.shade700,
+              color: TWColors.gray.shade900,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -190,7 +190,7 @@ class AudioPlayer extends StatelessWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,

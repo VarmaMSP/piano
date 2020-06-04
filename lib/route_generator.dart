@@ -15,8 +15,8 @@ class RouteGenerator {
           return PageTransition(
             child: PodcastScreen(urlParam: args['urlParam']),
             type: PageTransitionType.fade,
-            duration: Duration(milliseconds: 100),
-            curve: Curves.decelerate,
+            duration: Duration(milliseconds: 150),
+            curve: Curves.easeIn,
           );
 
         default:

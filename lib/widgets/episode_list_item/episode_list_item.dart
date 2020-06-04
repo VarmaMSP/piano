@@ -25,9 +25,9 @@ class EpisodeListItem extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: 13.6,
-        color: TWColors.gray.shade900,
+        color: Colors.black, //TWColors.gray.shade900,
         height: 1.325,
-        letterSpacing: 0.25,
+        letterSpacing: 0.5,
         wordSpacing: 0.4,
         fontWeight: FontWeight.w500,
       ),
@@ -67,7 +67,7 @@ class EpisodeListItem extends StatelessWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.only(top: 13, bottom: 13, left: 18, right: 4),
+      padding: const EdgeInsets.only(top: 13, bottom: 18, left: 18, right: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -161,7 +161,7 @@ class EpisodeListItem extends StatelessWidget {
         text: text,
         style: TextStyle(
           color: color,
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: FontWeight.w500,
           letterSpacing: 0.3,
         ),

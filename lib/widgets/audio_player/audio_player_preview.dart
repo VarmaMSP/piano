@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 import 'package:phenopod/widgets/audio_player/widgets/action_button.dart';
+import 'package:phenopod/widgets/podcast_thumbnail.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
 
@@ -41,7 +42,7 @@ class AudioPlayerPreview extends StatelessWidget {
         return Container(
           height: 50,
           color: animations.playerBackgroundColor.value,
-          padding: const EdgeInsets.only(left: 4, right: 16),
+          padding: const EdgeInsets.only(left: 18, right: 18),
           child: child,
         );
       },
@@ -51,20 +52,20 @@ class AudioPlayerPreview extends StatelessWidget {
   Widget _buildPreview() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        IconButton(
-          padding: const EdgeInsets.all(0.0),
-          icon: Icon(
-            Icons.expand_less,
-            color: TWColors.gray.shade700,
-            size: 24,
+        GestureDetector(
+          onTap: animations.expandBottomAppBar,
+          child: PodcastThumbnail(
+            podcast: state.playingNow.podcast,
+            size: PodcastThumbnailSize.xs,
           ),
-          onPressed: animations.expandBottomAppBar,
         ),
         Expanded(
           child: GestureDetector(
             onTap: animations.expandBottomAppBar,
             child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
@@ -89,14 +90,17 @@ class AudioPlayerPreview extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        IconButton(
-          padding: const EdgeInsets.all(0.0),
-          icon: Icon(
-            Icons.expand_more,
-            color: TWColors.gray.shade700,
-            size: 24,
+        Transform.translate(
+          offset: Offset(-8, 0),
+          child: IconButton(
+            padding: const EdgeInsets.all(0.0),
+            icon: Icon(
+              Icons.expand_more,
+              color: TWColors.gray.shade700,
+              size: 24,
+            ),
+            onPressed: animations.collapseBottomAppBar,
           ),
-          onPressed: animations.collapseBottomAppBar,
         ),
       ],
     );

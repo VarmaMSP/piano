@@ -149,11 +149,11 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       child: CachedNetworkImage(
         imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
         fit: BoxFit.fill,
-        height: 130,
-        width: 130,
+        height: 125,
+        width: 125,
         placeholder: (BuildContext context, String url) => Container(
-          height: 130,
-          width: 130,
+          height: 125,
+          width: 125,
           color: TWColors.gray.shade300,
         ),
       ),
@@ -168,7 +168,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             height: 1.4,
-            fontSize: 16,
+            fontSize: 15,
             fontWeight: FontWeight.w500,
             color: Colors.black87,
             letterSpacing: 0.2,
