@@ -15,12 +15,10 @@ class Queue extends Equatable {
       return items.firstWhere(
           (QueueItem queueItem) => queueItem.episode.id == episodeId);
     }
-
     if (mediaUri != null) {
       return items.firstWhere(
           (QueueItem queueItem) => queueItem.episode.mediaUrl == mediaUri);
     }
-
     return null;
   }
 

@@ -5,4 +5,5 @@ export 'episode.dart';
 export 'playlist.dart';
 export 'podcast.dart';
 export 'queue.dart';
+export 'search_suggestion.dart';
 export 'user.dart';

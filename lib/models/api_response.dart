@@ -1,3 +1,5 @@
+import 'package:phenopod/models/search_suggestion.dart';
+
 import 'category.dart';
 import 'curation.dart';
 import 'episode.dart';
@@ -12,6 +14,7 @@ class ApiResponse {
     this.episodes,
     this.playlists,
     this.categories,
+    this.searchSuggestions,
     this.searchResults,
     this.raw,
   });
@@ -40,6 +43,10 @@ class ApiResponse {
           .cast<Map<String, dynamic>>()
           .map((d) => Category.fromJson(d))
           .toList(),
+      searchSuggestions: (data['search_suggestions'] as List ?? [])
+          .cast<Map<String, dynamic>>()
+          .map((d) => SearchSuggestion.fromJson(d))
+          .toList(),
       searchResults: SearchResults.fromJson(
         (data['search_results'] as Map ?? {}).cast<String, dynamic>(),
       ),
@@ -52,6 +59,7 @@ class ApiResponse {
   final List<Episode> episodes;
   final List<Playlist> playlists;
   final List<Category> categories;
+  final List<SearchSuggestion> searchSuggestions;
   final SearchResults searchResults;
   final dynamic raw;
 
