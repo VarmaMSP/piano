@@ -3,6 +3,10 @@ import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
+  SearchHeaderDelegate({this.searchBarController});
+
+  final TextEditingController searchBarController;
+
   @override
   double get maxExtent => 45.0;
 
@@ -19,12 +23,12 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
       height: maxExtent,
       padding: const EdgeInsets.symmetric(horizontal: 18),
       color: Colors.white,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Transform.translate(
-            offset: const Offset(-16, 0),
-            child: Material(
+      child: Transform.translate(
+        offset: const Offset(-16, 0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Material(
               color: Colors.white,
               child: IconButton(
                 icon: Icon(
@@ -37,31 +41,33 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
                 },
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              height: 35,
-              child: TextField(
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Search ...',
-                  fillColor: TWColors.gray.shade400,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 0.0,
-                    horizontal: 10.0,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: Colors.amber,
-                      style: BorderStyle.solid,
+            Container(width: 6),
+            Expanded(
+              child: Container(
+                height: 35,
+                child: TextField(
+                  autofocus: true,
+                  controller: searchBarController,
+                  decoration: InputDecoration(
+                    hintText: 'Search ...',
+                    fillColor: TWColors.gray.shade400,
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 0.0,
+                      horizontal: 10.0,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: BorderSide(
+                        color: Colors.amber,
+                        style: BorderStyle.solid,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
