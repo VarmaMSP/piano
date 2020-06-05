@@ -43,9 +43,24 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       child: Stack(
         overflow: Overflow.visible,
         children: <Widget>[
-          _appBar(context, shrinkOffset),
-          _flexibleArea(shrinkOffset),
-          _tabBar(shrinkOffset),
+          Positioned(
+            top: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: _appBar(context, shrinkOffset),
+          ),
+          Positioned(
+            bottom: tabBarHeight,
+            left: 0.0,
+            right: 0.0,
+            child: _flexibleArea(shrinkOffset),
+          ),
+          Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: _tabBar(shrinkOffset),
+          ),
         ],
       ),
     );
@@ -110,8 +125,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     return Container(
       height: tabBarHeight,
       alignment: Alignment.bottomLeft,
-      transform: Matrix4.translationValues(
-          -14, appBarHeight + flexibleAreaHeight - shrinkOffset, 0),
+      transform: Matrix4.translationValues(-14, 0, 0),
       child: TabBar(
         isScrollable: true,
         indicatorColor: TWColors.yellow.shade400,
@@ -208,39 +222,36 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       ],
     );
 
-    final Widget widget = Container(
-      constraints: const BoxConstraints.expand(height: flexibleAreaHeight),
-      padding: const EdgeInsets.only(top: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          thumbnail,
-          Expanded(
-            child: Container(
-              height: flexibleAreaHeight,
-              padding: const EdgeInsets.only(left: 14),
-              transform: Matrix4.translationValues(0, -4, 0),
-              child: Column(
-                children: <Widget>[
-                  details,
-                  const Spacer(),
-                  Transform.translate(
-                    offset: const Offset(6, 0),
-                    child: actions,
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+    final opacity = 1.0 - shrinkOffset / (flexibleAreaHeight - 10.0);
 
-    return Transform.translate(
-      offset: Offset(0, appBarHeight - shrinkOffset),
-      child: Opacity(
-        opacity: 1.0 - shrinkOffset / flexibleAreaHeight,
-        child: widget,
+    return Opacity(
+      opacity: opacity >= 0.0 ? opacity : 0.0,
+      child: Container(
+        height: flexibleAreaHeight,
+        padding: const EdgeInsets.only(top: 10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            thumbnail,
+            Expanded(
+              child: Container(
+                height: flexibleAreaHeight,
+                padding: const EdgeInsets.only(left: 14),
+                transform: Matrix4.translationValues(0, -4, 0),
+                child: Column(
+                  children: <Widget>[
+                    details,
+                    const Spacer(),
+                    Transform.translate(
+                      offset: const Offset(6, 0),
+                      child: actions,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

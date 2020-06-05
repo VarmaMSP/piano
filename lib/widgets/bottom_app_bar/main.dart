@@ -18,15 +18,17 @@ class BottomAppBar extends StatelessWidget {
       overflow: Overflow.visible,
       children: <Widget>[
         Positioned(
-            top: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: AudioPlayer(animations: animations)),
+          top: 0.0,
+          left: 0.0,
+          right: 0.0,
+          child: AudioPlayer(animations: animations),
+        ),
         Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: NavigationBar(animations: animations)),
+          bottom: 0.0,
+          left: 0.0,
+          right: 0.0,
+          child: NavigationBar(animations: animations),
+        ),
       ],
     );
 
