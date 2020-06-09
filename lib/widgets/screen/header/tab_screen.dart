@@ -22,10 +22,10 @@ class TabScreenHeaderDelegate implements SliverPersistentHeaderDelegate {
       padding: const EdgeInsets.symmetric(horizontal: appBarHorizontalPadding),
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [
-          if ((maxExtent - shrinkOffset - minExtent).abs() <= 0.001)
-            BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
-        ],
+        // boxShadow: [
+        //   if ((maxExtent - shrinkOffset - minExtent).abs() <= 0.001)
+        //     BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
+        // ],
       ),
       child: _buildAppBar(context),
     );
@@ -39,6 +39,10 @@ class TabScreenHeaderDelegate implements SliverPersistentHeaderDelegate {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          Container(
+            height: 43,
+            width: 43,
+          ),
           Text(
             'Phenopod',
             style: TextStyle(
@@ -56,7 +60,9 @@ class TabScreenHeaderDelegate implements SliverPersistentHeaderDelegate {
                 size: 23,
                 color: TWColors.gray.shade700,
               ),
-              onPressed: null,
+              onPressed: () {
+                Navigator.of(context).pushNamed('/search');
+              },
             ),
           ),
         ],

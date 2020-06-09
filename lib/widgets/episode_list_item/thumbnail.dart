@@ -45,7 +45,7 @@ class Thumbnail extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(600.0),
         child: Container(
-          color: const Color.fromRGBO(0, 0, 0, 0.45),
+          color: const Color.fromRGBO(0, 0, 0, 0.4),
           height: 34.0,
           width: 34.0,
         ),

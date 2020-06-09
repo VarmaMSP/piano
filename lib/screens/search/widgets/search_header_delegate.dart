@@ -8,10 +8,10 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
   final TextEditingController searchBarController;
 
   @override
-  double get maxExtent => 45.0;
+  double get maxExtent => 50.0;
 
   @override
-  double get minExtent => 45.0;
+  double get minExtent => 50.0;
 
   @override
   Widget build(

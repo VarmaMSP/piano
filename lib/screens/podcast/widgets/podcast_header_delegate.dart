@@ -49,12 +49,13 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             right: 0.0,
             child: _appBar(context, shrinkOffset),
           ),
-          Positioned(
-            bottom: tabBarHeight,
-            left: 0.0,
-            right: 0.0,
-            child: _flexibleArea(shrinkOffset),
-          ),
+          if ((maxExtent - shrinkOffset - minExtent).abs() > 0.001)
+            Positioned(
+              bottom: tabBarHeight,
+              left: 0.0,
+              right: 0.0,
+              child: _flexibleArea(shrinkOffset),
+            ),
           Positioned(
             bottom: 0.0,
             left: 0.0,
@@ -97,16 +98,6 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               children: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.search,
-                    size: 23,
-                    color: TWColors.gray.shade700,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/search');
-                  },
-                ),
-                IconButton(
-                  icon: Icon(
                     Icons.more_vert,
                     size: 23,
                     color: TWColors.gray.shade700,
@@ -130,17 +121,17 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         isScrollable: true,
         indicatorColor: TWColors.yellow.shade400,
         indicatorSize: TabBarIndicatorSize.label,
-        indicatorWeight: 4,
+        indicatorWeight: 3.5,
         labelColor: Colors.black,
         labelStyle: TextStyle(
-          fontSize: 14,
+          fontSize: 13.5,
           letterSpacing: 0.8,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
         unselectedLabelColor: TWColors.gray.shade500,
         unselectedLabelStyle: TextStyle(
-          fontSize: 14,
+          fontSize: 13.5,
           letterSpacing: 0.8,
           fontWeight: FontWeight.w500,
         ),
@@ -159,11 +150,11 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       child: CachedNetworkImage(
         imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
         fit: BoxFit.fill,
-        height: 125,
-        width: 125,
+        height: 120,
+        width: 120,
         placeholder: (BuildContext context, String url) => Container(
-          height: 125,
-          width: 125,
+          height: 120,
+          width: 120,
           color: TWColors.gray.shade300,
         ),
       ),
@@ -178,8 +169,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             height: 1.4,
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
             color: Colors.black87,
             letterSpacing: 0.2,
           ),
@@ -202,23 +193,23 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     final Widget actions = Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        IconButton(
-          icon: Icon(
-            Icons.add,
-            size: 26,
-            color: TWColors.gray.shade700,
-          ),
-          onPressed: null,
-        ),
-        Container(width: 10),
-        IconButton(
-          icon: Icon(
-            Icons.share,
-            size: 22,
-            color: TWColors.gray.shade700,
-          ),
-          onPressed: null,
-        ),
+        // IconButton(
+        //   icon: Icon(
+        //     Icons.add,
+        //     size: 26,
+        //     color: TWColors.gray.shade700,
+        //   ),
+        //   onPressed: null,
+        // ),
+        // Container(width: 10),
+        // IconButton(
+        //   icon: Icon(
+        //     Icons.share,
+        //     size: 22,
+        //     color: TWColors.gray.shade700,
+        //   ),
+        //   onPressed: null,
+        // ),
       ],
     );
 

@@ -1,2 +1,2 @@
-const double appBarHeight = 45;
+const double appBarHeight = 50;
 const double appBarHorizontalPadding = 18;

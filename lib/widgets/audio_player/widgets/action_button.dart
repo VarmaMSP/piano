@@ -54,7 +54,7 @@ class ActionButton extends StatelessWidget {
     if (state.audioState.isLoading) {
       return CircularProgressIndicator(
         value: null,
-        strokeWidth: 3,
+        strokeWidth: 2.5,
         valueColor: AlwaysStoppedAnimation<Color>(
           TWColors.purple.shade600,
         ),
@@ -70,7 +70,7 @@ class ActionButton extends StatelessWidget {
 
         return CircularProgressIndicator(
           value: currentTime / duration,
-          strokeWidth: 3,
+          strokeWidth: 2.5,
           valueColor: AlwaysStoppedAnimation<Color>(
             TWColors.purple.shade600,
           ),
