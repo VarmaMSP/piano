@@ -1,24 +1,23 @@
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-// import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:phenopod/models/api_response.dart';
 
-// const String thumbnailUrl = kReleaseMode
-//     ? 'https://cdn.phenopod.com/thumbnails'
-//     : 'http://192.168.1.27:8080/thumbnails';
+const String baseUrl =
+    kReleaseMode ? 'https://phenopod.com/api' : 'http://192.168.1.27:8080/api';
 
-const String thumbnailUrl = 'https://cdn.phenopod.com/thumbnails';
+const String thumbnailUrl = kReleaseMode
+    ? 'https://cdn.phenopod.com/thumbnails'
+    : 'http://192.168.1.27:8080/thumbnails';
 
 final Future<Dio> dioF = () async {
   final baseOptions = BaseOptions(
-    // baseUrl: kReleaseMode
-    //     ? 'https://phenopod.com/api'
-    //     : 'http://192.168.1.27:8080/api',
-    baseUrl: 'https://phenopod.com/api',
+    baseUrl: baseUrl,
     connectTimeout: 5000,
     receiveTimeout: 3000,
+    headers: <String, dynamic>{'X-PHENOPOD-CLIENT': 'android'},
   );
 
   final appDocDir = await getApplicationDocumentsDirectory();

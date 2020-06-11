@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phenopod/blocs/subscription/subscription_bloc.dart';
 import 'package:phenopod/models/podcast.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -14,7 +16,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
   static const double appBarHeight = 45;
   static const double tabBarHeight = 36;
-  static const double flexibleAreaHeight = 135;
+  static const double flexibleAreaHeight = 150;
 
   final Podcast podcast;
   final TabController tabController;
@@ -54,7 +56,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               bottom: tabBarHeight,
               left: 0.0,
               right: 0.0,
-              child: _flexibleArea(shrinkOffset),
+              child: _flexibleArea(context, shrinkOffset),
             ),
           Positioned(
             bottom: 0.0,
@@ -144,7 +146,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     );
   }
 
-  Widget _flexibleArea(double shrinkOffset) {
+  Widget _flexibleArea(BuildContext context, double shrinkOffset) {
     final Widget thumbnail = ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
       child: CachedNetworkImage(
@@ -190,27 +192,40 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       ],
     );
 
-    final Widget actions = Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        // IconButton(
-        //   icon: Icon(
-        //     Icons.add,
-        //     size: 26,
-        //     color: TWColors.gray.shade700,
-        //   ),
-        //   onPressed: null,
-        // ),
-        // Container(width: 10),
-        // IconButton(
-        //   icon: Icon(
-        //     Icons.share,
-        //     size: 22,
-        //     color: TWColors.gray.shade700,
-        //   ),
-        //   onPressed: null,
-        // ),
-      ],
+    final Widget actions = Container(
+      height: 26,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Flexible(
+            child: FractionallySizedBox(
+              heightFactor: 1.0,
+              widthFactor: 0.75,
+              child: FlatButton(
+                onPressed: () => BlocProvider.of<SubscriptionBloc>(context).add(
+                  podcast.isSubscribed
+                      ? UnsubscribeToPodcast(podcast.id)
+                      : SubscribeToPodcast(podcast.id),
+                ),
+                color: podcast.isSubscribed
+                    ? TWColors.gray.shade300
+                    : TWColors.purple.shade600,
+                textColor: podcast.isSubscribed
+                    ? TWColors.gray.shade800
+                    : TWColors.gray.shade100,
+                child: Text(
+                  podcast.isSubscribed ? 'Subscribed' : 'Subscribe',
+                  style: TextStyle(letterSpacing: 0.4),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 28),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
 
     final opacity = 1.0 - shrinkOffset / (flexibleAreaHeight - 10.0);
@@ -219,24 +234,23 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       opacity: opacity >= 0.0 ? opacity : 0.0,
       child: Container(
         height: flexibleAreaHeight,
-        padding: const EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.only(top: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             thumbnail,
             Expanded(
               child: Container(
-                height: flexibleAreaHeight,
+                height: 120,
                 padding: const EdgeInsets.only(left: 14),
-                transform: Matrix4.translationValues(0, -4, 0),
                 child: Column(
                   children: <Widget>[
-                    details,
-                    const Spacer(),
                     Transform.translate(
-                      offset: const Offset(6, 0),
-                      child: actions,
+                      offset: Offset(0, -4),
+                      child: details,
                     ),
+                    const Spacer(),
+                    actions,
                   ],
                 ),
               ),

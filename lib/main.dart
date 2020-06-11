@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:phenopod/app/main.dart';
+import 'package:phenopod/blocs/subscription/subscription_bloc.dart';
 import 'package:phenopod/screens/sign_in/main.dart';
 import 'package:phenopod/screens/splash.dart';
 
@@ -62,10 +63,13 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<SessionBloc>(
-          create: (BuildContext context) => SessionBloc()..add(AppStarted()),
+          create: (context) => SessionBloc()..add(AppStarted()),
         ),
         BlocProvider<AudioPlayerBloc>(
-          create: (BuildContext context) => AudioPlayerBloc(),
+          create: (context) => AudioPlayerBloc(),
+        ),
+        BlocProvider<SubscriptionBloc>(
+          create: (context) => SubscriptionBloc(),
         ),
       ],
       child: MaterialApp(

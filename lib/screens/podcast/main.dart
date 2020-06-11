@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phenopod/blocs/subscription/subscription_bloc.dart';
 import 'package:phenopod/widgets/screen/layout.dart';
 import 'package:phenopod/widgets/screen/loading_layout.dart';
 
@@ -23,21 +24,36 @@ class PodcastScreen extends StatefulWidget {
 
 class _PodcastScreenState extends State<PodcastScreen>
     with SingleTickerProviderStateMixin {
-  PodcastBloc _podcastBloc;
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _podcastBloc = PodcastBloc(urlParam: widget.urlParam);
     _tabController = TabController(vsync: this, length: 2);
-    _podcastBloc.add(Load());
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => PodcastBloc(
+        urlParam: widget.urlParam,
+        subscriptionBloc: BlocProvider.of<SubscriptionBloc>(context),
+      )..add(Load()),
+      child: Builder(builder: _screenBuilder),
+    );
+  }
+
+  Widget _screenBuilder(BuildContext context) {
+    final podcastBloc = BlocProvider.of<PodcastBloc>(context);
+
     return BlocBuilder<PodcastBloc, PodcastState>(
-      bloc: _podcastBloc,
+      bloc: podcastBloc,
       builder: (BuildContext context, PodcastState state) {
         if (state is PodcastInitial) {
           return LoadingLayout(pageType: PageType.normal);
@@ -57,7 +73,7 @@ class _PodcastScreenState extends State<PodcastScreen>
                   podcast: state.podcast,
                   episodes: state.episodes,
                   receivedAll: state.loadedAll,
-                  loadMore: () => _podcastBloc.add(Load()),
+                  loadMore: () => podcastBloc.add(Load()),
                 ),
                 AboutTab(
                   key: const PageStorageKey<String>('   About   '),
@@ -71,12 +87,5 @@ class _PodcastScreenState extends State<PodcastScreen>
         return null;
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _podcastBloc.close();
-    _tabController.dispose();
-    super.dispose();
   }
 }
