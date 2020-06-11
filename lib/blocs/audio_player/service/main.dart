@@ -76,6 +76,8 @@ Future<void> start() async {
     notificationColor: 0xFF2196f3,
     androidNotificationIcon: 'mipmap/ic_launcher',
     enableQueue: true,
+    androidStopOnRemoveTask: true,
+    androidStopForegroundOnPause: true,
   );
 }
 

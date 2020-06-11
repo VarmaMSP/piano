@@ -14,7 +14,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
   static const double appBarHeight = 45;
   static const double tabBarHeight = 36;
-  static const double flexibleAreaHeight = 150;
+  static const double flexibleAreaHeight = 140;
 
   final Podcast podcast;
   final TabController tabController;
@@ -171,7 +171,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             height: 1.4,
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Colors.black87,
+            color: Colors.black,
             letterSpacing: 0.2,
           ),
         ),

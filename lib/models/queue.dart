@@ -36,6 +36,7 @@ class QueueItem extends Equatable {
   MediaItem toMediaItem() {
     return MediaItem(
       id: episode.mediaUrl,
+      artist: podcast.author,
       album: podcast.title,
       title: episode.title,
       artUri: '$thumbnailUrl/${podcast.urlParam}.jpg',

@@ -164,7 +164,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
     Duration duration,
     Duration position,
   }) {
-    log('AudioPlayerTask._setState: $state ${duration?.inMilliseconds ?? position?.inMilliseconds ?? 0}');
     AudioServiceBackground.setState(
       controls: <MediaControl>[
         rewindControl,
