@@ -30,8 +30,6 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
   ) async* {
     final state = this.state;
 
-    log(event.toString());
-
     if (event is SetQueue) {
       if (state is AudioPlayerDormant) {
         yield AudioPlayerDormant(queue: event.queue);

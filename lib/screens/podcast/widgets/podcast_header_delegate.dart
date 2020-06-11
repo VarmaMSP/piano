@@ -14,7 +14,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
   static const double appBarHeight = 45;
   static const double tabBarHeight = 36;
-  static const double flexibleAreaHeight = 140;
+  static const double flexibleAreaHeight = 135;
 
   final Podcast podcast;
   final TabController tabController;
@@ -219,7 +219,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       opacity: opacity >= 0.0 ? opacity : 0.0,
       child: Container(
         height: flexibleAreaHeight,
-        padding: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 8),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
