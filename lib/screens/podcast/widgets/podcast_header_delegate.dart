@@ -172,8 +172,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           style: TextStyle(
             height: 1.4,
             fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
+            fontWeight: FontWeight.w500,
+            color: TWColors.gray.shade800,
             letterSpacing: 0.2,
           ),
         ),
@@ -193,14 +193,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     );
 
     final Widget actions = Container(
-      height: 26,
+      height: 24,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Flexible(
             child: FractionallySizedBox(
               heightFactor: 1.0,
-              widthFactor: 0.75,
+              widthFactor: 0.65,
               child: FlatButton(
                 onPressed: () => BlocProvider.of<SubscriptionBloc>(context).add(
                   podcast.isSubscribed
@@ -214,12 +214,15 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                     ? TWColors.gray.shade800
                     : TWColors.gray.shade100,
                 child: Text(
-                  podcast.isSubscribed ? 'Subscribed' : 'Subscribe',
-                  style: TextStyle(letterSpacing: 0.4),
+                  podcast.isSubscribed ? 'SUBSCRIBED' : 'SUBSCRIBE',
+                  style: TextStyle(
+                    letterSpacing: 0.75,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 28),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
             ),

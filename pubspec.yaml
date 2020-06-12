@@ -21,7 +21,7 @@ dependencies:
   timeago: ^2.0.26
   url_launcher: ^5.4.5
   cached_network_image: ^2.2.0+1
-  audio_service: ^0.8.0
+  audio_service: ^0.11.0
   just_audio: ^0.1.9
   intl: ^0.16.1
   modal_bottom_sheet: ^0.1.6+1
@@ -32,6 +32,7 @@ dependencies:
   dio_cookie_manager: ^1.0.0
   cookie_jar: ^1.0.1
   path_provider: ^1.6.9
+  logger: ^0.9.1
 
 dev_dependencies:
   flutter_test:

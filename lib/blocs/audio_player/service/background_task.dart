@@ -53,26 +53,40 @@ void backgroundTaskEntrypoint() {
 ///
 class AudioPlayerTask extends BackgroundAudioTask {
   final AudioPlayer _audioPlayer = AudioPlayer();
-  final Completer<void> _completer = Completer<void>();
+
+  bool _playing = false;
+  StreamSubscription<AudioPlaybackEvent> _eventSubscription;
 
   @override
-  Future<void> onStart() async {
-    final eventSubscription =
-        _audioPlayer.playbackEventStream.listen((AudioPlaybackEvent event) {
-      // Stopping is controlled manually
-      if (event.state == AudioPlaybackState.stopped ||
-          event.state == AudioPlaybackState.none) {
-        return;
-      }
-
-      _setState(
-        _toBasicPlaybackState(event.buffering, event.state),
-        position: event.position,
-      );
-    });
-
-    await _completer.future;
-    await eventSubscription.cancel();
+  Future<void> onStart(Map<String, dynamic> params) async {
+    _eventSubscription = _audioPlayer.playbackEventStream.listen(
+      (AudioPlaybackEvent event) {
+        final bufferingState =
+            event.buffering ? AudioProcessingState.buffering : null;
+        switch (event.state) {
+          case AudioPlaybackState.paused:
+            _setState(
+              bufferingState ?? AudioProcessingState.ready,
+              position: event.position,
+            );
+            break;
+          case AudioPlaybackState.playing:
+            _setState(
+              bufferingState ?? AudioProcessingState.ready,
+              position: event.position,
+            );
+            break;
+          case AudioPlaybackState.connecting:
+            _setState(
+              AudioProcessingState.connecting,
+              position: event.position,
+            );
+            break;
+          default:
+            break;
+        }
+      },
+    );
   }
 
   @override
@@ -88,18 +102,19 @@ class AudioPlayerTask extends BackgroundAudioTask {
       final duration = await _audioPlayer.setUrl(mediaItem.id);
       // Show Item in notification tray with duration
       await AudioServiceBackground.setMediaItem(
-        mediaItem.copyWith(duration: duration?.inMilliseconds),
+        mediaItem.copyWith(duration: duration),
       );
       // Play Audio
       onPlay();
     } catch (err) {
-      _setState(BasicPlaybackState.error, position: Duration.zero);
+      // _setState(BasicPlaybackState.error, position: Duration.zero);
     }
   }
 
   @override
   void onPlay() {
     if (_canPlayCurrentPlayback()) {
+      _playing = true;
       _audioPlayer.play();
     }
   }
@@ -107,21 +122,22 @@ class AudioPlayerTask extends BackgroundAudioTask {
   @override
   void onPause() {
     if (_canPauseCurrentPlayback()) {
+      _playing = false;
       _audioPlayer.pause();
     }
   }
 
   @override
-  void onSeekTo(int position) {
-    _audioPlayer.seek(Duration(milliseconds: position));
+  void onSeekTo(Duration position) {
+    _audioPlayer.seek(position);
   }
 
-  @override
-  void onClick(MediaButton button) {
-    AudioServiceBackground.state.basicState == BasicPlaybackState.playing
-        ? onPause()
-        : onPlay();
-  }
+  // @override
+  // void onClick(MediaButton button) {
+  //   AudioServiceBackground.state.basicState == BasicPlaybackState.playing
+  //       ? onPause()
+  //       : onPlay();
+  // }
 
   @override
   Future<void> onStop() async {
@@ -130,49 +146,27 @@ class AudioPlayerTask extends BackgroundAudioTask {
       await _audioPlayer.stop();
     }
     await _audioPlayer.dispose();
-    // Notify UI to close
-    _setState(BasicPlaybackState.none);
-    // Close this isolate
-    _completer.complete();
-  }
-
-  BasicPlaybackState _toBasicPlaybackState(
-    bool buffering,
-    AudioPlaybackState audioPlaybackstate,
-  ) {
-    switch (audioPlaybackstate) {
-      case AudioPlaybackState.paused:
-        return BasicPlaybackState.paused;
-      case AudioPlaybackState.playing:
-        return BasicPlaybackState.playing;
-      case AudioPlaybackState.connecting:
-        return BasicPlaybackState.connecting;
-      case AudioPlaybackState.completed:
-        return BasicPlaybackState.stopped;
-      default:
-        if (buffering) {
-          return BasicPlaybackState.buffering;
-        } else {
-          throw Exception('Invalid input for this method $audioPlaybackstate');
-        }
-    }
+    await _eventSubscription.cancel();
+    await super.onStop();
   }
 
   void _setState(
-    BasicPlaybackState state, {
+    AudioProcessingState processingState, {
     Duration duration,
     Duration position,
   }) {
     AudioServiceBackground.setState(
       controls: <MediaControl>[
         rewindControl,
-        if (state == BasicPlaybackState.playing) pauseControl else playControl,
+        pauseControl,
         fastForwardControl,
         stopControl,
       ],
       systemActions: <MediaAction>[MediaAction.seekTo],
-      basicState: state,
-      position: duration?.inMilliseconds ?? position?.inMilliseconds ?? 0,
+      processingState:
+          processingState ?? AudioServiceBackground.state.processingState,
+      playing: _playing,
+      position: duration ?? position ?? Duration.zero,
     );
   }
 

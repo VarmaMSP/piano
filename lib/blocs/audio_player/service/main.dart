@@ -9,7 +9,8 @@ class AudioState extends Equatable {
   factory AudioState.notRunning() {
     return AudioState(
       playbackState: PlaybackState(
-        basicState: BasicPlaybackState.none,
+        processingState: AudioProcessingState.none,
+        playing: false,
         actions: {},
       ),
     );
@@ -19,7 +20,8 @@ class AudioState extends Equatable {
     return AudioState(
       mediaItem: mediaItem,
       playbackState: PlaybackState(
-        basicState: BasicPlaybackState.connecting,
+        processingState: AudioProcessingState.connecting,
+        playing: false,
         actions: {},
       ),
     );
@@ -28,21 +30,25 @@ class AudioState extends Equatable {
   final MediaItem mediaItem;
   final PlaybackState playbackState;
 
-  int get duration => mediaItem.duration ?? 0;
-  int get currentTime => playbackState.currentPosition ?? 0;
-  bool get isActive => playbackState.basicState != BasicPlaybackState.none;
-  bool get isPaused => playbackState.basicState == BasicPlaybackState.paused;
-  bool get isPlaying => playbackState.basicState == BasicPlaybackState.playing;
+  int get duration => mediaItem.duration?.inMilliseconds ?? 0;
+  int get currentTime => playbackState.currentPosition?.inMilliseconds ?? 0;
+  bool get isActive =>
+      playbackState.processingState != AudioProcessingState.none;
+  bool get isPaused =>
+      playbackState.processingState == AudioProcessingState.ready;
+  bool get isPlaying =>
+      playbackState.playing &&
+      playbackState.processingState == AudioProcessingState.ready;
   bool get isLoading =>
-      mediaItem.duration == 0 ||
+      mediaItem.duration == Duration.zero ||
       mediaItem.duration == null ||
-      playbackState.basicState == BasicPlaybackState.connecting ||
-      playbackState.basicState == BasicPlaybackState.buffering;
+      playbackState.processingState == AudioProcessingState.connecting ||
+      playbackState.processingState == AudioProcessingState.buffering;
 
   @override
   List<Object> get props => <Object>[
         mediaItem.id,
-        playbackState.basicState,
+        playbackState.processingState,
         playbackState.position,
         playbackState.updateTime
       ];
@@ -73,11 +79,9 @@ Future<void> start() async {
   await AudioService.start(
     backgroundTaskEntrypoint: backgroundTaskEntrypoint,
     androidNotificationChannelName: 'Phenopod',
-    notificationColor: 0xFF2196f3,
+    androidNotificationColor: 0xFF2196f3,
     androidNotificationIcon: 'mipmap/ic_launcher',
-    enableQueue: true,
-    androidStopOnRemoveTask: true,
-    androidStopForegroundOnPause: true,
+    androidEnableQueue: true,
   );
 }
 
@@ -102,7 +106,7 @@ Future<void> resume() async {
 
 Future<void> seekTo(int position) async {
   if (AudioService.running) {
-    await AudioService.seekTo(position);
+    await AudioService.seekTo(Duration(milliseconds: position));
   }
 }
 

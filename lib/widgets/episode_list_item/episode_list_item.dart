@@ -25,7 +25,7 @@ class EpisodeListItem extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: 14,
-        color: TWColors.gray.shade800,
+        color: TWColors.gray.shade900,
         height: 1.35,
         letterSpacing: 0.2,
         wordSpacing: 0.4,
