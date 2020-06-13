@@ -1,6 +1,53 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
 
+part 'episode.g.dart';
+
+@CopyWith()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class Episode extends Equatable {
+  final String id;
+  final String urlParam;
+  final String title;
+  final String mediaUrl;
+
+  @JsonKey(defaultValue: '')
+  final String pubDate;
+
+  @JsonKey(defaultValue: '')
+  final String summary;
+
+  @JsonKey(defaultValue: '')
+  final String description;
+
+  @JsonKey(defaultValue: 0)
+  final int duration;
+
+  @JsonKey(defaultValue: 0)
+  final int explicit;
+
+  @JsonKey(defaultValue: 0)
+  final int episode;
+
+  @JsonKey(defaultValue: 0)
+  final int season;
+
+  @JsonKey(defaultValue: '')
+  final String type;
+
+  @JsonKey(defaultValue: '')
+  final String titleHighlighted;
+
+  @JsonKey(defaultValue: '')
+  final String descriptionHighlighted;
+
+  @JsonKey(defaultValue: 0.0)
+  final double progress;
+
+  @JsonKey(defaultValue: '')
+  final String lastPlayedAt;
+
   const Episode({
     this.id,
     this.urlParam,
@@ -21,101 +68,11 @@ class Episode extends Equatable {
   });
 
   factory Episode.fromJson(Map<String, dynamic> json) {
-    return Episode(
-      id: json['id'] as String,
-      urlParam: json['url_param'] as String,
-      title: json['title'] as String,
-      mediaUrl: json['media_url'] as String,
-      pubDate: json['pub_date'] as String ?? '',
-      summary: json['summary'] as String ?? '',
-      description: json['description'] as String ?? '',
-      duration: json['duration'] as int ?? 0,
-      explicit: json['explicit'] as int ?? 0,
-      episode: json['episode'] as int ?? 0,
-      season: json['season'] as int ?? 0,
-      type: json['type'] as String ?? '',
-      titleHighlighted: json['title_highlighted'] as String ?? '',
-      descriptionHighlighted: json['description_highlighted'] as String ?? '',
-      progress: (json['progress'] as double ?? 0.0) + 0.0,
-      lastPlayedAt: json['last_played_at'] as String ?? '',
-    );
-  }
-
-  final String id;
-  final String urlParam;
-  final String title;
-  final String mediaUrl;
-  final String pubDate;
-  final String summary;
-  final String description;
-  final int duration;
-  final int explicit;
-  final int episode;
-  final int season;
-  final String type;
-  final String titleHighlighted;
-  final String descriptionHighlighted;
-  final double progress;
-  final String lastPlayedAt;
-
-  Episode copyWith({
-    String id,
-    String urlParam,
-    String title,
-    String mediaUrl,
-    String pubDate,
-    String summary,
-    String description,
-    int duration,
-    int explicit,
-    int episode,
-    int season,
-    String type,
-    String titleHighlighted,
-    String descriptionHighlighted,
-    double progress,
-    String lastPlayedAt,
-  }) {
-    return Episode(
-      id: id ?? this.id,
-      urlParam: urlParam ?? this.urlParam,
-      title: title ?? this.title,
-      mediaUrl: mediaUrl ?? this.mediaUrl,
-      pubDate: pubDate ?? this.pubDate,
-      summary: summary ?? this.summary,
-      description: description ?? this.description,
-      duration: duration ?? this.duration,
-      explicit: explicit ?? this.explicit,
-      episode: episode ?? this.episode,
-      season: season ?? this.season,
-      type: type ?? this.type,
-      titleHighlighted: titleHighlighted ?? this.titleHighlighted,
-      descriptionHighlighted:
-          descriptionHighlighted ?? this.descriptionHighlighted,
-      progress: progress ?? this.progress,
-      lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
-    );
+    return _$EpisodeFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'id': id,
-      'url_param': urlParam,
-      'title': title,
-      'media_url': mediaUrl,
-      'pub_date': pubDate,
-      'summary': summary,
-      'description': description,
-      'duration': duration,
-      'explicit': explicit,
-      'episode': episode,
-      'season': season,
-      'type': type,
-      'title_highlighted': titleHighlighted,
-      'description_highlighted': descriptionHighlighted,
-      'progress': progress,
-      'lastPlayedAt': lastPlayedAt,
-    };
+    return _$EpisodeToJson(this);
   }
 
   @override

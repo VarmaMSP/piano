@@ -1,26 +1,68 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
 
+part 'podcast.g.dart';
+
+@CopyWith()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class Podcast extends Equatable {
   final String id;
   final String urlParam;
   final String title;
+
+  @JsonKey(defaultValue: '')
   final String summary;
+
+  @JsonKey(defaultValue: '')
   final String description;
+
+  @JsonKey(defaultValue: '')
   final String language;
-  final bool explicit;
+
+  @JsonKey(defaultValue: 0)
+  final int explicit;
+
+  @JsonKey(defaultValue: '')
   final String author;
+
+  @JsonKey(defaultValue: '')
   final String type;
+
+  @JsonKey(defaultValue: 0)
   final bool complete;
+
+  @JsonKey(defaultValue: '')
   final String link;
+
+  @JsonKey(defaultValue: '')
   final String copyright;
+
+  @JsonKey(defaultValue: 0)
   final int totalEpisodes;
+
+  @JsonKey(defaultValue: 0)
   final int totalSeasons;
+
+  @JsonKey(defaultValue: '')
   final String earliestEpisodePubDate;
+
+  @JsonKey(defaultValue: '')
   final String titleHighlighted;
+
+  @JsonKey(defaultValue: '')
   final String authorHighlighted;
+
+  @JsonKey(defaultValue: '')
   final String descriptionHiglighted;
+
+  @JsonKey(defaultValue: '')
   final String feedUrl;
+
+  @JsonKey(defaultValue: '')
   final String feedLastRefreshAt;
+
+  @JsonKey(defaultValue: false)
   final bool isSubscribed;
 
   const Podcast({
@@ -48,79 +90,11 @@ class Podcast extends Equatable {
   });
 
   factory Podcast.fromJson(Map<String, dynamic> json) {
-    return Podcast(
-      id: json['id'],
-      urlParam: json['url_param'],
-      title: json['title'],
-      summary: json['summary'] ?? '',
-      description: json['description'] ?? '',
-      language: json['language'] ?? '',
-      explicit: json['explicit'] ?? false,
-      author: json['author'] ?? '',
-      type: json['type'] ?? '',
-      complete: json['complete'] ?? false,
-      link: json['link'] ?? '',
-      copyright: json['copyright'] ?? '',
-      totalEpisodes: json['total_episodes'] ?? 0,
-      totalSeasons: json['total_seasons'] ?? 0,
-      earliestEpisodePubDate: json['earliest_episode_pub_date'] ?? '',
-      titleHighlighted: json['title_highlighted'] ?? '',
-      authorHighlighted: json['author_highlighted'] ?? '',
-      descriptionHiglighted: json['description_highlighted'] ?? '',
-      feedUrl: json['feed_url'] ?? '',
-      feedLastRefreshAt: json['feed_last_refresh_at'] ?? '',
-      isSubscribed: json['is_subscribed'] ?? false,
-    );
+    return _$PodcastFromJson(json);
   }
 
-  Podcast copyWith({
-    String id,
-    String urlParam,
-    String title,
-    String summary,
-    String description,
-    String language,
-    bool explicit,
-    String author,
-    String type,
-    bool complete,
-    String link,
-    String copyright,
-    int totalEpisodes,
-    int totalSeasons,
-    String earliestEpisodePubDate,
-    String titleHighlighted,
-    String authorHighlighted,
-    String descriptionHiglighted,
-    String feedUrl,
-    String feedLastRefreshAt,
-    bool isSubscribed,
-  }) {
-    return Podcast(
-      id: id ?? this.id,
-      urlParam: urlParam ?? this.urlParam,
-      title: title ?? this.title,
-      summary: summary ?? this.summary,
-      description: description ?? this.description,
-      language: language ?? this.language,
-      explicit: explicit ?? this.explicit,
-      author: author ?? this.author,
-      type: type ?? this.type,
-      complete: complete ?? this.complete,
-      link: link ?? this.link,
-      copyright: copyright ?? this.copyright,
-      totalEpisodes: totalEpisodes ?? this.totalEpisodes,
-      totalSeasons: totalSeasons ?? this.totalSeasons,
-      earliestEpisodePubDate:
-          earliestEpisodePubDate ?? this.earliestEpisodePubDate,
-      titleHighlighted: titleHighlighted ?? this.titleHighlighted,
-      authorHighlighted: authorHighlighted ?? this.authorHighlighted,
-      descriptionHiglighted:
-          descriptionHiglighted ?? this.descriptionHiglighted,
-      feedUrl: feedUrl ?? this.feedUrl,
-      feedLastRefreshAt: feedLastRefreshAt ?? this.feedLastRefreshAt,
-      isSubscribed: isSubscribed ?? this.isSubscribed,
-    );
+  Map<String, dynamic> toJson() {
+    return _$PodcastToJson(this);
   }
 
   @override
