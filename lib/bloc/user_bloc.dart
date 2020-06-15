@@ -11,7 +11,7 @@ class UserBloc {
   // Stream for users's sign in status
   final BehaviorSubject<bool> _userSignedIn = BehaviorSubject<bool>();
 
-  // Stream for flagging that the user is signing in
+  // Stream for flagging that user is signing in
   final BehaviorSubject<bool> _userSigningIn = BehaviorSubject<bool>();
 
   UserBloc() {
@@ -29,16 +29,16 @@ class UserBloc {
     });
   }
 
-  // Sign in user with guest accountt
-  Future<void> signInWithGuest() async {
-    _userSignedIn.add(true);
-    await _sessionService.signInWithGuest();
-    await _loadUser();
-  }
-
   // Loads user details from server
   Future<void> _loadUser() async {
     _user.add(await _sessionService.loadSession());
+  }
+
+  // Sign in user with guest accountt
+  Future<void> signInWithGuest() async {
+    _userSigningIn.add(true);
+    await _sessionService.signInWithGuest();
+    await _loadUser();
   }
 
   // Sign out user

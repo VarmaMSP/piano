@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:phenopod/app/main.dart';
+import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
-import 'package:phenopod/blocs/subscription/subscription_bloc.dart';
 import 'package:phenopod/screens/sign_in/main.dart';
 import 'package:phenopod/screens/splash.dart';
 import 'package:provider/provider.dart';
@@ -70,29 +70,26 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
           create: (_) => UserBloc(),
           dispose: (_, value) => value.dispose(),
         ),
+        Provider<PodcastActionsBloc>(
+          create: (_) => PodcastActionsBloc(),
+          dispose: (_, value) => value.dispose(),
+        ),
       ],
-      child: MultiBlocProvider(
-        providers: <BlocProvider<dynamic>>[
-          BlocProvider<SubscriptionBloc>(
-            create: (context) => SubscriptionBloc(),
-          ),
-        ],
-        child: MaterialApp(
+      child: Builder(builder: (context) {
+        return MaterialApp(
           title: 'Phenopod',
           debugShowCheckedModeBanner: false,
-          home: Builder(builder: (context) {
-            return StreamBuilder<bool>(
-              stream: Provider.of<UserBloc>(context).userSignedIn,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return SplashScreen();
-                }
-                return snapshot.data ? App() : SignInScreen();
-              },
-            );
-          }),
-        ),
-      ),
+          home: StreamBuilder<bool>(
+            stream: Provider.of<UserBloc>(context).userSignedIn,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return SplashScreen();
+              }
+              return snapshot.data ? App() : SignInScreen();
+            },
+          ),
+        );
+      }),
     );
   }
 }

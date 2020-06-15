@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:phenopod/blocs/subscription/subscription_bloc.dart';
+import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/widgets/screen/layout.dart';
 import 'package:phenopod/widgets/screen/loading_layout.dart';
+import 'package:provider/provider.dart';
 
 import 'bloc/podcast_bloc.dart';
 import 'widgets/about_tab.dart';
@@ -40,10 +41,12 @@ class _PodcastScreenState extends State<PodcastScreen>
 
   @override
   Widget build(BuildContext context) {
+    final podcastActionsBloc = Provider.of<PodcastActionsBloc>(context);
+
     return BlocProvider(
       create: (context) => PodcastBloc(
         urlParam: widget.urlParam,
-        subscriptionBloc: BlocProvider.of<SubscriptionBloc>(context),
+        podcastActionsBloc: podcastActionsBloc,
       )..add(Load()),
       child: Builder(builder: _screenBuilder),
     );

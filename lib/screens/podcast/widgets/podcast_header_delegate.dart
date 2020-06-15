@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:phenopod/blocs/subscription/subscription_bloc.dart';
+import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/models/podcast.dart';
 import 'package:phenopod/utils/request.dart';
+import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:flutter/foundation.dart';
 
@@ -192,6 +192,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       ],
     );
 
+    final podcastActionsBloc = Provider.of<PodcastActionsBloc>(context);
+
     final Widget actions = Container(
       height: 24,
       child: Row(
@@ -202,11 +204,9 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               heightFactor: 1.0,
               widthFactor: 0.65,
               child: FlatButton(
-                onPressed: () => BlocProvider.of<SubscriptionBloc>(context).add(
-                  podcast.isSubscribed
-                      ? UnsubscribeToPodcast(podcast.id)
-                      : SubscribeToPodcast(podcast.id),
-                ),
+                onPressed: () => podcast.isSubscribed
+                    ? podcastActionsBloc.unsubscribe(podcast)
+                    : podcastActionsBloc.subscribe(podcast),
                 color: podcast.isSubscribed
                     ? TWColors.gray.shade300
                     : TWColors.purple.shade600,

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:phenopod/blocs/subscription/subscription_bloc.dart';
+import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/models/episode.dart';
 import 'package:phenopod/models/podcast.dart';
 import 'package:phenopod/utils/request.dart';
@@ -12,31 +12,36 @@ part 'podcast_event.dart';
 part 'podcast_state.dart';
 
 class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
+  final String urlParam;
+  final PodcastActionsBloc podcastActionsBloc;
+
+  StreamSubscription<Podcast> _subSubscription;
+  StreamSubscription<Podcast> _unsubSubscription;
+
   PodcastBloc({
     @required this.urlParam,
-    @required this.subscriptionBloc,
+    @required this.podcastActionsBloc,
   }) {
-    _subscription = subscriptionBloc.listen((state) {
-      if (state is SubscribedToPodcast) {
-        add(Subscribe(state.podcastId));
-      }
-
-      if (state is UnsubscribedToPodcast) {
-        add(Unsubscribe(state.podcastId));
-      }
+    _subSubscription = podcastActionsBloc.latestSubscription.listen((podcast) {
+      print(podcast.title);
+      add(Subscribe(podcast.id));
     });
-  }
 
-  final String urlParam;
-  final SubscriptionBloc subscriptionBloc;
-  StreamSubscription<SubscriptionState> _subscription;
+    _unsubSubscription = podcastActionsBloc.latestUnsubscription.listen(
+      (podcast) {
+        print(podcast.title);
+        add(Unsubscribe(podcast.id));
+      },
+    );
+  }
 
   @override
   PodcastState get initialState => PodcastInitial();
 
   @override
   Future<void> close() {
-    _subscription.cancel();
+    _subSubscription.cancel();
+    _unsubSubscription.cancel();
     return super.close();
   }
 
@@ -44,6 +49,7 @@ class PodcastBloc extends Bloc<PodcastEvent, PodcastState> {
   Stream<PodcastState> mapEventToState(
     PodcastEvent event,
   ) async* {
+    print(event);
     final state = this.state;
 
     try {
