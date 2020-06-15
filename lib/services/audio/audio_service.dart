@@ -1,5 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
+import 'package:rxdart/subjects.dart';
+import 'package:audio_service/audio_service.dart' as audioservice;
 import 'package:phenopod/models/main.dart';
+import 'package:phenopod/background/audio_player/background_player_task.dart';
+import 'package:phenopod/utils/request.dart';
+
+part 'audio_service_impl.dart';
 
 enum AudioState {
   none,
@@ -29,10 +37,7 @@ abstract class IAudioService {
   Stream<PositionState> get positionState;
 
   // Play given episode
-  Future<void> playEpisode({
-    @required Episode episode,
-    @required Podcast podcast,
-  });
+  Future<void> playEpisode(QueueItem queueItem);
 
   // Resume current episode
   Future<void> play();

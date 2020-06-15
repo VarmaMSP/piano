@@ -1,11 +1,4 @@
-import 'dart:async';
-
-import 'package:phenopod/background/audio_player/background_player_task.dart';
-import 'package:phenopod/models/main.dart';
-import 'package:phenopod/services/audio/audio_service.dart';
-import 'package:audio_service/audio_service.dart' as audioservice;
-import 'package:phenopod/utils/request.dart';
-import 'package:rxdart/subjects.dart';
+part of 'audio_service.dart';
 
 class AudioService implements IAudioService {
   /// Stream of audiostate transitions
@@ -37,18 +30,18 @@ class AudioService implements IAudioService {
   Stream<PositionState> get positionState => _positionState.stream;
 
   @override
-  Future<void> playEpisode({Podcast podcast, Episode episode}) async {
+  Future<void> playEpisode(QueueItem queueItem) async {
     if (!audioservice.AudioService.running) {
       await _startBackgroundPlayerTask();
     }
 
     await audioservice.AudioService.playMediaItem(
       audioservice.MediaItem(
-        id: episode.mediaUrl,
-        artist: podcast.author,
-        album: podcast.title,
-        title: episode.title,
-        artUri: '$thumbnailUrl/${podcast.urlParam}.jpg',
+        id: queueItem.episode.mediaUrl,
+        artist: queueItem.podcast.author,
+        album: queueItem.podcast.title,
+        title: queueItem.episode.title,
+        artUri: '$thumbnailUrl/${queueItem.podcast.urlParam}.jpg',
       ),
     );
   }
