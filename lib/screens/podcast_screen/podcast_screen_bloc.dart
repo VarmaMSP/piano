@@ -6,6 +6,7 @@ import 'package:phenopod/models/main.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:rxdart/subjects.dart';
 
+/// This bloc is used to represent local state of podcast screen
 class PodcastScreenBloc {
   /// urlParam of current podcast;
   final String urlParam;
@@ -24,6 +25,9 @@ class PodcastScreenBloc {
   final BehaviorSubject<bool> _receivedAllEpisodes = BehaviorSubject<bool>();
 
   /// This flag is turned on when [dispose()] is invoked
+  /// Because the podcast screen widget can dispose this bloc at any
+  /// time, check this flag before pushing values into stream controllers
+  /// to avoid exceptions
   bool _isDisposed = false;
 
   /// Subscriptions to podcast actions
@@ -48,8 +52,8 @@ class PodcastScreenBloc {
         .where((podcast) => podcast.urlParam == urlParam)
         .listen(
       (_) async {
-        if (!await _podcast.isEmpty) {
-          _podcast.add((await _podcast.last).copyWith(isSubscribed: true));
+        if (!await _podcast.isEmpty && !_isDisposed) {
+          _podcast.add((await _podcast.first).copyWith(isSubscribed: true));
         }
       },
     );
@@ -58,8 +62,8 @@ class PodcastScreenBloc {
         .where((podcast) => podcast.urlParam == urlParam)
         .listen(
       (_) async {
-        if (!await _podcast.isEmpty) {
-          _podcast.add((await _podcast.last).copyWith(isSubscribed: false));
+        if (!await _podcast.isEmpty && !_isDisposed) {
+          _podcast.add((await _podcast.first).copyWith(isSubscribed: false));
         }
       },
     );
@@ -71,7 +75,6 @@ class PodcastScreenBloc {
       path: '/podcasts/$urlParam',
     );
 
-    // Bloc can be disposed before this future completes
     if (!_isDisposed) {
       _podcast.add(response.podcasts[0]);
       _episodes.add(response.episodes);
@@ -95,7 +98,6 @@ class PodcastScreenBloc {
       },
     );
 
-    // Bloc can be disposed before this future completes
     if (!_isDisposed) {
       _episodes.add(episodes + response.episodes);
       _receivedAllEpisodes.add(response.episodes.length < 30);

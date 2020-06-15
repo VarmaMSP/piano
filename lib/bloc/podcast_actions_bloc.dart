@@ -19,16 +19,12 @@ class PodcastActionsBloc {
 
   void _handleSubscribeActions() {
     _subscribeTo.stream.listen((podcast) async {
-      print('Subscribe');
-      print(podcast.title);
       await _subscriptionRepository.subscribe(podcast.id);
     });
   }
 
   void _handleUnsubscribeActions() {
     _unsubscribeTo.stream.listen((podcast) async {
-      print('Unsubscribe');
-      print(podcast.title);
       await _subscriptionRepository.unsubscribe(podcast.id);
     });
   }

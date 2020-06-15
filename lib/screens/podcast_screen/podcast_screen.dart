@@ -28,42 +28,36 @@ class PodcastScreen extends StatefulWidget {
 class _PodcastScreenState extends State<PodcastScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+  PodcastScreenBloc _podcastScreenBloc;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
+    _podcastScreenBloc = PodcastScreenBloc(
+      urlParam: widget.urlParam,
+      podcastActionsBloc: Provider.of<PodcastActionsBloc>(
+        context,
+        listen: false,
+      ),
+    );
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _podcastScreenBloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final podcastActionsBloc = Provider.of<PodcastActionsBloc>(context);
-
-    return Provider(
-      create: (context) => PodcastScreenBloc(
-        urlParam: widget.urlParam,
-        podcastActionsBloc: podcastActionsBloc,
-      ),
-      dispose: (_, value) => value.dispose(),
-      child: Builder(builder: _screenBuilder),
-    );
-  }
-
-  Widget _screenBuilder(BuildContext context) {
-    final podcastScreenBloc = Provider.of<PodcastScreenBloc>(context);
-
     return StreamBuilder<Tuple3<Podcast, List<Episode>, bool>>(
       stream: Rx.combineLatest3<Podcast, List<Episode>, bool,
           Tuple3<Podcast, List<Episode>, bool>>(
-        podcastScreenBloc.podcast,
-        podcastScreenBloc.episodes,
-        podcastScreenBloc.receivedAllEpisodes,
+        _podcastScreenBloc.podcast,
+        _podcastScreenBloc.episodes,
+        _podcastScreenBloc.receivedAllEpisodes,
         (a, b, c) => Tuple3(a, b, c),
       ),
       builder: (context, snapshot) {
@@ -84,7 +78,7 @@ class _PodcastScreenState extends State<PodcastScreen>
                 podcast: snapshot.data.item1,
                 episodes: snapshot.data.item2,
                 receivedAll: snapshot.data.item3,
-                loadMore: podcastScreenBloc.loadMoreEpisodes,
+                loadMore: _podcastScreenBloc.loadMoreEpisodes,
               ),
               AboutTab(
                 key: const PageStorageKey<String>('   About   '),
