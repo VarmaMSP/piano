@@ -14,8 +14,6 @@ dependencies:
   dio: ^3.0.9
   equatable: ^1.1.1
   flutter_html: ^1.0.0
-  flutter_bloc: ^4.0.0
-  hydrated_bloc: ^4.0.0
   rxdart: ^0.24.0
   tailwind_colors: ^0.0.1
   timeago: ^2.0.26
