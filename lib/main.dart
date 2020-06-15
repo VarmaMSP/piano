@@ -4,13 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:phenopod/app/main.dart';
+import 'package:phenopod/bloc/user_bloc.dart';
 import 'package:phenopod/blocs/subscription/subscription_bloc.dart';
 import 'package:phenopod/screens/sign_in/main.dart';
 import 'package:phenopod/screens/splash.dart';
 import 'package:provider/provider.dart';
-import 'package:phenopod/bloc/audio_player.dart' as audioplayer;
-
-import 'blocs/session/session_bloc.dart';
+import 'package:phenopod/bloc/audio_player.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -63,16 +62,17 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
 
     return MultiProvider(
       providers: [
-        Provider<audioplayer.AudioPlayerBloc>(
-          create: (_) => audioplayer.AudioPlayerBloc(),
+        Provider<AudioPlayerBloc>(
+          create: (_) => AudioPlayerBloc(),
+          dispose: (_, value) => value.dispose(),
+        ),
+        Provider<UserBloc>(
+          create: (_) => UserBloc(),
           dispose: (_, value) => value.dispose(),
         ),
       ],
       child: MultiBlocProvider(
         providers: <BlocProvider<dynamic>>[
-          BlocProvider<SessionBloc>(
-            create: (context) => SessionBloc()..add(AppStarted()),
-          ),
           BlocProvider<SubscriptionBloc>(
             create: (context) => SubscriptionBloc(),
           ),
@@ -80,17 +80,17 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
         child: MaterialApp(
           title: 'Phenopod',
           debugShowCheckedModeBanner: false,
-          home: BlocBuilder<SessionBloc, SessionState>(
-            builder: (context, state) {
-              if (state is SessionAuthenticated) {
-                return App();
-              }
-              if (state is SessionUnauthenticated) {
-                return SignInScreen();
-              }
-              return SplashScreen();
-            },
-          ),
+          home: Builder(builder: (context) {
+            return StreamBuilder<bool>(
+              stream: Provider.of<UserBloc>(context).userSignedIn,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return SplashScreen();
+                }
+                return snapshot.data ? App() : SignInScreen();
+              },
+            );
+          }),
         ),
       ),
     );
