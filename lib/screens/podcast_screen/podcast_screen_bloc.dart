@@ -38,8 +38,6 @@ class PodcastScreenBloc {
     @required this.urlParam,
     @required this.podcastActionsBloc,
   }) {
-    print('podcastscreenbloc $urlParam');
-
     /// Handle any changes as a result of podcast actions
     _handlePodcastActions();
 
