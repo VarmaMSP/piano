@@ -1,57 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
+import 'package:phenopod/bloc/audio_player.dart';
+import 'package:phenopod/services/audio/audio_service.dart';
+import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class ActionButton extends StatelessWidget {
   const ActionButton({
     Key key,
     this.fullSized = false,
-    @required this.state,
     @required this.onPause,
     @required this.onResume,
   }) : super(key: key);
 
   final bool fullSized;
-  final AudioPlayerActive state;
   final void Function() onPause;
   final void Function() onResume;
 
   @override
   Widget build(BuildContext context) {
-    if (fullSized) {
-      return SizedBox(
-        height: 56,
-        width: 56,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: 56,
-              width: 56,
-              decoration: BoxDecoration(
-                color: TWColors.purple.shade600,
-                borderRadius: BorderRadius.circular(900),
-              ),
-            ),
-            _buildButton(),
-          ],
-        ),
-      );
-    }
+    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
-    return SizedBox(
-      height: 32,
-      width: 32,
-      child: Stack(
-        children: <Widget>[
-          _buildProgressIndicator(),
-          _buildButton(),
-        ],
-      ),
+    return StreamBuilder<AudioState>(
+      stream: audioPlayerBloc.audioState,
+      builder: (context, snapshot) {
+        return fullSized
+            ? SizedBox(
+                height: 56,
+                width: 56,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      height: 56,
+                      width: 56,
+                      decoration: BoxDecoration(
+                        color: TWColors.purple.shade600,
+                        borderRadius: BorderRadius.circular(900),
+                      ),
+                    ),
+                    _buildButton(snapshot.data),
+                  ],
+                ),
+              )
+            : SizedBox(
+                height: 32,
+                width: 32,
+                child: Stack(
+                  children: <Widget>[
+                    _buildProgressIndicator(context, snapshot.data),
+                    _buildButton(snapshot.data),
+                  ],
+                ),
+              );
+      },
     );
   }
 
-  Widget _buildProgressIndicator() {
-    if (state.audioState.isLoading) {
+  Widget _buildProgressIndicator(BuildContext context, AudioState audioState) {
+    if (audioState != AudioState.playing && audioState != AudioState.paused) {
       return CircularProgressIndicator(
         value: null,
         strokeWidth: 2.5,
@@ -62,14 +67,16 @@ class ActionButton extends StatelessWidget {
       );
     }
 
-    return StreamBuilder(
-      stream: Stream.periodic(Duration(seconds: 1)),
+    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+
+    return StreamBuilder<PositionState>(
+      stream: audioPlayerBloc.positionState,
       builder: (context, snapshot) {
-        final duration = state.audioState.duration;
-        final currentTime = state.audioState.currentTime;
+        final duration = snapshot.data.duration;
+        final currentTime = snapshot.data.position;
 
         return CircularProgressIndicator(
-          value: currentTime / duration,
+          value: currentTime.inMilliseconds / duration.inMilliseconds,
           strokeWidth: 2.5,
           valueColor: AlwaysStoppedAnimation<Color>(
             TWColors.purple.shade600,
@@ -80,7 +87,7 @@ class ActionButton extends StatelessWidget {
     );
   }
 
-  Widget _buildButton() {
+  Widget _buildButton(AudioState audioState) {
     var color = TWColors.gray.shade600;
     var size = 20.0;
     if (fullSized) {
@@ -90,10 +97,10 @@ class ActionButton extends StatelessWidget {
 
     IconData iconData;
     void Function() onPressed;
-    if (state.audioState.isPlaying) {
+    if (audioState == AudioState.playing) {
       iconData = Icons.pause;
       onPressed = onPause;
-    } else if (state.audioState.isPaused) {
+    } else if (audioState == AudioState.paused) {
       iconData = Icons.play_arrow;
       onPressed = onResume;
     } else {

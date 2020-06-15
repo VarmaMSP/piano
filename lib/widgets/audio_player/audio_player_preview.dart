@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
+import 'package:phenopod/models/queue.dart';
 import 'package:phenopod/widgets/audio_player/widgets/action_button.dart';
 import 'package:phenopod/widgets/podcast_thumbnail.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -9,13 +9,13 @@ class AudioPlayerPreview extends StatelessWidget {
   const AudioPlayerPreview({
     Key key,
     @required this.animations,
-    @required this.state,
+    @required this.nowPlaying,
     @required this.onPlay,
     @required this.onPause,
   }) : super(key: key);
 
   final BottomAppBarAnimations animations;
-  final AudioPlayerActive state;
+  final QueueItem nowPlaying;
   final Function onPlay;
   final Function onPause;
 
@@ -57,7 +57,7 @@ class AudioPlayerPreview extends StatelessWidget {
         GestureDetector(
           onTap: animations.expandBottomAppBar,
           child: PodcastThumbnail(
-            podcast: state.playingNow.podcast,
+            podcast: nowPlaying.podcast,
             size: PodcastThumbnailSize.xs,
           ),
         ),
@@ -71,7 +71,7 @@ class AudioPlayerPreview extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Text(
-                    state.playingNow.episode.title,
+                    nowPlaying.episode.title,
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 14, letterSpacing: 0.2),
@@ -82,7 +82,7 @@ class AudioPlayerPreview extends StatelessWidget {
             ),
           ),
         ),
-        ActionButton(state: state, onPause: onPause, onResume: onPlay),
+        ActionButton(onPause: onPause, onResume: onPlay),
       ],
     );
   }

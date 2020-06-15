@@ -30,7 +30,7 @@ class Podcast extends Equatable {
   final String type;
 
   @JsonKey(defaultValue: 0)
-  final bool complete;
+  final int complete;
 
   @JsonKey(defaultValue: '')
   final String link;

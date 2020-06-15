@@ -88,7 +88,7 @@ class AudioService implements IAudioService {
     _currentMediaItemSubscription =
         audioservice.AudioService.currentMediaItemStream.listen(
       (mediaItem) {
-        if (mediaItem.duration.inSeconds > 0) {
+        if (mediaItem?.duration?.inSeconds ?? 0 > 0) {
           _positionState.add(
             PositionState(
               duration: mediaItem.duration,

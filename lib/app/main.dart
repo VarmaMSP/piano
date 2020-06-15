@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
-import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
+import 'package:phenopod/bloc/audio_player.dart';
+import 'package:phenopod/models/main.dart';
 import 'package:phenopod/widgets/bottom_app_bar/main.dart' as appbar;
 import 'package:phenopod/route_generator.dart';
+import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
   const App({Key key}) : super(key: key);
@@ -48,25 +49,22 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         body: SafeArea(
           child: Stack(
             children: <Widget>[
-              Builder(
-                builder: (BuildContext context) {
-                  return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
-                    bloc: BlocProvider.of<AudioPlayerBloc>(context),
-                    builder: (BuildContext context, AudioPlayerState state) {
-                      final padding = state is AudioPlayerActive ? 102.0 : 56.0;
+              StreamBuilder<QueueItem>(
+                initialData: null,
+                stream: Provider.of<AudioPlayerBloc>(context).nowPlaying,
+                builder: (context, snapshot) {
+                  final padding = snapshot.data != null ? 102.0 : 56.0;
 
-                      return Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.only(bottom: padding),
-                        child: Navigator(
-                          key: navigatorKey,
-                          initialRoute: '/',
-                          observers: [routeObserver],
-                          onGenerateRoute:
-                              RouteGenerator.makeGenerateRoute(routeObserver),
-                        ),
-                      );
-                    },
+                  return Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.only(bottom: padding),
+                    child: Navigator(
+                      key: navigatorKey,
+                      initialRoute: '/',
+                      observers: [routeObserver],
+                      onGenerateRoute:
+                          RouteGenerator.makeGenerateRoute(routeObserver),
+                    ),
                   );
                 },
               ),

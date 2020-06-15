@@ -36,8 +36,10 @@ extension PodcastCopyWithExtension on Podcast {
       complete: complete ?? this.complete,
       copyright: copyright ?? this.copyright,
       description: description ?? this.description,
-      descriptionHiglighted: descriptionHiglighted ?? this.descriptionHiglighted,
-      earliestEpisodePubDate: earliestEpisodePubDate ?? this.earliestEpisodePubDate,
+      descriptionHiglighted:
+          descriptionHiglighted ?? this.descriptionHiglighted,
+      earliestEpisodePubDate:
+          earliestEpisodePubDate ?? this.earliestEpisodePubDate,
       explicit: explicit ?? this.explicit,
       feedLastRefreshAt: feedLastRefreshAt ?? this.feedLastRefreshAt,
       feedUrl: feedUrl ?? this.feedUrl,
@@ -71,7 +73,7 @@ Podcast _$PodcastFromJson(Map<String, dynamic> json) {
     explicit: json['explicit'] as int ?? 0,
     author: json['author'] as String ?? '',
     type: json['type'] as String ?? '',
-    complete: json['complete'] as bool ?? 0,
+    complete: json['complete'] as int ?? 0,
     link: json['link'] as String ?? '',
     copyright: json['copyright'] as String ?? '',
     totalEpisodes: json['total_episodes'] as int ?? 0,

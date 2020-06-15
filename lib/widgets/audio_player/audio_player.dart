@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
-import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
+import 'package:phenopod/models/main.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/widgets/audio_player/widgets/playback_controls.dart';
 import 'package:phenopod/widgets/html.dart';
@@ -11,14 +11,14 @@ class AudioPlayer extends StatelessWidget {
   const AudioPlayer({
     Key key,
     @required this.animations,
-    @required this.state,
+    @required this.nowPlaying,
     @required this.onPlay,
     @required this.onPause,
     @required this.onSeek,
   }) : super(key: key);
 
   final BottomAppBarAnimations animations;
-  final AudioPlayerActive state;
+  final QueueItem nowPlaying;
   final void Function() onPlay;
   final void Function() onPause;
   final void Function(int) onSeek;
@@ -44,7 +44,6 @@ class AudioPlayer extends StatelessWidget {
                   _buildDetails(),
                   Container(height: 10),
                   PlaybackControls(
-                    state: state,
                     onPlay: onPlay,
                     onPause: onPause,
                     onSeek: onSeek,
@@ -62,8 +61,8 @@ class AudioPlayer extends StatelessWidget {
                     bottom: 48,
                   ),
                   child: HTML(
-                    id: state.playingNow.episode.id,
-                    document: state.playingNow.episode.description,
+                    id: nowPlaying.episode.id,
+                    document: nowPlaying.episode.description,
                   ),
                 ),
               ),
@@ -80,7 +79,7 @@ class AudioPlayer extends StatelessWidget {
       transform: Matrix4.translationValues(0, -4, 0),
       alignment: Alignment.topCenter,
       child: Text(
-        state.playingNow.episode.title,
+        nowPlaying.episode.title,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 17,
@@ -97,7 +96,7 @@ class AudioPlayer extends StatelessWidget {
     final artWork = ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: CachedNetworkImage(
-        imageUrl: '$thumbnailUrl/${state.playingNow.podcast.urlParam}.jpg',
+        imageUrl: '$thumbnailUrl/${nowPlaying.podcast.urlParam}.jpg',
         fit: BoxFit.fill,
         height: 105,
         width: 105,
@@ -133,7 +132,7 @@ class AudioPlayer extends StatelessWidget {
             ),
           ),
           TextSpan(
-            text: state.playingNow.podcast.title,
+            text: nowPlaying.podcast.title,
             style: TextStyle(
               fontSize: 14,
               letterSpacing: 0.25,

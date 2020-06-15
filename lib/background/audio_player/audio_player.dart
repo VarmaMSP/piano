@@ -6,9 +6,10 @@ import 'package:just_audio/just_audio.dart' as justaudio;
 class AudioPlayer {
   final justaudio.AudioPlayer _player = justaudio.AudioPlayer();
 
-  bool _playing;
-  Duration _position;
-  audioservice.AudioProcessingState _processingState;
+  bool _playing = false;
+  Duration _position = Duration.zero;
+  audioservice.AudioProcessingState _processingState =
+      audioservice.AudioProcessingState.none;
   StreamSubscription<justaudio.AudioPlaybackEvent> _eventSubscription;
 
   Future<void> start() async {
@@ -39,7 +40,8 @@ class AudioPlayer {
 
     await audioservice.AudioServiceBackground.setMediaItem(mediaItem);
     final duration = await _player.setUrl(mediaItem.id);
-    await audioservice.AudioServiceBackground.setMediaItem(mediaItem.copyWith(duration: duration));
+    await audioservice.AudioServiceBackground.setMediaItem(
+        mediaItem.copyWith(duration: duration));
 
     await play();
   }

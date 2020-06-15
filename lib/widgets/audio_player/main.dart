@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
-import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
+import 'package:phenopod/bloc/audio_player.dart';
+import 'package:phenopod/models/main.dart';
+import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 import 'audio_player.dart' as full_audio_player;
@@ -14,32 +15,37 @@ class AudioPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //ignore: close_sinks
     final padding = MediaQuery.of(context).padding;
     final screenHeight = MediaQuery.of(context).size.height - padding.top;
-    final audioPlayerBloc = BlocProvider.of<AudioPlayerBloc>(context);
+    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
-    return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
-      bloc: audioPlayerBloc,
-      builder: (BuildContext context, AudioPlayerState state) {
+    return StreamBuilder<QueueItem>(
+      initialData: null,
+      stream: audioPlayerBloc.nowPlaying,
+      builder: (context, snapshot) {
         Widget body;
-        if (state is AudioPlayerActive) {
+        if (snapshot.data != null) {
           body = Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               AudioPlayerPreview(
                 animations: animations,
-                state: state,
-                onPlay: () => audioPlayerBloc.add(ResumePlayback()),
-                onPause: () => audioPlayerBloc.add(PausePlayback()),
+                nowPlaying: snapshot.data,
+                onPlay: () =>
+                    audioPlayerBloc.transistionState(StateTransistion.play),
+                onPause: () =>
+                    audioPlayerBloc.transistionState(StateTransistion.pause),
               ),
               Expanded(
                 child: full_audio_player.AudioPlayer(
                   animations: animations,
-                  state: state,
-                  onPlay: () => audioPlayerBloc.add(ResumePlayback()),
-                  onPause: () => audioPlayerBloc.add(PausePlayback()),
-                  onSeek: (int p) => audioPlayerBloc.add(SeekPlayback(p)),
+                  nowPlaying: snapshot.data,
+                  onPlay: () =>
+                      audioPlayerBloc.transistionState(StateTransistion.play),
+                  onPause: () =>
+                      audioPlayerBloc.transistionState(StateTransistion.pause),
+                  onSeek: (int p) =>
+                      audioPlayerBloc.transistionState(StateTransistion.play),
                 ),
               ),
             ],

@@ -1,23 +1,21 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:phenopod/bloc/audio_player.dart';
+import 'package:phenopod/services/audio/audio_service.dart';
 import 'package:phenopod/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-import 'package:phenopod/blocs/audio_player/audio_player_bloc.dart';
 
 import 'action_button.dart';
 
 class PlaybackControls extends StatelessWidget {
   PlaybackControls({
     Key key,
-    @required this.state,
     @required this.onPlay,
     @required this.onPause,
     @required this.onSeek,
   }) : super(key: key);
 
-  final AudioPlayerActive state;
   final void Function() onPlay;
   final void Function() onPause;
   final void Function(int) onSeek;
@@ -28,7 +26,7 @@ class PlaybackControls extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        _buildSeekBar(),
+        _buildSeekBar(context),
         Container(height: 10),
         _buildControls(),
         Container(height: 20),
@@ -36,22 +34,16 @@ class PlaybackControls extends StatelessWidget {
     );
   }
 
-  Widget _buildSeekBar() {
-    double _tmpSeekPosition;
+  Widget _buildSeekBar(BuildContext context) {
+    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
-    return StreamBuilder<double>(
-      stream: Rx.combineLatest2<double, double, double>(
-        Stream.periodic(Duration(milliseconds: 200)),
-        _dragPositionSubject.stream,
-        (_, x) => x,
-      ),
+    return StreamBuilder<PositionState>(
+      stream: audioPlayerBloc.positionState,
       builder: (context, snapshot) {
-        var duration = state.audioState.duration?.toDouble() ?? 0.0;
-        var currentTime = _tmpSeekPosition ??
-            snapshot.data ??
-            state.audioState.currentTime?.toDouble() ??
-            0.0;
-        currentTime = max(0.0, min(currentTime, duration));
+        final duration =
+            snapshot.data?.duration?.inMilliseconds?.toDouble() ?? 0.0;
+        final currentTime =
+            snapshot.data?.position?.inMilliseconds?.toDouble() ?? 0.0;
 
         return Row(
           mainAxisSize: MainAxisSize.max,
@@ -83,7 +75,6 @@ class PlaybackControls extends StatelessWidget {
                   value: currentTime,
                   onChanged: _dragPositionSubject.add,
                   onChangeEnd: (value) {
-                    _tmpSeekPosition = value.toInt().toDouble();
                     onSeek(value.toInt());
                     _dragPositionSubject.add(null);
                   },
@@ -117,7 +108,6 @@ class PlaybackControls extends StatelessWidget {
           child: Icon(Icons.fast_rewind, size: 28),
         ),
         ActionButton(
-          state: state,
           onPause: onPause,
           onResume: onPlay,
           fullSized: true,
