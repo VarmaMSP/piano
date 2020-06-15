@@ -1,8 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc/bloc.dart';
 import 'package:phenopod/app/main.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
@@ -12,8 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player.dart';
 
 void main() {
-  BlocSupervisor.delegate = SimpleBlocDelegate();
-
   runApp(Root());
 }
 
@@ -91,26 +87,5 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
         );
       }),
     );
-  }
-}
-
-class SimpleBlocDelegate extends BlocDelegate {
-  @override
-  void onTransition(
-    Bloc<dynamic, dynamic> bloc,
-    Transition<dynamic, dynamic> transition,
-  ) {
-    print(transition);
-    super.onTransition(bloc, transition);
-  }
-
-  @override
-  void onError(
-    Bloc<dynamic, dynamic> bloc,
-    Object error,
-    StackTrace stackTrace,
-  ) {
-    print(error);
-    super.onError(bloc, error, stackTrace);
   }
 }
