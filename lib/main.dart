@@ -6,8 +6,8 @@ import 'package:bloc/bloc.dart';
 import 'package:phenopod/app/main.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
-import 'package:phenopod/screens/sign_in/main.dart';
-import 'package:phenopod/screens/splash.dart';
+import 'package:phenopod/screens/sign_in_screen.dart';
+import 'package:phenopod/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player.dart';
 

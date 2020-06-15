@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:phenopod/screens/home/main.dart';
-import 'package:phenopod/screens/podcast/main.dart';
+import 'package:phenopod/screens/podcast_screen/podcast_screen.dart';
 import 'package:phenopod/screens/search/main.dart';
 
 class RouteGenerator {
