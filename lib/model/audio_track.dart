@@ -17,7 +17,7 @@ class AudioTrack extends Equatable {
   final Episode episode;
   final Podcast podcast;
 
-  AudioTrack(this.position, this.episode, this.podcast);
+  AudioTrack({this.position, this.episode, this.podcast});
 
   @override
   List<Object> get props => [position];

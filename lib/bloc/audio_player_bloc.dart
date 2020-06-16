@@ -1,4 +1,4 @@
-import 'package:phenopod/models/main.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/services/audio/audio_service.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -15,7 +15,8 @@ class AudioPlayerBloc {
   final AudioService _audioService = AudioService();
 
   /// Conroller for currently playing item
-  final BehaviorSubject<QueueItem> _playSubject = BehaviorSubject<QueueItem>();
+  final BehaviorSubject<AudioTrack> _playSubject =
+      BehaviorSubject<AudioTrack>();
 
   /// Sink to transistion states
   final PublishSubject<StateTransistion> _stateTransistion =
@@ -37,8 +38,8 @@ class AudioPlayerBloc {
   }
 
   void _handlePlayRequests() {
-    _playSubject.stream.distinct().listen((queueItem) {
-      _audioService.playEpisode(queueItem);
+    _playSubject.stream.distinct().listen((audioTrack) {
+      _audioService.playEpisode(audioTrack);
     });
   }
 
@@ -68,13 +69,13 @@ class AudioPlayerBloc {
   }
 
   // Play Specified track
-  void Function(QueueItem) get play => _playSubject.add;
+  void Function(AudioTrack) get play => _playSubject.add;
 
   // Transistion state
   void Function(StateTransistion) get transistionState => _stateTransistion.add;
 
   // get current playing item
-  Stream<QueueItem> get nowPlaying => _playSubject.stream;
+  Stream<AudioTrack> get nowPlaying => _playSubject.stream;
 
   // get current audio state
   Stream<AudioState> get audioState => _audioService.audioState;

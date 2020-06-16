@@ -1,10 +1,9 @@
-import 'package:phenopod/models/main.dart';
-import 'package:phenopod/repositories/subscription.dart';
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:rxdart/subjects.dart';
 
 class PodcastActionsBloc {
-  final SubscriptionRepository _subscriptionRepository =
-      SubscriptionRepository();
+  final Store store;
 
   // Contoller for podcast subscription actions
   final BehaviorSubject<Podcast> _subscribeTo = BehaviorSubject<Podcast>();
@@ -12,20 +11,20 @@ class PodcastActionsBloc {
   // Controller for podcast unsubscription actions
   final BehaviorSubject<Podcast> _unsubscribeTo = BehaviorSubject<Podcast>();
 
-  PodcastActionsBloc() {
+  PodcastActionsBloc(this.store) {
     _handleSubscribeActions();
     _handleUnsubscribeActions();
   }
 
   void _handleSubscribeActions() {
     _subscribeTo.stream.listen((podcast) async {
-      await _subscriptionRepository.subscribe(podcast.id);
+      await store.subscription.subscribe(podcast.id);
     });
   }
 
   void _handleUnsubscribeActions() {
     _unsubscribeTo.stream.listen((podcast) async {
-      await _subscriptionRepository.unsubscribe(podcast.id);
+      await store.subscription.unsubscribe(podcast.id);
     });
   }
 

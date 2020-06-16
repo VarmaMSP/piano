@@ -1,9 +1,9 @@
-import 'package:phenopod/models/main.dart';
-import 'package:phenopod/repositories/session_service.dart';
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UserBloc {
-  final SessionService _sessionService = SessionService();
+  final Store store;
 
   // Controller for current signed in user
   final BehaviorSubject<User> _user = BehaviorSubject<User>();
@@ -14,11 +14,11 @@ class UserBloc {
   // Stream for flagging that user is signing in
   final BehaviorSubject<bool> _userSigningIn = BehaviorSubject<bool>();
 
-  UserBloc() {
+  UserBloc(this.store) {
     // handle sign in / out transistions
     _handleSignInTransistions();
 
-    // load user, first time when app is initialized
+    // load user when bloc is initialized
     _loadUser();
   }
 
@@ -31,23 +31,23 @@ class UserBloc {
 
   // Loads user details from server
   Future<void> _loadUser() async {
-    _user.add(await _sessionService.loadSession());
+    _user.add(await store.user.getSignedInUser());
   }
 
-  // Sign in user with guest accountt
+  // Sign in user with guest account
   Future<void> signInWithGuest() async {
     _userSigningIn.add(true);
-    await _sessionService.signInWithGuest();
+    await store.user.signInWithGuest();
     await _loadUser();
   }
 
   // Sign out user
   void Function() get signOut => () => _user.add(null);
 
-  // get if user is signed in
+  // Get if user is signed in
   Stream<bool> get userSignedIn => _userSignedIn.stream;
 
-  // get if user is currently signing in
+  // Get if user is currently signing in
   Stream<bool> get userSigningIn => _userSigningIn.stream;
 
   Future<void> dispose() async {

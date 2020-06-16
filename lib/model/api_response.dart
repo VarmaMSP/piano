@@ -6,6 +6,7 @@ import 'playlist.dart';
 import 'podcast.dart';
 import 'user.dart';
 import 'search_suggestion.dart';
+import 'curation.dart';
 
 part 'api_response.g.dart';
 
@@ -48,6 +49,14 @@ class ApiResponse {
   factory ApiResponse.fromJson(Map<String, dynamic> json) {
     return _$ApiResponseFromJson(json);
   }
+
+  List<Curation> get curations => (raw as List ?? [])
+      .cast<Map<String, dynamic>>()
+      .map((d) => Curation.fromJson(d))
+      .toList();
+
+  List<Category> get primaryCategories =>
+      categories.where((c) => c.parentId == '').toList();
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)

@@ -2,27 +2,23 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
-import 'package:phenopod/models/main.dart';
-import 'package:phenopod/utils/request.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// This bloc is used to represent local state of podcast screen
 class PodcastScreenBloc {
+  final Store store;
+
   /// urlParam of current podcast;
   final String urlParam;
 
   /// This is used to apply updates to podcast
   final PodcastActionsBloc podcastActionsBloc;
 
-  /// controller for podcast
-  final BehaviorSubject<Podcast> _podcast = BehaviorSubject<Podcast>();
-
-  /// controller for episode
-  final BehaviorSubject<List<Episode>> _episodes =
-      BehaviorSubject<List<Episode>>();
-
-  /// stream to flag that all episodes are loaded
-  final BehaviorSubject<bool> _receivedAllEpisodes = BehaviorSubject<bool>();
+  /// controller for podcastScreenData
+  final BehaviorSubject<PodcastScreenData> _screenData =
+      BehaviorSubject<PodcastScreenData>();
 
   /// This flag is turned on when [dispose()] is invoked
   /// Because the podcast screen widget can dispose this bloc at any
@@ -35,6 +31,7 @@ class PodcastScreenBloc {
   StreamSubscription<Podcast> _unsubSubscription;
 
   PodcastScreenBloc({
+    @required this.store,
     @required this.urlParam,
     @required this.podcastActionsBloc,
   }) {
@@ -50,8 +47,11 @@ class PodcastScreenBloc {
         .where((podcast) => podcast.urlParam == urlParam)
         .listen(
       (_) async {
-        if (!await _podcast.isEmpty && !_isDisposed) {
-          _podcast.add((await _podcast.first).copyWith(isSubscribed: true));
+        if (!await _screenData.isEmpty && !_isDisposed) {
+          final data = await _screenData.first;
+          final podcast = data.podcast.copyWith(isSubscribed: true);
+
+          _screenData.add(data.copyWith(podcast: podcast));
         }
       },
     );
@@ -60,61 +60,45 @@ class PodcastScreenBloc {
         .where((podcast) => podcast.urlParam == urlParam)
         .listen(
       (_) async {
-        if (!await _podcast.isEmpty && !_isDisposed) {
-          _podcast.add((await _podcast.first).copyWith(isSubscribed: false));
+        if (!await _screenData.isEmpty && !_isDisposed) {
+          final data = await _screenData.first;
+          final podcast = data.podcast.copyWith(isSubscribed: false);
+
+          _screenData.add(data.copyWith(podcast: podcast));
         }
       },
     );
   }
 
   Future<void> _loadPage() async {
-    final response = await makeRequest(
-      method: 'GET',
-      path: '/podcasts/$urlParam',
-    );
-
+    final screenData = await store.podcast.getScreenData(urlParam);
     if (!_isDisposed) {
-      _podcast.add(response.podcasts[0]);
-      _episodes.add(response.episodes);
-      _receivedAllEpisodes.add(response.episodes.length < 15);
+      _screenData.add(screenData);
     }
   }
 
   /// load more episodes
   Future<void> loadMoreEpisodes() async {
-    final podcast = await _podcast.first;
-    final episodes = await _episodes.first;
-    final response = await makeRequest(
-      method: 'GET',
-      path: '/ajax/browse',
-      queryParams: <String, String>{
-        'endpoint': 'podcast_episodes',
-        'podcast_id': podcast.id,
-        'offset': episodes.length.toString(),
-        'limit': '30',
-        'order': 'pub_date_desc',
-      },
+    final data = await _screenData.first;
+    final episodes = await store.episode.getByPodcastPaginated(
+      data.podcast.id,
+      data.episodes.length,
+      30,
     );
 
     if (!_isDisposed) {
-      _episodes.add(episodes + response.episodes);
-      _receivedAllEpisodes.add(response.episodes.length < 30);
+      _screenData.add(data.copyWith(
+        episodes: data.episodes + episodes,
+        receivedAllEpisodes: episodes.length > 30,
+      ));
     }
   }
 
-  /// Current podcast
-  Stream<Podcast> get podcast => _podcast.stream;
-
-  /// Episodes for current podcast
-  Stream<List<Episode>> get episodes => _episodes.stream;
-
-  /// Flag if all episodes are loaded
-  Stream<bool> get receivedAllEpisodes => _receivedAllEpisodes.stream;
+  /// Screen data
+  Stream<PodcastScreenData> get screenData => _screenData.stream;
 
   Future<void> dispose() async {
-    await _podcast.close();
-    await _episodes.close();
-    await _receivedAllEpisodes.close();
+    await _screenData.close();
     await _subSubscription.cancel();
     await _unsubSubscription.cancel();
     _isDisposed = true;
