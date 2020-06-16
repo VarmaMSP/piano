@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:phenopod/models/episode.dart';
-import 'package:phenopod/models/podcast.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/bottom_sheet/episode_details.dart';
 import 'package:phenopod/widgets/episode_list_item/menu.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';

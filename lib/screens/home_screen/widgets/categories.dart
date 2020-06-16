@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/models/category.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class Categories extends StatelessWidget {

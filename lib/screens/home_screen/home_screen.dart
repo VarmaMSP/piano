@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/models/main.dart';
+import 'package:phenopod/model/main.dart';
 import 'widgets/trending.dart';
 import 'package:phenopod/widgets/screen/header/tab_screen.dart';
 import 'package:phenopod/widgets/screen/layout.dart';

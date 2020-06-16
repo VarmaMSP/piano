@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:phenopod/models/api_response.dart';
+import 'package:phenopod/model/api_response.dart';
 
 const String baseUrl =
     kReleaseMode ? 'https://phenopod.com/api' : 'https://phenopod.com/api';

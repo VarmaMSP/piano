@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
-import 'package:phenopod/models/main.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/widgets/audio_player/widgets/playback_controls.dart';
 import 'package:phenopod/widgets/html.dart';
@@ -18,7 +18,7 @@ class AudioPlayer extends StatelessWidget {
   }) : super(key: key);
 
   final BottomAppBarAnimations animations;
-  final QueueItem nowPlaying;
+  final AudioTrack nowPlaying;
   final void Function() onPlay;
   final void Function() onPause;
   final void Function(int) onSeek;

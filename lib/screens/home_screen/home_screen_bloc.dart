@@ -1,4 +1,4 @@
-import 'package:phenopod/models/main.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:rxdart/rxdart.dart';
 

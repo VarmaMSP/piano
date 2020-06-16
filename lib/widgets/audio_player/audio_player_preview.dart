@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/models/queue.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/audio_player/widgets/action_button.dart';
 import 'package:phenopod/widgets/podcast_thumbnail.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -15,7 +15,7 @@ class AudioPlayerPreview extends StatelessWidget {
   }) : super(key: key);
 
   final BottomAppBarAnimations animations;
-  final QueueItem nowPlaying;
+  final AudioTrack nowPlaying;
   final Function onPlay;
   final Function onPause;
 

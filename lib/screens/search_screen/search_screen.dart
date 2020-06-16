@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/models/search_suggestion.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/screen/layout.dart';
 
 import 'widgets/search_header_delegate.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/models/main.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -19,7 +19,7 @@ class AudioPlayer extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height - padding.top;
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
-    return StreamBuilder<QueueItem>(
+    return StreamBuilder<AudioTrack>(
       initialData: null,
       stream: audioPlayerBloc.nowPlaying,
       builder: (context, snapshot) {

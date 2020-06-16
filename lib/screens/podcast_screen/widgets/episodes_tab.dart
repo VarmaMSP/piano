@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/models/episode.dart';
-import 'package:phenopod/models/main.dart';
-import 'package:phenopod/models/podcast.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/episode_list_item/episode_list_item.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 

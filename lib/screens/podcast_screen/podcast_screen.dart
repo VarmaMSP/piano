@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
-import 'package:phenopod/models/main.dart';
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:phenopod/widgets/screen/layout.dart';
 import 'package:phenopod/widgets/screen/loading_layout.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:tuple/tuple.dart';
 
 import 'widgets/about_tab.dart';
 import 'widgets/episodes_tab.dart';
@@ -36,6 +35,7 @@ class _PodcastScreenState extends State<PodcastScreen>
     _tabController = TabController(vsync: this, length: 2);
     _podcastScreenBloc = PodcastScreenBloc(
       urlParam: widget.urlParam,
+      store: Provider.of<Store>(context, listen: false),
       podcastActionsBloc: Provider.of<PodcastActionsBloc>(
         context,
         listen: false,
@@ -52,14 +52,8 @@ class _PodcastScreenState extends State<PodcastScreen>
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Tuple3<Podcast, List<Episode>, bool>>(
-      stream: Rx.combineLatest3<Podcast, List<Episode>, bool,
-          Tuple3<Podcast, List<Episode>, bool>>(
-        _podcastScreenBloc.podcast,
-        _podcastScreenBloc.episodes,
-        _podcastScreenBloc.receivedAllEpisodes,
-        (a, b, c) => Tuple3(a, b, c),
-      ),
+    return StreamBuilder<PodcastScreenData>(
+      stream: _podcastScreenBloc.screenData,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return LoadingLayout(pageType: PageType.normal);
@@ -67,7 +61,7 @@ class _PodcastScreenState extends State<PodcastScreen>
 
         return ScreenLayout(
           header: PodcastHeaderDelegate(
-            podcast: snapshot.data.item1,
+            podcast: snapshot.data.podcast,
             tabController: _tabController,
           ),
           body: TabBarView(
@@ -75,14 +69,14 @@ class _PodcastScreenState extends State<PodcastScreen>
             children: <Widget>[
               EpisodesTab(
                 key: const PageStorageKey<String>('   Episodes   '),
-                podcast: snapshot.data.item1,
-                episodes: snapshot.data.item2,
-                receivedAll: snapshot.data.item3,
+                podcast: snapshot.data.podcast,
+                episodes: snapshot.data.episodes,
+                receivedAll: snapshot.data.receivedAllEpisodes,
                 loadMore: _podcastScreenBloc.loadMoreEpisodes,
               ),
               AboutTab(
                 key: const PageStorageKey<String>('   About   '),
-                podcast: snapshot.data.item1,
+                podcast: snapshot.data.podcast,
               ),
             ],
           ),

@@ -30,18 +30,18 @@ class AudioService implements IAudioService {
   Stream<PositionState> get positionState => _positionState.stream;
 
   @override
-  Future<void> playEpisode(QueueItem queueItem) async {
+  Future<void> playEpisode(AudioTrack audioTrack) async {
     if (!audioservice.AudioService.running) {
       await _startBackgroundPlayerTask();
     }
 
     await audioservice.AudioService.playMediaItem(
       audioservice.MediaItem(
-        id: queueItem.episode.mediaUrl,
-        artist: queueItem.podcast.author,
-        album: queueItem.podcast.title,
-        title: queueItem.episode.title,
-        artUri: '$thumbnailUrl/${queueItem.podcast.urlParam}.jpg',
+        id: audioTrack.episode.mediaUrl,
+        artist: audioTrack.podcast.author,
+        album: audioTrack.podcast.title,
+        title: audioTrack.episode.title,
+        artUri: '$thumbnailUrl/${audioTrack.podcast.urlParam}.jpg',
       ),
     );
   }

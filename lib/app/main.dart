@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/models/main.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/bottom_app_bar/main.dart' as appbar;
 import 'package:phenopod/route_generator.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +49,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         body: SafeArea(
           child: Stack(
             children: <Widget>[
-              StreamBuilder<QueueItem>(
+              StreamBuilder<AudioTrack>(
                 initialData: null,
                 stream: Provider.of<AudioPlayerBloc>(context).nowPlaying,
                 builder: (context, snapshot) {

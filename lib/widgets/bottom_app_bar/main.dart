@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/models/main.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/audio_player/main.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -33,7 +33,7 @@ class BottomAppBar extends StatelessWidget {
       ],
     );
 
-    return StreamBuilder<QueueItem>(
+    return StreamBuilder<AudioTrack>(
       initialData: null,
       stream: Provider.of<AudioPlayerBloc>(context).nowPlaying,
       builder: (context, snapshot) {
