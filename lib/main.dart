@@ -7,7 +7,7 @@ import 'package:phenopod/bloc/user_bloc.dart';
 import 'package:phenopod/screens/sign_in_screen.dart';
 import 'package:phenopod/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:phenopod/bloc/audio_player.dart';
+import 'package:phenopod/bloc/audio_player_bloc.dart';
 
 void main() {
   runApp(Root());

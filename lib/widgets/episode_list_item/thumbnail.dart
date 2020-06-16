@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:phenopod/bloc/audio_player.dart';
+import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/models/episode.dart';
 import 'package:phenopod/models/main.dart';
 import 'package:phenopod/models/podcast.dart';

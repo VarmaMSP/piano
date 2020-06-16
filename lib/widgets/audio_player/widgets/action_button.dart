@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/bloc/audio_player.dart';
+import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/services/audio/audio_service.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';

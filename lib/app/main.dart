@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
-import 'package:phenopod/bloc/audio_player.dart';
+import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/models/main.dart';
 import 'package:phenopod/widgets/bottom_app_bar/main.dart' as appbar;
 import 'package:phenopod/route_generator.dart';
