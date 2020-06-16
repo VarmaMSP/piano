@@ -6,11 +6,16 @@ import 'episode.dart';
 part 'podcast.g.dart';
 
 @CopyWith()
-class PodcastPageData extends Equatable {
+class PodcastScreenData extends Equatable {
   final Podcast podcast;
   final List<Episode> episodes;
+  final bool receivedAllEpisodes;
 
-  PodcastPageData({this.podcast, this.episodes});
+  PodcastScreenData({
+    this.podcast,
+    this.episodes,
+    this.receivedAllEpisodes,
+  });
 
   @override
   List<Object> get props => [podcast, episodes];

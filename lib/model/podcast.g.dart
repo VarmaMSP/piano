@@ -6,14 +6,16 @@ part of 'podcast.dart';
 // CopyWithGenerator
 // **************************************************************************
 
-extension PodcastPageDataCopyWithExtension on PodcastPageData {
-  PodcastPageData copyWith({
+extension PodcastScreenDataCopyWithExtension on PodcastScreenData {
+  PodcastScreenData copyWith({
     List<Episode> episodes,
     Podcast podcast,
+    bool receivedAllEpisodes,
   }) {
-    return PodcastPageData(
+    return PodcastScreenData(
       episodes: episodes ?? this.episodes,
       podcast: podcast ?? this.podcast,
+      receivedAllEpisodes: receivedAllEpisodes ?? this.receivedAllEpisodes,
     );
   }
 }
