@@ -6,14 +6,20 @@ import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
 import 'package:phenopod/screens/sign_in_screen.dart';
 import 'package:phenopod/screens/splash_screen.dart';
+import 'package:phenopod/store/api_store/api_store.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 
 void main() {
-  runApp(Root());
+  runApp(Root(store: ApiStore()));
 }
 
 class Root extends StatefulWidget {
+  Root({@required this.store});
+
+  final Store store;
+
   @override
   _RootState createState() => _RootState();
 }
@@ -58,16 +64,19 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
 
     return MultiProvider(
       providers: [
+        Provider<Store>(
+          create: (_) => widget.store,
+        ),
         Provider<AudioPlayerBloc>(
           create: (_) => AudioPlayerBloc(),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<UserBloc>(
-          create: (_) => UserBloc(),
+          create: (_) => UserBloc(widget.store),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<PodcastActionsBloc>(
-          create: (_) => PodcastActionsBloc(),
+          create: (_) => PodcastActionsBloc(widget.store),
           dispose: (_, value) => value.dispose(),
         ),
       ],
