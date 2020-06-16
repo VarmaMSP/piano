@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:phenopod/screens/home_screen/home_screen.dart';
-import 'package:phenopod/screens/podcast_screen/podcast_screen.dart';
-import 'package:phenopod/screens/search_screen/search_screen.dart';
+import 'package:phenopod/screen/home_screen/home_screen.dart';
+import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
+import 'package:phenopod/screen/search_screen/search_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> Function(RouteSettings) makeGenerateRoute(
