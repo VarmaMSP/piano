@@ -12,7 +12,7 @@ class SignInScreen extends StatelessWidget {
     return StreamBuilder<bool>(
       stream: userBloc.userSigningIn,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (!snapshot.hasData || !snapshot.data) {
           return Scaffold(
             body: Container(
               child: Center(
@@ -25,9 +25,6 @@ class SignInScreen extends StatelessWidget {
           );
         }
 
-        /// Once userSigningIn is set to false, this page should
-        /// be replaced, So show loading indicator regardless of
-        /// useSigingIn value
         return Scaffold(
           body: Container(
             child: Center(child: CircularProgressIndicator()),

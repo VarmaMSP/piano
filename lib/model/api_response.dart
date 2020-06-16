@@ -33,9 +33,9 @@ class ApiResponse {
   @JsonKey(defaultValue: [])
   final SearchResults searchResults;
 
-  final dynamic raw;
+  dynamic raw;
 
-  const ApiResponse({
+  ApiResponse({
     this.podcasts,
     this.episodes,
     this.users,
@@ -43,11 +43,10 @@ class ApiResponse {
     this.categories,
     this.searchSuggestions,
     this.searchResults,
-    this.raw,
   });
 
   factory ApiResponse.fromJson(Map<String, dynamic> json) {
-    return _$ApiResponseFromJson(json);
+    return _$ApiResponseFromJson(json['data'])..raw = json['raw'];
   }
 
   List<Curation> get curations => (raw as List ?? [])

@@ -23,7 +23,8 @@ class UserBloc {
   }
 
   void _handleSignInTransistions() {
-    _user.stream.distinct().listen((user) {
+    _user.stream.listen((user) {
+      print('user: $user');
       _userSignedIn.add(user != null);
       _userSigningIn.add(false);
     });

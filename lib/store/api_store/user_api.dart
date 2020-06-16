@@ -15,6 +15,7 @@ class UserApi extends UserStore {
       method: 'POST',
       path: '/ajax/service?endpoint=load_session',
     );
+
     return apiResponse.users.isEmpty ? null : apiResponse.users[0];
   }
 

@@ -44,8 +44,7 @@ ApiResponse _$ApiResponseFromJson(Map<String, dynamic> json) {
         : SearchResults.fromJson(
                 json['search_results'] as Map<String, dynamic>) ??
             [],
-    raw: json['raw'],
-  );
+  )..raw = json['raw'];
 }
 
 SearchResults _$SearchResultsFromJson(Map<String, dynamic> json) {

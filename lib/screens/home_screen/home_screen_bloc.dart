@@ -18,7 +18,7 @@ class HomeScreenBloc {
   Future<void> _loadPage() async {
     final response = await makeRequest(method: 'GET', path: '/');
     _curations.add(response.curations);
-    _categories.add(response.categories);
+    _categories.add(response.primaryCategories);
   }
 
   /// curations stream
