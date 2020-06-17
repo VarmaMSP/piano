@@ -1,9 +1,9 @@
-import 'package:moor/moor.dart';
+part of 'sqldb.dart';
 
 @DataClassName('PodcastRow')
 class Podcasts extends Table {
   TextColumn get id => text()();
-  TextColumn get urlParam => text()();
+  TextColumn get urlParam => text().customConstraint('UNIQUE')();
   TextColumn get title => text()();
   TextColumn get description => text()();
   TextColumn get language => text()();
@@ -26,7 +26,7 @@ class Episodes extends Table {
   TextColumn get id => text()();
   TextColumn get podcastId =>
       text().customConstraint('REFERENCES podcasts(id)')();
-  TextColumn get urlParam => text()();
+  TextColumn get urlParam => text().customConstraint('UNIQUE')();
   TextColumn get title => text()();
   TextColumn get mediaUrl => text()();
   TextColumn get pubDate => text()();
@@ -53,4 +53,93 @@ class AudioTracks extends Table {
 
   @override
   Set<Column> get primaryKey => {position};
+}
+
+PodcastRow podcastRowFromModel(Podcast model) {
+  return PodcastRow(
+    id: model.id,
+    urlParam: model.urlParam,
+    title: model.title,
+    description: model.description,
+    language: model.language,
+    explicit: model.explicit,
+    author: model.author,
+    type: model.type,
+    complete: model.complete,
+    link: model.link,
+    copyright: model.copyright,
+    totalEpisodes: model.totalEpisodes,
+    totalSeasons: model.totalSeasons,
+    feedUrl: model.feedUrl,
+  );
+}
+
+extension PodcastRowExtension on PodcastRow {
+  Podcast toModel() {
+    return Podcast(
+      id: id,
+      urlParam: urlParam,
+      title: title,
+      summary: '',
+      description: description,
+      language: language,
+      explicit: explicit,
+      author: author,
+      type: type,
+      complete: complete,
+      link: link,
+      copyright: copyright,
+      totalEpisodes: totalEpisodes,
+      totalSeasons: totalSeasons,
+      earliestEpisodePubDate: '',
+      titleHighlighted: '',
+      authorHighlighted: '',
+      descriptionHiglighted: '',
+      feedUrl: feedUrl,
+      feedLastRefreshAt: '',
+      isSubscribed: false,
+    );
+  }
+}
+
+EpisodeRow episodeRowFromModel(Episode model) {
+  return EpisodeRow(
+    id: model.id,
+    podcastId: model.podcastId,
+    urlParam: model.urlParam,
+    title: model.title,
+    mediaUrl: model.mediaUrl,
+    pubDate: model.pubDate,
+    summary: model.summary,
+    description: model.description,
+    duration: model.duration,
+    explicit: model.explicit,
+    episode: model.episode,
+    season: model.season,
+    type: model.type,
+  );
+}
+
+extension EpisodeRowExtension on EpisodeRow {
+  Episode toModel() {
+    return Episode(
+      id: id,
+      urlParam: urlParam,
+      title: title,
+      mediaUrl: mediaUrl,
+      podcastId: podcastId,
+      pubDate: pubDate,
+      summary: summary,
+      description: description,
+      duration: duration,
+      explicit: explicit,
+      episode: episode,
+      season: season,
+      type: type,
+      titleHighlighted: '',
+      descriptionHighlighted: '',
+      progress: 0.0,
+      lastPlayedAt: '',
+    );
+  }
 }

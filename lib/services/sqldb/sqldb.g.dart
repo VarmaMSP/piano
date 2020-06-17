@@ -497,11 +497,8 @@ class $PodcastsTable extends Podcasts
   @override
   GeneratedTextColumn get urlParam => _urlParam ??= _constructUrlParam();
   GeneratedTextColumn _constructUrlParam() {
-    return GeneratedTextColumn(
-      'url_param',
-      $tableName,
-      false,
-    );
+    return GeneratedTextColumn('url_param', $tableName, false,
+        $customConstraints: 'UNIQUE');
   }
 
   final VerificationMeta _titleMeta = const VerificationMeta('title');
@@ -1258,11 +1255,8 @@ class $EpisodesTable extends Episodes
   @override
   GeneratedTextColumn get urlParam => _urlParam ??= _constructUrlParam();
   GeneratedTextColumn _constructUrlParam() {
-    return GeneratedTextColumn(
-      'url_param',
-      $tableName,
-      false,
-    );
+    return GeneratedTextColumn('url_param', $tableName, false,
+        $customConstraints: 'UNIQUE');
   }
 
   final VerificationMeta _titleMeta = const VerificationMeta('title');
@@ -1707,9 +1701,20 @@ abstract class _$SqlDb extends GeneratedDatabase {
   $EpisodesTable get episodes => _episodes ??= $EpisodesTable(this);
   $AudioTracksTable _audioTracks;
   $AudioTracksTable get audioTracks => _audioTracks ??= $AudioTracksTable(this);
+  PodcastDao _podcastDao;
+  PodcastDao get podcastDao => _podcastDao ??= PodcastDao(this as SqlDb);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
       [podcasts, episodes, audioTracks];
+}
+
+// **************************************************************************
+// DaoGenerator
+// **************************************************************************
+
+mixin _$PodcastDaoMixin on DatabaseAccessor<SqlDb> {
+  $PodcastsTable get podcasts => attachedDatabase.podcasts;
+  $EpisodesTable get episodes => attachedDatabase.episodes;
 }

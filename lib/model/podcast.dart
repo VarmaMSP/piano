@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'episode.dart';
@@ -83,27 +84,27 @@ class Podcast extends Equatable {
   final bool isSubscribed;
 
   const Podcast({
-    this.id,
-    this.urlParam,
-    this.title,
-    this.summary,
-    this.description,
-    this.language,
-    this.explicit,
-    this.author,
-    this.type,
-    this.complete,
-    this.link,
-    this.copyright,
-    this.totalEpisodes,
-    this.totalSeasons,
-    this.earliestEpisodePubDate,
-    this.titleHighlighted,
-    this.authorHighlighted,
-    this.descriptionHiglighted,
-    this.feedUrl,
-    this.feedLastRefreshAt,
-    this.isSubscribed,
+    @required this.id,
+    @required this.urlParam,
+    @required this.title,
+    @required this.summary,
+    @required this.description,
+    @required this.language,
+    @required this.explicit,
+    @required this.author,
+    @required this.type,
+    @required this.complete,
+    @required this.link,
+    @required this.copyright,
+    @required this.totalEpisodes,
+    @required this.totalSeasons,
+    @required this.earliestEpisodePubDate,
+    @required this.titleHighlighted,
+    @required this.authorHighlighted,
+    @required this.descriptionHiglighted,
+    @required this.feedUrl,
+    @required this.feedLastRefreshAt,
+    @required this.isSubscribed,
   });
 
   factory Podcast.fromJson(Map<String, dynamic> json) {

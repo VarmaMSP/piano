@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 
@@ -11,6 +12,9 @@ class Episode extends Equatable {
   final String urlParam;
   final String title;
   final String mediaUrl;
+
+  @JsonKey(defaultValue: '')
+  final String podcastId;
 
   @JsonKey(defaultValue: '')
   final String pubDate;
@@ -49,22 +53,23 @@ class Episode extends Equatable {
   final String lastPlayedAt;
 
   const Episode({
-    this.id,
-    this.urlParam,
-    this.title,
-    this.mediaUrl,
-    this.pubDate,
-    this.summary,
-    this.description,
-    this.duration,
-    this.explicit,
-    this.episode,
-    this.season,
-    this.type,
-    this.titleHighlighted,
-    this.descriptionHighlighted,
-    this.progress,
-    this.lastPlayedAt,
+    @required this.id,
+    @required this.urlParam,
+    @required this.title,
+    @required this.mediaUrl,
+    @required this.podcastId,
+    @required this.pubDate,
+    @required this.summary,
+    @required this.description,
+    @required this.duration,
+    @required this.explicit,
+    @required this.episode,
+    @required this.season,
+    @required this.type,
+    @required this.titleHighlighted,
+    @required this.descriptionHighlighted,
+    @required this.progress,
+    @required this.lastPlayedAt,
   });
 
   factory Episode.fromJson(Map<String, dynamic> json) {
