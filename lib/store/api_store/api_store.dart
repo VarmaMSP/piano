@@ -1,3 +1,4 @@
+import 'package:phenopod/service/http_client/http_client.dart';
 import 'package:phenopod/store/store.dart';
 
 import 'podcast_api.dart';
@@ -6,10 +7,17 @@ import 'subscription_api.dart';
 import 'user_api.dart';
 
 class ApiStore extends Store {
-  final UserStore _userStore = UserApi();
-  final PodcastStore _podcastStore = PodcastApi();
-  final EpisodeStore _episodeStore = EpisodeApi();
-  final SubscriptionStore _subscriptionStore = SubscriptionApi();
+  UserStore _userStore;
+  PodcastStore _podcastStore;
+  EpisodeStore _episodeStore;
+  SubscriptionStore _subscriptionStore;
+
+  ApiStore(HttpClient httpClient) {
+    _userStore = UserApi(httpClient);
+    _podcastStore = PodcastApi(httpClient);
+    _episodeStore = EpisodeApi(httpClient);
+    _subscriptionStore = SubscriptionApi(httpClient);
+  }
 
   @override
   UserStore get user => _userStore;

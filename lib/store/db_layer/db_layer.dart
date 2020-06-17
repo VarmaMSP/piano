@@ -4,7 +4,6 @@ import 'package:phenopod/store/store.dart';
 
 class DbLayer extends Store {
   final Store baseStore;
-
   PodcastStore _podcastDb;
 
   DbLayer({this.baseStore, SqlDb sqlDb}) {

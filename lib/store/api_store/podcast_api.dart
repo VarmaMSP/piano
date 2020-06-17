@@ -1,9 +1,12 @@
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/http_client/http_client.dart';
 import 'package:phenopod/store/store.dart';
 
-import 'utils.dart';
-
 class PodcastApi extends PodcastStore {
+  final HttpClient httpClient;
+
+  PodcastApi(this.httpClient);
+
   @override
   Future<Podcast> get(String podcastId) {
     throw UnimplementedError();
@@ -11,7 +14,7 @@ class PodcastApi extends PodcastStore {
 
   @override
   Future<PodcastScreenData> getScreenData(String podcastUrlParam) async {
-    final apiResponse = await makeRequest(
+    final apiResponse = await httpClient.makeRequest(
       method: 'GET',
       path: '/podcasts/$podcastUrlParam',
     );

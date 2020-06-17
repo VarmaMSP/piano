@@ -2,16 +2,19 @@ import 'dart:async';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:phenopod/service/http_client/http_client.dart';
 import 'package:uuid/uuid.dart';
 import 'package:phenopod/model/user.dart';
 import 'package:phenopod/store/store.dart';
 
-import 'utils.dart';
-
 class UserApi extends UserStore {
+  final HttpClient httpClient;
+
+  UserApi(this.httpClient);
+
   @override
   Future<User> getSignedInUser() async {
-    final apiResponse = await makeRequest(
+    final apiResponse = await httpClient.makeRequest(
       method: 'POST',
       path: '/ajax/service?endpoint=load_session',
     );
@@ -23,7 +26,7 @@ class UserApi extends UserStore {
   Future<void> signInWithGuest() async {
     final credentials = GuestCredentials();
     await credentials.load();
-    await makeRequest(
+    await httpClient.makeRequest(
       method: 'POST',
       path: '/mobile/signin/guest',
       body: {'guest_account': credentials.toJson()},
