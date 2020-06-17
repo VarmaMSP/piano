@@ -6,13 +6,17 @@ import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
 import 'package:phenopod/screen/sign_in_screen.dart';
 import 'package:phenopod/screen/splash_screen.dart';
-import 'package:phenopod/store/api_store/api_store.dart';
 import 'package:phenopod/store/store.dart';
+import 'package:phenopod/store/store_impl.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 
-void main() {
-  runApp(Root(store: ApiStore()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final store = await newStore();
+
+  runApp(Root(store: store));
 }
 
 class Root extends StatefulWidget {
