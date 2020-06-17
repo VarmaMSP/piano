@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:moor/isolate.dart';
@@ -7,20 +8,37 @@ import 'package:moor_ffi/moor_ffi.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-DatabaseConnection _backgroundConnection() {
-  final database = LazyDatabase(
-    () async {
-      final dbFolder = await getApplicationDocumentsDirectory();
-      final file = File(join(dbFolder.path, 'db.sqlite'));
-      return VmDatabase(file);
-    },
-  );
+class _IsolateStartRequest {
+  final SendPort sendMoorIsolate;
+  final String targetPath;
 
-  return DatabaseConnection.fromExecutor(database);
+  _IsolateStartRequest(this.sendMoorIsolate, this.targetPath);
 }
 
-Future<MoorIsolate> _newIsolate() async {
-  final moorIsolate = await MoorIsolate.spawn(_backgroundConnection);
+void _startIsolate(_IsolateStartRequest request) {
+  final database = VmDatabase(File(request.targetPath), logStatements: true);
+  final moorIsolate = MoorIsolate.inCurrent(
+    () => DatabaseConnection.fromExecutor(database),
+  );
+
+  request.sendMoorIsolate.send(moorIsolate);
+}
+
+Future<MoorIsolate> _newMoorIsolate() async {
+  final appDir = await getApplicationDocumentsDirectory();
+  final dbPath = join(appDir.path, 'db.sqlite');
+  final receivePort = ReceivePort();
+
+  // Start Moor in a new isolate
+  await Isolate.spawn(
+    _startIsolate,
+    _IsolateStartRequest(receivePort.sendPort, dbPath),
+  );
+
+  // Receive MoorIsolate as the first message
+  final moorIsolate = (await receivePort.first as MoorIsolate);
+
+  // Register MoorIsolates sendport
   IsolateNameServer.registerPortWithName(
     moorIsolate.connectPort,
     'MOOR_ISOLATE',
@@ -33,5 +51,5 @@ Future<MoorIsolate> getMoorIsolate() {
   final sendPort = IsolateNameServer.lookupPortByName('MOOR_ISOLATE');
   return sendPort != null
       ? Future.value(MoorIsolate.fromConnectPort(sendPort))
-      : _newIsolate();
+      : _newMoorIsolate();
 }
