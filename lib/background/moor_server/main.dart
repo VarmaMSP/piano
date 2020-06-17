@@ -32,6 +32,6 @@ Future<MoorIsolate> _newIsolate() async {
 Future<MoorIsolate> getMoorIsolate() {
   final sendPort = IsolateNameServer.lookupPortByName('MOOR_ISOLATE');
   return sendPort != null
-      ? MoorIsolate.fromConnectPort(sendPort)
+      ? Future.value(MoorIsolate.fromConnectPort(sendPort))
       : _newIsolate();
 }

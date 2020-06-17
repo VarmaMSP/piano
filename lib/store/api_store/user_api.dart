@@ -26,7 +26,7 @@ class UserApi extends UserStore {
     await makeRequest(
       method: 'POST',
       path: '/mobile/signin/guest',
-      body: credentials.toJson(),
+      body: {'guest_account': credentials.toJson()},
     );
   }
 }
@@ -57,12 +57,10 @@ class GuestCredentials {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'guest_account': <String, dynamic>{
-        'id': _id,
-        'device_uuid': _deviceUuid ?? '',
-        'device_os': _deviceOs,
-        'device_model': _deviceModel,
-      },
+      'id': _id,
+      'device_uuid': _deviceUuid ?? '',
+      'device_os': _deviceOs,
+      'device_model': _deviceModel,
     };
   }
 
