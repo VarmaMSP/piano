@@ -1,4 +1,4 @@
-import 'package:phenopod/services/sqldb/sqldb.dart';
+import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/store/db_layer/podcast_db.dart';
 import 'package:phenopod/store/store.dart';
 

@@ -1,5 +1,5 @@
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/services/audio/audio_service.dart';
+import 'package:phenopod/service/audio/audio_service.dart';
 import 'package:rxdart/subjects.dart';
 
 enum StateTransistion {
