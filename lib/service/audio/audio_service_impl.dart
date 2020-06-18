@@ -1,6 +1,6 @@
 part of 'audio_service.dart';
 
-class AudioService implements IAudioService {
+class _audioServiceImpl implements AudioService {
   /// Stream of audiostate transitions
   final BehaviorSubject<AudioState> _audioState =
       BehaviorSubject<AudioState>.seeded(AudioState.none);
@@ -19,7 +19,7 @@ class AudioService implements IAudioService {
   StreamSubscription<dynamic> _playbackStateSubscription;
   StreamSubscription<dynamic> _currentMediaItemSubscription;
 
-  AudioService() {
+  _audioServiceImpl() {
     _handleAudioServiceTransitions();
   }
 
@@ -28,6 +28,16 @@ class AudioService implements IAudioService {
 
   @override
   Stream<PositionState> get positionState => _positionState.stream;
+
+  @override
+  Future<void> connect() async {
+    await audioservice.AudioService.connect();
+  }
+
+  @override
+  Future<void> disconnect() async {
+    await audioservice.AudioService.disconnect();
+  }
 
   @override
   Future<void> playEpisode(AudioTrack audioTrack) async {

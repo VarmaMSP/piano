@@ -33,9 +33,7 @@ enum _SnapshotTransistion {
 
 class AudioPlayerBloc {
   final Store store;
-
-  /// Service to communicate to background audio task
-  final AudioService _audioService = AudioService();
+  final AudioService audioService;
 
   /// Stream of snapshots
   final BehaviorSubject<AudioPlayerSnapshot> _snapshotSubject =
@@ -53,7 +51,7 @@ class AudioPlayerBloc {
   final PublishSubject<Duration> _posistionTransistion =
       PublishSubject<Duration>();
 
-  AudioPlayerBloc(this.store) {
+  AudioPlayerBloc(this.store, this.audioService) {
     /// Handle playback transistion events
     _handleStateTransistions();
 
@@ -68,10 +66,10 @@ class AudioPlayerBloc {
     _stateTransistion.stream.distinct().listen((newState) async {
       switch (newState) {
         case StateTransistion.play:
-          await _audioService.play();
+          await audioService.play();
           break;
         case StateTransistion.pause:
-          await _audioService.pause();
+          await audioService.pause();
           break;
         case StateTransistion.stop:
           break;
@@ -108,7 +106,7 @@ class AudioPlayerBloc {
 
   void _handlePosistionTransistions() {
     _posistionTransistion.stream.distinct().listen((position) async {
-      await _audioService.seek(position);
+      await audioService.seek(position);
     });
   }
 
@@ -127,15 +125,15 @@ class AudioPlayerBloc {
   Stream<Queue> get queue => _snapshotSubject.stream.map((s) => s.enabledQueue);
 
   // get current audio state
-  Stream<AudioState> get audioState => _audioService.audioState;
+  Stream<AudioState> get audioState => audioService.audioState;
 
   // get current posistion state
-  Stream<PositionState> get positionState => _audioService.positionState;
+  Stream<PositionState> get positionState => audioService.positionState;
 
   Future<void> dispose() async {
     await _snapshotSubject.close();
     await _snapshotTransistion.close();
     await _stateTransistion.close();
-    await _audioService.dispose();
+    await audioService.dispose();
   }
 }

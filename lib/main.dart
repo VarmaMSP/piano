@@ -1,48 +1,66 @@
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:phenopod/app/main.dart';
+import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
 import 'package:phenopod/screen/sign_in_screen.dart';
 import 'package:phenopod/screen/splash_screen.dart';
+import 'package:phenopod/service/audio/audio_service.dart';
 import 'package:phenopod/service/http_client/http_client.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/store/store_impl.dart';
-import 'package:provider/provider.dart';
-import 'package:phenopod/bloc/audio_player_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final sqlDb = await newSqlDb();
   final httpClient = await newHttpClient();
+  final audioService = newAudioService();
 
-  runApp(Root(sqlDb: sqlDb, store: newStore(sqlDb, httpClient)));
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  runApp(Root(
+    sqlDb: sqlDb,
+    httpClient: httpClient,
+    audioService: audioService,
+  ));
 }
 
 class Root extends StatefulWidget {
-  Root({@required this.store, @required this.sqlDb});
+  Root({
+    @required this.sqlDb,
+    @required this.httpClient,
+    @required this.audioService,
+  });
 
   final SqlDb sqlDb;
-  final Store store;
+  final HttpClient httpClient;
+  final AudioService audioService;
 
   @override
   _RootState createState() => _RootState();
 }
 
 class _RootState extends State<Root> with WidgetsBindingObserver {
+  Store _store;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    AudioService.connect();
+    widget.audioService.connect();
+    _store = newStore(widget.sqlDb, widget.httpClient);
   }
 
   @override
   void dispose() {
-    AudioService.disconnect();
+    widget.audioService.disconnect();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -51,10 +69,10 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        AudioService.connect();
+        widget.audioService.connect();
         break;
       case AppLifecycleState.paused:
-        AudioService.disconnect();
+        widget.audioService.disconnect();
         break;
       default:
         break;
@@ -76,18 +94,18 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
           create: (_) => widget.sqlDb,
         ),
         Provider<Store>(
-          create: (_) => widget.store,
+          create: (_) => _store,
         ),
         Provider<AudioPlayerBloc>(
-          create: (_) => AudioPlayerBloc(widget.store),
+          create: (_) => AudioPlayerBloc(_store, widget.audioService),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<UserBloc>(
-          create: (_) => UserBloc(widget.store),
+          create: (_) => UserBloc(_store),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<PodcastActionsBloc>(
-          create: (_) => PodcastActionsBloc(widget.store),
+          create: (_) => PodcastActionsBloc(_store),
           dispose: (_, value) => value.dispose(),
         ),
       ],

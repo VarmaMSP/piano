@@ -9,6 +9,10 @@ import 'package:phenopod/utils/request.dart';
 
 part 'audio_service_impl.dart';
 
+AudioService newAudioService() {
+  return _audioServiceImpl();
+}
+
 enum AudioState {
   none,
   buffering,
@@ -29,12 +33,18 @@ class PositionState {
   }
 }
 
-abstract class IAudioService {
+abstract class AudioService {
   // Stream of audio state transitions
   Stream<AudioState> get audioState;
 
   // Stream of changes to position
   Stream<PositionState> get positionState;
+
+  // Connect to background audio service isolate
+  Future<void> connect();
+
+  // Disconnect from background audio service isolate
+  Future<void> disconnect();
 
   // Play given episode
   Future<void> playEpisode(AudioTrack audioTrack);
