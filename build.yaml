@@ -9,7 +9,6 @@ targets:
         options:
           ignore_for_file:
             - unnecessary_this
-            - cast_to_non_type
             - return_of_invalid_type
             - constant_identifier_names
             - prefer_const_constructors_in_immutables
