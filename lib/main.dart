@@ -6,22 +6,27 @@ import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
 import 'package:phenopod/screen/sign_in_screen.dart';
 import 'package:phenopod/screen/splash_screen.dart';
+import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/store/store_impl.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 
+import 'background/moor_server/main.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final store = await newStore();
+  final sqlDb = await newSqlDb();
+  final store = await newStore(sqlDb);
 
-  runApp(Root(store: store));
+  runApp(Root(sqlDb: sqlDb, store: store));
 }
 
 class Root extends StatefulWidget {
-  Root({@required this.store});
+  Root({@required this.store, @required this.sqlDb});
 
+  final SqlDb sqlDb;
   final Store store;
 
   @override
@@ -68,6 +73,9 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
 
     return MultiProvider(
       providers: [
+        Provider<SqlDb>(
+          create: (_) => widget.sqlDb,
+        ),
         Provider<Store>(
           create: (_) => widget.store,
         ),

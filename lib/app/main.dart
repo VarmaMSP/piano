@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:phenopod/animations/bottom_app_bar.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/widgets/bottom_app_bar/main.dart' as appbar;
 import 'package:phenopod/route_generator.dart';
 import 'package:provider/provider.dart';
@@ -46,6 +49,20 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
           preferredSize: const Size(0, 0),
           child: Container(),
         ),
+        floatingActionButton: kDebugMode
+            ? FloatingActionButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => MoorDbViewer(
+                      Provider.of<SqlDb>(context),
+                    ),
+                  ),
+                ),
+                mini: true,
+                child: Icon(Icons.developer_mode, size: 22),
+                backgroundColor: Colors.blue,
+              )
+            : null,
         body: SafeArea(
           child: Stack(
             children: <Widget>[
