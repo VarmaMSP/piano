@@ -12,6 +12,29 @@ class AudioPlayerSnapshot extends Equatable {
 
   AudioPlayerSnapshot({this.queue});
 
+  factory AudioPlayerSnapshot.singleTrack(AudioTrack audioTrack) {
+    return AudioPlayerSnapshot(
+      queue: Queue(
+        audioTracks: [audioTrack],
+        position: 0,
+        enabled: false,
+      ),
+    );
+  }
+
+  factory AudioPlayerSnapshot.singleTrackWithQueue(AudioTrack audioTrack) {
+    return AudioPlayerSnapshot(
+      queue: Queue(
+        audioTracks: [audioTrack],
+        position: 0,
+        enabled: true,
+      ),
+    );
+  }
+
+  /// return current audio track
+  AudioTrack get nowPlaying => queue.audioTracks[queue.position];
+
   @override
   List<Object> get props => [queue];
 }

@@ -72,7 +72,7 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
           create: (_) => widget.store,
         ),
         Provider<AudioPlayerBloc>(
-          create: (_) => AudioPlayerBloc(),
+          create: (_) => AudioPlayerBloc(widget.store),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<UserBloc>(

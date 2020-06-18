@@ -19,18 +19,18 @@ class AudioPlayer extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height - padding.top;
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
-    return StreamBuilder<AudioTrack>(
+    return StreamBuilder<AudioPlayerSnapshot>(
       initialData: null,
-      stream: audioPlayerBloc.nowPlaying,
+      stream: audioPlayerBloc.snapshot,
       builder: (context, snapshot) {
         Widget body;
-        if (snapshot.data != null) {
+        if (snapshot.hasData) {
           body = Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               AudioPlayerPreview(
                 animations: animations,
-                nowPlaying: snapshot.data,
+                nowPlaying: snapshot.data.nowPlaying,
                 onPlay: () =>
                     audioPlayerBloc.transistionState(StateTransistion.play),
                 onPause: () =>
@@ -39,7 +39,7 @@ class AudioPlayer extends StatelessWidget {
               Expanded(
                 child: full_audio_player.AudioPlayer(
                   animations: animations,
-                  nowPlaying: snapshot.data,
+                  nowPlaying: snapshot.data.nowPlaying,
                   onPlay: () =>
                       audioPlayerBloc.transistionState(StateTransistion.play),
                   onPause: () =>

@@ -14,7 +14,7 @@ class DbLayer extends Store {
       sqlDb: sqlDb,
     );
     _audioPlayerDb = AudioPlayerDb(
-      baseStore: baseStore.audioPlayer,
+      baseStore: null,
       sqlDb: sqlDb,
     );
   }
