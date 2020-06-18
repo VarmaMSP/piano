@@ -1692,6 +1692,252 @@ class $AudioTracksTable extends AudioTracks
   }
 }
 
+class AudioPlayerSnapshotRow extends DataClass
+    implements Insertable<AudioPlayerSnapshotRow> {
+  final int id;
+  final int queuePosition;
+  final bool queueEnabled;
+  AudioPlayerSnapshotRow(
+      {@required this.id,
+      @required this.queuePosition,
+      @required this.queueEnabled});
+  factory AudioPlayerSnapshotRow.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    return AudioPlayerSnapshotRow(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      queuePosition: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}queue_position']),
+      queueEnabled: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}queue_enabled']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || queuePosition != null) {
+      map['queue_position'] = Variable<int>(queuePosition);
+    }
+    if (!nullToAbsent || queueEnabled != null) {
+      map['queue_enabled'] = Variable<bool>(queueEnabled);
+    }
+    return map;
+  }
+
+  AudioPlayerSnapshotsCompanion toCompanion(bool nullToAbsent) {
+    return AudioPlayerSnapshotsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      queuePosition: queuePosition == null && nullToAbsent
+          ? const Value.absent()
+          : Value(queuePosition),
+      queueEnabled: queueEnabled == null && nullToAbsent
+          ? const Value.absent()
+          : Value(queueEnabled),
+    );
+  }
+
+  factory AudioPlayerSnapshotRow.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return AudioPlayerSnapshotRow(
+      id: serializer.fromJson<int>(json['id']),
+      queuePosition: serializer.fromJson<int>(json['queuePosition']),
+      queueEnabled: serializer.fromJson<bool>(json['queueEnabled']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'queuePosition': serializer.toJson<int>(queuePosition),
+      'queueEnabled': serializer.toJson<bool>(queueEnabled),
+    };
+  }
+
+  AudioPlayerSnapshotRow copyWith(
+          {int id, int queuePosition, bool queueEnabled}) =>
+      AudioPlayerSnapshotRow(
+        id: id ?? this.id,
+        queuePosition: queuePosition ?? this.queuePosition,
+        queueEnabled: queueEnabled ?? this.queueEnabled,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('AudioPlayerSnapshotRow(')
+          ..write('id: $id, ')
+          ..write('queuePosition: $queuePosition, ')
+          ..write('queueEnabled: $queueEnabled')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf(
+      $mrjc(id.hashCode, $mrjc(queuePosition.hashCode, queueEnabled.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is AudioPlayerSnapshotRow &&
+          other.id == this.id &&
+          other.queuePosition == this.queuePosition &&
+          other.queueEnabled == this.queueEnabled);
+}
+
+class AudioPlayerSnapshotsCompanion
+    extends UpdateCompanion<AudioPlayerSnapshotRow> {
+  final Value<int> id;
+  final Value<int> queuePosition;
+  final Value<bool> queueEnabled;
+  const AudioPlayerSnapshotsCompanion({
+    this.id = const Value.absent(),
+    this.queuePosition = const Value.absent(),
+    this.queueEnabled = const Value.absent(),
+  });
+  AudioPlayerSnapshotsCompanion.insert({
+    this.id = const Value.absent(),
+    @required int queuePosition,
+    @required bool queueEnabled,
+  })  : queuePosition = Value(queuePosition),
+        queueEnabled = Value(queueEnabled);
+  static Insertable<AudioPlayerSnapshotRow> custom({
+    Expression<int> id,
+    Expression<int> queuePosition,
+    Expression<bool> queueEnabled,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (queuePosition != null) 'queue_position': queuePosition,
+      if (queueEnabled != null) 'queue_enabled': queueEnabled,
+    });
+  }
+
+  AudioPlayerSnapshotsCompanion copyWith(
+      {Value<int> id, Value<int> queuePosition, Value<bool> queueEnabled}) {
+    return AudioPlayerSnapshotsCompanion(
+      id: id ?? this.id,
+      queuePosition: queuePosition ?? this.queuePosition,
+      queueEnabled: queueEnabled ?? this.queueEnabled,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (queuePosition.present) {
+      map['queue_position'] = Variable<int>(queuePosition.value);
+    }
+    if (queueEnabled.present) {
+      map['queue_enabled'] = Variable<bool>(queueEnabled.value);
+    }
+    return map;
+  }
+}
+
+class $AudioPlayerSnapshotsTable extends AudioPlayerSnapshots
+    with TableInfo<$AudioPlayerSnapshotsTable, AudioPlayerSnapshotRow> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $AudioPlayerSnapshotsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _queuePositionMeta =
+      const VerificationMeta('queuePosition');
+  GeneratedIntColumn _queuePosition;
+  @override
+  GeneratedIntColumn get queuePosition =>
+      _queuePosition ??= _constructQueuePosition();
+  GeneratedIntColumn _constructQueuePosition() {
+    return GeneratedIntColumn(
+      'queue_position',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _queueEnabledMeta =
+      const VerificationMeta('queueEnabled');
+  GeneratedBoolColumn _queueEnabled;
+  @override
+  GeneratedBoolColumn get queueEnabled =>
+      _queueEnabled ??= _constructQueueEnabled();
+  GeneratedBoolColumn _constructQueueEnabled() {
+    return GeneratedBoolColumn(
+      'queue_enabled',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, queuePosition, queueEnabled];
+  @override
+  $AudioPlayerSnapshotsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'audio_player_snapshots';
+  @override
+  final String actualTableName = 'audio_player_snapshots';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<AudioPlayerSnapshotRow> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    if (data.containsKey('queue_position')) {
+      context.handle(
+          _queuePositionMeta,
+          queuePosition.isAcceptableOrUnknown(
+              data['queue_position'], _queuePositionMeta));
+    } else if (isInserting) {
+      context.missing(_queuePositionMeta);
+    }
+    if (data.containsKey('queue_enabled')) {
+      context.handle(
+          _queueEnabledMeta,
+          queueEnabled.isAcceptableOrUnknown(
+              data['queue_enabled'], _queueEnabledMeta));
+    } else if (isInserting) {
+      context.missing(_queueEnabledMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AudioPlayerSnapshotRow map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return AudioPlayerSnapshotRow.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $AudioPlayerSnapshotsTable createAlias(String alias) {
+    return $AudioPlayerSnapshotsTable(_db, alias);
+  }
+}
+
 abstract class _$SqlDb extends GeneratedDatabase {
   _$SqlDb(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   _$SqlDb.connect(DatabaseConnection c) : super.connect(c);
@@ -1701,13 +1947,19 @@ abstract class _$SqlDb extends GeneratedDatabase {
   $EpisodesTable get episodes => _episodes ??= $EpisodesTable(this);
   $AudioTracksTable _audioTracks;
   $AudioTracksTable get audioTracks => _audioTracks ??= $AudioTracksTable(this);
+  $AudioPlayerSnapshotsTable _audioPlayerSnapshots;
+  $AudioPlayerSnapshotsTable get audioPlayerSnapshots =>
+      _audioPlayerSnapshots ??= $AudioPlayerSnapshotsTable(this);
   PodcastDao _podcastDao;
   PodcastDao get podcastDao => _podcastDao ??= PodcastDao(this as SqlDb);
+  AudioPlayerDao _audioPlayerDao;
+  AudioPlayerDao get audioPlayerDao =>
+      _audioPlayerDao ??= AudioPlayerDao(this as SqlDb);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [podcasts, episodes, audioTracks];
+      [podcasts, episodes, audioTracks, audioPlayerSnapshots];
 }
 
 // **************************************************************************
@@ -1717,4 +1969,11 @@ abstract class _$SqlDb extends GeneratedDatabase {
 mixin _$PodcastDaoMixin on DatabaseAccessor<SqlDb> {
   $PodcastsTable get podcasts => attachedDatabase.podcasts;
   $EpisodesTable get episodes => attachedDatabase.episodes;
+}
+mixin _$AudioPlayerDaoMixin on DatabaseAccessor<SqlDb> {
+  $PodcastsTable get podcasts => attachedDatabase.podcasts;
+  $EpisodesTable get episodes => attachedDatabase.episodes;
+  $AudioTracksTable get audioTracks => attachedDatabase.audioTracks;
+  $AudioPlayerSnapshotsTable get audioPlayerSnapshots =>
+      attachedDatabase.audioPlayerSnapshots;
 }

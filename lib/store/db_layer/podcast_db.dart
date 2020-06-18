@@ -20,7 +20,7 @@ class PodcastDb extends PodcastStore {
     var podcastScreenData = await _podcastDao.getScreenData(podcastUrlParam);
     if (podcastScreenData == null) {
       podcastScreenData = await baseStore.getScreenData(podcastUrlParam);
-      await _podcastDao.insertScreenData(podcastScreenData);
+      await _podcastDao.saveScreenData(podcastScreenData);
     }
 
     return podcastScreenData;

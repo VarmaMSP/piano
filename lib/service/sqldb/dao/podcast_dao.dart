@@ -1,18 +1,23 @@
-part of 'sqldb.dart';
+part of '../sqldb.dart';
 
 @UseDao(tables: [Podcasts, Episodes])
 class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
   PodcastDao(SqlDb db) : super(db);
 
-  Future<void> insertScreenData(PodcastScreenData pageData) async {
-    await into(podcasts)
-        .insertOnConflictUpdate(podcastRowFromModel(pageData.podcast));
-
-    await batch((b) {
-      b.insertAllOnConflictUpdate(
-        episodes,
-        pageData.episodes.map((e) => episodeRowFromModel(e)).toList(),
+  Future<void> saveScreenData(PodcastScreenData pageData) async {
+    await transaction(() async {
+      await into(podcasts).insert(
+        podcastRowFromModel(pageData.podcast),
+        mode: InsertMode.insertOrReplace,
       );
+
+      await batch((b) {
+        b.insertAll(
+          episodes,
+          pageData.episodes.map((e) => episodeRowFromModel(e)).toList(),
+          mode: InsertMode.insertOrReplace,
+        );
+      });
     });
   }
 
@@ -28,8 +33,10 @@ class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
     final episodeRows = await (select(episodes)
           ..where((tbl) => tbl.podcastId.equals(podcastRow.id))
           ..orderBy([
-            (tbl) =>
-                OrderingTerm(expression: tbl.pubDate, mode: OrderingMode.desc)
+            (tbl) => OrderingTerm(
+                  expression: tbl.pubDate,
+                  mode: OrderingMode.desc,
+                )
           ]))
         .get();
 

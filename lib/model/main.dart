@@ -1,5 +1,5 @@
 export 'api_response.dart';
-export 'audio_track.dart';
+export 'audio_player.dart';
 export 'category.dart';
 export 'curation.dart';
 export 'episode.dart';

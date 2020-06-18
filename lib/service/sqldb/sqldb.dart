@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:moor/moor.dart';
@@ -5,14 +6,23 @@ import 'package:moor_ffi/moor_ffi.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'sqldb.g.dart';
-part 'tables.dart';
-part 'daos.dart';
+
+/// Tables
+part 'table/podcast_table.dart';
+part 'table/episode_table.dart';
+part 'table/audio_tack_table.dart';
+part 'table/audio_player_snapshot_table.dart';
+
+/// Daos
+part 'dao/podcast_dao.dart';
+part 'dao/audio_player_dao.dart';
 
 @UseMoor(
-  tables: [Podcasts, Episodes, AudioTracks],
-  daos: [PodcastDao],
+  tables: [Podcasts, Episodes, AudioTracks, AudioPlayerSnapshots],
+  daos: [PodcastDao, AudioPlayerDao],
 )
 class SqlDb extends _$SqlDb {
   SqlDb()
