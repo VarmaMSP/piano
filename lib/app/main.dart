@@ -52,8 +52,8 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
               StreamBuilder<AudioPlayerSnapshot>(
                 initialData: null,
                 stream: Provider.of<AudioPlayerBloc>(context).snapshot,
-                builder: (context, snapshot) {
-                  final padding = snapshot.hasData ? 102.0 : 56.0;
+                builder: (context, s) {
+                  final padding = !s.hasData || s.data.isEmpty ? 56.0 : 102.0;
 
                   return Container(
                     color: Colors.white,

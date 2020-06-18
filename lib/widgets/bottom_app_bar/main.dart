@@ -37,7 +37,7 @@ class BottomAppBar extends StatelessWidget {
       initialData: null,
       stream: Provider.of<AudioPlayerBloc>(context).snapshot,
       builder: (context, s) {
-        s.hasData
+        !s.hasData || s.data.isEmpty
             ? animations.hideAudioPlayerPreview()
             : animations.showAudioPlayerPreview();
 

@@ -12,6 +12,16 @@ class AudioPlayerSnapshot extends Equatable {
 
   AudioPlayerSnapshot({this.queue});
 
+  factory AudioPlayerSnapshot.empty() {
+    return AudioPlayerSnapshot(
+      queue: Queue(
+        audioTracks: [],
+        position: -1,
+        enabled: false,
+      ),
+    );
+  }
+
   factory AudioPlayerSnapshot.singleTrack(AudioTrack audioTrack) {
     return AudioPlayerSnapshot(
       queue: Queue(
@@ -32,11 +42,17 @@ class AudioPlayerSnapshot extends Equatable {
     );
   }
 
+  /// true if there are no tracks to play
+  bool get isEmpty => queue.isEmpty;
+
   /// return current audio track
-  AudioTrack get nowPlaying => queue.audioTracks[queue.position];
+  AudioTrack get nowPlaying => queue.nowPlaying;
 
   @override
   List<Object> get props => [queue];
+
+  @override
+  String toString() => '{ Queue: ${queue.toString()} }';
 }
 
 @CopyWith()
@@ -47,8 +63,16 @@ class Queue extends Equatable {
 
   Queue({this.position, this.enabled, this.audioTracks});
 
+  bool get isEmpty => position == -1;
+
+  AudioTrack get nowPlaying => position != -1 ? audioTracks[position] : null;
+
   @override
   List<Object> get props => [position, enabled, audioTracks];
+
+  @override
+  String toString() =>
+      '{ position: $position, enabled: $enabled, tracks: ${audioTracks.length} }';
 }
 
 @CopyWith()

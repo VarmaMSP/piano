@@ -6,39 +6,54 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
   AudioPlayerDao(SqlDb db) : super(db);
 
   Future<void> saveSnapshot(AudioPlayerSnapshot snapshot) async {
+    print('snapsho dao: $snapshot');
+
+    if (snapshot.isEmpty) {
+      await transaction(() async {
+        //Clear all audio tracks
+        await delete(audioTracks).go();
+        await into(audioPlayerSnapshots).insert(
+          audioPlayerSnapshotRowFromModel(snapshot),
+          mode: InsertMode.insertOrReplace,
+        );
+      });
+
+      return;
+    }
+
     await transaction(() async {
-      /// Insert AudioTracks
-      if (snapshot.queue.audioTracks.isNotEmpty) {
-        await batch((b) {
-          b.insertAll(
-            podcasts,
-            snapshot.queue.audioTracks
-                .map((e) => podcastRowFromModel(e.podcast))
-                .toList(),
-            mode: InsertMode.insertOrIgnore,
-          );
-        });
+      /// Insert Podcasts from audio tracks
+      await batch((b) {
+        b.insertAll(
+          podcasts,
+          snapshot.queue.audioTracks
+              .map((e) => podcastRowFromModel(e.podcast))
+              .toList(),
+          mode: InsertMode.insertOrIgnore,
+        );
+      });
 
-        await batch((b) {
-          b.insertAll(
-            episodes,
-            snapshot.queue.audioTracks
-                .map((e) => episodeRowFromModel(e.episode))
-                .toList(),
-            mode: InsertMode.insertOrIgnore,
-          );
-        });
+      /// Insert Episodes from audio tracks
+      await batch((b) {
+        b.insertAll(
+          episodes,
+          snapshot.queue.audioTracks
+              .map((e) => episodeRowFromModel(e.episode))
+              .toList(),
+          mode: InsertMode.insertOrIgnore,
+        );
+      });
 
-        await batch((b) {
-          b.insertAll(
-            audioTracks,
-            snapshot.queue.audioTracks
-                .map((e) => audioTrackRowFromModel(e))
-                .toList(),
-            mode: InsertMode.insertOrReplace,
-          );
-        });
-      }
+      /// Insert audiotracks
+      await batch((b) {
+        b.insertAll(
+          audioTracks,
+          snapshot.queue.audioTracks
+              .map((e) => audioTrackRowFromModel(e))
+              .toList(),
+          mode: InsertMode.insertOrReplace,
+        );
+      });
 
       /// Delete any additional audio tracks
       await (delete(audioTracks)
@@ -85,7 +100,7 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
             }).toList(),
           ),
       (snapshotRow, tracks) => snapshotRow == null
-          ? null
+          ? AudioPlayerSnapshot.empty()
           : AudioPlayerSnapshot(
               queue: Queue(
                 audioTracks: tracks ?? [],

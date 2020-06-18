@@ -22,15 +22,15 @@ class AudioPlayer extends StatelessWidget {
     return StreamBuilder<AudioPlayerSnapshot>(
       initialData: null,
       stream: audioPlayerBloc.snapshot,
-      builder: (context, snapshot) {
+      builder: (context, s) {
         Widget body;
-        if (snapshot.hasData) {
+        if (s.hasData && !s.data.isEmpty) {
           body = Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               AudioPlayerPreview(
                 animations: animations,
-                nowPlaying: snapshot.data.nowPlaying,
+                nowPlaying: s.data.nowPlaying,
                 onPlay: () =>
                     audioPlayerBloc.transistionState(StateTransistion.play),
                 onPause: () =>
@@ -39,7 +39,7 @@ class AudioPlayer extends StatelessWidget {
               Expanded(
                 child: full_audio_player.AudioPlayer(
                   animations: animations,
-                  nowPlaying: snapshot.data.nowPlaying,
+                  nowPlaying: s.data.nowPlaying,
                   onPlay: () =>
                       audioPlayerBloc.transistionState(StateTransistion.play),
                   onPause: () =>
