@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/service/audio/audio_service.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -56,7 +55,11 @@ class ActionButton extends StatelessWidget {
   }
 
   Widget _buildProgressIndicator(BuildContext context, AudioState audioState) {
-    if (audioState != AudioState.playing && audioState != AudioState.paused) {
+    final showLoading = audioState != AudioState.none &&
+        audioState != AudioState.playing &&
+        audioState != AudioState.paused;
+
+    if (showLoading) {
       return CircularProgressIndicator(
         value: null,
         strokeWidth: 2.5,
@@ -68,7 +71,6 @@ class ActionButton extends StatelessWidget {
     }
 
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
-
     return StreamBuilder<PositionState>(
       stream: audioPlayerBloc.positionState,
       builder: (context, snapshot) {

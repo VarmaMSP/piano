@@ -1,12 +1,11 @@
-import 'dart:collection';
-
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/audio/audio_service.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:super_enum/super_enum.dart';
 
-export 'package:phenopod/service/audio/audio_service.dart' show AudioState;
+export 'package:phenopod/service/audio/audio_service.dart'
+    show AudioState, PositionState;
 
 part 'audio_player_bloc.g.dart';
 
@@ -22,10 +21,14 @@ enum StateTransistion {
 enum _SnapshotTransistion {
   @Data(fields: [DataField<AudioTrack>('audioTrack')])
   PlayAudioTrack,
+  @Data(fields: [DataField<AudioTrack>('audioTrack')])
+  AddToQueueTop,
+  @Data(fields: [DataField<AudioTrack>('audioTrack')])
+  AddToQueueBottom,
+  @object
+  PlayPrevious,
   @object
   PlayNext,
-  @object
-  AddToQueue,
 }
 
 class AudioPlayerBloc {
@@ -81,34 +84,24 @@ class AudioPlayerBloc {
   }
 
   void _handleSnapshotTransistions() {
-    // pipe updates from db directly subject
-    store.audioPlayer.getSnapshot().listen((snapshot) {
-      print('Sanpshot $snapshot');
-      _snapshotSubject.add(snapshot);
-    });
+    // Load audioplayer snapshot from db
+    store.audioPlayer.getSnapshot().pipe(_snapshotSubject);
 
     // handle snapshot transistions
     _snapshotTransistion.stream.distinct().listen((t) async {
       final prevSnapshot = await _snapshotSubject.first;
-
       t.when(
         playAudioTrack: (data) {
-          if (prevSnapshot == null) {
-            store.audioPlayer.saveSnapshot(
-              AudioPlayerSnapshot.singleTrack(data.audioTrack),
-            );
-          } else {
-            store.audioPlayer.saveSnapshot(prevSnapshot.copyWith(
-              queue: Queue(
-                audioTracks: [data.audioTrack],
-                position: 0,
-                enabled: false,
-              ),
-            ));
-          }
+          prevSnapshot.add(data.audioTrack);
         },
+        addToQueueTop: (data) {
+          prevSnapshot.addToQueueTop(data.audioTrack);
+        },
+        addToQueueBottom: (data) {
+          prevSnapshot.addToQueueBottom(data.audioTrack);
+        },
+        playPrevious: (_) {},
         playNext: (_) {},
-        addToQueue: (_) {},
       );
     });
   }
@@ -126,8 +119,12 @@ class AudioPlayerBloc {
   void Function(SnapshotTransistion) get transistionSnapshot =>
       _snapshotTransistion.add;
 
-  // get current audio player snapshot
-  Stream<AudioPlayerSnapshot> get snapshot => _snapshotSubject.stream;
+  // get now playing track
+  Stream<AudioTrack> get nowPlaying =>
+      _snapshotSubject.stream.map((s) => s.nowPlaying);
+
+  // get queue
+  Stream<Queue> get queue => _snapshotSubject.stream.map((s) => s.enabledQueue);
 
   // get current audio state
   Stream<AudioState> get audioState => _audioService.audioState;

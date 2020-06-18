@@ -42,11 +42,30 @@ class AudioPlayerSnapshot extends Equatable {
     );
   }
 
+  AudioPlayerSnapshot add(AudioTrack audioTrack) {
+    return AudioPlayerSnapshot.singleTrack(audioTrack);
+  }
+
+  AudioPlayerSnapshot addToQueueTop(AudioTrack audioTrack) {
+    return isEmpty
+        ? AudioPlayerSnapshot.singleTrackWithQueue(audioTrack)
+        : AudioPlayerSnapshot(queue: queue.addToTop(audioTrack));
+  }
+
+  AudioPlayerSnapshot addToQueueBottom(AudioTrack audioTrack) {
+    return isEmpty
+        ? AudioPlayerSnapshot.singleTrackWithQueue(audioTrack)
+        : AudioPlayerSnapshot(queue: queue.addToBottom(audioTrack));
+  }
+
   /// true if there are no tracks to play
   bool get isEmpty => queue.isEmpty;
 
   /// return current audio track
   AudioTrack get nowPlaying => queue.nowPlaying;
+
+  /// Returns queue if enabled
+  Queue get enabledQueue => queue.enabled ? queue : null;
 
   @override
   List<Object> get props => [queue];
@@ -55,6 +74,7 @@ class AudioPlayerSnapshot extends Equatable {
   String toString() => '{ Queue: ${queue.toString()} }';
 }
 
+/// The Queue can be disabled when user chooses to play only one track.
 @CopyWith()
 class Queue extends Equatable {
   final int position;
@@ -62,6 +82,25 @@ class Queue extends Equatable {
   final List<AudioTrack> audioTracks;
 
   Queue({this.position, this.enabled, this.audioTracks});
+
+  Queue addToTop(AudioTrack audioTrack) {
+    final trackPos = position + 1;
+    return Queue(enabled: true, audioTracks: [
+      ...audioTracks.sublist(0, trackPos),
+      audioTrack.copyWith(position: trackPos),
+      ...audioTracks
+          .sublist(trackPos)
+          .map((a) => a.copyWith(position: a.position + 1)),
+    ]);
+  }
+
+  Queue addToBottom(AudioTrack audioTrack) {
+    final trackPos = audioTracks.length;
+    return Queue(enabled: true, audioTracks: [
+      ...audioTracks,
+      audioTrack.copyWith(position: trackPos),
+    ]);
+  }
 
   bool get isEmpty => position == -1;
 

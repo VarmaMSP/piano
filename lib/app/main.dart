@@ -66,11 +66,11 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         body: SafeArea(
           child: Stack(
             children: <Widget>[
-              StreamBuilder<AudioPlayerSnapshot>(
+              StreamBuilder<AudioTrack>(
                 initialData: null,
-                stream: Provider.of<AudioPlayerBloc>(context).snapshot,
-                builder: (context, s) {
-                  final padding = !s.hasData || s.data.isEmpty ? 56.0 : 102.0;
+                stream: Provider.of<AudioPlayerBloc>(context).nowPlaying,
+                builder: (context, snapshot) {
+                  final padding = !snapshot.hasData ? 56.0 : 102.0;
 
                   return Container(
                     color: Colors.white,

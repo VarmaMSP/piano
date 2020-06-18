@@ -10,6 +10,7 @@ class AudioPlayer {
   Duration _position = Duration.zero;
   audioservice.AudioProcessingState _processingState =
       audioservice.AudioProcessingState.none;
+
   StreamSubscription<justaudio.AudioPlaybackEvent> _eventSubscription;
 
   Future<void> start() async {
@@ -31,6 +32,9 @@ class AudioPlayer {
         await _setState();
       },
     );
+
+    // Set default state when start up
+    await _setState();
   }
 
   Future<void> playMediaItem(audioservice.MediaItem mediaItem) async {
@@ -41,7 +45,8 @@ class AudioPlayer {
     await audioservice.AudioServiceBackground.setMediaItem(mediaItem);
     final duration = await _player.setUrl(mediaItem.id);
     await audioservice.AudioServiceBackground.setMediaItem(
-        mediaItem.copyWith(duration: duration));
+      mediaItem.copyWith(duration: duration),
+    );
 
     await play();
   }
