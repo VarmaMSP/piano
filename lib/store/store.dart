@@ -5,6 +5,7 @@ abstract class Store {
   PodcastStore get podcast;
   EpisodeStore get episode;
   SubscriptionStore get subscription;
+  AudioPlayerStore get audioPlayer;
 }
 
 abstract class UserStore {
@@ -25,4 +26,9 @@ abstract class EpisodeStore {
 abstract class SubscriptionStore {
   Future<void> subscribe(String podcastId);
   Future<void> unsubscribe(String podcastId);
+}
+
+abstract class AudioPlayerStore {
+  Future<void> saveSnapshot(AudioPlayerSnapshot snapshot);
+  Stream<AudioPlayerSnapshot> getSnapshot();
 }

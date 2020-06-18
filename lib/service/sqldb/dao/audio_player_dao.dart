@@ -5,7 +5,7 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
     with _$AudioPlayerDaoMixin {
   AudioPlayerDao(SqlDb db) : super(db);
 
-  Future<void> saveAudioPlayerSnapshot(AudioPlayerSnapshot snapshot) async {
+  Future<void> saveSnapshot(AudioPlayerSnapshot snapshot) async {
     await transaction(() async {
       /// Insert AudioTracks
       if (snapshot.queue.audioTracks.isNotEmpty) {
@@ -57,7 +57,7 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
     });
   }
 
-  Stream<AudioPlayerSnapshot> getAudioPlayerSnapshot() {
+  Stream<AudioPlayerSnapshot> getSnapshot() {
     return Rx.combineLatest2<AudioPlayerSnapshotRow, List<AudioTrack>,
         AudioPlayerSnapshot>(
       (select(audioPlayerSnapshots)..where((tbl) => tbl.id.equals(0)))
