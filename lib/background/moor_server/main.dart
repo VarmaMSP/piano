@@ -7,7 +7,6 @@ import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:phenopod/service/sqldb/sqldb.dart';
 
 class _IsolateStartRequest {
   final SendPort sendMoorIsolate;
@@ -29,8 +28,6 @@ Future<MoorIsolate> _newMoorIsolate() async {
   final appDir = await getApplicationDocumentsDirectory();
   final dbPath = join(appDir.path, 'db.sqlite');
   final receivePort = ReceivePort();
-
-  // await File(dbPath).delete();
 
   // Start Moor in a new isolate
   await Isolate.spawn(
@@ -55,10 +52,4 @@ Future<MoorIsolate> getMoorIsolate() {
   return sendPort != null
       ? Future.value(MoorIsolate.fromConnectPort(sendPort))
       : _newMoorIsolate();
-}
-
-Future<SqlDb> newSqlDb() async {
-  final moorIsolate = await getMoorIsolate();
-  final databaseConnection = await moorIsolate.connect();
-  return SqlDb.connect(databaseConnection);
 }
