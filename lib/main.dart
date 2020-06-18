@@ -7,7 +7,7 @@ import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
 import 'package:phenopod/screen/sign_in_screen.dart';
 import 'package:phenopod/screen/splash_screen.dart';
-import 'package:phenopod/service/audio/audio_service.dart';
+import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/service/http_client/http_client.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/store/store.dart';

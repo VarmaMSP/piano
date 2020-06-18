@@ -1,10 +1,10 @@
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/audio/audio_service.dart';
+import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:super_enum/super_enum.dart';
 
-export 'package:phenopod/service/audio/audio_service.dart'
+export 'package:phenopod/service/audio_service/audio_service.dart'
     show AudioState, PositionState;
 
 part 'audio_player_bloc.g.dart';
