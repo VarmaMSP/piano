@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:phenopod/animations/bottom_app_bar.dart';
+import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class NavigationBar extends StatelessWidget {
   const NavigationBar({Key key, this.animations}) : super(key: key);
 
-  final BottomAppBarAnimations animations;
+  final BottomAppBarAnimation animations;
 
   @override
   Widget build(BuildContext context) {

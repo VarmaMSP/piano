@@ -3,7 +3,7 @@ import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/audio_player/widgets/action_button.dart';
 import 'package:phenopod/widgets/podcast_thumbnail.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-import 'package:phenopod/animations/bottom_app_bar.dart';
+import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 
 class AudioPlayerPreview extends StatelessWidget {
   const AudioPlayerPreview({
@@ -14,7 +14,7 @@ class AudioPlayerPreview extends StatelessWidget {
     @required this.onPause,
   }) : super(key: key);
 
-  final BottomAppBarAnimations animations;
+  final BottomAppBarAnimation animations;
   final AudioTrack nowPlaying;
   final Function onPlay;
   final Function onPause;
@@ -27,7 +27,7 @@ class AudioPlayerPreview extends StatelessWidget {
         animation: animations.controller,
         builder: (_, __) {
           return animations.controller.value <
-                  BottomAppBarAnimations.showAudioPlayerTopNavBarFrom
+                  BottomAppBarAnimation.showAudioPlayerTopNavBarFrom
               ? FadeTransition(
                   opacity: animations.audioPlayerPreviewOpacity,
                   child: _buildPreview(),

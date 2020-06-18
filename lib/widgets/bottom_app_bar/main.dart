@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenopod/animations/bottom_app_bar.dart';
+import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/audio_player/main.dart';
@@ -11,7 +11,7 @@ import 'navigation_bar.dart';
 class BottomAppBar extends StatelessWidget {
   BottomAppBar({Key key, this.animations}) : super(key: key);
 
-  final BottomAppBarAnimations animations;
+  final BottomAppBarAnimation animations;
 
   @override
   Widget build(BuildContext context) {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
-class BottomAppBarAnimations {
-  BottomAppBarAnimations({
+class BottomAppBarAnimation {
+  BottomAppBarAnimation({
     @required this.controller,
     @required this.screenHeight,
     @required this.controllerBeginWhenShow,
@@ -57,7 +57,7 @@ class BottomAppBarAnimations {
           ),
         );
 
-  factory BottomAppBarAnimations.New(
+  factory BottomAppBarAnimation.New(
     BuildContext context,
     AnimationController controller,
   ) {
@@ -71,7 +71,7 @@ class BottomAppBarAnimations {
         ) +
         0.002;
 
-    return BottomAppBarAnimations(
+    return BottomAppBarAnimation(
       controller: controller,
       screenHeight: screenHeight,
       controllerBeginWhenShow: controllerBeginWhenShow,
