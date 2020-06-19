@@ -77,7 +77,7 @@ class ActionButton extends StatelessWidget {
         final duration =
             snapshot.hasData ? snapshot.data.duration.inMilliseconds : 1;
         final currentTime =
-            snapshot.hasData ? snapshot.data.position.inMilliseconds : 1;
+            snapshot.hasData ? snapshot.data.position.inMilliseconds : 0;
 
         return CircularProgressIndicator(
           value: currentTime / duration,

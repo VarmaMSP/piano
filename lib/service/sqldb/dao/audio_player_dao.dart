@@ -126,7 +126,7 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
     final row = await (select(episodes)
           ..where((tbl) => tbl.id.equals(audioTrackRow.episodeId)))
         .join([
-      innerJoin(podcasts, podcasts.id.equalsExp(episodes.id)),
+      innerJoin(podcasts, podcasts.id.equalsExp(episodes.podcastId)),
     ]).getSingle();
 
     final episode = row.readTable(episodes);
