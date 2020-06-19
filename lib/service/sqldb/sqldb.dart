@@ -12,10 +12,11 @@ import 'package:rxdart/rxdart.dart';
 part 'sqldb.g.dart';
 
 /// Tables
-part 'table/podcast_table.dart';
-part 'table/episode_table.dart';
-part 'table/audio_tack_table.dart';
-part 'table/audio_player_snapshot_table.dart';
+part 'table/podcasts.dart';
+part 'table/episodes.dart';
+part 'table/audio_tacks.dart';
+part 'table/audio_player_snapshots.dart';
+part 'table/episode_playbacks.dart';
 
 /// Daos
 part 'dao/podcast_dao.dart';

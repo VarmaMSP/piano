@@ -2,12 +2,11 @@ part of 'audio_service.dart';
 
 class _audioServiceImpl implements AudioService {
   /// Stream of audiostate transitions
-  final BehaviorSubject<AudioState> _audioState =
-      BehaviorSubject<AudioState>.seeded(AudioState.none);
+  final BehaviorSubject<AudioState> _audioState = BehaviorSubject<AudioState>();
 
   /// Stream for current audio position
   final BehaviorSubject<PositionState> _positionState =
-      BehaviorSubject<PositionState>.seeded(PositionState.none());
+      BehaviorSubject<PositionState>();
 
   /// Ticker to update audio position
   final Stream<int> _ticker = Stream<int>.periodic(Duration(milliseconds: 500));
