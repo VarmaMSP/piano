@@ -10,9 +10,6 @@ class AudioPlayerController {
   final Store store;
   final AudioPlayer audioPlayer;
 
-  final BehaviorSubject<AudioPlayerSnapshot> _snapshotSubject =
-      BehaviorSubject<AudioPlayerSnapshot>();
-
   final BehaviorSubject<AudioTrack> _nowPlayingSubject =
       BehaviorSubject<AudioTrack>();
 
@@ -22,7 +19,6 @@ class AudioPlayerController {
 
   Future<void> start() async {
     await audioPlayer.start();
-    _initSubjects();
     _handleStateChanges();
   }
 
@@ -46,30 +42,14 @@ class AudioPlayerController {
     await audioPlayer.stop();
   }
 
-  Future<void> playTrack() async {
+  Future<void> sync() async {
     final snapshot = await store.audioPlayer.getSnapshotOnce();
     _nowPlayingSubject.add(snapshot.nowPlaying);
-  }
-
-  void _initSubjects() {
-    /// Pipe snapshot from db into _snapshotSubject
-    store.audioPlayer.getSnapshot().pipe(_snapshotSubject);
-
-    /// pipe nowPlaying into _nowPlayingSubject
-    _snapshotSubject
-        .map((snapshot) => snapshot.nowPlaying)
-        .distinct()
-        .pipe(_nowPlayingSubject);
-
-    /// pipe queue into _queueSubject
-    _snapshotSubject
-        .map((snapshot) => snapshot.enabledQueue)
-        .distinct()
-        .pipe(_queueSubject);
+    _queueSubject.add(snapshot.enabledQueue);
   }
 
   void _handleStateChanges() {
-    _nowPlayingSubject.listen((audioTrack) {
+    _nowPlayingSubject.stream.distinct().listen((audioTrack) {
       if (audioTrack != null) {
         audioPlayer.playMediaItem(
           audioservice.MediaItem(
