@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:audio_service/audio_service.dart' as audioservice;
-import 'package:phenopod/model/main.dart';
 import 'package:phenopod/background/audio_player/background_player_task.dart';
-import 'package:phenopod/utils/request.dart';
 
 part 'audio_service_impl.dart';
 
@@ -51,7 +50,7 @@ abstract class AudioService {
   Future<void> disconnect();
 
   // Play given episode
-  Future<void> playEpisode(AudioTrack audioTrack);
+  Future<void> playTrack();
 
   // Resume current episode
   Future<void> play();

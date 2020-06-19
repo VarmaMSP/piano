@@ -9,7 +9,8 @@ class _audioServiceImpl implements AudioService {
       BehaviorSubject<PositionState>();
 
   /// Ticker to update audio position
-  final Stream<int> _ticker = Stream<int>.periodic(Duration(milliseconds: 500));
+  final Stream<int> _ticker =
+      Stream<int>.periodic(Duration(milliseconds: 500)).asBroadcastStream();
 
   /// Subscription of _positionState to _ticker
   StreamSubscription<dynamic> _positionSubscription;
@@ -39,20 +40,12 @@ class _audioServiceImpl implements AudioService {
   }
 
   @override
-  Future<void> playEpisode(AudioTrack audioTrack) async {
+  Future<void> playTrack() async {
     if (!audioservice.AudioService.running) {
       await _startBackgroundPlayerTask();
+    } else {
+      await audioservice.AudioService.customAction('playTrack');
     }
-
-    await audioservice.AudioService.playMediaItem(
-      audioservice.MediaItem(
-        id: audioTrack.episode.mediaUrl,
-        artist: audioTrack.podcast.author,
-        album: audioTrack.podcast.title,
-        title: audioTrack.episode.title,
-        artUri: '$thumbnailUrl/${audioTrack.podcast.urlParam}.jpg',
-      ),
-    );
   }
 
   @override
@@ -68,7 +61,11 @@ class _audioServiceImpl implements AudioService {
 
   @override
   Future<void> play() async {
-    await audioservice.AudioService.play();
+    if (!audioservice.AudioService.running) {
+      await _startBackgroundPlayerTask();
+    } else {
+      await audioservice.AudioService.play();
+    }
   }
 
   @override
@@ -84,12 +81,17 @@ class _audioServiceImpl implements AudioService {
   }
 
   Future<void> _startBackgroundPlayerTask() async {
+    final appDocDirPath = (await getApplicationDocumentsDirectory()).path;
+
     await audioservice.AudioService.start(
       backgroundTaskEntrypoint: backgroundPlayerTaskEntrypoint,
       androidNotificationChannelName: 'Phenopod',
       androidNotificationColor: 0xFF2196f3,
       androidNotificationIcon: 'mipmap/ic_launcher',
       androidEnableQueue: true,
+      params: <String, String>{
+        'appDocDirPath': appDocDirPath,
+      },
     );
   }
 
@@ -98,7 +100,7 @@ class _audioServiceImpl implements AudioService {
     _currentMediaItemSubscription =
         audioservice.AudioService.currentMediaItemStream.listen(
       (mediaItem) {
-        if (mediaItem?.duration?.inSeconds ?? 0 > 0) {
+        if ((mediaItem?.duration?.inSeconds ?? 0) > 0) {
           _positionState.add(
             PositionState(
               duration: mediaItem.duration,
@@ -192,9 +194,13 @@ class _audioServiceImpl implements AudioService {
   }
 
   Future<void> _startTicker() async {
-    _positionSubscription ??= _ticker.listen((_) async {
-      await _updatePosition();
-    });
+    if (_positionSubscription == null) {
+      _positionSubscription = _ticker.listen((_) async {
+        await _updatePosition();
+      });
+    } else {
+      _positionSubscription.resume();
+    }
   }
 
   Future<void> _stopTicker() async {

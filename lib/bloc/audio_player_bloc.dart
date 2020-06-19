@@ -96,6 +96,7 @@ class AudioPlayerBloc {
         playAudioTrack: (data) async {
           await store.audioPlayer
               .saveSnapshot(prevSnapshot.add(data.audioTrack));
+          await audioService.playTrack();
         },
         addToQueueTop: (data) async {
           await store.audioPlayer
