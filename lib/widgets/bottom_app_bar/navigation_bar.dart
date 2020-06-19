@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';

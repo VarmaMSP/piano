@@ -16,6 +16,11 @@ class AudioPlayerDb extends AudioPlayerStore {
   }
 
   @override
+  Future<AudioPlayerSnapshot> getSnapshotOnce() {
+    return _audioPlayerDao.getSnapshot().first;
+  }
+
+  @override
   Future<void> saveSnapshot(AudioPlayerSnapshot snapshot) {
     return _audioPlayerDao.saveSnapshot(snapshot);
   }

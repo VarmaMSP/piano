@@ -18,7 +18,7 @@ class HttpClient {
 
   HttpClient({this.dio});
 
-  factory HttpClient.new_(String appDocDir) {
+  factory HttpClient.new_(String appDocDirPath) {
     final baseOptions = BaseOptions(
       baseUrl: kReleaseMode
           ? 'https://phenopod.com/api'
@@ -31,7 +31,7 @@ class HttpClient {
     return HttpClient(
       dio: Dio(baseOptions)
         ..interceptors.add(
-          CookieManager(PersistCookieJar(dir: '$appDocDir/.cookies/')),
+          CookieManager(PersistCookieJar(dir: '$appDocDirPath/.cookies/')),
         ),
     );
   }

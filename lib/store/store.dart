@@ -30,5 +30,6 @@ abstract class SubscriptionStore {
 
 abstract class AudioPlayerStore {
   Future<void> saveSnapshot(AudioPlayerSnapshot snapshot);
+  Future<AudioPlayerSnapshot> getSnapshotOnce();
   Stream<AudioPlayerSnapshot> getSnapshot();
 }
