@@ -96,17 +96,17 @@ class AudioPlayerBloc {
         playAudioTrack: (data) async {
           await store.audioPlayer
               .saveSnapshot(prevSnapshot.add(data.audioTrack));
-          await audioService.sync();
+          await audioService.syncNowPlaying();
         },
         addToQueueTop: (data) async {
           await store.audioPlayer
               .saveSnapshot(prevSnapshot.addToQueueTop(data.audioTrack));
-          await audioService.sync();
+          await audioService.syncSnapshot();
         },
         addToQueueBottom: (data) async {
           await store.audioPlayer
               .saveSnapshot(prevSnapshot.addToQueueBottom(data.audioTrack));
-          await audioService.sync();
+          await audioService.syncSnapshot();
         },
         playPrevious: (_) {},
         playNext: (_) {},

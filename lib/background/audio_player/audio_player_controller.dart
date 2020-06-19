@@ -20,6 +20,7 @@ class AudioPlayerController {
   Future<void> start() async {
     await audioPlayer.start();
     _handleStateChanges();
+    await syncSnapshot();
   }
 
   Future<void> play() async {
@@ -42,10 +43,15 @@ class AudioPlayerController {
     await audioPlayer.stop();
   }
 
-  Future<void> sync() async {
+  Future<void> syncSnapshot() async {
     final snapshot = await store.audioPlayer.getSnapshotOnce();
     _nowPlayingSubject.add(snapshot.nowPlaying);
     _queueSubject.add(snapshot.enabledQueue);
+  }
+
+  Future<void> syncNowPlaying() async {
+    final nowPlaying = await store.audioPlayer.getNowPlaying();
+    _nowPlayingSubject.add(nowPlaying);
   }
 
   void _handleStateChanges() {

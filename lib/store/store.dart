@@ -32,4 +32,5 @@ abstract class AudioPlayerStore {
   Future<void> saveSnapshot(AudioPlayerSnapshot snapshot);
   Future<AudioPlayerSnapshot> getSnapshotOnce();
   Stream<AudioPlayerSnapshot> getSnapshot();
+  Future<AudioTrack> getNowPlaying();
 }

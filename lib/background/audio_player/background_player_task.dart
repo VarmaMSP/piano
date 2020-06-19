@@ -51,10 +51,11 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
   @override
   Future<void> onCustomAction(String name, args) async {
     switch (name) {
-      case 'sync':
-        await _audioPlayerController.sync();
+      case 'syncSnapshot':
+        await _audioPlayerController.syncSnapshot();
         break;
-      default:
+      case 'syncNowPlaying':
+        await _audioPlayerController.syncNowPlaying();
         break;
     }
   }

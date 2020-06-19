@@ -49,10 +49,16 @@ abstract class AudioService {
   // Disconnect from background audio service isolate
   Future<void> disconnect();
 
-  /// Makes background service to load latest audioPlayerSnapshot
+  /// Makes background service load latest audioPlayerSnapshot
   /// This method should be called anytime the UI makes changes
   /// to the audioPlayerSnapshot
-  Future<void> sync();
+  ///
+  /// This is a expensive method to call, use syncNowPlaying
+  /// when appropriate
+  Future<void> syncSnapshot();
+
+  /// Makes background service load now playing track
+  Future<void> syncNowPlaying();
 
   // Resume current episode
   Future<void> play();

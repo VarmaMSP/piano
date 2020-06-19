@@ -15,7 +15,6 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
           mode: InsertMode.insertOrReplace,
         );
       });
-
       return;
     }
 
@@ -70,7 +69,7 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
     });
   }
 
-  Stream<AudioPlayerSnapshot> getSnapshot() {
+  Stream<AudioPlayerSnapshot> watchSnapshot() {
     return Rx.combineLatest2<AudioPlayerSnapshotRow, List<AudioTrack>,
         AudioPlayerSnapshot>(
       (select(audioPlayerSnapshots)..where((tbl) => tbl.id.equals(0)))
@@ -106,6 +105,36 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
                 enabled: snapshotRow.queueEnabled,
               ),
             ),
+    );
+  }
+
+  Future<AudioTrack> getNowPlaying() async {
+    final snapshotRow = await (select(audioPlayerSnapshots)
+          ..where((tbl) => tbl.id.equals(0)))
+        .getSingle();
+    if (snapshotRow.queuePosition == -1) {
+      return null;
+    }
+
+    final audioTrackRow = await (select(audioTracks)
+          ..where((tbl) => tbl.position.equals(snapshotRow.queuePosition)))
+        .getSingle();
+    if (audioTrackRow == null) {
+      return null;
+    }
+
+    final row = await (select(episodes)
+          ..where((tbl) => tbl.id.equals(audioTrackRow.episodeId)))
+        .join([
+      innerJoin(podcasts, podcasts.id.equalsExp(episodes.id)),
+    ]).getSingle();
+
+    final episode = row.readTable(episodes);
+    final podcast = row.readTable(podcasts);
+    return AudioTrack(
+      episode: episode.toModel(),
+      podcast: podcast.toModel(),
+      position: snapshotRow.queuePosition,
     );
   }
 }
