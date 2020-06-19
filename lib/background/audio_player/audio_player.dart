@@ -63,7 +63,7 @@ class AudioPlayer {
     }
   }
 
-  Future<void> seek(Duration position) async {
+  Future<void> seekTo(Duration position) async {
     if (_canSeek()) {
       await _player.seek(position);
     }
