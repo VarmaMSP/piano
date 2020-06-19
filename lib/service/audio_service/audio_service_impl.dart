@@ -1,10 +1,10 @@
 part of 'audio_service.dart';
 
 class _audioServiceImpl implements AudioService {
-  /// Stream of audiostate transitions
+  /// Stream of current audio state
   final BehaviorSubject<AudioState> _audioState = BehaviorSubject<AudioState>();
 
-  /// Stream for current audio position
+  /// Stream of current audio position
   final BehaviorSubject<PositionState> _positionState =
       BehaviorSubject<PositionState>();
 
@@ -19,7 +19,7 @@ class _audioServiceImpl implements AudioService {
   StreamSubscription<dynamic> _currentMediaItemSubscription;
 
   _audioServiceImpl() {
-    _handleAudioServiceTransitions();
+    _handleBackgroundStateChanges();
   }
 
   @override
@@ -93,7 +93,8 @@ class _audioServiceImpl implements AudioService {
     );
   }
 
-  void _handleAudioServiceTransitions() {
+  /// Map background streams to our custom streams
+  void _handleBackgroundStateChanges() {
     _currentMediaItemSubscription =
         audioservice.AudioService.currentMediaItemStream.listen(
       (mediaItem) {
@@ -113,6 +114,7 @@ class _audioServiceImpl implements AudioService {
       (state) async {
         switch (state?.processingState) {
           case audioservice.AudioProcessingState.none:
+            await _started();
             break;
           case audioservice.AudioProcessingState.connecting:
             await _connecting();
@@ -146,14 +148,22 @@ class _audioServiceImpl implements AudioService {
     );
   }
 
+  // Background servicehas just started
+  Future<void> _started() async {
+    _audioState.add(AudioState.none);
+    await _updatePosition();
+  }
+
   // Transition AudioState to buffering
   Future<void> _connecting() async {
     _audioState.add(AudioState.connecting);
+    await _updatePosition();
   }
 
   // Transition AudioState to buffering
   Future<void> _buffering() async {
     _audioState.add(AudioState.buffering);
+    await _updatePosition();
   }
 
   //  Transition AudioState to playing

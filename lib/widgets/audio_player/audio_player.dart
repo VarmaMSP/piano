@@ -144,48 +144,45 @@ class AudioPlayer extends StatelessWidget {
       ),
     );
 
-    final actions = Padding(
-      padding: EdgeInsets.only(left: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.playlist_add,
-              size: 26,
-              color: TWColors.gray.shade700,
-            ),
-            onPressed: null,
+    final actions = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.playlist_add,
+            size: 26,
+            color: TWColors.gray.shade700,
           ),
-          Container(width: 6),
-          IconButton(
-            icon: Icon(
-              Icons.save_alt,
-              size: 24,
-              color: TWColors.gray.shade700,
-            ),
-            onPressed: null,
+          onPressed: null,
+        ),
+        Container(width: 6),
+        IconButton(
+          icon: Icon(
+            Icons.save_alt,
+            size: 24,
+            color: TWColors.gray.shade700,
           ),
-          Container(width: 6),
-          IconButton(
-            icon: Icon(
-              Icons.share,
-              size: 20,
-              color: TWColors.gray.shade700,
-            ),
-            onPressed: null,
+          onPressed: null,
+        ),
+        Container(width: 6),
+        IconButton(
+          icon: Icon(
+            Icons.share,
+            size: 20,
+            color: TWColors.gray.shade700,
           ),
-          Container(width: 6),
-          IconButton(
-            icon: Icon(
-              Icons.info_outline,
-              size: 22,
-              color: TWColors.gray.shade700,
-            ),
-            onPressed: null,
+          onPressed: null,
+        ),
+        Container(width: 6),
+        IconButton(
+          icon: Icon(
+            Icons.info_outline,
+            size: 22,
+            color: TWColors.gray.shade700,
           ),
-        ],
-      ),
+          onPressed: null,
+        ),
+      ],
     );
 
     return Padding(

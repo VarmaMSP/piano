@@ -11,8 +11,6 @@ class NavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('${animations.controller.value} ${animations.controllerBeginValue}');
-
     return SizeTransition(
       axis: Axis.vertical,
       axisAlignment: -1.0,

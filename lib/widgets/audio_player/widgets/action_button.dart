@@ -74,11 +74,13 @@ class ActionButton extends StatelessWidget {
     return StreamBuilder<PositionState>(
       stream: audioPlayerBloc.positionState,
       builder: (context, snapshot) {
-        final duration = snapshot.data.duration;
-        final currentTime = snapshot.data.position;
+        final duration =
+            snapshot.hasData ? snapshot.data.duration.inMilliseconds : 1;
+        final currentTime =
+            snapshot.hasData ? snapshot.data.position.inMilliseconds : 1;
 
         return CircularProgressIndicator(
-          value: currentTime.inMilliseconds / duration.inMilliseconds,
+          value: currentTime / duration,
           strokeWidth: 2.5,
           valueColor: AlwaysStoppedAnimation<Color>(
             TWColors.purple.shade600,

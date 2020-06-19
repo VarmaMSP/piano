@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:audio_service/audio_service.dart' as audioservice;
@@ -22,15 +23,18 @@ enum AudioState {
   stopped,
 }
 
-class PositionState {
+class PositionState extends Equatable {
   final Duration position;
   final Duration duration;
 
   PositionState({@required this.position, @required this.duration});
 
-  factory PositionState.none() {
-    return PositionState(position: Duration.zero, duration: Duration.zero);
-  }
+  @override
+  List<Object> get props => [position, duration];
+
+  @override
+  String toString() =>
+      '{ position: ${position.inSeconds}, duration: ${duration.inSeconds} }';
 }
 
 abstract class AudioService {

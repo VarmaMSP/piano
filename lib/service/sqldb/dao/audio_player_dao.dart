@@ -6,8 +6,6 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
   AudioPlayerDao(SqlDb db) : super(db);
 
   Future<void> saveSnapshot(AudioPlayerSnapshot snapshot) async {
-    print('snapsho dao: $snapshot');
-
     if (snapshot.isEmpty) {
       await transaction(() async {
         //Clear all audio tracks

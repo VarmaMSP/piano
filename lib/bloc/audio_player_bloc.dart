@@ -1,6 +1,8 @@
+import 'package:logger/logger.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/store/store.dart';
+import 'package:phenopod/utils/logger.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:super_enum/super_enum.dart';
 
@@ -34,6 +36,7 @@ enum _SnapshotTransistion {
 class AudioPlayerBloc {
   final Store store;
   final AudioService audioService;
+  final Logger logger = newLogger('audio_player_bloc');
 
   /// Stream of snapshots
   final BehaviorSubject<AudioPlayerSnapshot> _snapshotSubject =
@@ -63,8 +66,9 @@ class AudioPlayerBloc {
   }
 
   void _handleStateTransistions() {
-    _stateTransistion.stream.distinct().listen((newState) async {
-      switch (newState) {
+    _stateTransistion.stream.distinct().listen((audioState) async {
+      logger.w('new audiostate: $audioState');
+      switch (audioState) {
         case StateTransistion.play:
           await audioService.play();
           break;
@@ -88,15 +92,18 @@ class AudioPlayerBloc {
     // handle snapshot transistions
     _snapshotTransistion.stream.distinct().listen((t) async {
       final prevSnapshot = await _snapshotSubject.first;
-      t.when(
-        playAudioTrack: (data) {
-          prevSnapshot.add(data.audioTrack);
+      await t.when(
+        playAudioTrack: (data) async {
+          await store.audioPlayer
+              .saveSnapshot(prevSnapshot.add(data.audioTrack));
         },
-        addToQueueTop: (data) {
-          prevSnapshot.addToQueueTop(data.audioTrack);
+        addToQueueTop: (data) async {
+          await store.audioPlayer
+              .saveSnapshot(prevSnapshot.addToQueueTop(data.audioTrack));
         },
-        addToQueueBottom: (data) {
-          prevSnapshot.addToQueueBottom(data.audioTrack);
+        addToQueueBottom: (data) async {
+          await store.audioPlayer
+              .saveSnapshot(prevSnapshot.addToQueueBottom(data.audioTrack));
         },
         playPrevious: (_) {},
         playNext: (_) {},
@@ -106,6 +113,7 @@ class AudioPlayerBloc {
 
   void _handlePosistionTransistions() {
     _posistionTransistion.stream.distinct().listen((position) async {
+      logger.i('New positionState: $position');
       await audioService.seek(position);
     });
   }

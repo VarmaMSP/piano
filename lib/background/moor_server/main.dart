@@ -16,7 +16,7 @@ class _IsolateStartRequest {
 }
 
 void _startIsolate(_IsolateStartRequest request) {
-  final database = VmDatabase(File(request.targetPath), logStatements: true);
+  final database = VmDatabase(File(request.targetPath), logStatements: false);
   final moorIsolate = MoorIsolate.inCurrent(
     () => DatabaseConnection.fromExecutor(database),
   );
