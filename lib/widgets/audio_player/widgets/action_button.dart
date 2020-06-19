@@ -107,6 +107,9 @@ class ActionButton extends StatelessWidget {
     } else if (audioState == AudioState.paused) {
       iconData = Icons.play_arrow;
       onPressed = onResume;
+    } else if (audioState == AudioState.none) {
+      iconData = Icons.play_arrow;
+      onPressed = onResume;
     } else {
       iconData = Icons.play_arrow;
       onPressed = () {};
