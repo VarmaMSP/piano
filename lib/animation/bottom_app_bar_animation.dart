@@ -3,6 +3,7 @@ import 'package:phenopod/utils/utils.dart';
 
 class BottomAppBarAnimation {
   BottomAppBarAnimation({
+    @required this.tabController,
     @required this.controller,
     @required this.screenHeight,
     @required this.controllerBeginWhenShow,
@@ -47,6 +48,7 @@ class BottomAppBarAnimation {
 
   factory BottomAppBarAnimation.New(
     BuildContext context,
+    TabController tabController,
     AnimationController controller,
   ) {
     final screenHeight = getScreenHeight(context);
@@ -61,6 +63,7 @@ class BottomAppBarAnimation {
 
     return BottomAppBarAnimation(
       controller: controller,
+      tabController: tabController,
       screenHeight: screenHeight,
       controllerBeginWhenShow: controllerBeginWhenShow,
     );
@@ -70,6 +73,7 @@ class BottomAppBarAnimation {
   static const double bottomNavigationBarHeight = 56.0;
   static const double bottomAppBarHeight = 106.0;
 
+  final TabController tabController;
   final AnimationController controller;
   final double screenHeight;
   final double controllerBeginWhenShow;
@@ -123,12 +127,16 @@ class BottomAppBarAnimation {
     );
   }
 
-  void collapseBottomAppBar() {
-    controller.animateTo(
+  void collapseBottomAppBar() async {
+    await controller.animateTo(
       controllerBeginValue,
       duration: Duration(milliseconds: 300),
       curve: Curves.linearToEaseOut,
     );
+
+    if (_showAudioPlayer) {
+      tabController.animateTo(0);
+    }
   }
 
   void Function(DragStartDetails) _verticalDragStartHandler() {

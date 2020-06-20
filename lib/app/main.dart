@@ -37,6 +37,7 @@ class _AppState extends State<App> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final bottomAppBarAnimations = BottomAppBarAnimation.New(
       context,
+      _audioPlayerTabController,
       _bottomAppBarController,
     );
 
@@ -55,7 +56,7 @@ class _AppState extends State<App> with TickerProviderStateMixin {
           preferredSize: const Size(0, 0),
           child: Container(),
         ),
-        floatingActionButton: kDebugMode
+        floatingActionButton: kProfileMode
             ? FloatingActionButton(
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
