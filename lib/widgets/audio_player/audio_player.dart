@@ -38,8 +38,7 @@ class AudioPlayer extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 18,
         right: 18,
-        top: 35,
-        bottom: 40,
+        top: 20,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -50,8 +49,8 @@ class AudioPlayer extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: '$thumbnailUrl/${nowPlaying.podcast.urlParam}.jpg',
               fit: BoxFit.fill,
-              height: 200,
-              width: 200,
+              height: 250,
+              width: 250,
               placeholder: (BuildContext context, String url) => Container(
                 height: 200,
                 width: 200,
@@ -60,13 +59,13 @@ class AudioPlayer extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 30, bottom: 8),
+            padding: EdgeInsets.only(top: 35, bottom: 17.5),
             alignment: Alignment.topCenter,
             child: Text(
               nowPlaying.episode.title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 18,
                 height: 1.4,
                 fontWeight: FontWeight.w500,
                 letterSpacing: 0.15,
@@ -77,7 +76,7 @@ class AudioPlayer extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 8, bottom: 30),
+            padding: EdgeInsets.only(top: 17.5, bottom: 30),
             alignment: Alignment.topCenter,
             child: Text(
               nowPlaying.podcast.title,
@@ -100,32 +99,35 @@ class AudioPlayer extends StatelessWidget {
   }
 
   Widget _buildNotesTab() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(
-              top: 25.0,
-              bottom: 5.0,
-              left: 8.0,
-              right: 8.0,
-            ),
-            alignment: Alignment.topLeft,
-            child: Text(
-              'Published on ${formatDateTime(nowPlaying.episode.pubDate)}',
-              style: TextStyle(
-                fontSize: 14,
-                letterSpacing: 0.25,
-                color: TWColors.gray.shade900,
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.only(
+                top: 25.0,
+                bottom: 5.0,
+                left: 8.0,
+                right: 8.0,
+              ),
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Published on ${formatDateTime(nowPlaying.episode.pubDate)}',
+                style: TextStyle(
+                  fontSize: 14,
+                  letterSpacing: 0.25,
+                  color: TWColors.gray.shade900,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          HTML(
-            id: nowPlaying.episode.id,
-            document: nowPlaying.episode.description,
-          ),
-        ],
+            HTML(
+              id: nowPlaying.episode.id,
+              document: nowPlaying.episode.description,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -20,7 +20,7 @@ class AudioPlayerPreview extends StatelessWidget {
       opacity: animations.audioPlayerPreviewOpacity,
       child: SizeTransition(
         axis: Axis.vertical,
-        axisAlignment: -1.0,
+        axisAlignment: 1.0,
         sizeFactor: animations.audioPlayerPreviewSizeFactor,
         child: Container(
           height: 50,
