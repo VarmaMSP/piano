@@ -9,9 +9,14 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'navigation_bar.dart';
 
 class BottomAppBar extends StatelessWidget {
-  BottomAppBar({Key key, this.animations}) : super(key: key);
+  BottomAppBar({
+    Key key,
+    @required this.animations,
+    @required this.audioPlayerTabController,
+  }) : super(key: key);
 
   final BottomAppBarAnimation animations;
+  final TabController audioPlayerTabController;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,10 @@ class BottomAppBar extends StatelessWidget {
           top: 0.0,
           left: 0.0,
           right: 0.0,
-          child: AudioPlayer(animations: animations),
+          child: AudioPlayer(
+            animations: animations,
+            tabController: audioPlayerTabController,
+          ),
         ),
         Positioned(
           bottom: 0.0,
@@ -34,7 +42,6 @@ class BottomAppBar extends StatelessWidget {
     );
 
     return StreamBuilder<AudioTrack>(
-      initialData: null,
       stream: Provider.of<AudioPlayerBloc>(context).nowPlaying,
       builder: (context, snapshot) {
         !snapshot.hasData
@@ -44,7 +51,7 @@ class BottomAppBar extends StatelessWidget {
         return AnimatedBuilder(
           animation: animations.appBarHeight,
           child: body,
-          builder: (_, child) {
+          builder: (context, child) {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onVerticalDragStart: animations.verticalDragStartHandler,

@@ -7,17 +7,17 @@ class ActionButton extends StatelessWidget {
   const ActionButton({
     Key key,
     this.fullSized = false,
-    @required this.onPause,
-    @required this.onResume,
   }) : super(key: key);
 
   final bool fullSized;
-  final void Function() onPause;
-  final void Function() onResume;
 
   @override
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+    final onPlay =
+        () => audioPlayerBloc.transistionState(StateTransistion.play);
+    final onPause =
+        () => audioPlayerBloc.transistionState(StateTransistion.pause);
 
     return StreamBuilder<AudioState>(
       stream: audioPlayerBloc.audioState,
@@ -36,7 +36,7 @@ class ActionButton extends StatelessWidget {
                         borderRadius: BorderRadius.circular(900),
                       ),
                     ),
-                    _buildButton(snapshot.data),
+                    _buildButton(snapshot.data, onPlay, onPause),
                   ],
                 ),
               )
@@ -45,8 +45,13 @@ class ActionButton extends StatelessWidget {
                 width: 32,
                 child: Stack(
                   children: <Widget>[
-                    _buildProgressIndicator(context, snapshot.data),
-                    _buildButton(snapshot.data),
+                    if (snapshot.data != AudioState.none &&
+                        snapshot.data != AudioState.playing &&
+                        snapshot.data != AudioState.paused)
+                      _buildLoadingIndicator()
+                    else
+                      _buildProgressIndicator(audioPlayerBloc.positionState),
+                    _buildButton(snapshot.data, onPlay, onPause),
                   ],
                 ),
               );
@@ -54,25 +59,20 @@ class ActionButton extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressIndicator(BuildContext context, AudioState audioState) {
-    final showLoading = audioState != AudioState.none &&
-        audioState != AudioState.playing &&
-        audioState != AudioState.paused;
+  Widget _buildLoadingIndicator() {
+    return CircularProgressIndicator(
+      value: null,
+      strokeWidth: 2.5,
+      valueColor: AlwaysStoppedAnimation<Color>(TWColors.purple.shade600),
+      backgroundColor: TWColors.gray.shade300,
+    );
+  }
 
-    if (showLoading) {
-      return CircularProgressIndicator(
-        value: null,
-        strokeWidth: 2.5,
-        valueColor: AlwaysStoppedAnimation<Color>(
-          TWColors.purple.shade600,
-        ),
-        backgroundColor: TWColors.gray.shade300,
-      );
-    }
-
-    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+  Widget _buildProgressIndicator(
+    Stream<PositionState> positionState,
+  ) {
     return StreamBuilder<PositionState>(
-      stream: audioPlayerBloc.positionState,
+      stream: positionState,
       builder: (context, snapshot) {
         final duration =
             snapshot.hasData ? snapshot.data.duration.inMilliseconds : 1;
@@ -91,7 +91,11 @@ class ActionButton extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(AudioState audioState) {
+  Widget _buildButton(
+    AudioState audioState,
+    void Function() onPlay,
+    void Function() onPause,
+  ) {
     var color = TWColors.gray.shade600;
     var size = 20.0;
     if (fullSized) {
@@ -106,10 +110,10 @@ class ActionButton extends StatelessWidget {
       onPressed = onPause;
     } else if (audioState == AudioState.paused) {
       iconData = Icons.play_arrow;
-      onPressed = onResume;
+      onPressed = onPlay;
     } else if (audioState == AudioState.none) {
       iconData = Icons.play_arrow;
-      onPressed = onResume;
+      onPressed = onPlay;
     } else {
       iconData = Icons.play_arrow;
       onPressed = () {};

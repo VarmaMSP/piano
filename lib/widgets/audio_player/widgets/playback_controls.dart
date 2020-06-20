@@ -11,14 +11,8 @@ import 'action_button.dart';
 class PlaybackControls extends StatelessWidget {
   PlaybackControls({
     Key key,
-    @required this.onPlay,
-    @required this.onPause,
-    @required this.onSeek,
   }) : super(key: key);
 
-  final void Function() onPlay;
-  final void Function() onPause;
-  final void Function(int) onSeek;
   final BehaviorSubject<double> _dragPositionSubject =
       BehaviorSubject.seeded(null);
 
@@ -75,7 +69,6 @@ class PlaybackControls extends StatelessWidget {
                   value: currentTime,
                   onChanged: _dragPositionSubject.add,
                   onChangeEnd: (value) {
-                    onSeek(value.toInt());
                     _dragPositionSubject.add(null);
                   },
                 ),
@@ -107,11 +100,7 @@ class PlaybackControls extends StatelessWidget {
           padding: EdgeInsets.only(right: 16),
           child: Icon(Icons.fast_rewind, size: 28),
         ),
-        ActionButton(
-          onPause: onPause,
-          onResume: onPlay,
-          fullSized: true,
-        ),
+        ActionButton(fullSized: true),
         Container(
           padding: EdgeInsets.only(left: 16),
           child: Icon(Icons.fast_forward, size: 28),

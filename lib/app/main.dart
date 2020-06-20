@@ -16,8 +16,9 @@ class App extends StatefulWidget {
   _AppState createState() => _AppState();
 }
 
-class _AppState extends State<App> with SingleTickerProviderStateMixin {
+class _AppState extends State<App> with TickerProviderStateMixin {
   AnimationController _bottomAppBarController;
+  TabController _audioPlayerTabController;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final RouteObserver<PageRoute> routeObserver = RouteObserver();
 
@@ -25,6 +26,11 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _bottomAppBarController = AnimationController(vsync: this);
+    _audioPlayerTabController = TabController(
+      length: 2,
+      initialIndex: 0,
+      vsync: this,
+    );
   }
 
   @override
@@ -89,6 +95,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 alignment: Alignment.bottomCenter,
                 child: appbar.BottomAppBar(
                   animations: bottomAppBarAnimations,
+                  audioPlayerTabController: _audioPlayerTabController,
                 ),
               ),
             ],
@@ -101,6 +108,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     _bottomAppBarController.dispose();
+    _audioPlayerTabController.dispose();
     super.dispose();
   }
 }

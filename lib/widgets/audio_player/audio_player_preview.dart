@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/audio_player/widgets/action_button.dart';
 import 'package:phenopod/widgets/podcast_thumbnail.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 
 class AudioPlayerPreview extends StatelessWidget {
@@ -10,42 +9,26 @@ class AudioPlayerPreview extends StatelessWidget {
     Key key,
     @required this.animations,
     @required this.nowPlaying,
-    @required this.onPlay,
-    @required this.onPause,
   }) : super(key: key);
 
   final BottomAppBarAnimation animations;
   final AudioTrack nowPlaying;
-  final Function onPlay;
-  final Function onPause;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: animations.playerBackgroundColor,
-      child: AnimatedBuilder(
-        animation: animations.controller,
-        builder: (_, __) {
-          return animations.controller.value <
-                  BottomAppBarAnimation.showAudioPlayerTopNavBarFrom
-              ? FadeTransition(
-                  opacity: animations.audioPlayerPreviewOpacity,
-                  child: _buildPreview(),
-                )
-              : FadeTransition(
-                  opacity: animations.audioPlayerTopNavBarOpacity,
-                  child: _buildTopNavBar(),
-                );
-        },
-      ),
-      builder: (context, child) {
-        return Container(
+    return FadeTransition(
+      opacity: animations.audioPlayerPreviewOpacity,
+      child: SizeTransition(
+        axis: Axis.vertical,
+        axisAlignment: -1.0,
+        sizeFactor: animations.audioPlayerPreviewSizeFactor,
+        child: Container(
           height: 50,
-          color: animations.playerBackgroundColor.value,
-          padding: const EdgeInsets.only(left: 18, right: 18),
-          child: child,
-        );
-      },
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: _buildPreview(),
+        ),
+      ),
     );
   }
 
@@ -82,27 +65,7 @@ class AudioPlayerPreview extends StatelessWidget {
             ),
           ),
         ),
-        ActionButton(onPause: onPause, onResume: onPlay),
-      ],
-    );
-  }
-
-  Widget _buildTopNavBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Transform.translate(
-          offset: Offset(-4, 0),
-          child: IconButton(
-            padding: const EdgeInsets.all(0.0),
-            icon: Icon(
-              Icons.expand_more,
-              color: TWColors.gray.shade700,
-              size: 24,
-            ),
-            onPressed: animations.collapseBottomAppBar,
-          ),
-        ),
+        ActionButton(),
       ],
     );
   }

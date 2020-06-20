@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/utils/utils.dart';
+import 'package:phenopod/widgets/audio_player/audio_player_bottom_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -9,43 +11,47 @@ import 'audio_player.dart' as full_audio_player;
 import 'audio_player_preview.dart';
 
 class AudioPlayer extends StatelessWidget {
-  AudioPlayer({Key key, @required this.animations}) : super(key: key);
+  AudioPlayer({
+    Key key,
+    @required this.animations,
+    @required this.tabController,
+  }) : super(key: key);
 
   final BottomAppBarAnimation animations;
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding;
-    final screenHeight = MediaQuery.of(context).size.height - padding.top;
+    final screenHeight = getScreenHeight(context);
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
     return StreamBuilder<AudioTrack>(
-      initialData: null,
       stream: audioPlayerBloc.nowPlaying,
       builder: (context, snapshot) {
         Widget body;
         if (snapshot.hasData) {
           body = Column(
-            mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               AudioPlayerPreview(
                 animations: animations,
                 nowPlaying: snapshot.data,
-                onPlay: () =>
-                    audioPlayerBloc.transistionState(StateTransistion.play),
-                onPause: () =>
-                    audioPlayerBloc.transistionState(StateTransistion.pause),
               ),
-              Expanded(
-                child: full_audio_player.AudioPlayer(
-                  animations: animations,
-                  nowPlaying: snapshot.data,
-                  onPlay: () =>
-                      audioPlayerBloc.transistionState(StateTransistion.play),
-                  onPause: () =>
-                      audioPlayerBloc.transistionState(StateTransistion.pause),
-                  onSeek: (int p) =>
-                      audioPlayerBloc.transistionState(StateTransistion.play),
+              Container(
+                constraints: BoxConstraints.expand(height: screenHeight),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: full_audio_player.AudioPlayer(
+                        animations: animations,
+                        tabController: tabController,
+                        nowPlaying: snapshot.data,
+                      ),
+                    ),
+                    AudioPlayerBottomBar(
+                      animations: animations,
+                      tabController: tabController,
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -53,15 +59,19 @@ class AudioPlayer extends StatelessWidget {
         }
 
         return Container(
-          constraints: BoxConstraints.expand(height: screenHeight),
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: <BoxShadow>[
-              BoxShadow(color: TWColors.gray.shade100, blurRadius: 3)
+              BoxShadow(
+                color: TWColors.gray.shade100,
+                blurRadius: 3,
+              )
             ],
           ),
           child: body ??
-              Container(constraints: const BoxConstraints.expand(height: 56)),
+              Container(
+                constraints: const BoxConstraints.expand(height: 56),
+              ),
         );
       },
     );
