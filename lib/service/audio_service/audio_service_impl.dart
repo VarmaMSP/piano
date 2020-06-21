@@ -40,22 +40,20 @@ class _audioServiceImpl implements AudioService {
   }
 
   @override
-  Future<void> syncSnapshot() async {
-    /// Background player loads snapshot when started, so
-    /// send sync action only if audioservice is running
-    if (!audioservice.AudioService.running) {
-      await _startBackgroundPlayerTask();
-    } else {
+  Future<void> syncSnapshot({bool startTask = true}) async {
+    if (audioservice.AudioService.running) {
       await audioservice.AudioService.customAction('syncSnapshot');
+    } else if (startTask) {
+      await _startBackgroundPlayerTask();
     }
   }
 
   @override
-  Future<void> syncNowPlaying() async {
-    if (!audioservice.AudioService.running) {
-      await _startBackgroundPlayerTask();
-    } else {
+  Future<void> syncNowPlaying({bool startTask = true}) async {
+    if (audioservice.AudioService.running) {
       await audioservice.AudioService.customAction('syncNowPlaying');
+    } else if (startTask) {
+      await _startBackgroundPlayerTask();
     }
   }
 

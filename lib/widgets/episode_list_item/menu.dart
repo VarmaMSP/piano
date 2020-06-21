@@ -34,7 +34,7 @@ class Menu extends StatelessWidget {
         ),
         itemBuilder: (BuildContext context) {
           return <String>[
-            'Play Next',
+            'Play next',
             'Add to queue',
           ].map((String t) {
             return PopupMenuItem<String>(
@@ -45,7 +45,7 @@ class Menu extends StatelessWidget {
         },
         onSelected: (value) {
           switch (value) {
-            case 'Play Next':
+            case 'Play next':
               audioPlayerBloc.transistionSnapshot(
                 SnapshotTransistion.addToQueueTop(
                   audioTrack: AudioTrack(
@@ -56,6 +56,14 @@ class Menu extends StatelessWidget {
               );
               break;
             case 'Add to queue':
+              audioPlayerBloc.transistionSnapshot(
+                SnapshotTransistion.addToQueueBottom(
+                  audioTrack: AudioTrack(
+                    episode: episode,
+                    podcast: podcast,
+                  ),
+                ),
+              );
               break;
           }
         },

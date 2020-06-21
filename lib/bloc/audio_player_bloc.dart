@@ -66,8 +66,8 @@ class AudioPlayerBloc {
   }
 
   void _handleStateTransistions() {
-    _stateTransistion.stream.distinct().listen((audioState) async {
-      logger.w('new audiostate: $audioState');
+    _stateTransistion.stream.listen((audioState) async {
+      logger.w('stateTransistion: $audioState');
       switch (audioState) {
         case StateTransistion.play:
           await audioService.play();
@@ -101,12 +101,12 @@ class AudioPlayerBloc {
         addToQueueTop: (data) async {
           await store.audioPlayer
               .saveSnapshot(prevSnapshot.addToQueueTop(data.audioTrack));
-          await audioService.syncSnapshot();
+          await audioService.syncSnapshot(startTask: false);
         },
         addToQueueBottom: (data) async {
           await store.audioPlayer
               .saveSnapshot(prevSnapshot.addToQueueBottom(data.audioTrack));
-          await audioService.syncSnapshot();
+          await audioService.syncSnapshot(startTask: false);
         },
         playPrevious: (_) {},
         playNext: (_) {},
@@ -115,8 +115,8 @@ class AudioPlayerBloc {
   }
 
   void _handlePosistionTransistions() {
-    _posistionTransistion.stream.distinct().listen((position) async {
-      logger.i('New positionState: $position');
+    _posistionTransistion.stream.listen((position) async {
+      logger.i('Position transistion: $position');
       await audioService.seek(position);
     });
   }

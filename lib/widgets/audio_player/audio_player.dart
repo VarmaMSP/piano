@@ -39,10 +39,11 @@ class AudioPlayer extends StatelessWidget {
         left: 18,
         right: 18,
         top: 10,
+        bottom: 10,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -65,7 +66,7 @@ class AudioPlayer extends StatelessWidget {
               nowPlaying.episode.title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 20,
                 height: 1.4,
                 fontWeight: FontWeight.w500,
                 letterSpacing: 0.15,
