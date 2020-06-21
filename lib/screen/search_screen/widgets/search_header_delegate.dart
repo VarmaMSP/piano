@@ -37,7 +37,7 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
                   color: TWColors.gray.shade700,
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context, rootNavigator: true).pop();
                 },
               ),
             ),

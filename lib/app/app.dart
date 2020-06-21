@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
+import 'package:phenopod/bloc/navigation_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/widgets/bottom_app_bar/main.dart' as appbar;
@@ -20,7 +21,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> with TickerProviderStateMixin {
   AnimationController _bottomAppBarController;
   TabController _audioPlayerTabController;
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  NavigationBloc _navigationBloc;
   final RouteObserver<PageRoute> routeObserver = RouteObserver();
 
   @override
@@ -32,6 +33,7 @@ class _AppState extends State<App> with TickerProviderStateMixin {
       initialIndex: 0,
       vsync: this,
     );
+    _navigationBloc = Provider.of<NavigationBloc>(context, listen: false);
   }
 
   @override
@@ -48,7 +50,7 @@ class _AppState extends State<App> with TickerProviderStateMixin {
           bottomAppBarAnimations.collapseBottomAppBar();
           return false;
         }
-        return !await navigatorKey.currentState.maybePop();
+        return !await _navigationBloc.navigatorKey.currentState.maybePop();
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -84,7 +86,7 @@ class _AppState extends State<App> with TickerProviderStateMixin {
                     color: Colors.white,
                     padding: EdgeInsets.only(bottom: padding),
                     child: Navigator(
-                      key: navigatorKey,
+                      key: _navigationBloc.navigatorKey,
                       initialRoute: '/',
                       observers: [routeObserver],
                       onGenerateRoute: makeGenerateRoute(routeObserver),
