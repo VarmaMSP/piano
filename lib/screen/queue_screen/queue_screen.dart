@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
+import 'package:phenopod/screen/queue_screen/widgets/queue_header_delegate.dart';
+import 'package:phenopod/screen/queue_screen/widgets/queue_list.dart';
+import 'package:phenopod/widgets/screen/layout.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 class QueueScreen extends StatelessWidget {
   const QueueScreen({Key key}) : super(key: key);
@@ -21,34 +23,15 @@ class QueueScreen extends StatelessWidget {
       body: StreamBuilder<Queue>(
         stream: audioPlayerBloc.queue,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container(
-              color: Colors.white,
-              constraints: BoxConstraints.expand(),
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  FlatButton(onPressed: () {}, child: Text('no queue')),
-                  Text(
-                    'Published on',
-                    style: TextStyle(
-                      fontSize: 14,
-                      letterSpacing: 0.25,
-                      color: TWColors.gray.shade900,
-                      fontWeight: FontWeight.w500,
-                    ),
+          return ScreenLayout(
+            header: QueueHeaderDelegate(),
+            body: snapshot.hasData
+                ? QueueList(queue: snapshot.data)
+                : Container(
+                    constraints: BoxConstraints.expand(),
+                    alignment: Alignment.center,
+                    child: Text('No Items in queue'),
                   ),
-                ],
-              ),
-            );
-          }
-
-          return Container(
-            color: Colors.white,
-            constraints: BoxConstraints.expand(),
-            alignment: Alignment.center,
-            child: Text('${snapshot.data}'),
           );
         },
       ),

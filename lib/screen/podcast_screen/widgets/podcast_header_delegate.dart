@@ -118,13 +118,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     return Container(
       height: tabBarHeight,
       alignment: Alignment.bottomLeft,
-      transform: Matrix4.translationValues(-14, 0, 0),
+      transform: Matrix4.translationValues(-10, 0, 0),
       child: TabBar(
         isScrollable: true,
         indicatorColor: TWColors.yellow.shade400,
         indicatorSize: TabBarIndicatorSize.label,
         indicatorWeight: 3.5,
         labelColor: Colors.black,
+        labelPadding: EdgeInsets.symmetric(horizontal: 10),
         labelStyle: TextStyle(
           fontSize: 13.5,
           letterSpacing: 0.8,

@@ -13,21 +13,15 @@ class AudioPlayerSnapshot extends Equatable {
   AudioPlayerSnapshot({this.queue});
 
   factory AudioPlayerSnapshot.empty() {
-    return AudioPlayerSnapshot(
-      queue: Queue(
-        audioTracks: [],
-        position: -1,
-        enabled: false,
-      ),
-    );
+    return AudioPlayerSnapshot(queue: Queue());
   }
 
   factory AudioPlayerSnapshot.singleTrack(AudioTrack audioTrack) {
     return AudioPlayerSnapshot(
       queue: Queue(
-        audioTracks: [audioTrack],
-        position: 0,
         enabled: false,
+        position: 0,
+        audioTracks: [audioTrack],
       ),
     );
   }
@@ -35,9 +29,9 @@ class AudioPlayerSnapshot extends Equatable {
   factory AudioPlayerSnapshot.singleTrackWithQueue(AudioTrack audioTrack) {
     return AudioPlayerSnapshot(
       queue: Queue(
-        audioTracks: [audioTrack],
-        position: 0,
         enabled: true,
+        position: 0,
+        audioTracks: [audioTrack],
       ),
     );
   }
@@ -58,10 +52,13 @@ class AudioPlayerSnapshot extends Equatable {
         : AudioPlayerSnapshot(queue: queue.addToBottom(audioTrack));
   }
 
-  /// true if there are no tracks to play
+  /// True if there are no tracks to play
   bool get isEmpty => queue.isEmpty;
 
-  /// return current audio track
+  /// True if queue is enabled
+  bool get isQueueEnabled => queue.enabled;
+
+  /// Returns current audio track
   AudioTrack get nowPlaying => queue.nowPlaying;
 
   /// Returns queue if enabled
@@ -74,32 +71,47 @@ class AudioPlayerSnapshot extends Equatable {
   String toString() => '{ Queue: ${queue.toString()} }';
 }
 
-/// The Queue can be disabled when user chooses to play only one track.
 @CopyWith()
 class Queue extends Equatable {
   final int position;
+
+  /// The Queue can be disabled when user chooses to play only one track.
   final bool enabled;
+
+  /// Store AudioTracks currently in audio player
   final List<AudioTrack> audioTracks;
 
-  Queue({this.position, this.enabled, this.audioTracks});
+  Queue({
+    this.position = -1,
+    this.enabled = false,
+    this.audioTracks = const [],
+  });
 
   Queue addToTop(AudioTrack audioTrack) {
     final trackPos = position + 1;
-    return Queue(enabled: true, audioTracks: [
-      ...audioTracks.sublist(0, trackPos),
-      audioTrack.copyWith(position: trackPos),
-      ...audioTracks
-          .sublist(trackPos)
-          .map((a) => a.copyWith(position: a.position + 1)),
-    ]);
+    return Queue(
+      enabled: true,
+      position: trackPos == 0 ? 0 : position,
+      audioTracks: [
+        ...audioTracks.sublist(0, trackPos),
+        audioTrack.copyWith(position: trackPos),
+        ...audioTracks
+            .sublist(trackPos)
+            .map((a) => a.copyWith(position: a.position + 1)),
+      ],
+    );
   }
 
   Queue addToBottom(AudioTrack audioTrack) {
     final trackPos = audioTracks.length;
-    return Queue(enabled: true, audioTracks: [
-      ...audioTracks,
-      audioTrack.copyWith(position: trackPos),
-    ]);
+    return Queue(
+      enabled: true,
+      position: trackPos == 0 ? 0 : position,
+      audioTracks: [
+        ...audioTracks,
+        audioTrack.copyWith(position: trackPos),
+      ],
+    );
   }
 
   bool get isEmpty => position == -1;

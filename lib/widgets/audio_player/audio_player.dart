@@ -38,28 +38,28 @@ class AudioPlayer extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 18,
         right: 18,
-        top: 20,
+        top: 10,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: CachedNetworkImage(
-              imageUrl: '$thumbnailUrl/${nowPlaying.podcast.urlParam}.jpg',
-              fit: BoxFit.fill,
-              height: 250,
-              width: 250,
-              placeholder: (BuildContext context, String url) => Container(
-                height: 200,
-                width: 200,
-                color: TWColors.gray.shade300,
+            child: AspectRatio(
+              aspectRatio: 1.0,
+              child: CachedNetworkImage(
+                imageUrl: '$thumbnailUrl/${nowPlaying.podcast.urlParam}.jpg',
+                fit: BoxFit.fill,
+                placeholder: (BuildContext context, String url) => Container(
+                  constraints: BoxConstraints.expand(),
+                  color: TWColors.gray.shade300,
+                ),
               ),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 35, bottom: 17.5),
+            padding: EdgeInsets.symmetric(vertical: 15),
             alignment: Alignment.topCenter,
             child: Text(
               nowPlaying.episode.title,
@@ -76,7 +76,7 @@ class AudioPlayer extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 17.5, bottom: 30),
+            padding: EdgeInsets.symmetric(vertical: 5),
             alignment: Alignment.topCenter,
             child: Text(
               nowPlaying.podcast.title,

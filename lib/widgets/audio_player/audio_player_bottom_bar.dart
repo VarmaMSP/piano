@@ -21,15 +21,16 @@ class AudioPlayerBottomBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            height: 40,
+            height: 45,
             alignment: Alignment.bottomLeft,
-            transform: Matrix4.translationValues(2, 0, 0),
+            transform: Matrix4.translationValues(10, 0, 0),
             child: TabBar(
               isScrollable: true,
               indicatorColor: TWColors.yellow.shade400,
               indicatorSize: TabBarIndicatorSize.label,
               indicatorWeight: 4,
               labelColor: Colors.black,
+              labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
               labelStyle: TextStyle(
                 fontSize: 14,
                 letterSpacing: 0.6,
@@ -49,25 +50,49 @@ class AudioPlayerBottomBar extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            padding: const EdgeInsets.all(0.0),
-            icon: Icon(
-              Icons.playlist_play,
-              color: TWColors.gray.shade700,
-              size: 24,
-            ),
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pushNamed('/queue');
-            },
-          ),
-          IconButton(
-            padding: const EdgeInsets.all(0.0),
-            icon: Icon(
-              Icons.expand_more,
-              color: TWColors.gray.shade700,
-              size: 24,
-            ),
-            onPressed: animations.collapseBottomAppBar,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                height: 42,
+                width: 42,
+                child: IconButton(
+                  iconSize: 28,
+                  color: TWColors.gray.shade700,
+                  icon: Icon(Icons.expand_more),
+                  onPressed: animations.collapseBottomAppBar,
+                  enableFeedback: true,
+                ),
+              ),
+              Container(
+                height: 42,
+                width: 42,
+                child: IconButton(
+                  iconSize: 28,
+                  color: TWColors.gray.shade700,
+                  icon: Icon(Icons.playlist_play),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed('/queue');
+                  },
+                  enableFeedback: true,
+                ),
+              ),
+              Container(
+                height: 42,
+                width: 42,
+                child: IconButton(
+                  iconSize: 24,
+                  color: TWColors.gray.shade700,
+                  icon: Icon(Icons.more_vert),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed('/queue');
+                  },
+                  enableFeedback: true,
+                ),
+              ),
+            ],
           ),
         ],
       ),

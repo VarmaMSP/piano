@@ -46,6 +46,7 @@ class SuggestionsList extends StatelessWidget {
         Provider.of<NavigationBloc>(context, listen: false).navigateTo(
           NavigateTo.podcastPage(urlParam: suggestion.i),
         );
+        Navigator.of(context, rootNavigator: true).pop();
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
