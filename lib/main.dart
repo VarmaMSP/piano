@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:phenopod/app/app.dart';
+import 'package:phenopod/screen/queue_screen/queue_screen.dart';
+import 'package:phenopod/screen/search_screen/search_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:phenopod/app/main.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
-import 'package:phenopod/screen/sign_in_screen.dart';
-import 'package:phenopod/screen/splash_screen.dart';
 import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/service/http_client/http_client.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
@@ -113,15 +113,19 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
         return MaterialApp(
           title: 'Phenopod',
           debugShowCheckedModeBanner: false,
-          home: StreamBuilder<bool>(
-            stream: Provider.of<UserBloc>(context).userSignedIn,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return SplashScreen();
-              }
-              return snapshot.data ? App() : SignInScreen();
-            },
-          ),
+          initialRoute: '/app',
+          onGenerateRoute: (settings) {
+            switch (settings.name) {
+              case '/app':
+                return MaterialPageRoute(builder: (_) => App());
+              case '/queue':
+                return MaterialPageRoute(builder: (_) => QueueScreen());
+              case '/search':
+                return MaterialPageRoute(builder: (_) => SearchScreen());
+              default:
+                return null;
+            }
+          },
         );
       }),
     );

@@ -25,10 +25,10 @@ class SearchSuggestion extends Equatable {
   @JsonKey(defaultValue: iconSearch)
   final String i;
 
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: '', name: 'h1')
   final String header;
 
-  @JsonKey(defaultValue: '')
+  @JsonKey(defaultValue: '', name: 'h2')
   final String subHeader;
 
   SearchSuggestion({

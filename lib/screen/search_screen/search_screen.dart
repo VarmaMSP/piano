@@ -37,24 +37,32 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<SearchSuggestion>>(
-      stream: _searchScreenBloc.suggestions,
-      builder: (context, snapshot) {
-        return ScreenLayout(
-          header: SearchHeaderDelegate(
-            searchBarController: _searchBarController,
-          ),
-          body: snapshot.hasData
-              ? SuggestionsList(suggestions: snapshot.data)
-              : Container(
-                  color: Colors.white,
-                  constraints: BoxConstraints.expand(),
-                  child: Text(
-                    'Search for podcasts, episodes, topics, person...',
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(),
+      ),
+      body: StreamBuilder<List<SearchSuggestion>>(
+        stream: _searchScreenBloc.suggestions,
+        builder: (context, snapshot) {
+          return ScreenLayout(
+            header: SearchHeaderDelegate(
+              searchBarController: _searchBarController,
+            ),
+            body: snapshot.hasData
+                ? SuggestionsList(suggestions: snapshot.data)
+                : Container(
+                    color: Colors.white,
+                    constraints: BoxConstraints.expand(),
+                    child: Text(
+                      'Search for podcasts, episodes, topics, person...',
+                    ),
                   ),
-                ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

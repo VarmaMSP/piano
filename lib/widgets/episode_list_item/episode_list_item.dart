@@ -101,7 +101,10 @@ class EpisodeListItem extends StatelessWidget {
                         ),
                         Transform.translate(
                           offset: const Offset(6, -8),
-                          child: const Menu(),
+                          child: Menu(
+                            episode: episode,
+                            podcast: podcast,
+                          ),
                         ),
                       ],
                     ),

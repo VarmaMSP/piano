@@ -12,7 +12,7 @@ SearchSuggestion _$SearchSuggestionFromJson(Map<String, dynamic> json) {
   return SearchSuggestion(
     t: json['t'] as String ?? 'T',
     i: json['i'] as String ?? 'S',
-    header: json['header'] as String ?? '',
-    subHeader: json['sub_header'] as String ?? '',
+    header: json['h1'] as String ?? '',
+    subHeader: json['h2'] as String ?? '',
   );
 }

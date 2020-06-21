@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:phenopod/bloc/audio_player_bloc.dart';
+import 'package:phenopod/model/main.dart';
+import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class Menu extends StatelessWidget {
-  const Menu({Key key}) : super(key: key);
+  const Menu({
+    Key key,
+    @required this.episode,
+    @required this.podcast,
+  }) : super(key: key);
+
+  final Episode episode;
+  final Podcast podcast;
 
   @override
   Widget build(BuildContext context) {
+    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+
     return Container(
       height: 39,
       child: PopupMenuButton<String>(
@@ -22,8 +34,7 @@ class Menu extends StatelessWidget {
         ),
         itemBuilder: (BuildContext context) {
           return <String>[
-            'Save to playlist',
-            'Save to Listen later',
+            'Play Next',
             'Add to queue',
           ].map((String t) {
             return PopupMenuItem<String>(
@@ -31,6 +42,22 @@ class Menu extends StatelessWidget {
               child: Text(t),
             );
           }).toList();
+        },
+        onSelected: (value) {
+          switch (value) {
+            case 'Play Next':
+              audioPlayerBloc.transistionSnapshot(
+                SnapshotTransistion.addToQueueTop(
+                  audioTrack: AudioTrack(
+                    episode: episode,
+                    podcast: podcast,
+                  ),
+                ),
+              );
+              break;
+            case 'Add to queue':
+              break;
+          }
         },
       ),
     );

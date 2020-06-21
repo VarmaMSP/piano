@@ -6,8 +6,9 @@ import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/widgets/bottom_app_bar/main.dart' as appbar;
-import 'package:phenopod/route_generator.dart';
 import 'package:provider/provider.dart';
+
+import 'app_router.dart';
 
 class App extends StatefulWidget {
   const App({Key key}) : super(key: key);
@@ -86,8 +87,7 @@ class _AppState extends State<App> with TickerProviderStateMixin {
                       key: navigatorKey,
                       initialRoute: '/',
                       observers: [routeObserver],
-                      onGenerateRoute:
-                          RouteGenerator.makeGenerateRoute(routeObserver),
+                      onGenerateRoute: makeGenerateRoute(routeObserver),
                     ),
                   );
                 },
