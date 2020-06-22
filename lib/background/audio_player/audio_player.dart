@@ -8,11 +8,15 @@ import 'package:phenopod/utils/audio_player.dart' as utils;
 class AudioPlayer {
   final justaudio.AudioPlayer _player = justaudio.AudioPlayer();
   final Future<void> Function() onComplete;
+  final Future<void> Function() onPlaying;
+  final Future<void> Function() onPaused;
 
   StreamSubscription<justaudio.AudioPlaybackEvent> _eventSubscription;
 
   AudioPlayer({
     @required this.onComplete,
+    this.onPlaying,
+    this.onPaused,
   });
 
   Future<void> start() async {
@@ -31,6 +35,7 @@ class AudioPlayer {
           case justaudio.AudioPlaybackState.stopped:
             return;
           case justaudio.AudioPlaybackState.paused:
+            await onPaused();
             return utils.setState(
               playing: false,
               position: event.position,
@@ -38,6 +43,7 @@ class AudioPlayer {
             );
 
           case justaudio.AudioPlaybackState.playing:
+            await onPlaying();
             return utils.setState(
               playing: true,
               position: event.position,
