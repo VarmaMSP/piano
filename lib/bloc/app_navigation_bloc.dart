@@ -24,7 +24,7 @@ class AppNavigationBloc {
   }
 
   void _handleNavigationEvents() {
-    _navigateTo.stream.distinct().listen((n) {
+    _navigateTo.stream.listen((n) {
       n.when(podcastPage: (data) {
         _homeTabNavigatorKey.currentState
             .pushNamed('/podcast', arguments: {'urlParam': data.urlParam});

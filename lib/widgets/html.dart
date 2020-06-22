@@ -6,19 +6,21 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 
 final Map<String, Style> htmlStyle = {
   '*': Style(
+    fontSize: FontSize.large,
     letterSpacing: 0.2,
     wordSpacing: 0.2,
   ),
   'h1, h2, h3, h4': Style(
-    fontSize: FontSize.large,
-    color: TWColors.gray.shade700,
+    fontSize: FontSize.larger,
+    color: TWColors.gray.shade900,
   ),
   'p': Style(
-    fontSize: FontSize.percent(95),
-    color: TWColors.gray.shade700,
+    fontSize: FontSize.percent(90),
+    color: TWColors.gray.shade900,
   ),
   'a': Style(
-    color: TWColors.blue.shade600,
+    fontSize: FontSize.percent(90),
+    color: TWColors.blue.shade700,
   ),
 };
 
