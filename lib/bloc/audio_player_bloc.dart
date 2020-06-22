@@ -78,8 +78,10 @@ class AudioPlayerBloc {
         case StateTransistion.stop:
           break;
         case StateTransistion.fastforward:
+          await audioService.fastForward();
           break;
         case StateTransistion.rewind:
+          await audioService.rewind();
           break;
       }
     });
@@ -117,7 +119,7 @@ class AudioPlayerBloc {
   void _handlePosistionTransistions() {
     _posistionTransistion.stream.listen((position) async {
       logger.i('Position transistion: $position');
-      await audioService.seek(position);
+      await audioService.seekTo(position);
     });
   }
 

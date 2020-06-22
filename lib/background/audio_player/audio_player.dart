@@ -63,14 +63,41 @@ class AudioPlayer {
     }
   }
 
+  Future<void> pauseOrPlay() async {
+    _playing ? await pause() : await play();
+  }
+
   Future<void> seekTo(Duration position) async {
     if (_canSeek()) {
       await _player.seek(position);
+      _playing ? await play() : await pause();
     }
   }
 
-  Future<void> pauseOrPlay() async {
-    _playing ? await pause() : await play();
+  Future<void> fastForwardBy({int milliSeconds}) async {
+    final state = audioservice.AudioServiceBackground.state;
+    if (!_isValidState(state)) {
+      return;
+    }
+
+    final position = state.currentPosition;
+    final newPosition = Duration(
+      milliseconds: position.inMilliseconds + milliSeconds,
+    );
+    await seekTo(newPosition);
+  }
+
+  Future<void> rewindBy({int milliSeconds}) async {
+    final state = audioservice.AudioServiceBackground.state;
+    if (!_isValidState(state)) {
+      return;
+    }
+
+    final position = state?.currentPosition;
+    final newPosition = Duration(
+      milliseconds: position.inMilliseconds - milliSeconds,
+    );
+    await seekTo(newPosition.isNegative ? Duration.zero : newPosition);
   }
 
   Future<void> stop() async {
@@ -94,6 +121,9 @@ class AudioPlayer {
       processingState: _processingState,
       playing: _playing,
       position: _position,
+      updateTime: Duration(
+        milliseconds: DateTime.now().millisecondsSinceEpoch,
+      ),
     );
   }
 
@@ -119,6 +149,12 @@ class AudioPlayer {
     final audioPlaybackState = _player.playbackState;
     return audioPlaybackState != justaudio.AudioPlaybackState.connecting &&
         audioPlaybackState != justaudio.AudioPlaybackState.none;
+  }
+
+  bool _isValidState(audioservice.PlaybackState state) {
+    return state.position != null &&
+        state.updateTime != null &&
+        state.speed != null;
   }
 }
 

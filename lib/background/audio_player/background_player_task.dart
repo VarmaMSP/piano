@@ -39,6 +39,16 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
   }
 
   @override
+  Future<void> onFastForward() async {
+    await _audioPlayerController.fastForward();
+  }
+
+  @override
+  Future<void> onRewind() async {
+    await _audioPlayerController.rewind();
+  }
+
+  @override
   Future<void> onClick(audioservice.MediaButton button) async {
     await _audioPlayerController.pauseOrPlay();
   }

@@ -73,14 +73,14 @@ abstract class AudioService {
   // Pause the current episode
   Future<void> pause();
 
-  // Rewind the current episode by preset number of seconds
-  Future<void> rewind();
+  // Seek to specified position within current episodes duration
+  Future<void> seekTo(Duration position);
 
   // Fast forward the current episode by preset number of seconds
   Future<void> fastForward();
 
-  // Seek to specified position within current episodes duration
-  Future<void> seek(Duration position);
+  // Rewind the current episode by preset number of seconds
+  Future<void> rewind();
 
   Future<void> dispose();
 }

@@ -58,12 +58,6 @@ class _audioServiceImpl implements AudioService {
   }
 
   @override
-  Future<void> fastForward() async {}
-
-  @override
-  Future<void> rewind() async {}
-
-  @override
   Future<void> pause() async {
     await audioservice.AudioService.pause();
   }
@@ -78,7 +72,7 @@ class _audioServiceImpl implements AudioService {
   }
 
   @override
-  Future<void> seek(Duration t) async {
+  Future<void> seekTo(Duration t) async {
     final prevPosition = await _positionState.first;
     final duration = prevPosition.duration;
 
@@ -91,6 +85,16 @@ class _audioServiceImpl implements AudioService {
       ));
       await audioservice.AudioService.seekTo(t);
     }
+  }
+
+  @override
+  Future<void> fastForward() async {
+    await audioservice.AudioService.fastForward();
+  }
+
+  @override
+  Future<void> rewind() async {
+    await audioservice.AudioService.rewind();
   }
 
   @override

@@ -15,6 +15,10 @@ class PlaybackControls extends StatelessWidget {
         () => audioPlayerBloc.transistionState(StateTransistion.play);
     final onPause =
         () => audioPlayerBloc.transistionState(StateTransistion.pause);
+    final onFastForward =
+        () => audioPlayerBloc.transistionState(StateTransistion.fastforward);
+    final onRewind =
+        () => audioPlayerBloc.transistionState(StateTransistion.rewind);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -27,7 +31,7 @@ class PlaybackControls extends StatelessWidget {
               color: TWColors.gray.shade700,
               size: 24.0,
             ),
-            onPressed: () {},
+            onPressed: onRewind,
           ),
         ),
         StreamBuilder<AudioState>(
@@ -44,7 +48,7 @@ class PlaybackControls extends StatelessWidget {
               color: TWColors.gray.shade700,
               size: 24.0,
             ),
-            onPressed: () {},
+            onPressed: onFastForward,
           ),
         ),
       ],

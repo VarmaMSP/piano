@@ -31,12 +31,20 @@ class AudioPlayerController {
     await audioPlayer.pause();
   }
 
+  Future<void> pauseOrPlay() async {
+    await audioPlayer.pauseOrPlay();
+  }
+
   Future<void> seekTo(Duration position) async {
     await audioPlayer.seekTo(position);
   }
 
-  Future<void> pauseOrPlay() async {
-    await audioPlayer.pauseOrPlay();
+  Future<void> fastForward() async {
+    await audioPlayer.fastForwardBy(milliSeconds: 30000);
+  }
+
+  Future<void> rewind() async {
+    await audioPlayer.rewindBy(milliSeconds: 30000);
   }
 
   Future<void> stop() async {
