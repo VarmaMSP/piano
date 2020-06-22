@@ -33,4 +33,7 @@ class DbLayer extends Store {
 
   @override
   AudioPlayerStore get audioPlayer => _audioPlayerDb;
+
+  @override
+  PlaybackStore get playback => throw UnimplementedError();
 }

@@ -34,4 +34,7 @@ class ApiStore extends Store {
   @override
   // This needs to be implemented at db layer
   AudioPlayerStore get audioPlayer => throw UnimplementedError();
+
+  @override
+  PlaybackStore get playback => throw UnimplementedError();
 }

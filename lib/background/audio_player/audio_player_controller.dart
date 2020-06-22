@@ -102,7 +102,11 @@ class AudioPlayerController {
     final nowPlaying = await _nowPlayingSubject.first;
     final playbackState = audioservice.AudioServiceBackground.state;
     if (nowPlaying != null && utils.isValidState(playbackState)) {
-      // persist playback here
+      await _store.playback.save(Playback(
+        episodeId: nowPlaying.episode.id,
+        progress: 0,
+        duration: 0,
+      ));
     }
   }
 
