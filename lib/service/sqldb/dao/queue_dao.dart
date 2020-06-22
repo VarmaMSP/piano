@@ -74,10 +74,10 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
   }
 
   Stream<Queue> watchQueue() {
-    return Rx.combineLatest2<PreferenceValue, List<AudioTrack>, Queue>(
+    return Rx.combineLatest2<QueuePreference, List<AudioTrack>, Queue>(
       (select(preferences)..where((tbl) => tbl.key.equals(QueuePreference.key)))
           .watchSingle()
-          .map((x) => x?.value),
+          .map((x) => x.value.queuePreference),
       (select(audioTracks)
             ..orderBy([
               (tbl) => OrderingTerm(expression: tbl.position),
@@ -100,13 +100,11 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
               );
             }).toList(),
           ),
-      (prefs, tracks) => prefs == null
-          ? Queue.empty()
-          : Queue(
-              audioTracks: tracks ?? [],
-              position: prefs.queuePreference.position,
-              enabled: prefs.queuePreference.enabled,
-            ),
+      (prefs, tracks) => Queue(
+        audioTracks: tracks ?? [],
+        position: prefs.position,
+        enabled: prefs.enabled,
+      ),
     );
   }
 

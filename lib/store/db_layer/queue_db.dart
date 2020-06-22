@@ -17,7 +17,7 @@ class QueueDb extends QueueStore {
 
   @override
   Future<Queue> get_() {
-    throw _queueDao.getQueue();
+    return _queueDao.getQueue();
   }
 
   @override

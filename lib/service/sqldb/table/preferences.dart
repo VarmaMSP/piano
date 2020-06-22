@@ -16,6 +16,10 @@ class PreferenceValue {
 
   PreferenceValue({this.queuePreference});
 
+  factory PreferenceValue.empty() {
+    return PreferenceValue(queuePreference: Queue.empty().preference);
+  }
+
   factory PreferenceValue.fromJson(Map<String, dynamic> json) {
     return _$PreferenceValueFromJson(json);
   }
@@ -33,7 +37,7 @@ class PreferenceValueTypeConverter
   PreferenceValue mapToDart(String fromDb) {
     return fromDb != null
         ? PreferenceValue.fromJson(json.decode(fromDb) as Map<String, dynamic>)
-        : null;
+        : PreferenceValue.empty();
   }
 
   @override

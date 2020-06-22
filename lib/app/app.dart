@@ -68,7 +68,7 @@ class _AppState extends State<App> with TickerProviderStateMixin {
           preferredSize: const Size(0, 0),
           child: Container(),
         ),
-        floatingActionButton: kProfileMode
+        floatingActionButton: kDebugMode
             ? FloatingActionButton(
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
