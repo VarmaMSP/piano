@@ -52,6 +52,10 @@ class AudioPlayerSnapshot extends Equatable {
         : AudioPlayerSnapshot(queue: queue.addToBottom(audioTrack));
   }
 
+  AudioPlayerSnapshot skipToNext() {
+    return hasNextTrack ? AudioPlayerSnapshot(queue: queue.skipToNext()) : this;
+  }
+
   /// True if there are no tracks to play
   bool get isEmpty => queue.isEmpty;
 
@@ -60,6 +64,12 @@ class AudioPlayerSnapshot extends Equatable {
 
   /// Returns current audio track
   AudioTrack get nowPlaying => queue.nowPlaying;
+
+  /// Returns true if next track is available
+  bool get hasNextTrack => queue.hasNextTrack;
+
+  /// Returns true if prev track is available
+  bool get hasPreviousTrack => queue.hasPreviousTrack;
 
   /// Returns queue if enabled
   Queue get enabledQueue => queue.enabled ? queue : null;
@@ -114,7 +124,20 @@ class Queue extends Equatable {
     );
   }
 
+  Queue skipToNext() {
+    return Queue(
+      enabled: enabled,
+      position: position + 1,
+      audioTracks: audioTracks,
+    );
+  }
+
   bool get isEmpty => position == -1;
+
+  bool get hasNextTrack =>
+      !isEmpty && enabled || position + 1 < audioTracks.length;
+
+  bool get hasPreviousTrack => !isEmpty && enabled && position - 1 >= 0;
 
   AudioTrack get nowPlaying => position != -1 ? audioTracks[position] : null;
 

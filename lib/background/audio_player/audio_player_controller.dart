@@ -1,5 +1,8 @@
+import 'package:phenopod/service/http_client/http_client.dart';
+import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store_impl.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:audio_service/audio_service.dart' as audioservice;
@@ -7,74 +10,95 @@ import 'package:audio_service/audio_service.dart' as audioservice;
 import 'audio_player.dart';
 
 class AudioPlayerController {
-  final Store store;
-  final AudioPlayer audioPlayer;
+  Store _store;
+  AudioPlayer _audioPlayer;
 
+  /// Stream of upto data player snapshots from db
+  final BehaviorSubject<AudioPlayerSnapshot> _audioPlayerSnapshotSubject =
+      BehaviorSubject<AudioPlayerSnapshot>();
+
+  /// Stream of now playing track from db
   final BehaviorSubject<AudioTrack> _nowPlayingSubject =
       BehaviorSubject<AudioTrack>();
 
-  final BehaviorSubject<Queue> _queueSubject = BehaviorSubject<Queue>();
-
-  AudioPlayerController(this.store, this.audioPlayer);
+  AudioPlayerController({SqlDb sqlDb, HttpClient httpClient}) {
+    _store = newStore(sqlDb, httpClient);
+    _audioPlayer = AudioPlayer(onComplete: playNext);
+  }
 
   Future<void> start() async {
-    await audioPlayer.start();
+    await _audioPlayer.start();
     _handleStateChanges();
     await syncSnapshot();
   }
 
   Future<void> play() async {
-    await audioPlayer.play();
+    await _audioPlayer.play();
   }
 
   Future<void> pause() async {
-    await audioPlayer.pause();
+    await _audioPlayer.pause();
   }
 
   Future<void> pauseOrPlay() async {
-    await audioPlayer.pauseOrPlay();
+    await _audioPlayer.pauseOrPlay();
   }
 
   Future<void> seekTo(Duration position) async {
-    await audioPlayer.seekTo(position);
+    await _audioPlayer.seekTo(position);
   }
 
   Future<void> fastForward() async {
-    await audioPlayer.fastForwardBy(milliSeconds: 30000);
+    await _audioPlayer.fastForwardBy(milliSeconds: 30000);
   }
 
   Future<void> rewind() async {
-    await audioPlayer.rewindBy(milliSeconds: 30000);
+    await _audioPlayer.rewindBy(milliSeconds: 30000);
+  }
+
+  Future<void> playNext() async {
+    final snapshot = await _audioPlayerSnapshotSubject.first;
+    if (snapshot.hasNextTrack) {
+      final newSnapshot = snapshot.skipToNext();
+      await Future.wait([
+        _store.audioPlayer.saveSnapshot(newSnapshot),
+        _audioPlayer.playMediaItem(_trackToMediaItem(newSnapshot.nowPlaying)),
+      ]);
+    }
   }
 
   Future<void> stop() async {
-    await audioPlayer.stop();
+    await _audioPlayer.stop();
+    await _audioPlayerSnapshotSubject.close();
+    await _nowPlayingSubject.close();
   }
 
   Future<void> syncSnapshot() async {
-    final snapshot = await store.audioPlayer.getSnapshotOnce();
+    final snapshot = await _store.audioPlayer.getSnapshotOnce();
+    _audioPlayerSnapshotSubject.add(snapshot);
     _nowPlayingSubject.add(snapshot.nowPlaying);
-    _queueSubject.add(snapshot.enabledQueue);
   }
 
   Future<void> syncNowPlaying() async {
-    final nowPlaying = await store.audioPlayer.getNowPlaying();
+    final nowPlaying = await _store.audioPlayer.getNowPlaying();
     _nowPlayingSubject.add(nowPlaying);
   }
 
   void _handleStateChanges() {
     _nowPlayingSubject.stream.distinct().listen((audioTrack) {
       if (audioTrack != null) {
-        audioPlayer.playMediaItem(
-          audioservice.MediaItem(
-            id: audioTrack.episode.mediaUrl,
-            artist: audioTrack.podcast.author,
-            album: audioTrack.podcast.title,
-            title: audioTrack.episode.title,
-            artUri: '$thumbnailUrl/${audioTrack.podcast.urlParam}.jpg',
-          ),
-        );
+        _audioPlayer.playMediaItem(_trackToMediaItem(audioTrack));
       }
     });
+  }
+
+  audioservice.MediaItem _trackToMediaItem(AudioTrack audioTrack) {
+    return audioservice.MediaItem(
+      id: audioTrack.episode.mediaUrl,
+      artist: audioTrack.podcast.author,
+      album: audioTrack.podcast.title,
+      title: audioTrack.episode.title,
+      artUri: '$thumbnailUrl/${audioTrack.podcast.urlParam}.jpg',
+    );
   }
 }

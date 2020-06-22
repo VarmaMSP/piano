@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart' as audioservice;
+import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart' as justaudio;
 
 class AudioPlayer {
   final justaudio.AudioPlayer _player = justaudio.AudioPlayer();
+  final Future<void> Function() onComplete;
 
   bool _playing = false;
   Duration _position = Duration.zero;
@@ -12,6 +14,8 @@ class AudioPlayer {
       audioservice.AudioProcessingState.none;
 
   StreamSubscription<justaudio.AudioPlaybackEvent> _eventSubscription;
+
+  AudioPlayer({@required this.onComplete});
 
   Future<void> start() async {
     _eventSubscription = _player.playbackEventStream.listen(
@@ -27,8 +31,10 @@ class AudioPlayer {
         } else if (event.state == justaudio.AudioPlaybackState.playing) {
           _playing = true;
           _processingState = audioservice.AudioProcessingState.ready;
+        } else if (event.state == justaudio.AudioPlaybackState.completed) {
+          await onComplete();
+          return;
         }
-
         await _setState();
       },
     );
@@ -38,6 +44,10 @@ class AudioPlayer {
   }
 
   Future<void> playMediaItem(audioservice.MediaItem mediaItem) async {
+    if (mediaItem == null) {
+      return;
+    }
+
     if (_canStop()) {
       await _player.stop();
     }
@@ -49,6 +59,18 @@ class AudioPlayer {
     );
 
     await play();
+  }
+
+  Future<void> skipTo(audioservice.MediaItem mediaItem) async {
+    if (mediaItem == null) {
+      return;
+    }
+
+    _playing = false;
+    _position = Duration.zero;
+    _processingState = audioservice.AudioProcessingState.skippingToQueueItem;
+    await _setState();
+    await playMediaItem(mediaItem);
   }
 
   Future<void> play() async {
