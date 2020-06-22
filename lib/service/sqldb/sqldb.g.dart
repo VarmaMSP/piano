@@ -5,6 +5,24 @@
 part of 'sqldb.dart';
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+PreferenceValue _$PreferenceValueFromJson(Map<String, dynamic> json) {
+  return PreferenceValue(
+    queuePreference: json['queue_preference'] == null
+        ? null
+        : QueuePreference.fromJson(
+            json['queue_preference'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$PreferenceValueToJson(PreferenceValue instance) =>
+    <String, dynamic>{
+      'queue_preference': instance.queuePreference,
+    };
+
+// **************************************************************************
 // MoorGenerator
 // **************************************************************************
 
@@ -1694,252 +1712,6 @@ class $AudioTracksTable extends AudioTracks
   }
 }
 
-class AudioPlayerSnapshotRow extends DataClass
-    implements Insertable<AudioPlayerSnapshotRow> {
-  final int id;
-  final int queuePosition;
-  final bool queueEnabled;
-  AudioPlayerSnapshotRow(
-      {@required this.id,
-      @required this.queuePosition,
-      @required this.queueEnabled});
-  factory AudioPlayerSnapshotRow.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final boolType = db.typeSystem.forDartType<bool>();
-    return AudioPlayerSnapshotRow(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      queuePosition: intType
-          .mapFromDatabaseResponse(data['${effectivePrefix}queue_position']),
-      queueEnabled: boolType
-          .mapFromDatabaseResponse(data['${effectivePrefix}queue_enabled']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
-    }
-    if (!nullToAbsent || queuePosition != null) {
-      map['queue_position'] = Variable<int>(queuePosition);
-    }
-    if (!nullToAbsent || queueEnabled != null) {
-      map['queue_enabled'] = Variable<bool>(queueEnabled);
-    }
-    return map;
-  }
-
-  AudioPlayerSnapshotsCompanion toCompanion(bool nullToAbsent) {
-    return AudioPlayerSnapshotsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      queuePosition: queuePosition == null && nullToAbsent
-          ? const Value.absent()
-          : Value(queuePosition),
-      queueEnabled: queueEnabled == null && nullToAbsent
-          ? const Value.absent()
-          : Value(queueEnabled),
-    );
-  }
-
-  factory AudioPlayerSnapshotRow.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return AudioPlayerSnapshotRow(
-      id: serializer.fromJson<int>(json['id']),
-      queuePosition: serializer.fromJson<int>(json['queuePosition']),
-      queueEnabled: serializer.fromJson<bool>(json['queueEnabled']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'queuePosition': serializer.toJson<int>(queuePosition),
-      'queueEnabled': serializer.toJson<bool>(queueEnabled),
-    };
-  }
-
-  AudioPlayerSnapshotRow copyWith(
-          {int id, int queuePosition, bool queueEnabled}) =>
-      AudioPlayerSnapshotRow(
-        id: id ?? this.id,
-        queuePosition: queuePosition ?? this.queuePosition,
-        queueEnabled: queueEnabled ?? this.queueEnabled,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('AudioPlayerSnapshotRow(')
-          ..write('id: $id, ')
-          ..write('queuePosition: $queuePosition, ')
-          ..write('queueEnabled: $queueEnabled')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => $mrjf(
-      $mrjc(id.hashCode, $mrjc(queuePosition.hashCode, queueEnabled.hashCode)));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is AudioPlayerSnapshotRow &&
-          other.id == this.id &&
-          other.queuePosition == this.queuePosition &&
-          other.queueEnabled == this.queueEnabled);
-}
-
-class AudioPlayerSnapshotsCompanion
-    extends UpdateCompanion<AudioPlayerSnapshotRow> {
-  final Value<int> id;
-  final Value<int> queuePosition;
-  final Value<bool> queueEnabled;
-  const AudioPlayerSnapshotsCompanion({
-    this.id = const Value.absent(),
-    this.queuePosition = const Value.absent(),
-    this.queueEnabled = const Value.absent(),
-  });
-  AudioPlayerSnapshotsCompanion.insert({
-    this.id = const Value.absent(),
-    @required int queuePosition,
-    @required bool queueEnabled,
-  })  : queuePosition = Value(queuePosition),
-        queueEnabled = Value(queueEnabled);
-  static Insertable<AudioPlayerSnapshotRow> custom({
-    Expression<int> id,
-    Expression<int> queuePosition,
-    Expression<bool> queueEnabled,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (queuePosition != null) 'queue_position': queuePosition,
-      if (queueEnabled != null) 'queue_enabled': queueEnabled,
-    });
-  }
-
-  AudioPlayerSnapshotsCompanion copyWith(
-      {Value<int> id, Value<int> queuePosition, Value<bool> queueEnabled}) {
-    return AudioPlayerSnapshotsCompanion(
-      id: id ?? this.id,
-      queuePosition: queuePosition ?? this.queuePosition,
-      queueEnabled: queueEnabled ?? this.queueEnabled,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (queuePosition.present) {
-      map['queue_position'] = Variable<int>(queuePosition.value);
-    }
-    if (queueEnabled.present) {
-      map['queue_enabled'] = Variable<bool>(queueEnabled.value);
-    }
-    return map;
-  }
-}
-
-class $AudioPlayerSnapshotsTable extends AudioPlayerSnapshots
-    with TableInfo<$AudioPlayerSnapshotsTable, AudioPlayerSnapshotRow> {
-  final GeneratedDatabase _db;
-  final String _alias;
-  $AudioPlayerSnapshotsTable(this._db, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
-  @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn(
-      'id',
-      $tableName,
-      false,
-    );
-  }
-
-  final VerificationMeta _queuePositionMeta =
-      const VerificationMeta('queuePosition');
-  GeneratedIntColumn _queuePosition;
-  @override
-  GeneratedIntColumn get queuePosition =>
-      _queuePosition ??= _constructQueuePosition();
-  GeneratedIntColumn _constructQueuePosition() {
-    return GeneratedIntColumn(
-      'queue_position',
-      $tableName,
-      false,
-    );
-  }
-
-  final VerificationMeta _queueEnabledMeta =
-      const VerificationMeta('queueEnabled');
-  GeneratedBoolColumn _queueEnabled;
-  @override
-  GeneratedBoolColumn get queueEnabled =>
-      _queueEnabled ??= _constructQueueEnabled();
-  GeneratedBoolColumn _constructQueueEnabled() {
-    return GeneratedBoolColumn(
-      'queue_enabled',
-      $tableName,
-      false,
-    );
-  }
-
-  @override
-  List<GeneratedColumn> get $columns => [id, queuePosition, queueEnabled];
-  @override
-  $AudioPlayerSnapshotsTable get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'audio_player_snapshots';
-  @override
-  final String actualTableName = 'audio_player_snapshots';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<AudioPlayerSnapshotRow> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
-    }
-    if (data.containsKey('queue_position')) {
-      context.handle(
-          _queuePositionMeta,
-          queuePosition.isAcceptableOrUnknown(
-              data['queue_position'], _queuePositionMeta));
-    } else if (isInserting) {
-      context.missing(_queuePositionMeta);
-    }
-    if (data.containsKey('queue_enabled')) {
-      context.handle(
-          _queueEnabledMeta,
-          queueEnabled.isAcceptableOrUnknown(
-              data['queue_enabled'], _queueEnabledMeta));
-    } else if (isInserting) {
-      context.missing(_queueEnabledMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  AudioPlayerSnapshotRow map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return AudioPlayerSnapshotRow.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  $AudioPlayerSnapshotsTable createAlias(String alias) {
-    return $AudioPlayerSnapshotsTable(_db, alias);
-  }
-}
-
 class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
   final String episodeId;
   final double progress;
@@ -2235,6 +2007,194 @@ class $PlaybacksTable extends Playbacks
   }
 }
 
+class PreferenceRow extends DataClass implements Insertable<PreferenceRow> {
+  final String key;
+  final PreferenceValue value;
+  PreferenceRow({@required this.key, this.value});
+  factory PreferenceRow.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return PreferenceRow(
+      key: stringType.mapFromDatabaseResponse(data['${effectivePrefix}key']),
+      value: $PreferencesTable.$converter0.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}value'])),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || key != null) {
+      map['key'] = Variable<String>(key);
+    }
+    if (!nullToAbsent || value != null) {
+      final converter = $PreferencesTable.$converter0;
+      map['value'] = Variable<String>(converter.mapToSql(value));
+    }
+    return map;
+  }
+
+  PreferencesCompanion toCompanion(bool nullToAbsent) {
+    return PreferencesCompanion(
+      key: key == null && nullToAbsent ? const Value.absent() : Value(key),
+      value:
+          value == null && nullToAbsent ? const Value.absent() : Value(value),
+    );
+  }
+
+  factory PreferenceRow.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return PreferenceRow(
+      key: serializer.fromJson<String>(json['key']),
+      value: serializer.fromJson<PreferenceValue>(json['value']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'key': serializer.toJson<String>(key),
+      'value': serializer.toJson<PreferenceValue>(value),
+    };
+  }
+
+  PreferenceRow copyWith({String key, PreferenceValue value}) => PreferenceRow(
+        key: key ?? this.key,
+        value: value ?? this.value,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PreferenceRow(')
+          ..write('key: $key, ')
+          ..write('value: $value')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(key.hashCode, value.hashCode));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is PreferenceRow &&
+          other.key == this.key &&
+          other.value == this.value);
+}
+
+class PreferencesCompanion extends UpdateCompanion<PreferenceRow> {
+  final Value<String> key;
+  final Value<PreferenceValue> value;
+  const PreferencesCompanion({
+    this.key = const Value.absent(),
+    this.value = const Value.absent(),
+  });
+  PreferencesCompanion.insert({
+    @required String key,
+    this.value = const Value.absent(),
+  }) : key = Value(key);
+  static Insertable<PreferenceRow> custom({
+    Expression<String> key,
+    Expression<String> value,
+  }) {
+    return RawValuesInsertable({
+      if (key != null) 'key': key,
+      if (value != null) 'value': value,
+    });
+  }
+
+  PreferencesCompanion copyWith(
+      {Value<String> key, Value<PreferenceValue> value}) {
+    return PreferencesCompanion(
+      key: key ?? this.key,
+      value: value ?? this.value,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (key.present) {
+      map['key'] = Variable<String>(key.value);
+    }
+    if (value.present) {
+      final converter = $PreferencesTable.$converter0;
+      map['value'] = Variable<String>(converter.mapToSql(value.value));
+    }
+    return map;
+  }
+}
+
+class $PreferencesTable extends Preferences
+    with TableInfo<$PreferencesTable, PreferenceRow> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $PreferencesTable(this._db, [this._alias]);
+  final VerificationMeta _keyMeta = const VerificationMeta('key');
+  GeneratedTextColumn _key;
+  @override
+  GeneratedTextColumn get key => _key ??= _constructKey();
+  GeneratedTextColumn _constructKey() {
+    return GeneratedTextColumn(
+      'key',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _valueMeta = const VerificationMeta('value');
+  GeneratedTextColumn _value;
+  @override
+  GeneratedTextColumn get value => _value ??= _constructValue();
+  GeneratedTextColumn _constructValue() {
+    return GeneratedTextColumn(
+      'value',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [key, value];
+  @override
+  $PreferencesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'preferences';
+  @override
+  final String actualTableName = 'preferences';
+  @override
+  VerificationContext validateIntegrity(Insertable<PreferenceRow> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('key')) {
+      context.handle(
+          _keyMeta, key.isAcceptableOrUnknown(data['key'], _keyMeta));
+    } else if (isInserting) {
+      context.missing(_keyMeta);
+    }
+    context.handle(_valueMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {key};
+  @override
+  PreferenceRow map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return PreferenceRow.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $PreferencesTable createAlias(String alias) {
+    return $PreferencesTable(_db, alias);
+  }
+
+  static TypeConverter<PreferenceValue, String> $converter0 =
+      const PreferenceValueTypeConverter();
+}
+
 abstract class _$SqlDb extends GeneratedDatabase {
   _$SqlDb(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   _$SqlDb.connect(DatabaseConnection c) : super.connect(c);
@@ -2244,23 +2204,24 @@ abstract class _$SqlDb extends GeneratedDatabase {
   $EpisodesTable get episodes => _episodes ??= $EpisodesTable(this);
   $AudioTracksTable _audioTracks;
   $AudioTracksTable get audioTracks => _audioTracks ??= $AudioTracksTable(this);
-  $AudioPlayerSnapshotsTable _audioPlayerSnapshots;
-  $AudioPlayerSnapshotsTable get audioPlayerSnapshots =>
-      _audioPlayerSnapshots ??= $AudioPlayerSnapshotsTable(this);
   $PlaybacksTable _playbacks;
   $PlaybacksTable get playbacks => _playbacks ??= $PlaybacksTable(this);
+  $PreferencesTable _preferences;
+  $PreferencesTable get preferences => _preferences ??= $PreferencesTable(this);
   PodcastDao _podcastDao;
   PodcastDao get podcastDao => _podcastDao ??= PodcastDao(this as SqlDb);
-  AudioPlayerDao _audioPlayerDao;
-  AudioPlayerDao get audioPlayerDao =>
-      _audioPlayerDao ??= AudioPlayerDao(this as SqlDb);
+  QueueDao _queueDao;
+  QueueDao get queueDao => _queueDao ??= QueueDao(this as SqlDb);
   PlaybackDao _playbackDao;
   PlaybackDao get playbackDao => _playbackDao ??= PlaybackDao(this as SqlDb);
+  PreferenceDao _preferenceDao;
+  PreferenceDao get preferenceDao =>
+      _preferenceDao ??= PreferenceDao(this as SqlDb);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [podcasts, episodes, audioTracks, audioPlayerSnapshots, playbacks];
+      [podcasts, episodes, audioTracks, playbacks, preferences];
 }
 
 // **************************************************************************
@@ -2271,13 +2232,15 @@ mixin _$PodcastDaoMixin on DatabaseAccessor<SqlDb> {
   $PodcastsTable get podcasts => attachedDatabase.podcasts;
   $EpisodesTable get episodes => attachedDatabase.episodes;
 }
-mixin _$AudioPlayerDaoMixin on DatabaseAccessor<SqlDb> {
+mixin _$PlaybackDaoMixin on DatabaseAccessor<SqlDb> {
+  $PlaybacksTable get playbacks => attachedDatabase.playbacks;
+}
+mixin _$PreferenceDaoMixin on DatabaseAccessor<SqlDb> {
+  $PreferencesTable get preferences => attachedDatabase.preferences;
+}
+mixin _$QueueDaoMixin on DatabaseAccessor<SqlDb> {
   $PodcastsTable get podcasts => attachedDatabase.podcasts;
   $EpisodesTable get episodes => attachedDatabase.episodes;
   $AudioTracksTable get audioTracks => attachedDatabase.audioTracks;
-  $AudioPlayerSnapshotsTable get audioPlayerSnapshots =>
-      attachedDatabase.audioPlayerSnapshots;
-}
-mixin _$PlaybackDaoMixin on DatabaseAccessor<SqlDb> {
-  $PlaybacksTable get playbacks => attachedDatabase.playbacks;
+  $PreferencesTable get preferences => attachedDatabase.preferences;
 }

@@ -2,18 +2,20 @@
 
 // ignore_for_file: unnecessary_this, return_of_invalid_type, constant_identifier_names, prefer_const_constructors_in_immutables, sort_unnamed_constructors_first, join_return_with_assignment
 
-part of 'audio_player.dart';
+part of 'queue.dart';
 
 // **************************************************************************
 // CopyWithGenerator
 // **************************************************************************
 
-extension AudioPlayerSnapshotCopyWithExtension on AudioPlayerSnapshot {
-  AudioPlayerSnapshot copyWith({
-    Queue queue,
+extension QueuePreferenceCopyWithExtension on QueuePreference {
+  QueuePreference copyWith({
+    bool enabled,
+    int position,
   }) {
-    return AudioPlayerSnapshot(
-      queue: queue ?? this.queue,
+    return QueuePreference(
+      enabled: enabled ?? this.enabled,
+      position: position ?? this.position,
     );
   }
 }
@@ -45,3 +47,20 @@ extension AudioTrackCopyWithExtension on AudioTrack {
     );
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+QueuePreference _$QueuePreferenceFromJson(Map<String, dynamic> json) {
+  return QueuePreference(
+    position: json['position'] as int,
+    enabled: json['enabled'] as bool,
+  );
+}
+
+Map<String, dynamic> _$QueuePreferenceToJson(QueuePreference instance) =>
+    <String, dynamic>{
+      'position': instance.position,
+      'enabled': instance.enabled,
+    };

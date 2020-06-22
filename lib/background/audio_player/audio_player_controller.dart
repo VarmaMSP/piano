@@ -23,8 +23,7 @@ class AudioPlayerController {
   StreamSubscription<dynamic> _tickerSubscription;
 
   /// Stream of upto data player snapshots from db
-  final BehaviorSubject<AudioPlayerSnapshot> _audioPlayerSnapshotSubject =
-      BehaviorSubject<AudioPlayerSnapshot>();
+  final BehaviorSubject<Queue> _queueSubject = BehaviorSubject<Queue>();
 
   /// Stream of now playing track from db
   final BehaviorSubject<AudioTrack> _nowPlayingSubject =
@@ -42,7 +41,7 @@ class AudioPlayerController {
   Future<void> start() async {
     await _audioPlayer.start();
     _handleStateChanges();
-    await syncSnapshot();
+    await syncQueue();
   }
 
   Future<void> play() async {
@@ -71,29 +70,29 @@ class AudioPlayerController {
 
   Future<void> stop() async {
     await _audioPlayer.stop();
-    await _audioPlayerSnapshotSubject.close();
+    await _queueSubject.close();
     await _nowPlayingSubject.close();
     await _tickerSubscription.cancel();
   }
 
-  Future<void> syncSnapshot() async {
-    final snapshot = await _store.audioPlayer.getSnapshotOnce();
-    _audioPlayerSnapshotSubject.add(snapshot);
-    _nowPlayingSubject.add(snapshot.nowPlaying);
+  Future<void> syncQueue() async {
+    final queue = await _store.queue.get_();
+    _queueSubject.add(queue);
+    _nowPlayingSubject.add(queue.nowPlaying);
   }
 
   Future<void> syncNowPlaying() async {
-    final nowPlaying = await _store.audioPlayer.getNowPlaying();
+    final nowPlaying = await _store.queue.getNowPlaying();
     _nowPlayingSubject.add(nowPlaying);
   }
 
   Future<void> _playNext() async {
-    final snapshot = await _audioPlayerSnapshotSubject.first;
-    if (snapshot.hasNextTrack) {
-      final newSnapshot = snapshot.skipToNext();
+    final queue = await _queueSubject.first;
+    if (queue.hasNextTrack) {
+      final newQueue = queue.skipToNext();
       await Future.wait([
-        _store.audioPlayer.saveSnapshot(newSnapshot),
-        _audioPlayer.playMediaItem(newSnapshot.nowPlaying.toMediaItem()),
+        _store.queue.save(newQueue),
+        _audioPlayer.playMediaItem(newQueue.nowPlaying.toMediaItem()),
       ]);
     }
   }

@@ -1,86 +1,37 @@
 import 'package:equatable/equatable.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:audio_service/audio_service.dart' as audioservice;
+import 'package:json_annotation/json_annotation.dart';
 import 'package:phenopod/utils/request.dart';
 
 import 'episode.dart';
 import 'podcast.dart';
 
-part 'audio_player.g.dart';
+part 'queue.g.dart';
 
+/// Used to store queue preference in preferences table
 @CopyWith()
-class AudioPlayerSnapshot extends Equatable {
-  final Queue queue;
+@JsonSerializable(fieldRename: FieldRename.snake)
+class QueuePreference extends Equatable {
+  static const key = 'QUEUE_PREFERENCE';
+  final int position;
+  final bool enabled;
 
-  AudioPlayerSnapshot({this.queue});
+  const QueuePreference({
+    this.position,
+    this.enabled,
+  });
 
-  factory AudioPlayerSnapshot.empty() {
-    return AudioPlayerSnapshot(queue: Queue());
+  factory QueuePreference.fromJson(Map<String, dynamic> json) {
+    return _$QueuePreferenceFromJson(json);
   }
 
-  factory AudioPlayerSnapshot.singleTrack(AudioTrack audioTrack) {
-    return AudioPlayerSnapshot(
-      queue: Queue(
-        enabled: false,
-        position: 0,
-        audioTracks: [audioTrack],
-      ),
-    );
+  Map<String, dynamic> toJson() {
+    return _$QueuePreferenceToJson(this);
   }
-
-  factory AudioPlayerSnapshot.singleTrackWithQueue(AudioTrack audioTrack) {
-    return AudioPlayerSnapshot(
-      queue: Queue(
-        enabled: true,
-        position: 0,
-        audioTracks: [audioTrack],
-      ),
-    );
-  }
-
-  AudioPlayerSnapshot add(AudioTrack audioTrack) {
-    return AudioPlayerSnapshot.singleTrack(audioTrack);
-  }
-
-  AudioPlayerSnapshot addToQueueTop(AudioTrack audioTrack) {
-    return isEmpty
-        ? AudioPlayerSnapshot.singleTrackWithQueue(audioTrack)
-        : AudioPlayerSnapshot(queue: queue.addToTop(audioTrack));
-  }
-
-  AudioPlayerSnapshot addToQueueBottom(AudioTrack audioTrack) {
-    return isEmpty
-        ? AudioPlayerSnapshot.singleTrackWithQueue(audioTrack)
-        : AudioPlayerSnapshot(queue: queue.addToBottom(audioTrack));
-  }
-
-  AudioPlayerSnapshot skipToNext() {
-    return hasNextTrack ? AudioPlayerSnapshot(queue: queue.skipToNext()) : this;
-  }
-
-  /// True if there are no tracks to play
-  bool get isEmpty => queue.isEmpty;
-
-  /// True if queue is enabled
-  bool get isQueueEnabled => queue.enabled;
-
-  /// Returns current audio track
-  AudioTrack get nowPlaying => queue.nowPlaying;
-
-  /// Returns true if next track is available
-  bool get hasNextTrack => queue.hasNextTrack;
-
-  /// Returns true if prev track is available
-  bool get hasPreviousTrack => queue.hasPreviousTrack;
-
-  /// Returns queue if enabled
-  Queue get enabledQueue => queue.enabled ? queue : null;
 
   @override
-  List<Object> get props => [queue];
-
-  @override
-  String toString() => '{ Queue: ${queue.toString()} }';
+  List<Object> get props => [position, enabled];
 }
 
 @CopyWith()
@@ -93,12 +44,29 @@ class Queue extends Equatable {
   /// Store AudioTracks currently in audio player
   final List<AudioTrack> audioTracks;
 
-  Queue({
-    this.position = -1,
-    this.enabled = false,
-    this.audioTracks = const [],
+  const Queue({
+    this.position,
+    this.enabled,
+    this.audioTracks,
   });
 
+  factory Queue.empty() {
+    return Queue(
+      position: -1,
+      enabled: false,
+      audioTracks: [],
+    );
+  }
+
+  Queue add(AudioTrack audioTrack) {
+    return Queue(
+      enabled: false,
+      position: 0,
+      audioTracks: [audioTrack],
+    );
+  }
+
+  /// Returns a new queue with track in next play position
   Queue addToTop(AudioTrack audioTrack) {
     final trackPos = position + 1;
     return Queue(
@@ -114,6 +82,7 @@ class Queue extends Equatable {
     );
   }
 
+  /// Returns a new queue with track in last play position
   Queue addToBottom(AudioTrack audioTrack) {
     final trackPos = audioTracks.length;
     return Queue(
@@ -126,6 +95,7 @@ class Queue extends Equatable {
     );
   }
 
+  /// Returns a new queue with next track in active position
   Queue skipToNext() {
     return Queue(
       enabled: enabled,
@@ -134,21 +104,30 @@ class Queue extends Equatable {
     );
   }
 
+  /// Returns true if there are no tracks to play
   bool get isEmpty => position == -1;
 
+  /// Returns true if next track is available
   bool get hasNextTrack =>
       !isEmpty && enabled || position + 1 < audioTracks.length;
 
+  /// Returns true if prev track is available
   bool get hasPreviousTrack => !isEmpty && enabled && position - 1 >= 0;
 
+  /// Returns active audio track
   AudioTrack get nowPlaying => position != -1 ? audioTracks[position] : null;
+
+  /// Returns preference
+  QueuePreference get preference => QueuePreference(
+        enabled: enabled,
+        position: position,
+      );
 
   @override
   List<Object> get props => [position, enabled, audioTracks];
 
   @override
-  String toString() =>
-      '{ position: $position, enabled: $enabled, tracks: ${audioTracks.length} }';
+  String toString() => '{ position: $position tracks: ${audioTracks.length} }';
 }
 
 @CopyWith()
@@ -157,7 +136,7 @@ class AudioTrack extends Equatable {
   final Episode episode;
   final Podcast podcast;
 
-  AudioTrack({this.position, this.episode, this.podcast});
+  const AudioTrack({this.position, this.episode, this.podcast});
 
   audioservice.MediaItem toMediaItem() {
     return audioservice.MediaItem(

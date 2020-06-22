@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
@@ -8,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:phenopod/background/moor_server/main.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'sqldb.g.dart';
 
@@ -15,13 +17,14 @@ part 'sqldb.g.dart';
 part 'table/podcasts.dart';
 part 'table/episodes.dart';
 part 'table/audio_tacks.dart';
-part 'table/audio_player_snapshots.dart';
 part 'table/playbacks.dart';
+part 'table/preferences.dart';
 
 /// Daos
 part 'dao/podcast_dao.dart';
-part 'dao/audio_player_dao.dart';
 part 'dao/playback_dao.dart';
+part 'dao/preference_dao.dart';
+part 'dao/queue_dao.dart';
 
 Future<SqlDb> newSqlDb() async {
   final moorIsolate = await getMoorIsolate();
@@ -30,8 +33,19 @@ Future<SqlDb> newSqlDb() async {
 }
 
 @UseMoor(
-  tables: [Podcasts, Episodes, AudioTracks, AudioPlayerSnapshots, Playbacks],
-  daos: [PodcastDao, AudioPlayerDao, PlaybackDao],
+  tables: [
+    Podcasts,
+    Episodes,
+    AudioTracks,
+    Playbacks,
+    Preferences,
+  ],
+  daos: [
+    PodcastDao,
+    QueueDao,
+    PlaybackDao,
+    PreferenceDao,
+  ],
 )
 class SqlDb extends _$SqlDb {
   SqlDb()

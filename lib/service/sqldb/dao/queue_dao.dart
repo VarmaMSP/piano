@@ -1,17 +1,24 @@
 part of '../sqldb.dart';
 
-@UseDao(tables: [Podcasts, Episodes, AudioTracks, AudioPlayerSnapshots])
-class AudioPlayerDao extends DatabaseAccessor<SqlDb>
-    with _$AudioPlayerDaoMixin {
-  AudioPlayerDao(SqlDb db) : super(db);
+@UseDao(tables: [
+  Podcasts,
+  Episodes,
+  AudioTracks,
+  Preferences,
+])
+class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
+  QueueDao(SqlDb db) : super(db);
 
-  Future<void> saveSnapshot(AudioPlayerSnapshot snapshot) async {
-    if (snapshot.isEmpty) {
+  Future<void> saveQueue(Queue queue) async {
+    if (queue.isEmpty) {
       await transaction(() async {
         //Clear all audio tracks
         await delete(audioTracks).go();
-        await into(audioPlayerSnapshots).insert(
-          audioPlayerSnapshotRowFromModel(snapshot),
+        await into(preferences).insert(
+          PreferenceRow(
+            key: QueuePreference.key,
+            value: PreferenceValue(queuePreference: queue.preference),
+          ),
           mode: InsertMode.insertOrReplace,
         );
       });
@@ -23,9 +30,7 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
       await batch((b) {
         b.insertAll(
           podcasts,
-          snapshot.queue.audioTracks
-              .map((e) => podcastRowFromModel(e.podcast))
-              .toList(),
+          queue.audioTracks.map((e) => podcastRowFromModel(e.podcast)).toList(),
           mode: InsertMode.insertOrIgnore,
         );
       });
@@ -34,9 +39,7 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
       await batch((b) {
         b.insertAll(
           episodes,
-          snapshot.queue.audioTracks
-              .map((e) => episodeRowFromModel(e.episode))
-              .toList(),
+          queue.audioTracks.map((e) => episodeRowFromModel(e.episode)).toList(),
           mode: InsertMode.insertOrIgnore,
         );
       });
@@ -45,9 +48,7 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
       await batch((b) {
         b.insertAll(
           audioTracks,
-          snapshot.queue.audioTracks
-              .map((e) => audioTrackRowFromModel(e))
-              .toList(),
+          queue.audioTracks.map((e) => audioTrackRowFromModel(e)).toList(),
           mode: InsertMode.insertOrReplace,
         );
       });
@@ -56,24 +57,27 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
       await (delete(audioTracks)
             ..where(
               (tbl) => tbl.position.isBiggerOrEqualValue(
-                snapshot.queue.audioTracks.length,
+                queue.audioTracks.length,
               ),
             ))
           .go();
 
-      /// Update snapshot
-      await into(audioPlayerSnapshots).insert(
-        audioPlayerSnapshotRowFromModel(snapshot),
+      /// Update preference
+      await into(preferences).insert(
+        PreferenceRow(
+          key: QueuePreference.key,
+          value: PreferenceValue(queuePreference: queue.preference),
+        ),
         mode: InsertMode.insertOrReplace,
       );
     });
   }
 
-  Stream<AudioPlayerSnapshot> watchSnapshot() {
-    return Rx.combineLatest2<AudioPlayerSnapshotRow, List<AudioTrack>,
-        AudioPlayerSnapshot>(
-      (select(audioPlayerSnapshots)..where((tbl) => tbl.id.equals(0)))
-          .watchSingle(),
+  Stream<Queue> watchQueue() {
+    return Rx.combineLatest2<PreferenceValue, List<AudioTrack>, Queue>(
+      (select(preferences)..where((tbl) => tbl.key.equals(QueuePreference.key)))
+          .watchSingle()
+          .map((x) => x?.value),
       (select(audioTracks)
             ..orderBy([
               (tbl) => OrderingTerm(expression: tbl.position),
@@ -96,28 +100,32 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
               );
             }).toList(),
           ),
-      (snapshotRow, tracks) => snapshotRow == null
-          ? AudioPlayerSnapshot.empty()
-          : AudioPlayerSnapshot(
-              queue: Queue(
-                audioTracks: tracks ?? [],
-                position: snapshotRow.queuePosition,
-                enabled: snapshotRow.queueEnabled,
-              ),
+      (prefs, tracks) => prefs == null
+          ? Queue.empty()
+          : Queue(
+              audioTracks: tracks ?? [],
+              position: prefs.queuePreference.position,
+              enabled: prefs.queuePreference.enabled,
             ),
     );
   }
 
+  Future<Queue> getQueue() {
+    return watchQueue().first;
+  }
+
   Future<AudioTrack> getNowPlaying() async {
-    final snapshotRow = await (select(audioPlayerSnapshots)
-          ..where((tbl) => tbl.id.equals(0)))
+    final prefsRow = await (select(preferences)
+          ..where((tbl) => tbl.key.equals(QueuePreference.key)))
         .getSingle();
-    if (snapshotRow.queuePosition == -1) {
+    if (prefsRow == null || prefsRow.value.queuePreference.position == -1) {
       return null;
     }
 
     final audioTrackRow = await (select(audioTracks)
-          ..where((tbl) => tbl.position.equals(snapshotRow.queuePosition)))
+          ..where((tbl) => tbl.position.equals(
+                prefsRow.value.queuePreference.position,
+              )))
         .getSingle();
     if (audioTrackRow == null) {
       return null;
@@ -134,7 +142,7 @@ class AudioPlayerDao extends DatabaseAccessor<SqlDb>
     return AudioTrack(
       episode: episode.toModel(),
       podcast: podcast.toModel(),
-      position: snapshotRow.queuePosition,
+      position: prefsRow.value.queuePreference.position,
     );
   }
 }

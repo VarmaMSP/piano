@@ -5,7 +5,7 @@ abstract class Store {
   PodcastStore get podcast;
   EpisodeStore get episode;
   SubscriptionStore get subscription;
-  AudioPlayerStore get audioPlayer;
+  QueueStore get queue;
   PlaybackStore get playback;
 }
 
@@ -29,10 +29,10 @@ abstract class SubscriptionStore {
   Future<void> unsubscribe(String podcastId);
 }
 
-abstract class AudioPlayerStore {
-  Future<void> saveSnapshot(AudioPlayerSnapshot snapshot);
-  Future<AudioPlayerSnapshot> getSnapshotOnce();
-  Stream<AudioPlayerSnapshot> getSnapshot();
+abstract class QueueStore {
+  Future<void> save(Queue queue);
+  Future<Queue> get_();
+  Stream<Queue> watch();
   Future<AudioTrack> getNowPlaying();
 }
 

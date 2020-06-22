@@ -39,8 +39,7 @@ class AudioPlayerBloc {
   final Logger logger = newLogger('audio_player_bloc');
 
   /// Stream of snapshots
-  final BehaviorSubject<AudioPlayerSnapshot> _snapshotSubject =
-      BehaviorSubject<AudioPlayerSnapshot>();
+  final BehaviorSubject<Queue> _queueSubject = BehaviorSubject<Queue>();
 
   /// Sink for snapshot transistions
   final PublishSubject<SnapshotTransistion> _snapshotTransistion =
@@ -89,26 +88,23 @@ class AudioPlayerBloc {
 
   void _handleSnapshotTransistions() {
     // Load audioplayer snapshot from db
-    store.audioPlayer.getSnapshot().pipe(_snapshotSubject);
+    store.queue.watch().pipe(_queueSubject);
 
     // handle snapshot transistions
     _snapshotTransistion.stream.distinct().listen((t) async {
-      final prevSnapshot = await _snapshotSubject.first;
+      final prevQueue = await _queueSubject.first;
       await t.when(
         playAudioTrack: (data) async {
-          await store.audioPlayer
-              .saveSnapshot(prevSnapshot.add(data.audioTrack));
+          await store.queue.save(prevQueue.add(data.audioTrack));
           await audioService.syncNowPlaying();
         },
         addToQueueTop: (data) async {
-          await store.audioPlayer
-              .saveSnapshot(prevSnapshot.addToQueueTop(data.audioTrack));
-          await audioService.syncSnapshot(startTask: false);
+          await store.queue.save(prevQueue.addToTop(data.audioTrack));
+          await audioService.syncQueue(startTask: false);
         },
         addToQueueBottom: (data) async {
-          await store.audioPlayer
-              .saveSnapshot(prevSnapshot.addToQueueBottom(data.audioTrack));
-          await audioService.syncSnapshot(startTask: false);
+          await store.queue.save(prevQueue.addToBottom(data.audioTrack));
+          await audioService.syncQueue(startTask: false);
         },
         playPrevious: (_) {},
         playNext: (_) {},
@@ -133,21 +129,22 @@ class AudioPlayerBloc {
   // Transistion position
   void Function(Duration) get transistionPosition => _posistionTransistion.add;
 
-  // get now playing track
+  // Get now playing track
   Stream<AudioTrack> get nowPlaying =>
-      _snapshotSubject.stream.map((s) => s.nowPlaying);
+      _queueSubject.stream.map((s) => s.nowPlaying);
 
-  // get queue
-  Stream<Queue> get queue => _snapshotSubject.stream.map((s) => s.enabledQueue);
+  // Get queue if enabled
+  Stream<Queue> get queue =>
+      _queueSubject.stream.map((q) => q.enabled ? q : null);
 
-  // get current audio state
+  // Get current audio state
   Stream<AudioState> get audioState => audioService.audioState;
 
-  // get current posistion state
+  // Get current posistion state
   Stream<PositionState> get positionState => audioService.positionState;
 
   Future<void> dispose() async {
-    await _snapshotSubject.close();
+    await _queueSubject.close();
     await _snapshotTransistion.close();
     await _stateTransistion.close();
     await _posistionTransistion.close();
