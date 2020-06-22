@@ -25,8 +25,13 @@ enum AudioState {
 class PositionState extends Equatable {
   final Duration position;
   final Duration duration;
+  final double percentage;
 
-  PositionState({@required this.position, @required this.duration});
+  PositionState({
+    @required this.position,
+    @required this.duration,
+    @required this.percentage,
+  });
 
   @override
   List<Object> get props => [position, duration];

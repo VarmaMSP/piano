@@ -114,6 +114,7 @@ class _audioServiceImpl implements AudioService {
             PositionState(
               duration: mediaItem.duration,
               position: Duration.zero,
+              percentage: 0.0,
             ),
           );
         }
@@ -193,10 +194,17 @@ class _audioServiceImpl implements AudioService {
   Future<void> _updatePosition() async {
     final playbackState = audioservice.AudioService.playbackState;
     if (playbackState != null) {
+      final duration = (await _positionState.last).duration;
+      final position = playbackState.currentPosition;
+      final percentage = duration.inSeconds == 0
+          ? 0.0
+          : position.inMilliseconds / duration.inMilliseconds;
+
       _positionState.add(
         PositionState(
-          duration: (await _positionState.last).duration,
+          duration: duration,
           position: playbackState.currentPosition,
+          percentage: percentage,
         ),
       );
     }
