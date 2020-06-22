@@ -2254,6 +2254,8 @@ abstract class _$SqlDb extends GeneratedDatabase {
   AudioPlayerDao _audioPlayerDao;
   AudioPlayerDao get audioPlayerDao =>
       _audioPlayerDao ??= AudioPlayerDao(this as SqlDb);
+  PlaybackDao _playbackDao;
+  PlaybackDao get playbackDao => _playbackDao ??= PlaybackDao(this as SqlDb);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -2275,4 +2277,7 @@ mixin _$AudioPlayerDaoMixin on DatabaseAccessor<SqlDb> {
   $AudioTracksTable get audioTracks => attachedDatabase.audioTracks;
   $AudioPlayerSnapshotsTable get audioPlayerSnapshots =>
       attachedDatabase.audioPlayerSnapshots;
+}
+mixin _$PlaybackDaoMixin on DatabaseAccessor<SqlDb> {
+  $PlaybacksTable get playbacks => attachedDatabase.playbacks;
 }

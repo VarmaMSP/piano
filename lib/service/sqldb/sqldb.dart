@@ -21,6 +21,7 @@ part 'table/playbacks.dart';
 /// Daos
 part 'dao/podcast_dao.dart';
 part 'dao/audio_player_dao.dart';
+part 'dao/playback_dao.dart';
 
 Future<SqlDb> newSqlDb() async {
   final moorIsolate = await getMoorIsolate();
@@ -30,7 +31,7 @@ Future<SqlDb> newSqlDb() async {
 
 @UseMoor(
   tables: [Podcasts, Episodes, AudioTracks, AudioPlayerSnapshots, Playbacks],
-  daos: [PodcastDao, AudioPlayerDao],
+  daos: [PodcastDao, AudioPlayerDao, PlaybackDao],
 )
 class SqlDb extends _$SqlDb {
   SqlDb()

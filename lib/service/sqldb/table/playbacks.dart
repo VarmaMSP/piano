@@ -13,3 +13,23 @@ class Playbacks extends Table {
   @override
   Set<Column> get primaryKey => {episodeId};
 }
+
+PlaybackRow playbackRowFromModel(Playback model) {
+  return PlaybackRow(
+    episodeId: model.episodeId,
+    progress: model.progress,
+    duration: model.duration,
+    lastPlayedAt: model.lastPlayedAt,
+  );
+}
+
+extension PlaybackRowExtension on PlaybackRow {
+  Playback toModel() {
+    return Playback(
+      episodeId: episodeId,
+      progress: progress,
+      duration: duration,
+      lastPlayedAt: lastPlayedAt,
+    );
+  }
+}

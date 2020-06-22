@@ -7,3 +7,4 @@ export 'playlist.dart';
 export 'podcast.dart';
 export 'search_suggestion.dart';
 export 'user.dart';
+export 'playback.dart';
