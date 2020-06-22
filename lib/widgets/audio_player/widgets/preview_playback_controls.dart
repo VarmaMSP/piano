@@ -50,7 +50,7 @@ class PreviewPlaybackControls extends StatelessWidget {
       stream: positionState,
       builder: (context, snapshot) {
         return CircularProgressIndicator(
-          value: snapshot.data.percentage,
+          value: snapshot.hasData ? snapshot.data.percentage : 0.0,
           strokeWidth: 2.5,
           valueColor: AlwaysStoppedAnimation<Color>(
             TWColors.purple.shade600,

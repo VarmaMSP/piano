@@ -2,26 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:seekbar/seekbar.dart' as flutter_seek_bar;
 import 'package:tailwind_colors/tailwind_colors.dart';
+import 'package:tuple/tuple.dart';
 
-class SeekBar extends StatelessWidget {
+class SeekBar extends StatefulWidget {
   SeekBar({Key key}) : super(key: key);
+
+  @override
+  _SeekBarState createState() => _SeekBarState();
+}
+
+class _SeekBarState extends State<SeekBar> {
+  final BehaviorSubject<PositionState> _seekPositionState =
+      BehaviorSubject<PositionState>.seeded(null);
+
+  @override
+  void dispose() {
+    _seekPositionState.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
-    return StreamBuilder<PositionState>(
-      stream: audioPlayerBloc.positionState,
+    return StreamBuilder<Tuple2<PositionState, PositionState>>(
+      stream: Rx.combineLatest2(
+        audioPlayerBloc.positionState,
+        _seekPositionState,
+        (a, b) => Tuple2(a, b),
+      ),
       builder: (context, snapshot) {
         var currentTime = Duration.zero;
         var duration = Duration.zero;
         var progress = 0.0;
         if (snapshot.hasData) {
-          currentTime = snapshot.data.position;
-          duration = snapshot.data.duration;
-          progress = snapshot.data.percentage;
+          final positionState = snapshot.data.item2 ?? snapshot.data.item1;
+          if (positionState != null) {
+            currentTime = positionState.position;
+            duration = positionState.duration;
+            progress = positionState.percentage;
+          }
         }
 
         return Row(
@@ -46,9 +70,27 @@ class SeekBar extends StatelessWidget {
                   progressColor: TWColors.purple.shade600,
                   secondProgressColor: TWColors.gray.shade400,
                   thumbColor: TWColors.purple.shade600,
-                  onStartTrackingTouch: () {},
-                  onProgressChanged: (_) {},
-                  onStopTrackingTouch: () {},
+                  onStartTrackingTouch: () {
+                    _seekPositionState.add(PositionState(
+                      duration: duration,
+                      position: currentTime,
+                      percentage: progress,
+                    ));
+                  },
+                  onProgressChanged: (percentage) {
+                    _seekPositionState.add(PositionState(
+                      duration: duration,
+                      position: Duration(
+                        milliseconds:
+                            (duration.inMilliseconds * percentage).round(),
+                      ),
+                      percentage: percentage,
+                    ));
+                  },
+                  onStopTrackingTouch: () {
+                    audioPlayerBloc.transistionPosition(currentTime);
+                    _seekPositionState.add(null);
+                  },
                 ),
               ),
             ),

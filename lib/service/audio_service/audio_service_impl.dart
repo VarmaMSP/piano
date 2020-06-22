@@ -78,8 +78,19 @@ class _audioServiceImpl implements AudioService {
   }
 
   @override
-  Future<void> seek(Duration position) async {
-    await audioservice.AudioService.seekTo(position);
+  Future<void> seek(Duration t) async {
+    final prevPosition = await _positionState.first;
+    final duration = prevPosition.duration;
+
+    if (duration.inSeconds > 0) {
+      // relay back new position to bloc
+      _positionState.add(PositionState(
+        duration: duration,
+        position: t,
+        percentage: t.inMilliseconds / duration.inMilliseconds,
+      ));
+      await audioservice.AudioService.seekTo(t);
+    }
   }
 
   @override

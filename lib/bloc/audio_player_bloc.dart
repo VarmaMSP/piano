@@ -128,6 +128,9 @@ class AudioPlayerBloc {
   void Function(SnapshotTransistion) get transistionSnapshot =>
       _snapshotTransistion.add;
 
+  // Transistion position
+  void Function(Duration) get transistionPosition => _posistionTransistion.add;
+
   // get now playing track
   Stream<AudioTrack> get nowPlaying =>
       _snapshotSubject.stream.map((s) => s.nowPlaying);
@@ -145,6 +148,7 @@ class AudioPlayerBloc {
     await _snapshotSubject.close();
     await _snapshotTransistion.close();
     await _stateTransistion.close();
+    await _posistionTransistion.close();
     await audioService.dispose();
   }
 }
