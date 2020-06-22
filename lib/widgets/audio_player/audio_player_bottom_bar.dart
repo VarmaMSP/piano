@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
+import 'package:phenopod/utils/utils.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class AudioPlayerBottomBar extends StatelessWidget {
@@ -15,7 +16,7 @@ class AudioPlayerBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
+      height: getScreenHeight(context) < 850 ? 80 : 120,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,

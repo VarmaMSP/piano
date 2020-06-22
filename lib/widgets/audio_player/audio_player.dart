@@ -5,6 +5,7 @@ import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/audio_player/widgets/playback_controls.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:phenopod/widgets/audio_player/widgets/seek_bar.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 import '../html.dart';
@@ -39,7 +40,7 @@ class AudioPlayer extends StatelessWidget {
         left: 18,
         right: 18,
         top: 10,
-        bottom: 10,
+        bottom: 15,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -59,8 +60,11 @@ class AudioPlayer extends StatelessWidget {
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: SeekBar(),
+          ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 15),
             alignment: Alignment.topCenter,
             child: Text(
               nowPlaying.episode.title,
@@ -77,7 +81,7 @@ class AudioPlayer extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 5),
+            padding: EdgeInsets.symmetric(vertical: 20),
             alignment: Alignment.topCenter,
             child: Text(
               nowPlaying.podcast.title,

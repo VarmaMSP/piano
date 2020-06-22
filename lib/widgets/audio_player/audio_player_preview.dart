@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/widgets/audio_player/widgets/action_button.dart';
+import 'package:phenopod/widgets/audio_player/widgets/preview_playback_controls.dart';
 import 'package:phenopod/widgets/podcast_thumbnail.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 
@@ -65,7 +65,7 @@ class AudioPlayerPreview extends StatelessWidget {
             ),
           ),
         ),
-        ActionButton(),
+        PreviewPlaybackControls(),
       ],
     );
   }

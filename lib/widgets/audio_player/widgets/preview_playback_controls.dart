@@ -3,13 +3,8 @@ import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
-class ActionButton extends StatelessWidget {
-  const ActionButton({
-    Key key,
-    this.fullSized = false,
-  }) : super(key: key);
-
-  final bool fullSized;
+class PreviewPlaybackControls extends StatelessWidget {
+  const PreviewPlaybackControls({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,41 +16,21 @@ class ActionButton extends StatelessWidget {
 
     return StreamBuilder<AudioState>(
       stream: audioPlayerBloc.audioState,
-      builder: (context, snapshot) {
-        return fullSized
-            ? SizedBox(
-                height: 56,
-                width: 56,
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      height: 56,
-                      width: 56,
-                      decoration: BoxDecoration(
-                        color: TWColors.purple.shade600,
-                        borderRadius: BorderRadius.circular(900),
-                      ),
-                    ),
-                    _buildButton(snapshot.data, onPlay, onPause),
-                  ],
-                ),
-              )
-            : SizedBox(
-                height: 32,
-                width: 32,
-                child: Stack(
-                  children: <Widget>[
-                    if (snapshot.data != AudioState.none &&
-                        snapshot.data != AudioState.playing &&
-                        snapshot.data != AudioState.paused)
-                      _buildLoadingIndicator()
-                    else
-                      _buildProgressIndicator(audioPlayerBloc.positionState),
-                    _buildButton(snapshot.data, onPlay, onPause),
-                  ],
-                ),
-              );
-      },
+      builder: (context, snapshot) => Container(
+        height: 32,
+        width: 32,
+        child: Stack(
+          children: <Widget>[
+            if (snapshot.data != AudioState.none &&
+                snapshot.data != AudioState.playing &&
+                snapshot.data != AudioState.paused)
+              _buildLoadingIndicator()
+            else
+              _buildProgressIndicator(audioPlayerBloc.positionState),
+            _buildButton(snapshot.data, onPlay, onPause),
+          ],
+        ),
+      ),
     );
   }
 
@@ -96,13 +71,6 @@ class ActionButton extends StatelessWidget {
     void Function() onPlay,
     void Function() onPause,
   ) {
-    var color = TWColors.gray.shade600;
-    var size = 20.0;
-    if (fullSized) {
-      color = TWColors.gray.shade100;
-      size = 32;
-    }
-
     IconData iconData;
     void Function() onPressed;
     if (audioState == AudioState.playing) {
@@ -125,7 +93,11 @@ class ActionButton extends StatelessWidget {
         color: Colors.transparent,
         child: IconButton(
           padding: const EdgeInsets.all(0.0),
-          icon: Icon(iconData, color: color, size: size),
+          icon: Icon(
+            iconData,
+            color: TWColors.gray.shade600,
+            size: 20,
+          ),
           onPressed: onPressed,
         ),
       ),
