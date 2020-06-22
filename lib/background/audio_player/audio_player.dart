@@ -76,6 +76,10 @@ class AudioPlayer {
   Future<void> stop() async {
     await _eventSubscription.cancel();
     await _player.dispose();
+
+    _playing = false;
+    _processingState = audioservice.AudioProcessingState.stopped;
+    await _setState();
   }
 
   Future<void> _setState() async {

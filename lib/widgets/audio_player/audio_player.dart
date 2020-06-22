@@ -74,7 +74,7 @@ class AudioPlayer extends StatelessWidget {
                 height: 1.4,
                 fontWeight: FontWeight.w500,
                 letterSpacing: 0.15,
-                color: TWColors.gray.shade900,
+                color: TWColors.gray.shade800,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -120,7 +120,7 @@ class AudioPlayer extends StatelessWidget {
               child: Text(
                 'Published on ${formatDateTime(nowPlaying.episode.pubDate)}',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   letterSpacing: 0.25,
                   color: TWColors.gray.shade900,
                   fontWeight: FontWeight.w500,

@@ -12,11 +12,11 @@ final Map<String, Style> htmlStyle = {
   ),
   'h1, h2, h3, h4': Style(
     fontSize: FontSize.larger,
-    color: TWColors.gray.shade900,
+    color: TWColors.gray.shade800,
   ),
   'p': Style(
     fontSize: FontSize.percent(90),
-    color: TWColors.gray.shade900,
+    color: TWColors.gray.shade800,
   ),
   'a': Style(
     fontSize: FontSize.percent(90),

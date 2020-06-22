@@ -152,6 +152,7 @@ class _audioServiceImpl implements AudioService {
           case audioservice.AudioProcessingState.completed:
             break;
           case audioservice.AudioProcessingState.stopped:
+            await _paused();
             break;
           case audioservice.AudioProcessingState.error:
             break;
@@ -193,9 +194,12 @@ class _audioServiceImpl implements AudioService {
   // Update Audio position
   Future<void> _updatePosition() async {
     final playbackState = audioservice.AudioService.playbackState;
+
     if (playbackState != null) {
-      final duration = (await _positionState.last).duration;
-      final position = playbackState.currentPosition;
+      final duration = (await _positionState.first).duration;
+      final position = duration.inSeconds == 0
+          ? Duration.zero
+          : playbackState.currentPosition;
       final percentage = duration.inSeconds == 0
           ? 0.0
           : position.inMilliseconds / duration.inMilliseconds;

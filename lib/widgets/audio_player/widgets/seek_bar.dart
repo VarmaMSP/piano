@@ -21,7 +21,7 @@ class SeekBar extends StatelessWidget {
         if (snapshot.hasData) {
           currentTime = snapshot.data.position;
           duration = snapshot.data.duration;
-          progress = 0.0;
+          progress = snapshot.data.percentage;
         }
 
         return Row(
