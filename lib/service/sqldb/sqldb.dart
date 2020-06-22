@@ -16,7 +16,7 @@ part 'table/podcasts.dart';
 part 'table/episodes.dart';
 part 'table/audio_tacks.dart';
 part 'table/audio_player_snapshots.dart';
-part 'table/episode_playbacks.dart';
+part 'table/playbacks.dart';
 
 /// Daos
 part 'dao/podcast_dao.dart';
@@ -29,7 +29,7 @@ Future<SqlDb> newSqlDb() async {
 }
 
 @UseMoor(
-  tables: [Podcasts, Episodes, AudioTracks, AudioPlayerSnapshots],
+  tables: [Podcasts, Episodes, AudioTracks, AudioPlayerSnapshots, Playbacks],
   daos: [PodcastDao, AudioPlayerDao],
 )
 class SqlDb extends _$SqlDb {

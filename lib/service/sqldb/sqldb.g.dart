@@ -1940,6 +1940,301 @@ class $AudioPlayerSnapshotsTable extends AudioPlayerSnapshots
   }
 }
 
+class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
+  final String episodeId;
+  final double progress;
+  final int duration;
+  final String lastPlayedAt;
+  PlaybackRow(
+      {@required this.episodeId,
+      @required this.progress,
+      @required this.duration,
+      @required this.lastPlayedAt});
+  factory PlaybackRow.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    final doubleType = db.typeSystem.forDartType<double>();
+    final intType = db.typeSystem.forDartType<int>();
+    return PlaybackRow(
+      episodeId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}episode_id']),
+      progress: doubleType
+          .mapFromDatabaseResponse(data['${effectivePrefix}progress']),
+      duration:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}duration']),
+      lastPlayedAt: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}last_played_at']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || episodeId != null) {
+      map['episode_id'] = Variable<String>(episodeId);
+    }
+    if (!nullToAbsent || progress != null) {
+      map['progress'] = Variable<double>(progress);
+    }
+    if (!nullToAbsent || duration != null) {
+      map['duration'] = Variable<int>(duration);
+    }
+    if (!nullToAbsent || lastPlayedAt != null) {
+      map['last_played_at'] = Variable<String>(lastPlayedAt);
+    }
+    return map;
+  }
+
+  PlaybacksCompanion toCompanion(bool nullToAbsent) {
+    return PlaybacksCompanion(
+      episodeId: episodeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(episodeId),
+      progress: progress == null && nullToAbsent
+          ? const Value.absent()
+          : Value(progress),
+      duration: duration == null && nullToAbsent
+          ? const Value.absent()
+          : Value(duration),
+      lastPlayedAt: lastPlayedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastPlayedAt),
+    );
+  }
+
+  factory PlaybackRow.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return PlaybackRow(
+      episodeId: serializer.fromJson<String>(json['episodeId']),
+      progress: serializer.fromJson<double>(json['progress']),
+      duration: serializer.fromJson<int>(json['duration']),
+      lastPlayedAt: serializer.fromJson<String>(json['lastPlayedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'episodeId': serializer.toJson<String>(episodeId),
+      'progress': serializer.toJson<double>(progress),
+      'duration': serializer.toJson<int>(duration),
+      'lastPlayedAt': serializer.toJson<String>(lastPlayedAt),
+    };
+  }
+
+  PlaybackRow copyWith(
+          {String episodeId,
+          double progress,
+          int duration,
+          String lastPlayedAt}) =>
+      PlaybackRow(
+        episodeId: episodeId ?? this.episodeId,
+        progress: progress ?? this.progress,
+        duration: duration ?? this.duration,
+        lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PlaybackRow(')
+          ..write('episodeId: $episodeId, ')
+          ..write('progress: $progress, ')
+          ..write('duration: $duration, ')
+          ..write('lastPlayedAt: $lastPlayedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      episodeId.hashCode,
+      $mrjc(
+          progress.hashCode, $mrjc(duration.hashCode, lastPlayedAt.hashCode))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is PlaybackRow &&
+          other.episodeId == this.episodeId &&
+          other.progress == this.progress &&
+          other.duration == this.duration &&
+          other.lastPlayedAt == this.lastPlayedAt);
+}
+
+class PlaybacksCompanion extends UpdateCompanion<PlaybackRow> {
+  final Value<String> episodeId;
+  final Value<double> progress;
+  final Value<int> duration;
+  final Value<String> lastPlayedAt;
+  const PlaybacksCompanion({
+    this.episodeId = const Value.absent(),
+    this.progress = const Value.absent(),
+    this.duration = const Value.absent(),
+    this.lastPlayedAt = const Value.absent(),
+  });
+  PlaybacksCompanion.insert({
+    @required String episodeId,
+    @required double progress,
+    @required int duration,
+    @required String lastPlayedAt,
+  })  : episodeId = Value(episodeId),
+        progress = Value(progress),
+        duration = Value(duration),
+        lastPlayedAt = Value(lastPlayedAt);
+  static Insertable<PlaybackRow> custom({
+    Expression<String> episodeId,
+    Expression<double> progress,
+    Expression<int> duration,
+    Expression<String> lastPlayedAt,
+  }) {
+    return RawValuesInsertable({
+      if (episodeId != null) 'episode_id': episodeId,
+      if (progress != null) 'progress': progress,
+      if (duration != null) 'duration': duration,
+      if (lastPlayedAt != null) 'last_played_at': lastPlayedAt,
+    });
+  }
+
+  PlaybacksCompanion copyWith(
+      {Value<String> episodeId,
+      Value<double> progress,
+      Value<int> duration,
+      Value<String> lastPlayedAt}) {
+    return PlaybacksCompanion(
+      episodeId: episodeId ?? this.episodeId,
+      progress: progress ?? this.progress,
+      duration: duration ?? this.duration,
+      lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (episodeId.present) {
+      map['episode_id'] = Variable<String>(episodeId.value);
+    }
+    if (progress.present) {
+      map['progress'] = Variable<double>(progress.value);
+    }
+    if (duration.present) {
+      map['duration'] = Variable<int>(duration.value);
+    }
+    if (lastPlayedAt.present) {
+      map['last_played_at'] = Variable<String>(lastPlayedAt.value);
+    }
+    return map;
+  }
+}
+
+class $PlaybacksTable extends Playbacks
+    with TableInfo<$PlaybacksTable, PlaybackRow> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $PlaybacksTable(this._db, [this._alias]);
+  final VerificationMeta _episodeIdMeta = const VerificationMeta('episodeId');
+  GeneratedTextColumn _episodeId;
+  @override
+  GeneratedTextColumn get episodeId => _episodeId ??= _constructEpisodeId();
+  GeneratedTextColumn _constructEpisodeId() {
+    return GeneratedTextColumn('episode_id', $tableName, false,
+        $customConstraints: 'REFERENCES episodes(id)');
+  }
+
+  final VerificationMeta _progressMeta = const VerificationMeta('progress');
+  GeneratedRealColumn _progress;
+  @override
+  GeneratedRealColumn get progress => _progress ??= _constructProgress();
+  GeneratedRealColumn _constructProgress() {
+    return GeneratedRealColumn(
+      'progress',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _durationMeta = const VerificationMeta('duration');
+  GeneratedIntColumn _duration;
+  @override
+  GeneratedIntColumn get duration => _duration ??= _constructDuration();
+  GeneratedIntColumn _constructDuration() {
+    return GeneratedIntColumn(
+      'duration',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _lastPlayedAtMeta =
+      const VerificationMeta('lastPlayedAt');
+  GeneratedTextColumn _lastPlayedAt;
+  @override
+  GeneratedTextColumn get lastPlayedAt =>
+      _lastPlayedAt ??= _constructLastPlayedAt();
+  GeneratedTextColumn _constructLastPlayedAt() {
+    return GeneratedTextColumn(
+      'last_played_at',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [episodeId, progress, duration, lastPlayedAt];
+  @override
+  $PlaybacksTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'playbacks';
+  @override
+  final String actualTableName = 'playbacks';
+  @override
+  VerificationContext validateIntegrity(Insertable<PlaybackRow> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('episode_id')) {
+      context.handle(_episodeIdMeta,
+          episodeId.isAcceptableOrUnknown(data['episode_id'], _episodeIdMeta));
+    } else if (isInserting) {
+      context.missing(_episodeIdMeta);
+    }
+    if (data.containsKey('progress')) {
+      context.handle(_progressMeta,
+          progress.isAcceptableOrUnknown(data['progress'], _progressMeta));
+    } else if (isInserting) {
+      context.missing(_progressMeta);
+    }
+    if (data.containsKey('duration')) {
+      context.handle(_durationMeta,
+          duration.isAcceptableOrUnknown(data['duration'], _durationMeta));
+    } else if (isInserting) {
+      context.missing(_durationMeta);
+    }
+    if (data.containsKey('last_played_at')) {
+      context.handle(
+          _lastPlayedAtMeta,
+          lastPlayedAt.isAcceptableOrUnknown(
+              data['last_played_at'], _lastPlayedAtMeta));
+    } else if (isInserting) {
+      context.missing(_lastPlayedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {episodeId};
+  @override
+  PlaybackRow map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return PlaybackRow.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $PlaybacksTable createAlias(String alias) {
+    return $PlaybacksTable(_db, alias);
+  }
+}
+
 abstract class _$SqlDb extends GeneratedDatabase {
   _$SqlDb(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   _$SqlDb.connect(DatabaseConnection c) : super.connect(c);
@@ -1952,6 +2247,8 @@ abstract class _$SqlDb extends GeneratedDatabase {
   $AudioPlayerSnapshotsTable _audioPlayerSnapshots;
   $AudioPlayerSnapshotsTable get audioPlayerSnapshots =>
       _audioPlayerSnapshots ??= $AudioPlayerSnapshotsTable(this);
+  $PlaybacksTable _playbacks;
+  $PlaybacksTable get playbacks => _playbacks ??= $PlaybacksTable(this);
   PodcastDao _podcastDao;
   PodcastDao get podcastDao => _podcastDao ??= PodcastDao(this as SqlDb);
   AudioPlayerDao _audioPlayerDao;
@@ -1961,7 +2258,7 @@ abstract class _$SqlDb extends GeneratedDatabase {
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [podcasts, episodes, audioTracks, audioPlayerSnapshots];
+      [podcasts, episodes, audioTracks, audioPlayerSnapshots, playbacks];
 }
 
 // **************************************************************************
