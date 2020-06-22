@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:phenopod/bloc/navigation_bloc.dart';
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +43,7 @@ class SuggestionsList extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        Provider.of<NavigationBloc>(context, listen: false).navigateTo(
+        Provider.of<AppNavigationBloc>(context, listen: false).navigateTo(
           NavigateTo.podcastPage(urlParam: suggestion.i),
         );
         Navigator.of(context, rootNavigator: true).pop();

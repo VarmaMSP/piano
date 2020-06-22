@@ -2,7 +2,7 @@
 
 // ignore_for_file: unnecessary_this, return_of_invalid_type, constant_identifier_names, prefer_const_constructors_in_immutables, sort_unnamed_constructors_first, join_return_with_assignment
 
-part of 'navigation_bloc.dart';
+part of 'app_navigation_bloc.dart';
 
 // **************************************************************************
 // SuperEnumGenerator

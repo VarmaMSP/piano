@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:super_enum/super_enum.dart';
 
-part 'navigation_bloc.g.dart';
+part 'app_navigation_bloc.g.dart';
 
 @superEnum
 enum _NavigateTo {
@@ -10,14 +10,15 @@ enum _NavigateTo {
   PodcastPage,
 }
 
-class NavigationBloc {
-  /// App level navigator
-  final GlobalKey<NavigatorState> navigatorState;
+class AppNavigationBloc {
+  /// Home tab navigator key
+  final GlobalKey<NavigatorState> _homeTabNavigatorKey =
+      GlobalKey<NavigatorState>();
 
   /// Sink to listen to navigation events
   final PublishSubject<NavigateTo> _navigateTo = PublishSubject<NavigateTo>();
 
-  NavigationBloc(this.navigatorState) {
+  AppNavigationBloc() {
     /// Listen to NavigateTo commands from UI
     _handleNavigationEvents();
   }
@@ -25,8 +26,7 @@ class NavigationBloc {
   void _handleNavigationEvents() {
     _navigateTo.stream.distinct().listen((n) {
       n.when(podcastPage: (data) {
-        print('something is fucked up');
-        navigatorState.currentState
+        _homeTabNavigatorKey.currentState
             .pushNamed('/podcast', arguments: {'urlParam': data.urlParam});
       });
     });
@@ -35,8 +35,8 @@ class NavigationBloc {
   /// Navigate to page
   void Function(NavigateTo) get navigateTo => _navigateTo.add;
 
-  /// Return navigator key
-  GlobalKey<NavigatorState> get navigatorKey => navigatorState;
+  /// Return home tabs navigator key
+  GlobalKey<NavigatorState> get homeTabNavigatorKey => _homeTabNavigatorKey;
 
   Future<void> dispose() async {
     await _navigateTo.close();

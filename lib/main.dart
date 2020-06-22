@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:phenopod/app/app.dart';
-import 'package:phenopod/bloc/navigation_bloc.dart';
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
 import 'package:phenopod/utils/utils.dart';
@@ -52,7 +52,6 @@ class Root extends StatefulWidget {
 
 class _RootState extends State<Root> with WidgetsBindingObserver {
   Store _store;
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
 
   @override
   void initState() {
@@ -100,8 +99,8 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
         Provider<Store>(
           create: (_) => _store,
         ),
-        Provider<NavigationBloc>(
-          create: (_) => NavigationBloc(_navigatorKey),
+        Provider<AppNavigationBloc>(
+          create: (_) => AppNavigationBloc(),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<AudioPlayerBloc>(
