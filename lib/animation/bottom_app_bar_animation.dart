@@ -47,11 +47,10 @@ class BottomAppBarAnimation {
         );
 
   factory BottomAppBarAnimation.New(
-    BuildContext context,
+    double screenHeight,
     TabController tabController,
     AnimationController controller,
   ) {
-    final screenHeight = getScreenHeight(context);
     final controllerBeginWhenShow = mapRange(
           bottomNavigationBarHeight,
           screenHeight,

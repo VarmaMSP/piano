@@ -12,42 +12,54 @@ import 'package:provider/provider.dart';
 import 'app_router.dart';
 
 class App extends StatefulWidget {
-  const App({Key key}) : super(key: key);
+  const App({
+    Key key,
+    this.height,
+  }) : super(key: key);
+
+  final double height;
 
   @override
   _AppState createState() => _AppState();
 }
 
 class _AppState extends State<App> with TickerProviderStateMixin {
-  AnimationController _bottomAppBarController;
-  TabController _audioPlayerTabController;
   NavigationBloc _navigationBloc;
+
+  TabController _audioPlayerTabController;
+  AnimationController _bottomAppBarController;
+  BottomAppBarAnimation _bottomAppBarAnimation;
+
   final RouteObserver<PageRoute> routeObserver = RouteObserver();
 
   @override
   void initState() {
     super.initState();
-    _bottomAppBarController = AnimationController(vsync: this);
     _audioPlayerTabController = TabController(
       length: 2,
       initialIndex: 0,
       vsync: this,
     );
-    _navigationBloc = Provider.of<NavigationBloc>(context, listen: false);
+    _bottomAppBarController = AnimationController(
+      vsync: this,
+    );
+    _bottomAppBarAnimation = BottomAppBarAnimation.New(
+      widget.height,
+      _audioPlayerTabController,
+      _bottomAppBarController,
+    );
+    _navigationBloc = Provider.of<NavigationBloc>(
+      context,
+      listen: false,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final bottomAppBarAnimations = BottomAppBarAnimation.New(
-      context,
-      _audioPlayerTabController,
-      _bottomAppBarController,
-    );
-
     return WillPopScope(
       onWillPop: () async {
-        if (bottomAppBarAnimations.controller.value == 1.0) {
-          bottomAppBarAnimations.collapseBottomAppBar();
+        if (_bottomAppBarAnimation.controller.value == 1.0) {
+          _bottomAppBarAnimation.collapseBottomAppBar();
           return false;
         }
         return !await _navigationBloc.navigatorKey.currentState.maybePop();
@@ -97,7 +109,7 @@ class _AppState extends State<App> with TickerProviderStateMixin {
               Container(
                 alignment: Alignment.bottomCenter,
                 child: appbar.BottomAppBar(
-                  animations: bottomAppBarAnimations,
+                  animations: _bottomAppBarAnimation,
                   audioPlayerTabController: _audioPlayerTabController,
                 ),
               ),

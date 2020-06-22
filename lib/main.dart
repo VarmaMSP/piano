@@ -5,6 +5,7 @@ import 'package:phenopod/app/app.dart';
 import 'package:phenopod/bloc/navigation_bloc.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
+import 'package:phenopod/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
@@ -124,7 +125,11 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
           onGenerateRoute: (settings) {
             switch (settings.name) {
               case '/app':
-                return MaterialPageRoute(builder: (_) => App());
+                return MaterialPageRoute(
+                  builder: (context) => App(
+                    height: getScreenHeight(context),
+                  ),
+                );
               case '/queue':
                 return PageTransition(
                   child: QueueScreen(),
