@@ -67,6 +67,8 @@ class AudioPlayerController {
     }
   }
 
+  Future<void> syncPlayback() async {}
+
   Future<void> stop() async {
     await _audioPlayer.stop();
     await _audioPlayerSnapshotSubject.close();
