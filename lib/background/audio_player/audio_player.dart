@@ -73,17 +73,24 @@ class AudioPlayer {
     );
   }
 
-  Future<void> playMediaItem(audioservice.MediaItem mediaItem) async {
+  Future<void> playMediaItem(
+    audioservice.MediaItem mediaItem, {
+    Duration start,
+  }) async {
     if (utils.canStop(_player.playbackState)) {
       await _player.stop();
     }
 
     await audioservice.AudioServiceBackground.setMediaItem(mediaItem);
     final duration = await _player.setUrl(mediaItem.id);
+    if (start != null) {
+      await _player.seek(start);
+    }
     await onStart(duration);
     await audioservice.AudioServiceBackground.setMediaItem(
       mediaItem.copyWith(duration: duration),
     );
+
     await play();
   }
 

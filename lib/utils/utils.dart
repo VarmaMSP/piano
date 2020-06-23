@@ -58,3 +58,5 @@ double mapRange(double x1, double x2, double y1, double y2, double value) {
   }
   return y1 + ((y2 - y1) / (x2 - x1)) * (value - x1);
 }
+
+void unawaited(Future<void> future) {}

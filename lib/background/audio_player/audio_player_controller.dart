@@ -6,6 +6,7 @@ import 'package:phenopod/store/store.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store_impl.dart';
 import 'package:phenopod/utils/audio_player.dart' as utils;
+import 'package:phenopod/utils/utils.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:audio_service/audio_service.dart' as audioservice;
 
@@ -136,9 +137,13 @@ class AudioPlayerController {
   }
 
   void _handleStateChanges() {
-    _nowPlayingSubject.stream.distinct().listen((audioTrack) {
+    _nowPlayingSubject.stream.distinct().listen((audioTrack) async {
       if (audioTrack != null) {
-        _audioPlayer.playMediaItem(audioTrack.toMediaItem());
+        final playback = await _store.playback.get_(audioTrack.episode.id);
+        unawaited(_audioPlayer.playMediaItem(
+          audioTrack.toMediaItem(),
+          start: !playback.isEmpty ? playback.position : null,
+        ));
       }
     });
   }
