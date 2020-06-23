@@ -77,6 +77,7 @@ class AudioPlayer {
     if (utils.canStop(_player.playbackState)) {
       await _player.stop();
     }
+
     await audioservice.AudioServiceBackground.setMediaItem(mediaItem);
     final duration = await _player.setUrl(mediaItem.id);
     await onStart(duration);

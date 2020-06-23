@@ -41,6 +41,7 @@ dependencies:
   super_enum: ^0.4.2
   moor_db_viewer: ^2.0.3
   seekbar: ^0.0.2
+  share: ^0.6.4+3
 
 dev_dependencies:
   flutter_test:
