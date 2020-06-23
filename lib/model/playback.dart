@@ -26,6 +26,8 @@ class Playback extends Equatable {
     );
   }
 
+  bool get isEmpty => duration.inSeconds == 0;
+
   @override
   List<Object> get props => [episodeId];
 }

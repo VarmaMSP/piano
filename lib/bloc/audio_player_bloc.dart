@@ -41,6 +41,10 @@ class AudioPlayerBloc {
   /// Stream of snapshots
   final BehaviorSubject<Queue> _queueSubject = BehaviorSubject<Queue>();
 
+  /// Stream of positionStates
+  final BehaviorSubject<PositionState> _positionStateSubject =
+      BehaviorSubject<PositionState>();
+
   /// Sink for snapshot transistions
   final PublishSubject<SnapshotTransistion> _snapshotTransistion =
       PublishSubject<SnapshotTransistion>();
@@ -88,7 +92,21 @@ class AudioPlayerBloc {
 
   void _handleSnapshotTransistions() {
     // Load audioplayer snapshot from db
-    store.queue.watch().pipe(_queueSubject);
+    store.queue.watch().listen((q) async {
+      _queueSubject.add(q);
+      final nowPlaying = q.nowPlaying;
+      if (nowPlaying != null) {
+        final playback = await store.playback.get_(nowPlaying.episode.id);
+        if (!playback.isEmpty) {
+          _positionStateSubject.add(PositionState(
+            duration: playback.duration,
+            position: playback.position,
+            percentage: playback.position.inMilliseconds /
+                playback.duration.inMilliseconds,
+          ));
+        }
+      }
+    });
 
     // handle snapshot transistions
     _snapshotTransistion.stream.distinct().listen((t) async {
@@ -113,6 +131,8 @@ class AudioPlayerBloc {
   }
 
   void _handlePosistionTransistions() {
+    audioService.positionState.listen((d) => _positionStateSubject.add(d));
+
     _posistionTransistion.stream.listen((position) async {
       logger.i('Position transistion: $position');
       await audioService.seekTo(position);
@@ -141,10 +161,11 @@ class AudioPlayerBloc {
   Stream<AudioState> get audioState => audioService.audioState;
 
   // Get current posistion state
-  Stream<PositionState> get positionState => audioService.positionState;
+  Stream<PositionState> get positionState => _positionStateSubject.stream;
 
   Future<void> dispose() async {
     await _queueSubject.close();
+    await _positionStateSubject.close();
     await _snapshotTransistion.close();
     await _stateTransistion.close();
     await _posistionTransistion.close();
