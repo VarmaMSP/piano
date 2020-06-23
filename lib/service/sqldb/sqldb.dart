@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:phenopod/background/moor_server/main.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
 
 part 'sqldb.g.dart';
 

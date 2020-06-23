@@ -8,3 +8,4 @@ export 'search_suggestion.dart';
 export 'user.dart';
 export 'playback.dart';
 export 'queue.dart';
+export 'setting.dart';

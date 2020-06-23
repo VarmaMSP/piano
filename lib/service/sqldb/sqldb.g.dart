@@ -14,12 +14,17 @@ PreferenceValue _$PreferenceValueFromJson(Map<String, dynamic> json) {
         ? null
         : QueuePreference.fromJson(
             json['queue_preference'] as Map<String, dynamic>),
+    audioPlayerSetting: json['audio_player_setting'] == null
+        ? null
+        : AudioPlayerSetting.fromJson(
+            json['audio_player_setting'] as Map<String, dynamic>),
   );
 }
 
 Map<String, dynamic> _$PreferenceValueToJson(PreferenceValue instance) =>
     <String, dynamic>{
       'queue_preference': instance.queuePreference,
+      'audio_player_setting': instance.audioPlayerSetting,
     };
 
 // **************************************************************************
@@ -2191,7 +2196,7 @@ class $PreferencesTable extends Preferences
   }
 
   static TypeConverter<PreferenceValue, String> $converter0 =
-      const PreferenceValueTypeConverter();
+      PreferenceValueTypeConverter();
 }
 
 abstract class _$SqlDb extends GeneratedDatabase {

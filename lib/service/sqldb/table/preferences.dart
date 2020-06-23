@@ -4,21 +4,18 @@ part of '../sqldb.dart';
 class Preferences extends Table {
   TextColumn get key => text()();
   TextColumn get value =>
-      text().map(const PreferenceValueTypeConverter()).nullable()();
+      text().map(PreferenceValueTypeConverter()).nullable()();
 
   @override
   Set<Column> get primaryKey => {key};
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@j.JsonSerializable(fieldRename: j.FieldRename.snake)
 class PreferenceValue {
   final QueuePreference queuePreference;
+  final AudioPlayerSetting audioPlayerSetting;
 
-  PreferenceValue({this.queuePreference});
-
-  factory PreferenceValue.empty() {
-    return PreferenceValue(queuePreference: Queue.empty().preference);
-  }
+  const PreferenceValue({this.queuePreference, this.audioPlayerSetting});
 
   factory PreferenceValue.fromJson(Map<String, dynamic> json) {
     return _$PreferenceValueFromJson(json);
@@ -37,7 +34,10 @@ class PreferenceValueTypeConverter
   PreferenceValue mapToDart(String fromDb) {
     return fromDb != null
         ? PreferenceValue.fromJson(json.decode(fromDb) as Map<String, dynamic>)
-        : PreferenceValue.empty();
+        : PreferenceValue(
+            queuePreference: Queue.empty().preference,
+            audioPlayerSetting: AudioPlayerSetting.standard(),
+          );
   }
 
   @override
