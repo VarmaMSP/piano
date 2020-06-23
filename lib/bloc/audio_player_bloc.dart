@@ -20,7 +20,7 @@ enum StateTransistion {
 }
 
 @superEnum
-enum _SnapshotTransistion {
+enum _QueueTransistion {
   @Data(fields: [DataField<AudioTrack>('audioTrack')])
   PlayAudioTrack,
   @Data(fields: [DataField<AudioTrack>('audioTrack')])
@@ -46,8 +46,8 @@ class AudioPlayerBloc {
       BehaviorSubject<PositionState>();
 
   /// Sink for snapshot transistions
-  final PublishSubject<SnapshotTransistion> _snapshotTransistion =
-      PublishSubject<SnapshotTransistion>();
+  final PublishSubject<QueueTransistion> _queueTransistion =
+      PublishSubject<QueueTransistion>();
 
   /// Sink for state transistions
   final PublishSubject<StateTransistion> _stateTransistion =
@@ -62,7 +62,7 @@ class AudioPlayerBloc {
     _handleStateTransistions();
 
     /// Handle snapshot transistion events
-    _handleSnapshotTransistions();
+    _handleQueueTransistions();
 
     /// handle changes to position
     _handlePosistionTransistions();
@@ -90,7 +90,7 @@ class AudioPlayerBloc {
     });
   }
 
-  void _handleSnapshotTransistions() {
+  void _handleQueueTransistions() {
     // Load audioplayer snapshot from db
     store.queue.watch().listen((q) async {
       _queueSubject.add(q);
@@ -109,7 +109,7 @@ class AudioPlayerBloc {
     });
 
     // handle snapshot transistions
-    _snapshotTransistion.stream.distinct().listen((t) async {
+    _queueTransistion.stream.distinct().listen((t) async {
       final prevQueue = await _queueSubject.first;
       await t.when(
         playAudioTrack: (data) async {
@@ -143,8 +143,7 @@ class AudioPlayerBloc {
   void Function(StateTransistion) get transistionState => _stateTransistion.add;
 
   // Transisition snapshot
-  void Function(SnapshotTransistion) get transistionSnapshot =>
-      _snapshotTransistion.add;
+  void Function(QueueTransistion) get transistionQueue => _queueTransistion.add;
 
   // Transistion position
   void Function(Duration) get transistionPosition => _posistionTransistion.add;
@@ -166,7 +165,7 @@ class AudioPlayerBloc {
   Future<void> dispose() async {
     await _queueSubject.close();
     await _positionStateSubject.close();
-    await _snapshotTransistion.close();
+    await _queueTransistion.close();
     await _stateTransistion.close();
     await _posistionTransistion.close();
     await audioService.dispose();

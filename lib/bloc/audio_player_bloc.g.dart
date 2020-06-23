@@ -9,23 +9,23 @@ part of 'audio_player_bloc.dart';
 // **************************************************************************
 
 @immutable
-abstract class SnapshotTransistion extends Equatable {
-  const SnapshotTransistion(this._type);
+abstract class QueueTransistion extends Equatable {
+  const QueueTransistion(this._type);
 
-  factory SnapshotTransistion.playAudioTrack(
-      {@required AudioTrack audioTrack}) = PlayAudioTrack;
+  factory QueueTransistion.playAudioTrack({@required AudioTrack audioTrack}) =
+      PlayAudioTrack;
 
-  factory SnapshotTransistion.addToQueueTop({@required AudioTrack audioTrack}) =
+  factory QueueTransistion.addToQueueTop({@required AudioTrack audioTrack}) =
       AddToQueueTop;
 
-  factory SnapshotTransistion.addToQueueBottom(
-      {@required AudioTrack audioTrack}) = AddToQueueBottom;
+  factory QueueTransistion.addToQueueBottom({@required AudioTrack audioTrack}) =
+      AddToQueueBottom;
 
-  factory SnapshotTransistion.playPrevious() = PlayPrevious;
+  factory QueueTransistion.playPrevious() = PlayPrevious;
 
-  factory SnapshotTransistion.playNext() = PlayNext;
+  factory QueueTransistion.playNext() = PlayNext;
 
-  final _SnapshotTransistion _type;
+  final _QueueTransistion _type;
 
 //ignore: missing_return
   R when<R>(
@@ -45,15 +45,15 @@ abstract class SnapshotTransistion extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _SnapshotTransistion.PlayAudioTrack:
+      case _QueueTransistion.PlayAudioTrack:
         return playAudioTrack(this as PlayAudioTrack);
-      case _SnapshotTransistion.AddToQueueTop:
+      case _QueueTransistion.AddToQueueTop:
         return addToQueueTop(this as AddToQueueTop);
-      case _SnapshotTransistion.AddToQueueBottom:
+      case _QueueTransistion.AddToQueueBottom:
         return addToQueueBottom(this as AddToQueueBottom);
-      case _SnapshotTransistion.PlayPrevious:
+      case _QueueTransistion.PlayPrevious:
         return playPrevious(this as PlayPrevious);
-      case _SnapshotTransistion.PlayNext:
+      case _QueueTransistion.PlayNext:
         return playNext(this as PlayNext);
     }
   }
@@ -76,15 +76,15 @@ abstract class SnapshotTransistion extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _SnapshotTransistion.PlayAudioTrack:
+      case _QueueTransistion.PlayAudioTrack:
         return playAudioTrack(this as PlayAudioTrack);
-      case _SnapshotTransistion.AddToQueueTop:
+      case _QueueTransistion.AddToQueueTop:
         return addToQueueTop(this as AddToQueueTop);
-      case _SnapshotTransistion.AddToQueueBottom:
+      case _QueueTransistion.AddToQueueBottom:
         return addToQueueBottom(this as AddToQueueBottom);
-      case _SnapshotTransistion.PlayPrevious:
+      case _QueueTransistion.PlayPrevious:
         return playPrevious(this as PlayPrevious);
-      case _SnapshotTransistion.PlayNext:
+      case _QueueTransistion.PlayNext:
         return playNext(this as PlayNext);
     }
   }
@@ -95,7 +95,7 @@ abstract class SnapshotTransistion extends Equatable {
       R Function(AddToQueueBottom) addToQueueBottom,
       R Function(PlayPrevious) playPrevious,
       R Function(PlayNext) playNext,
-      @required R Function(SnapshotTransistion) orElse}) {
+      @required R Function(QueueTransistion) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -103,19 +103,19 @@ abstract class SnapshotTransistion extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _SnapshotTransistion.PlayAudioTrack:
+      case _QueueTransistion.PlayAudioTrack:
         if (playAudioTrack == null) break;
         return playAudioTrack(this as PlayAudioTrack);
-      case _SnapshotTransistion.AddToQueueTop:
+      case _QueueTransistion.AddToQueueTop:
         if (addToQueueTop == null) break;
         return addToQueueTop(this as AddToQueueTop);
-      case _SnapshotTransistion.AddToQueueBottom:
+      case _QueueTransistion.AddToQueueBottom:
         if (addToQueueBottom == null) break;
         return addToQueueBottom(this as AddToQueueBottom);
-      case _SnapshotTransistion.PlayPrevious:
+      case _QueueTransistion.PlayPrevious:
         if (playPrevious == null) break;
         return playPrevious(this as PlayPrevious);
-      case _SnapshotTransistion.PlayNext:
+      case _QueueTransistion.PlayNext:
         if (playNext == null) break;
         return playNext(this as PlayNext);
     }
@@ -128,7 +128,7 @@ abstract class SnapshotTransistion extends Equatable {
       FutureOr<R> Function(AddToQueueBottom) addToQueueBottom,
       FutureOr<R> Function(PlayPrevious) playPrevious,
       FutureOr<R> Function(PlayNext) playNext,
-      @required FutureOr<R> Function(SnapshotTransistion) orElse}) {
+      @required FutureOr<R> Function(QueueTransistion) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -136,19 +136,19 @@ abstract class SnapshotTransistion extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _SnapshotTransistion.PlayAudioTrack:
+      case _QueueTransistion.PlayAudioTrack:
         if (playAudioTrack == null) break;
         return playAudioTrack(this as PlayAudioTrack);
-      case _SnapshotTransistion.AddToQueueTop:
+      case _QueueTransistion.AddToQueueTop:
         if (addToQueueTop == null) break;
         return addToQueueTop(this as AddToQueueTop);
-      case _SnapshotTransistion.AddToQueueBottom:
+      case _QueueTransistion.AddToQueueBottom:
         if (addToQueueBottom == null) break;
         return addToQueueBottom(this as AddToQueueBottom);
-      case _SnapshotTransistion.PlayPrevious:
+      case _QueueTransistion.PlayPrevious:
         if (playPrevious == null) break;
         return playPrevious(this as PlayPrevious);
-      case _SnapshotTransistion.PlayNext:
+      case _QueueTransistion.PlayNext:
         if (playNext == null) break;
         return playNext(this as PlayNext);
     }
@@ -173,19 +173,19 @@ abstract class SnapshotTransistion extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _SnapshotTransistion.PlayAudioTrack:
+      case _QueueTransistion.PlayAudioTrack:
         if (playAudioTrack == null) break;
         return playAudioTrack(this as PlayAudioTrack);
-      case _SnapshotTransistion.AddToQueueTop:
+      case _QueueTransistion.AddToQueueTop:
         if (addToQueueTop == null) break;
         return addToQueueTop(this as AddToQueueTop);
-      case _SnapshotTransistion.AddToQueueBottom:
+      case _QueueTransistion.AddToQueueBottom:
         if (addToQueueBottom == null) break;
         return addToQueueBottom(this as AddToQueueBottom);
-      case _SnapshotTransistion.PlayPrevious:
+      case _QueueTransistion.PlayPrevious:
         if (playPrevious == null) break;
         return playPrevious(this as PlayPrevious);
-      case _SnapshotTransistion.PlayNext:
+      case _QueueTransistion.PlayNext:
         if (playNext == null) break;
         return playNext(this as PlayNext);
     }
@@ -196,9 +196,9 @@ abstract class SnapshotTransistion extends Equatable {
 }
 
 @immutable
-class PlayAudioTrack extends SnapshotTransistion {
+class PlayAudioTrack extends QueueTransistion {
   const PlayAudioTrack({@required this.audioTrack})
-      : super(_SnapshotTransistion.PlayAudioTrack);
+      : super(_QueueTransistion.PlayAudioTrack);
 
   final AudioTrack audioTrack;
 
@@ -209,9 +209,9 @@ class PlayAudioTrack extends SnapshotTransistion {
 }
 
 @immutable
-class AddToQueueTop extends SnapshotTransistion {
+class AddToQueueTop extends QueueTransistion {
   const AddToQueueTop({@required this.audioTrack})
-      : super(_SnapshotTransistion.AddToQueueTop);
+      : super(_QueueTransistion.AddToQueueTop);
 
   final AudioTrack audioTrack;
 
@@ -222,9 +222,9 @@ class AddToQueueTop extends SnapshotTransistion {
 }
 
 @immutable
-class AddToQueueBottom extends SnapshotTransistion {
+class AddToQueueBottom extends QueueTransistion {
   const AddToQueueBottom({@required this.audioTrack})
-      : super(_SnapshotTransistion.AddToQueueBottom);
+      : super(_QueueTransistion.AddToQueueBottom);
 
   final AudioTrack audioTrack;
 
@@ -235,8 +235,8 @@ class AddToQueueBottom extends SnapshotTransistion {
 }
 
 @immutable
-class PlayPrevious extends SnapshotTransistion {
-  const PlayPrevious._() : super(_SnapshotTransistion.PlayPrevious);
+class PlayPrevious extends QueueTransistion {
+  const PlayPrevious._() : super(_QueueTransistion.PlayPrevious);
 
   factory PlayPrevious() {
     _instance ??= const PlayPrevious._();
@@ -247,8 +247,8 @@ class PlayPrevious extends SnapshotTransistion {
 }
 
 @immutable
-class PlayNext extends SnapshotTransistion {
-  const PlayNext._() : super(_SnapshotTransistion.PlayNext);
+class PlayNext extends QueueTransistion {
+  const PlayNext._() : super(_QueueTransistion.PlayNext);
 
   factory PlayNext() {
     _instance ??= const PlayNext._();

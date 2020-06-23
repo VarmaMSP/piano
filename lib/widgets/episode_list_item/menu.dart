@@ -46,8 +46,8 @@ class Menu extends StatelessWidget {
         onSelected: (value) {
           switch (value) {
             case 'Play next':
-              audioPlayerBloc.transistionSnapshot(
-                SnapshotTransistion.addToQueueTop(
+              audioPlayerBloc.transistionQueue(
+                QueueTransistion.addToQueueTop(
                   audioTrack: AudioTrack(
                     episode: episode,
                     podcast: podcast,
@@ -56,8 +56,8 @@ class Menu extends StatelessWidget {
               );
               break;
             case 'Add to queue':
-              audioPlayerBloc.transistionSnapshot(
-                SnapshotTransistion.addToQueueBottom(
+              audioPlayerBloc.transistionQueue(
+                QueueTransistion.addToQueueBottom(
                   audioTrack: AudioTrack(
                     episode: episode,
                     podcast: podcast,
