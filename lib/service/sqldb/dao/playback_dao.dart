@@ -11,6 +11,14 @@ class PlaybackDao extends DatabaseAccessor<SqlDb> with _$PlaybackDaoMixin {
     );
   }
 
+  Future<void> updateProgress(Playback playback) async {
+    await (update(playbacks)
+          ..where((tbl) => tbl.episodeId.equals(playback.episodeId)))
+        .write(
+      PlaybacksCompanion(position: Value(playback.position.inSeconds)),
+    );
+  }
+
   Stream<Playback> watchPlayback(String episodeId) {
     return (select(playbacks)..where((tbl) => tbl.episodeId.equals(episodeId)))
         .watchSingle()

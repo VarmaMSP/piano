@@ -77,7 +77,7 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
     return Rx.combineLatest2<QueuePreference, List<AudioTrack>, Queue>(
       (select(preferences)..where((tbl) => tbl.key.equals(QueuePreference.key)))
           .watchSingle()
-          .map((x) => x.value.queuePreference),
+          .map((x) => x?.value?.queuePreference),
       (select(audioTracks)
             ..orderBy([
               (tbl) => OrderingTerm(expression: tbl.position),
@@ -100,11 +100,13 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
               );
             }).toList(),
           ),
-      (prefs, tracks) => Queue(
-        audioTracks: tracks ?? [],
-        position: prefs.position,
-        enabled: prefs.enabled,
-      ),
+      (prefs, tracks) => prefs == null
+          ? Queue.empty()
+          : Queue(
+              audioTracks: tracks ?? [],
+              position: prefs.position,
+              enabled: prefs.enabled,
+            ),
     );
   }
 
@@ -113,17 +115,17 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
   }
 
   Future<AudioTrack> getNowPlaying() async {
-    final prefsRow = await (select(preferences)
-          ..where((tbl) => tbl.key.equals(QueuePreference.key)))
-        .getSingle();
-    if (prefsRow == null || prefsRow.value.queuePreference.position == -1) {
+    final queuePrefs = (await (select(preferences)
+              ..where((tbl) => tbl.key.equals(QueuePreference.key)))
+            .getSingle())
+        .value
+        .queuePreference;
+    if (queuePrefs.position == -1) {
       return null;
     }
 
     final audioTrackRow = await (select(audioTracks)
-          ..where((tbl) => tbl.position.equals(
-                prefsRow.value.queuePreference.position,
-              )))
+          ..where((tbl) => tbl.position.equals(queuePrefs.position)))
         .getSingle();
     if (audioTrackRow == null) {
       return null;
@@ -140,7 +142,7 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
     return AudioTrack(
       episode: episode.toModel(),
       podcast: podcast.toModel(),
-      position: prefsRow.value.queuePreference.position,
+      position: queuePrefs.position,
     );
   }
 }

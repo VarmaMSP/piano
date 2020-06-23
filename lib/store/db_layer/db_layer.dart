@@ -1,4 +1,5 @@
 import 'package:phenopod/service/sqldb/sqldb.dart';
+import 'package:phenopod/store/db_layer/playback_db.dart';
 import 'package:phenopod/store/db_layer/queue_db.dart';
 import 'package:phenopod/store/db_layer/podcast_db.dart';
 import 'package:phenopod/store/store.dart';
@@ -7,6 +8,7 @@ class DbLayer extends Store {
   final Store baseStore;
   PodcastStore _podcastDb;
   QueueStore _queueDb;
+  PlaybackStore _playbackDb;
 
   DbLayer({this.baseStore, SqlDb sqlDb}) {
     _podcastDb = PodcastDb(
@@ -14,6 +16,10 @@ class DbLayer extends Store {
       sqlDb: sqlDb,
     );
     _queueDb = QueueDb(
+      baseStore: null,
+      sqlDb: sqlDb,
+    );
+    _playbackDb = PlaybackDb(
       baseStore: null,
       sqlDb: sqlDb,
     );
@@ -35,5 +41,5 @@ class DbLayer extends Store {
   QueueStore get queue => _queueDb;
 
   @override
-  PlaybackStore get playback => throw UnimplementedError();
+  PlaybackStore get playback => _playbackDb;
 }

@@ -1714,25 +1714,24 @@ class $AudioTracksTable extends AudioTracks
 
 class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
   final String episodeId;
-  final double progress;
+  final int position;
   final int duration;
   final String lastPlayedAt;
   PlaybackRow(
       {@required this.episodeId,
-      @required this.progress,
+      @required this.position,
       @required this.duration,
       @required this.lastPlayedAt});
   factory PlaybackRow.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
-    final doubleType = db.typeSystem.forDartType<double>();
     final intType = db.typeSystem.forDartType<int>();
     return PlaybackRow(
       episodeId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}episode_id']),
-      progress: doubleType
-          .mapFromDatabaseResponse(data['${effectivePrefix}progress']),
+      position:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
       duration:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}duration']),
       lastPlayedAt: stringType
@@ -1745,8 +1744,8 @@ class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
     if (!nullToAbsent || episodeId != null) {
       map['episode_id'] = Variable<String>(episodeId);
     }
-    if (!nullToAbsent || progress != null) {
-      map['progress'] = Variable<double>(progress);
+    if (!nullToAbsent || position != null) {
+      map['position'] = Variable<int>(position);
     }
     if (!nullToAbsent || duration != null) {
       map['duration'] = Variable<int>(duration);
@@ -1762,9 +1761,9 @@ class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
       episodeId: episodeId == null && nullToAbsent
           ? const Value.absent()
           : Value(episodeId),
-      progress: progress == null && nullToAbsent
+      position: position == null && nullToAbsent
           ? const Value.absent()
-          : Value(progress),
+          : Value(position),
       duration: duration == null && nullToAbsent
           ? const Value.absent()
           : Value(duration),
@@ -1779,7 +1778,7 @@ class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return PlaybackRow(
       episodeId: serializer.fromJson<String>(json['episodeId']),
-      progress: serializer.fromJson<double>(json['progress']),
+      position: serializer.fromJson<int>(json['position']),
       duration: serializer.fromJson<int>(json['duration']),
       lastPlayedAt: serializer.fromJson<String>(json['lastPlayedAt']),
     );
@@ -1789,7 +1788,7 @@ class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'episodeId': serializer.toJson<String>(episodeId),
-      'progress': serializer.toJson<double>(progress),
+      'position': serializer.toJson<int>(position),
       'duration': serializer.toJson<int>(duration),
       'lastPlayedAt': serializer.toJson<String>(lastPlayedAt),
     };
@@ -1797,12 +1796,12 @@ class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
 
   PlaybackRow copyWith(
           {String episodeId,
-          double progress,
+          int position,
           int duration,
           String lastPlayedAt}) =>
       PlaybackRow(
         episodeId: episodeId ?? this.episodeId,
-        progress: progress ?? this.progress,
+        position: position ?? this.position,
         duration: duration ?? this.duration,
         lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
       );
@@ -1810,7 +1809,7 @@ class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
   String toString() {
     return (StringBuffer('PlaybackRow(')
           ..write('episodeId: $episodeId, ')
-          ..write('progress: $progress, ')
+          ..write('position: $position, ')
           ..write('duration: $duration, ')
           ..write('lastPlayedAt: $lastPlayedAt')
           ..write(')'))
@@ -1821,46 +1820,46 @@ class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
   int get hashCode => $mrjf($mrjc(
       episodeId.hashCode,
       $mrjc(
-          progress.hashCode, $mrjc(duration.hashCode, lastPlayedAt.hashCode))));
+          position.hashCode, $mrjc(duration.hashCode, lastPlayedAt.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is PlaybackRow &&
           other.episodeId == this.episodeId &&
-          other.progress == this.progress &&
+          other.position == this.position &&
           other.duration == this.duration &&
           other.lastPlayedAt == this.lastPlayedAt);
 }
 
 class PlaybacksCompanion extends UpdateCompanion<PlaybackRow> {
   final Value<String> episodeId;
-  final Value<double> progress;
+  final Value<int> position;
   final Value<int> duration;
   final Value<String> lastPlayedAt;
   const PlaybacksCompanion({
     this.episodeId = const Value.absent(),
-    this.progress = const Value.absent(),
+    this.position = const Value.absent(),
     this.duration = const Value.absent(),
     this.lastPlayedAt = const Value.absent(),
   });
   PlaybacksCompanion.insert({
     @required String episodeId,
-    @required double progress,
+    @required int position,
     @required int duration,
     @required String lastPlayedAt,
   })  : episodeId = Value(episodeId),
-        progress = Value(progress),
+        position = Value(position),
         duration = Value(duration),
         lastPlayedAt = Value(lastPlayedAt);
   static Insertable<PlaybackRow> custom({
     Expression<String> episodeId,
-    Expression<double> progress,
+    Expression<int> position,
     Expression<int> duration,
     Expression<String> lastPlayedAt,
   }) {
     return RawValuesInsertable({
       if (episodeId != null) 'episode_id': episodeId,
-      if (progress != null) 'progress': progress,
+      if (position != null) 'position': position,
       if (duration != null) 'duration': duration,
       if (lastPlayedAt != null) 'last_played_at': lastPlayedAt,
     });
@@ -1868,12 +1867,12 @@ class PlaybacksCompanion extends UpdateCompanion<PlaybackRow> {
 
   PlaybacksCompanion copyWith(
       {Value<String> episodeId,
-      Value<double> progress,
+      Value<int> position,
       Value<int> duration,
       Value<String> lastPlayedAt}) {
     return PlaybacksCompanion(
       episodeId: episodeId ?? this.episodeId,
-      progress: progress ?? this.progress,
+      position: position ?? this.position,
       duration: duration ?? this.duration,
       lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
     );
@@ -1885,8 +1884,8 @@ class PlaybacksCompanion extends UpdateCompanion<PlaybackRow> {
     if (episodeId.present) {
       map['episode_id'] = Variable<String>(episodeId.value);
     }
-    if (progress.present) {
-      map['progress'] = Variable<double>(progress.value);
+    if (position.present) {
+      map['position'] = Variable<int>(position.value);
     }
     if (duration.present) {
       map['duration'] = Variable<int>(duration.value);
@@ -1912,13 +1911,13 @@ class $PlaybacksTable extends Playbacks
         $customConstraints: 'REFERENCES episodes(id)');
   }
 
-  final VerificationMeta _progressMeta = const VerificationMeta('progress');
-  GeneratedRealColumn _progress;
+  final VerificationMeta _positionMeta = const VerificationMeta('position');
+  GeneratedIntColumn _position;
   @override
-  GeneratedRealColumn get progress => _progress ??= _constructProgress();
-  GeneratedRealColumn _constructProgress() {
-    return GeneratedRealColumn(
-      'progress',
+  GeneratedIntColumn get position => _position ??= _constructPosition();
+  GeneratedIntColumn _constructPosition() {
+    return GeneratedIntColumn(
+      'position',
       $tableName,
       false,
     );
@@ -1952,7 +1951,7 @@ class $PlaybacksTable extends Playbacks
 
   @override
   List<GeneratedColumn> get $columns =>
-      [episodeId, progress, duration, lastPlayedAt];
+      [episodeId, position, duration, lastPlayedAt];
   @override
   $PlaybacksTable get asDslTable => this;
   @override
@@ -1970,11 +1969,11 @@ class $PlaybacksTable extends Playbacks
     } else if (isInserting) {
       context.missing(_episodeIdMeta);
     }
-    if (data.containsKey('progress')) {
-      context.handle(_progressMeta,
-          progress.isAcceptableOrUnknown(data['progress'], _progressMeta));
+    if (data.containsKey('position')) {
+      context.handle(_positionMeta,
+          position.isAcceptableOrUnknown(data['position'], _positionMeta));
     } else if (isInserting) {
-      context.missing(_progressMeta);
+      context.missing(_positionMeta);
     }
     if (data.containsKey('duration')) {
       context.handle(_durationMeta,

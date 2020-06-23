@@ -10,16 +10,16 @@ part of 'playback.dart';
 
 extension PlaybackCopyWithExtension on Playback {
   Playback copyWith({
-    int duration,
+    Duration duration,
     String episodeId,
     String lastPlayedAt,
-    double progress,
+    Duration position,
   }) {
     return Playback(
       duration: duration ?? this.duration,
       episodeId: episodeId ?? this.episodeId,
       lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
-      progress: progress ?? this.progress,
+      position: position ?? this.position,
     );
   }
 }

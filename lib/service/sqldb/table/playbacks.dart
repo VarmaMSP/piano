@@ -6,7 +6,7 @@ part of '../sqldb.dart';
 class Playbacks extends Table {
   TextColumn get episodeId =>
       text().customConstraint('REFERENCES episodes(id)')();
-  RealColumn get progress => real()();
+  IntColumn get position => integer()();
   IntColumn get duration => integer()();
   TextColumn get lastPlayedAt => text()();
 
@@ -17,9 +17,9 @@ class Playbacks extends Table {
 PlaybackRow playbackRowFromModel(Playback model) {
   return PlaybackRow(
     episodeId: model.episodeId,
-    progress: model.progress,
-    duration: model.duration,
-    lastPlayedAt: model.lastPlayedAt,
+    position: model?.position?.inSeconds ?? 0,
+    duration: model?.duration?.inSeconds ?? 0,
+    lastPlayedAt: model?.lastPlayedAt ?? 0,
   );
 }
 
@@ -27,8 +27,8 @@ extension PlaybackRowExtension on PlaybackRow {
   Playback toModel() {
     return Playback(
       episodeId: episodeId,
-      progress: progress,
-      duration: duration,
+      position: Duration(seconds: position),
+      duration: Duration(seconds: duration),
       lastPlayedAt: lastPlayedAt,
     );
   }

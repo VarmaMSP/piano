@@ -10,13 +10,15 @@ class AudioPlayer {
   final Future<void> Function() onComplete;
   final Future<void> Function() onPlaying;
   final Future<void> Function() onPaused;
+  final Future<void> Function(Duration) onStart;
 
   StreamSubscription<justaudio.AudioPlaybackEvent> _eventSubscription;
 
   AudioPlayer({
     @required this.onComplete,
-    this.onPlaying,
-    this.onPaused,
+    @required this.onPlaying,
+    @required this.onPaused,
+    @required this.onStart,
   });
 
   Future<void> start() async {
@@ -57,6 +59,7 @@ class AudioPlayer {
             );
 
           case justaudio.AudioPlaybackState.completed:
+            await onPaused();
             return onComplete();
         }
       },
@@ -76,6 +79,7 @@ class AudioPlayer {
     }
     await audioservice.AudioServiceBackground.setMediaItem(mediaItem);
     final duration = await _player.setUrl(mediaItem.id);
+    await onStart(duration);
     await audioservice.AudioServiceBackground.setMediaItem(
       mediaItem.copyWith(duration: duration),
     );

@@ -35,6 +35,7 @@ class AudioPlayerController {
       onComplete: _playNext,
       onPlaying: _startPlaybackSync,
       onPaused: _stopPlaybackSync,
+      onStart: _syncPlaybackStart,
     );
   }
 
@@ -97,14 +98,24 @@ class AudioPlayerController {
     }
   }
 
+  Future<void> _syncPlaybackStart(Duration duration) async {
+    final nowPlaying = await _nowPlayingSubject.first;
+    if (nowPlaying != null) {
+      await _store.playback.save(Playback(
+        episodeId: nowPlaying.episode.id,
+        duration: duration,
+        lastPlayedAt: '',
+      ));
+    }
+  }
+
   Future<void> _syncPlayback() async {
     final nowPlaying = await _nowPlayingSubject.first;
     final playbackState = audioservice.AudioServiceBackground.state;
     if (nowPlaying != null && utils.isValidState(playbackState)) {
-      await _store.playback.save(Playback(
+      await _store.playback.updateProgress(Playback(
         episodeId: nowPlaying.episode.id,
-        progress: 0,
-        duration: 0,
+        position: playbackState.currentPosition,
       ));
     }
   }

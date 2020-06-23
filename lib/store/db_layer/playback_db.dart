@@ -16,12 +16,17 @@ class PlaybackDb extends PlaybackStore {
   }
 
   @override
-  Future<Playback> getByEpisode(String episodeId) {
+  Future<void> updateProgress(Playback playback) {
+    return _playbackDao.updateProgress(playback);
+  }
+
+  @override
+  Future<Playback> get_(String episodeId) {
     return _playbackDao.getPlayback(episodeId);
   }
 
   @override
-  Stream<Playback> watchByEpisode(String episodeId) {
+  Stream<Playback> watch(String episodeId) {
     return _playbackDao.watchPlayback(episodeId);
   }
 }

@@ -38,6 +38,7 @@ abstract class QueueStore {
 
 abstract class PlaybackStore {
   Future<void> save(Playback playback);
-  Future<Playback> getByEpisode(String episodeId);
-  Stream<Playback> watchByEpisode(String episodeId);
+  Future<void> updateProgress(Playback playback);
+  Future<Playback> get_(String episodeId);
+  Stream<Playback> watch(String episodeId);
 }
