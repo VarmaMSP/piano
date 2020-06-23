@@ -7,33 +7,24 @@ import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tuple/tuple.dart';
 
-class _IsolateStartRequest {
-  final SendPort sendMoorIsolate;
-  final String targetPath;
-
-  _IsolateStartRequest(this.sendMoorIsolate, this.targetPath);
-}
-
-void _startIsolate(_IsolateStartRequest request) {
-  final database = VmDatabase(File(request.targetPath), logStatements: false);
+// Startt moorIsolate and sendback the result
+void _moor(Tuple2<SendPort, String> request) {
+  final database = VmDatabase(File(request.item2), logStatements: false);
   final moorIsolate = MoorIsolate.inCurrent(
     () => DatabaseConnection.fromExecutor(database),
   );
-
-  request.sendMoorIsolate.send(moorIsolate);
+  request.item1.send(moorIsolate);
 }
 
-Future<MoorIsolate> _newMoorIsolate() async {
+Future<MoorIsolate> _startIsolate() async {
   final appDir = await getApplicationDocumentsDirectory();
   final dbPath = join(appDir.path, 'db.sqlite');
   final receivePort = ReceivePort();
 
   // Start Moor in a new isolate
-  await Isolate.spawn(
-    _startIsolate,
-    _IsolateStartRequest(receivePort.sendPort, dbPath),
-  );
+  await Isolate.spawn(_moor, Tuple2(receivePort.sendPort, dbPath));
 
   // Receive MoorIsolate as the first message
   final moorIsolate = (await receivePort.first as MoorIsolate);
@@ -51,5 +42,5 @@ Future<MoorIsolate> getMoorIsolate() {
   final sendPort = IsolateNameServer.lookupPortByName('MOOR_ISOLATE');
   return sendPort != null
       ? Future.value(MoorIsolate.fromConnectPort(sendPort))
-      : _newMoorIsolate();
+      : _startIsolate();
 }
