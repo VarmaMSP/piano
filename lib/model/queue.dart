@@ -62,7 +62,7 @@ class Queue extends Equatable {
     return Queue(
       enabled: false,
       position: 0,
-      audioTracks: [audioTrack],
+      audioTracks: [audioTrack.copyWith(position: 0)],
     );
   }
 

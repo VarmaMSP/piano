@@ -19,15 +19,15 @@ class AudioPlayerController {
   final Stream<int> _ticker =
       Stream<int>.periodic(Duration(seconds: 3)).asBroadcastStream();
 
-  /// Subscription to ticker
-  StreamSubscription<dynamic> _tickerSubscription;
-
   /// Stream of upto data player snapshots from db
   final BehaviorSubject<Queue> _queueSubject = BehaviorSubject<Queue>();
 
   /// Stream of now playing track from db
   final BehaviorSubject<AudioTrack> _nowPlayingSubject =
       BehaviorSubject<AudioTrack>();
+
+  /// Subscription to ticker
+  StreamSubscription<dynamic> _tickerSubscription;
 
   AudioPlayerController({SqlDb sqlDb, HttpClient httpClient}) {
     _store = newStore(sqlDb, httpClient);
@@ -73,7 +73,7 @@ class AudioPlayerController {
     await _audioPlayer.stop();
     await _queueSubject.close();
     await _nowPlayingSubject.close();
-    await _tickerSubscription.cancel();
+    await _tickerSubscription?.cancel();
   }
 
   Future<void> syncQueue() async {

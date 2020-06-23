@@ -26,7 +26,6 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
     }
 
     await transaction(() async {
-      /// Insert Podcasts from audio tracks
       await batch((b) {
         b.insertAll(
           podcasts,
@@ -34,8 +33,6 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
           mode: InsertMode.insertOrIgnore,
         );
       });
-
-      /// Insert Episodes from audio tracks
       await batch((b) {
         b.insertAll(
           episodes,
@@ -43,8 +40,6 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
           mode: InsertMode.insertOrIgnore,
         );
       });
-
-      /// Insert audiotracks
       await batch((b) {
         b.insertAll(
           audioTracks,
@@ -52,8 +47,6 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
           mode: InsertMode.insertOrReplace,
         );
       });
-
-      /// Delete any additional audio tracks
       await (delete(audioTracks)
             ..where(
               (tbl) => tbl.position.isBiggerOrEqualValue(
@@ -61,8 +54,6 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
               ),
             ))
           .go();
-
-      /// Update preference
       await into(preferences).insert(
         PreferenceRow(
           key: QueuePreference.key,
@@ -100,13 +91,14 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
               );
             }).toList(),
           ),
-      (prefs, tracks) => prefs == null
-          ? Queue.empty()
-          : Queue(
-              audioTracks: tracks ?? [],
-              position: prefs.position,
-              enabled: prefs.enabled,
-            ),
+      (prefs, tracks) =>
+          prefs == null || prefs.position < 0 || prefs.position >= tracks.length
+              ? Queue.empty()
+              : Queue(
+                  audioTracks: tracks,
+                  position: prefs.position,
+                  enabled: prefs.enabled,
+                ),
     );
   }
 
@@ -118,9 +110,9 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
     final queuePrefs = (await (select(preferences)
               ..where((tbl) => tbl.key.equals(QueuePreference.key)))
             .getSingle())
-        .value
-        .queuePreference;
-    if (queuePrefs.position == -1) {
+        ?.value
+        ?.queuePreference;
+    if (queuePrefs == null || queuePrefs.position == -1) {
       return null;
     }
 
