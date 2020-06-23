@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -21,6 +22,9 @@ class Thumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<Store>(context);
+    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+
     final Widget image = ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
       child: CachedNetworkImage(
@@ -66,10 +70,29 @@ class Thumbnail extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(1.0),
       ),
-      child: _duration(episode.duration),
+      child: _buildDuration(episode.duration),
     );
 
-    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+    final Widget progresbar = Container(
+      alignment: Alignment.bottomCenter,
+      child: StreamBuilder<AudioTrack>(
+        stream: Provider.of<AudioPlayerBloc>(context).nowPlaying,
+        builder: (context, snapshot) =>
+            snapshot?.data?.episode?.id == episode.id
+                ? StreamBuilder<Playback>(
+                    stream: store.playback.watch(episode.id),
+                    builder: (context, snapshot) => _buildProgressbar(
+                      snapshot.data,
+                    ),
+                  )
+                : FutureBuilder<Playback>(
+                    future: store.playback.get_(episode.id),
+                    builder: (context, snapshot) => _buildProgressbar(
+                      snapshot.data,
+                    ),
+                  ),
+      ),
+    );
 
     return GestureDetector(
       onTap: () {
@@ -90,17 +113,14 @@ class Thumbnail extends StatelessWidget {
             playIconBg,
             playIcon,
             duration,
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: _progressbar(),
-            )
+            progresbar,
           ],
         ),
       ),
     );
   }
 
-  Widget _duration(int sec) {
+  Widget _buildDuration(int sec) {
     RegExp regex;
     if (sec < 60 * 60) {
       regex = RegExp(r'\d\d:(\d\d:\d\d)');
@@ -113,32 +133,31 @@ class Thumbnail extends StatelessWidget {
     final res = regex
         .firstMatch(DateTime(0, 0, 0, 0, 0, sec).toIso8601String())
         ?.group(1);
-
-    if (res != null) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(5.0),
-        child: Container(
-          color: const Color.fromRGBO(0, 0, 0, 0.65),
-          padding: const EdgeInsets.only(left: 4, right: 4, bottom: 0.9),
-          child: Text(
-            res ?? '00:00',
-            style: TextStyle(
-              fontSize: 11.5,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-              height: 1.3,
-              letterSpacing: 0.5,
-            ),
-          ),
-        ),
-      );
+    if (res == null) {
+      return null;
     }
 
-    return null;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5.0),
+      child: Container(
+        color: const Color.fromRGBO(0, 0, 0, 0.65),
+        padding: const EdgeInsets.only(left: 4, right: 4, bottom: 0.9),
+        child: Text(
+          res ?? '00:00',
+          style: TextStyle(
+            fontSize: 11.5,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+            height: 1.3,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ),
+    );
   }
 
-  Widget _progressbar() {
-    if (episode.lastPlayedAt == '') {
+  Widget _buildProgressbar(Playback playback) {
+    if (playback == null || playback.isEmpty) {
       return Container(height: 0);
     }
 
@@ -156,7 +175,7 @@ class Thumbnail extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: FractionallySizedBox(
         heightFactor: 1.0,
-        widthFactor: episode.progress + 0.27,
+        widthFactor: playback.position.inSeconds / playback.duration.inSeconds,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.only(

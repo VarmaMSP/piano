@@ -90,7 +90,6 @@ class AudioPlayer {
     await audioservice.AudioServiceBackground.setMediaItem(
       mediaItem.copyWith(duration: duration),
     );
-
     await play();
   }
 
