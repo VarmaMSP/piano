@@ -7,6 +7,7 @@ abstract class Store {
   SubscriptionStore get subscription;
   QueueStore get queue;
   PlaybackStore get playback;
+  PreferenceStore get preference;
 }
 
 abstract class UserStore {
@@ -41,4 +42,10 @@ abstract class PlaybackStore {
   Future<void> updateProgress(Playback playback);
   Future<Playback> get_(String episodeId);
   Stream<Playback> watch(String episodeId);
+}
+
+abstract class PreferenceStore {
+  Future<void> saveAudioSetting(AudioPlayerSetting setting);
+  Future<AudioPlayerSetting> getAudioSetting();
+  Stream<AudioPlayerSetting> watchAudioSetting();
 }

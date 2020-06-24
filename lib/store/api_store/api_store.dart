@@ -37,4 +37,7 @@ class ApiStore extends Store {
 
   @override
   PlaybackStore get playback => throw UnimplementedError();
+
+  @override
+  PreferenceStore get preference => throw UnimplementedError();
 }

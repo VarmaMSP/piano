@@ -130,27 +130,23 @@ class AudioPlayer {
     }
   }
 
-  Future<void> fastForwardBy({int milliSeconds}) async {
+  Future<void> fastForwardBy({int seconds}) async {
     final state = audioservice.AudioServiceBackground.state;
     if (!utils.isValidState(state)) {
       return;
     }
     final position = state.currentPosition;
-    final newPosition = Duration(
-      milliseconds: position.inMilliseconds + milliSeconds,
-    );
+    final newPosition = Duration(seconds: position.inSeconds + seconds);
     await seekTo(newPosition);
   }
 
-  Future<void> rewindBy({int milliSeconds}) async {
+  Future<void> rewindBy({int seconds}) async {
     final state = audioservice.AudioServiceBackground.state;
     if (!utils.isValidState(state)) {
       return;
     }
     final position = state?.currentPosition;
-    final newPosition = Duration(
-      milliseconds: position.inMilliseconds - milliSeconds,
-    );
+    final newPosition = Duration(seconds: position.inSeconds - seconds);
     await seekTo(newPosition.isNegative ? Duration.zero : newPosition);
   }
 

@@ -62,6 +62,9 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
       case 'syncNowPlaying':
         await _audioPlayerController.syncNowPlaying();
         break;
+      case 'syncSetting':
+        await _audioPlayerController.syncSetting();
+        break;
     }
   }
 

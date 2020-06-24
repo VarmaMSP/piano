@@ -58,6 +58,13 @@ class _audioServiceImpl implements AudioService {
   }
 
   @override
+  Future<void> syncSetting() async {
+    if (audioservice.AudioService.running) {
+      await audioservice.AudioService.customAction('syncSetting');
+    }
+  }
+
+  @override
   Future<void> pause() async {
     await audioservice.AudioService.pause();
   }

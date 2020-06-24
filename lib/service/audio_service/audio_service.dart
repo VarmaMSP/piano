@@ -67,6 +67,9 @@ abstract class AudioService {
   /// defaults to false
   Future<void> syncNowPlaying({bool startTask = true});
 
+  /// Makes background service load setting
+  Future<void> syncSetting();
+
   // Resume current episode
   Future<void> play();
 
