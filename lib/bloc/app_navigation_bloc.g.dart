@@ -9,45 +9,43 @@ part of 'app_navigation_bloc.dart';
 // **************************************************************************
 
 @immutable
-abstract class NavigateTo extends Equatable {
-  const NavigateTo(this._type);
+abstract class Screen extends Equatable {
+  const Screen(this._type);
 
-  factory NavigateTo.podcastPage({@required String urlParam}) = PodcastPage;
+  factory Screen.podcast({@required String urlParam}) = Podcast;
 
-  final _NavigateTo _type;
+  final _Screen _type;
 
 //ignore: missing_return
-  R when<R>({@required R Function(PodcastPage) podcastPage}) {
+  R when<R>({@required R Function(Podcast) podcast}) {
     assert(() {
-      if (podcastPage == null) {
+      if (podcast == null) {
         throw 'check for all possible cases';
       }
       return true;
     }());
     switch (this._type) {
-      case _NavigateTo.PodcastPage:
-        return podcastPage(this as PodcastPage);
+      case _Screen.Podcast:
+        return podcast(this as Podcast);
     }
   }
 
 //ignore: missing_return
-  Future<R> asyncWhen<R>(
-      {@required FutureOr<R> Function(PodcastPage) podcastPage}) {
+  Future<R> asyncWhen<R>({@required FutureOr<R> Function(Podcast) podcast}) {
     assert(() {
-      if (podcastPage == null) {
+      if (podcast == null) {
         throw 'check for all possible cases';
       }
       return true;
     }());
     switch (this._type) {
-      case _NavigateTo.PodcastPage:
-        return podcastPage(this as PodcastPage);
+      case _Screen.Podcast:
+        return podcast(this as Podcast);
     }
   }
 
   R whenOrElse<R>(
-      {R Function(PodcastPage) podcastPage,
-      @required R Function(NavigateTo) orElse}) {
+      {R Function(Podcast) podcast, @required R Function(Screen) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -55,16 +53,16 @@ abstract class NavigateTo extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _NavigateTo.PodcastPage:
-        if (podcastPage == null) break;
-        return podcastPage(this as PodcastPage);
+      case _Screen.Podcast:
+        if (podcast == null) break;
+        return podcast(this as Podcast);
     }
     return orElse(this);
   }
 
   Future<R> asyncWhenOrElse<R>(
-      {FutureOr<R> Function(PodcastPage) podcastPage,
-      @required FutureOr<R> Function(NavigateTo) orElse}) {
+      {FutureOr<R> Function(Podcast) podcast,
+      @required FutureOr<R> Function(Screen) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -72,25 +70,25 @@ abstract class NavigateTo extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _NavigateTo.PodcastPage:
-        if (podcastPage == null) break;
-        return podcastPage(this as PodcastPage);
+      case _Screen.Podcast:
+        if (podcast == null) break;
+        return podcast(this as Podcast);
     }
     return orElse(this);
   }
 
 //ignore: missing_return
-  Future<void> whenPartial({FutureOr<void> Function(PodcastPage) podcastPage}) {
+  Future<void> whenPartial({FutureOr<void> Function(Podcast) podcast}) {
     assert(() {
-      if (podcastPage == null) {
+      if (podcast == null) {
         throw 'provide at least one branch';
       }
       return true;
     }());
     switch (this._type) {
-      case _NavigateTo.PodcastPage:
-        if (podcastPage == null) break;
-        return podcastPage(this as PodcastPage);
+      case _Screen.Podcast:
+        if (podcast == null) break;
+        return podcast(this as Podcast);
     }
   }
 
@@ -99,13 +97,13 @@ abstract class NavigateTo extends Equatable {
 }
 
 @immutable
-class PodcastPage extends NavigateTo {
-  const PodcastPage({@required this.urlParam}) : super(_NavigateTo.PodcastPage);
+class Podcast extends Screen {
+  const Podcast({@required this.urlParam}) : super(_Screen.Podcast);
 
   final String urlParam;
 
   @override
-  String toString() => 'PodcastPage(urlParam:${this.urlParam})';
+  String toString() => 'Podcast(urlParam:${this.urlParam})';
   @override
   List get props => [urlParam];
 }

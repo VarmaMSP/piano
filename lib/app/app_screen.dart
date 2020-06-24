@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart';
+import 'package:phenopod/bloc/app_navigation_bloc.dart' as navigation;
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
@@ -28,8 +28,6 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   AnimationController _bottomAppBarController;
   BottomAppBarAnimation _bottomAppBarAnimation;
 
-  final RouteObserver<PageRoute> routeObserver = RouteObserver();
-
   @override
   void initState() {
     super.initState();
@@ -49,78 +47,127 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final navigationBloc = Provider.of<AppNavigationBloc>(context);
-
-    return WillPopScope(
-      onWillPop: () async {
-        if (_bottomAppBarAnimation.controller.value == 1.0) {
-          _bottomAppBarAnimation.collapseBottomAppBar();
-          return false;
-        }
-        return !await navigationBloc.homeTabNavigatorKey.currentState
-            .maybePop();
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        appBar: PreferredSize(
-          preferredSize: const Size(0, 0),
-          child: Container(),
-        ),
-        floatingActionButton: kDebugMode
-            ? FloatingActionButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => MoorDbViewer(
-                      Provider.of<SqlDb>(context),
-                    ),
-                  ),
-                ),
-                mini: true,
-                child: Icon(Icons.developer_mode, size: 22),
-                backgroundColor: Colors.blue,
-              )
-            : null,
-        body: SafeArea(
-          child: Stack(
-            children: <Widget>[
-              StreamBuilder<AudioTrack>(
-                initialData: null,
-                stream: Provider.of<AudioPlayerBloc>(context).nowPlaying,
-                builder: (context, snapshot) {
-                  final padding = !snapshot.hasData ? 56.0 : 102.0;
-
-                  return Container(
-                    color: Colors.white,
-                    padding: EdgeInsets.only(bottom: padding),
-                    child: Navigator(
-                      key: navigationBloc.homeTabNavigatorKey,
-                      initialRoute: '/',
-                      observers: [routeObserver],
-                      onGenerateRoute: makeGenerateRoute(routeObserver),
-                    ),
-                  );
-                },
-              ),
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: appbar.BottomAppBar(
-                  animations: _bottomAppBarAnimation,
-                  audioPlayerTabController: _audioPlayerTabController,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
   void dispose() {
     _bottomAppBarController.dispose();
     _audioPlayerTabController.dispose();
     super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+    final appNavigationBloc =
+        Provider.of<navigation.AppNavigationBloc>(context);
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(),
+      ),
+      floatingActionButton: kDebugMode
+          ? FloatingActionButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => MoorDbViewer(
+                    Provider.of<SqlDb>(context),
+                  ),
+                ),
+              ),
+              mini: true,
+              child: Icon(Icons.developer_mode, size: 22),
+              backgroundColor: Colors.blue,
+            )
+          : null,
+      body: StreamBuilder<navigation.TabHistory>(
+        stream: appNavigationBloc.tabHistory,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
+
+          final tabHistory = snapshot.data;
+          final tabNavigatorKeys = appNavigationBloc.tabNavigatorKeys;
+
+          final currenTabNavigatorKey = tabNavigatorKeys[tabHistory.currentTab];
+          final homeTabNavigatorKey = tabNavigatorKeys[navigation.Tab.home];
+          final subscriptionsTabNavigatorKey =
+              tabNavigatorKeys[navigation.Tab.subscriptions];
+
+          return WillPopScope(
+            onWillPop: () async {
+              if (_bottomAppBarAnimation.controller.value == 1.0) {
+                _bottomAppBarAnimation.collapseBottomAppBar();
+                return false;
+              }
+
+              final isFirstRoute =
+                  !await currenTabNavigatorKey.currentState.maybePop();
+              if (isFirstRoute && tabHistory.previousTab != null) {
+                appNavigationBloc.popTab();
+                return false;
+              }
+
+              return isFirstRoute;
+            },
+            child: SafeArea(
+              child: Stack(
+                children: <Widget>[
+                  _buildTab(
+                    audioPlayerBloc: audioPlayerBloc,
+                    key: homeTabNavigatorKey,
+                    initialRoute: '/',
+                    offstage: snapshot.data.currentTab != navigation.Tab.home,
+                  ),
+                  _buildTab(
+                    audioPlayerBloc: audioPlayerBloc,
+                    key: subscriptionsTabNavigatorKey,
+                    initialRoute: '/',
+                    offstage: snapshot.data.currentTab !=
+                        navigation.Tab.subscriptions,
+                  ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: appbar.BottomAppBar(
+                      animations: _bottomAppBarAnimation,
+                      audioPlayerTabController: _audioPlayerTabController,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildTab({
+    AudioPlayerBloc audioPlayerBloc,
+    GlobalKey<NavigatorState> key,
+    String initialRoute,
+    bool offstage,
+  }) {
+    return Offstage(
+      offstage: offstage,
+      child: StreamBuilder<AudioTrack>(
+        initialData: null,
+        stream: audioPlayerBloc.nowPlaying,
+        builder: (context, snapshot) {
+          final padding = !snapshot.hasData ? 56.0 : 102.0;
+
+          return Container(
+            color: Colors.white,
+            padding: EdgeInsets.only(bottom: padding),
+            child: Navigator(
+              key: key,
+              initialRoute: initialRoute,
+              onGenerateRoute: makeGenerateRoute,
+            ),
+          );
+        },
+      ),
+    );
   }
 }

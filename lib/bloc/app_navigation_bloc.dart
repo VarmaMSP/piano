@@ -1,44 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:phenopod/utils/utils.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:super_enum/super_enum.dart';
 
 part 'app_navigation_bloc.g.dart';
 
+enum Tab {
+  home,
+  subscriptions,
+}
+
 @superEnum
-enum _NavigateTo {
+enum _Screen {
   @Data(fields: [DataField<String>('urlParam')])
-  PodcastPage,
+  Podcast,
+}
+
+class TabHistory {
+  final List<Tab> s;
+
+  TabHistory(this.s);
+
+  TabHistory push(Tab tab) {
+    return TabHistory(
+      [if (listExists(s, tab)) ...listDelete(s, tab) else ...s, tab],
+    );
+  }
+
+  TabHistory pop() {
+    return TabHistory(
+      [if (previousTab != null) ...s.sublist(0, s.length - 1) else ...s],
+    );
+  }
+
+  /// Return current tab
+  Tab get currentTab => s.last;
+
+  /// Returns previous tab if exists
+  Tab get previousTab => s.length > 1 ? s[s.length - 2] : null;
 }
 
 class AppNavigationBloc {
-  /// Home tab navigator key
-  final GlobalKey<NavigatorState> _homeTabNavigatorKey =
-      GlobalKey<NavigatorState>();
+  /// States of tab navigators
+  final Map<Tab, GlobalKey<NavigatorState>> _tabNavigatorKeys = {
+    Tab.home: GlobalKey<NavigatorState>(),
+    Tab.subscriptions: GlobalKey<NavigatorState>(),
+  };
 
-  /// Sink to listen to navigation events
-  final PublishSubject<NavigateTo> _navigateTo = PublishSubject<NavigateTo>();
+  /// Stream of history changes
+  final BehaviorSubject<TabHistory> _tabHistorySubject =
+      BehaviorSubject.seeded(TabHistory([Tab.home]));
 
-  AppNavigationBloc() {
-    /// Listen to NavigateTo commands from UI
-    _handleNavigationEvents();
+  /// Switch tab
+  void switchTab(Tab tab) async {
+    final prev = await _tabHistorySubject.first;
+    _tabHistorySubject.add(prev.push(tab));
   }
 
-  void _handleNavigationEvents() {
-    _navigateTo.stream.listen((n) {
-      n.when(podcastPage: (data) {
-        _homeTabNavigatorKey.currentState
-            .pushNamed('/podcast', arguments: {'urlParam': data.urlParam});
-      });
-    });
+  /// Switched to previous tab if one exists
+  void popTab() async {
+    final prev = await _tabHistorySubject.first;
+    _tabHistorySubject.add(prev.pop());
   }
 
-  /// Navigate to page
-  void Function(NavigateTo) get navigateTo => _navigateTo.add;
+  /// Navigate to screen
+  void navigateTo(Screen screen) async {
+    final currentTab = (await _tabHistorySubject.first).currentTab;
+    final navigator = _tabNavigatorKeys[currentTab];
 
-  /// Return home tabs navigator key
-  GlobalKey<NavigatorState> get homeTabNavigatorKey => _homeTabNavigatorKey;
+    await screen.when(
+      podcast: (data) => navigator.currentState.pushNamed(
+        '/podcast',
+        arguments: {'urlParam': data.urlParam},
+      ),
+    );
+  }
+
+  Stream<TabHistory> get tabHistory => _tabHistorySubject.stream;
+
+  Map<Tab, GlobalKey<NavigatorState>> get tabNavigatorKeys => _tabNavigatorKeys;
 
   Future<void> dispose() async {
-    await _navigateTo.close();
+    await _tabHistorySubject.close();
   }
 }

@@ -44,7 +44,7 @@ class SuggestionsList extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () {
         Provider.of<AppNavigationBloc>(context, listen: false).navigateTo(
-          NavigateTo.podcastPage(urlParam: suggestion.i),
+          Screen.podcast(urlParam: suggestion.i),
         );
         Navigator.of(context, rootNavigator: true).pop();
       },
