@@ -21,6 +21,10 @@ class TabHistory {
 
   TabHistory(this.s);
 
+  factory TabHistory.init() {
+    return TabHistory([Tab.home]);
+  }
+
   TabHistory push(Tab tab) {
     return TabHistory(
       [if (listExists(s, tab)) ...listDelete(s, tab) else ...s, tab],
@@ -49,7 +53,7 @@ class AppNavigationBloc {
 
   /// Stream of history changes
   final BehaviorSubject<TabHistory> _tabHistorySubject =
-      BehaviorSubject.seeded(TabHistory([Tab.home]));
+      BehaviorSubject.seeded(TabHistory.init());
 
   /// Switch tab
   void switchTab(Tab tab) async {

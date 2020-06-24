@@ -22,6 +22,7 @@ class NavigationBar extends StatelessWidget {
         padding: EdgeInsets.only(top: 2),
         color: Colors.white,
         child: StreamBuilder<n.TabHistory>(
+            initialData: n.TabHistory.init(),
             stream: appNavigationBloc.tabHistory,
             builder: (context, snapshot) {
               final currentTab = snapshot.data.currentTab;

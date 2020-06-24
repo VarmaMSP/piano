@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart' as navigation;
+import 'package:phenopod/bloc/app_navigation_bloc.dart' as n;
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
@@ -56,8 +56,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
-    final appNavigationBloc =
-        Provider.of<navigation.AppNavigationBloc>(context);
+    final appNavigationBloc = Provider.of<n.AppNavigationBloc>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -66,49 +65,32 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
         preferredSize: const Size(0, 0),
         child: Container(),
       ),
-      floatingActionButton: kDebugMode
-          ? FloatingActionButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => MoorDbViewer(
-                    Provider.of<SqlDb>(context),
-                  ),
-                ),
-              ),
-              mini: true,
-              child: Icon(Icons.developer_mode, size: 22),
-              backgroundColor: Colors.blue,
-            )
-          : null,
-      body: StreamBuilder<navigation.TabHistory>(
+      floatingActionButton: _buildFloatingActionBar(context),
+      body: StreamBuilder<n.TabHistory>(
+        initialData: n.TabHistory.init(),
         stream: appNavigationBloc.tabHistory,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container();
-          }
-
           final tabHistory = snapshot.data;
           final tabNavigatorKeys = appNavigationBloc.tabNavigatorKeys;
 
-          final currenTabNavigatorKey = tabNavigatorKeys[tabHistory.currentTab];
-          final homeTabNavigatorKey = tabNavigatorKeys[navigation.Tab.home];
-          final subscriptionsTabNavigatorKey =
-              tabNavigatorKeys[navigation.Tab.subscriptions];
-
           return WillPopScope(
             onWillPop: () async {
+              // Close audio player if open
               if (_bottomAppBarAnimation.controller.value == 1.0) {
                 _bottomAppBarAnimation.collapseBottomAppBar();
                 return false;
               }
-
+              // Pop route if possible
               final isFirstRoute =
-                  !await currenTabNavigatorKey.currentState.maybePop();
+                  !await tabNavigatorKeys[tabHistory.currentTab]
+                      .currentState
+                      .maybePop();
+              // Show previous tab if you cannot pop route from current tab
               if (isFirstRoute && tabHistory.previousTab != null) {
                 appNavigationBloc.popTab();
                 return false;
               }
-
+              // default to os
               return isFirstRoute;
             },
             child: SafeArea(
@@ -116,16 +98,15 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                 children: <Widget>[
                   _buildTab(
                     audioPlayerBloc: audioPlayerBloc,
-                    key: homeTabNavigatorKey,
+                    key: tabNavigatorKeys[n.Tab.home],
                     initialRoute: '/',
-                    offstage: snapshot.data.currentTab != navigation.Tab.home,
+                    offstage: snapshot.data.currentTab != n.Tab.home,
                   ),
                   _buildTab(
                     audioPlayerBloc: audioPlayerBloc,
-                    key: subscriptionsTabNavigatorKey,
+                    key: tabNavigatorKeys[n.Tab.subscriptions],
                     initialRoute: '/',
-                    offstage: snapshot.data.currentTab !=
-                        navigation.Tab.subscriptions,
+                    offstage: snapshot.data.currentTab != n.Tab.subscriptions,
                   ),
                   Container(
                     alignment: Alignment.bottomCenter,
@@ -141,6 +122,23 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
         },
       ),
     );
+  }
+
+  Widget _buildFloatingActionBar(BuildContext context) {
+    return kDebugMode
+        ? FloatingActionButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => MoorDbViewer(
+                  Provider.of<SqlDb>(context),
+                ),
+              ),
+            ),
+            mini: true,
+            child: Icon(Icons.developer_mode, size: 22),
+            backgroundColor: Colors.blue,
+          )
+        : null;
   }
 
   Widget _buildTab({
