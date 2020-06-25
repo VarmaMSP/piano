@@ -21,6 +21,16 @@ class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
     });
   }
 
+  Future<void> saveEpisodes(List<Episode> episodes_) async {
+    await batch((b) {
+      b.insertAll(
+        episodes,
+        episodes_.map((e) => episodeRowFromModel(e)).toList(),
+        mode: InsertMode.insertOrReplace,
+      );
+    });
+  }
+
   Future<PodcastScreenData> getScreenData(String podcastUrlParam) async {
     final podcastRow = await (select(podcasts)
           ..where((tbl) => tbl.urlParam.equals(podcastUrlParam)))

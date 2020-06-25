@@ -13,7 +13,7 @@ class DbLayer extends Store {
   PreferenceStore _preferenceDb;
 
   DbLayer({this.baseStore, SqlDb sqlDb}) {
-    _podcastDb = PodcastDb(baseStore: baseStore.podcast, sqlDb: sqlDb);
+    _podcastDb = PodcastDb(baseStore: baseStore, sqlDb: sqlDb);
     _queueDb = QueueDb(baseStore: null, sqlDb: sqlDb);
     _playbackDb = PlaybackDb(baseStore: null, sqlDb: sqlDb);
     _preferenceDb = PreferenceDb(baseStore: null, sqldb: sqlDb);

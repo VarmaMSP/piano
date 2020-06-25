@@ -16,8 +16,10 @@ abstract class UserStore {
 }
 
 abstract class PodcastStore {
-  Future<Podcast> get(String podcastId);
+  Future<void> saveScreeData(String podcastUrlParam);
   Future<PodcastScreenData> getScreenData(String podcastUrlParam);
+  Stream<PodcastScreenData> watchScreenData(String podcastUrlParam);
+  Future<void> deleteScreenData(String podcastUrlParam);
 }
 
 abstract class EpisodeStore {

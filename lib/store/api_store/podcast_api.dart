@@ -8,11 +8,6 @@ class PodcastApi extends PodcastStore {
   PodcastApi(this.httpClient);
 
   @override
-  Future<Podcast> get(String podcastId) {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<PodcastScreenData> getScreenData(String podcastUrlParam) async {
     final apiResponse = await httpClient.makeRequest(
       method: 'GET',
@@ -24,5 +19,20 @@ class PodcastApi extends PodcastStore {
       episodes: apiResponse.episodes,
       receivedAllEpisodes: apiResponse.episodes.length < 15,
     );
+  }
+
+  @override
+  Future<void> deleteScreenData(String podcastUrlParam) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> saveScreeData(String podcastUrlParam) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<PodcastScreenData> watchScreenData(String podcastUrlParam) {
+    throw UnimplementedError();
   }
 }

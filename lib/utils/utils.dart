@@ -71,3 +71,16 @@ List<T> listDelete<T>(List<T> list, T val) {
   tmp.removeWhere((x) => x == val);
   return tmp;
 }
+
+List<T> listRemoveDuplicates<T>(List<T> list, String Function(T) getId) {
+  var ids = <String, bool>{};
+  var res = <T>[];
+  for (var t in list) {
+    final id = getId(t);
+    if (ids[id] == null) {
+      res.add(t);
+    }
+    ids[id] = true;
+  }
+  return res;
+}

@@ -68,11 +68,12 @@ class PodcastScreenBloc {
     );
   }
 
-  Future<void> _loadScreen() async {
-    final screenData = await store.podcast.getScreenData(urlParam);
-    if (!_isDisposed) {
-      _screenData.add(screenData);
-    }
+  void _loadScreen() {
+    store.podcast.watchScreenData(urlParam).listen((d) {
+      if (!_isDisposed) {
+        _screenData.add(d);
+      }
+    });
   }
 
   /// load more episodes
