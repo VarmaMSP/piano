@@ -27,8 +27,7 @@ class PodcastScreenBloc {
   bool _isDisposed = false;
 
   /// Subscriptions to podcast actions
-  StreamSubscription<Podcast> _subSubscription;
-  StreamSubscription<Podcast> _unsubSubscription;
+  StreamSubscription<dynamic> _podcastActionsSubscription;
 
   PodcastScreenBloc({
     @required this.store,
@@ -38,39 +37,38 @@ class PodcastScreenBloc {
     /// Handle any changes as a result of podcast actions
     _handlePodcastActions();
 
-    /// Load page data
-    _loadPage();
+    /// Load screen data
+    _loadScreen();
   }
 
   void _handlePodcastActions() {
-    _subSubscription = podcastActionsBloc.latestSubscription
-        .where((podcast) => podcast.urlParam == urlParam)
-        .listen(
-      (_) async {
-        if (!await _screenData.isEmpty && !_isDisposed) {
-          final data = await _screenData.first;
-          final podcast = data.podcast.copyWith(isSubscribed: true);
-
-          _screenData.add(data.copyWith(podcast: podcast));
-        }
-      },
-    );
-
-    _unsubSubscription = podcastActionsBloc.latestUnsubscription
-        .where((podcast) => podcast.urlParam == urlParam)
-        .listen(
-      (_) async {
-        if (!await _screenData.isEmpty && !_isDisposed) {
-          final data = await _screenData.first;
-          final podcast = data.podcast.copyWith(isSubscribed: false);
-
-          _screenData.add(data.copyWith(podcast: podcast));
-        }
-      },
+    _podcastActionsSubscription = podcastActionsBloc.actions.listen(
+      (action) => action.whenPartial(
+        subscribed: (data) async {
+          if (data.podcastUrlParam == urlParam) {
+            final screenData = await _screenData.first;
+            if (!screenData.podcast.isSubscribed) {
+              _screenData.add(screenData.copyWith(
+                podcast: screenData.podcast.copyWith(isSubscribed: true),
+              ));
+            }
+          }
+        },
+        unsubscribed: (data) async {
+          if (data.podcastUrlParam == urlParam) {
+            final screenData = await _screenData.first;
+            if (screenData.podcast.isSubscribed) {
+              _screenData.add(screenData.copyWith(
+                podcast: screenData.podcast.copyWith(isSubscribed: false),
+              ));
+            }
+          }
+        },
+      ),
     );
   }
 
-  Future<void> _loadPage() async {
+  Future<void> _loadScreen() async {
     final screenData = await store.podcast.getScreenData(urlParam);
     if (!_isDisposed) {
       _screenData.add(screenData);
@@ -99,8 +97,7 @@ class PodcastScreenBloc {
 
   Future<void> dispose() async {
     await _screenData.close();
-    await _subSubscription.cancel();
-    await _unsubSubscription.cancel();
+    await _podcastActionsSubscription.cancel();
     _isDisposed = true;
   }
 }
