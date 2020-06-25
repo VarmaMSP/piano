@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
+import 'package:phenopod/bloc/app_navigation_bloc.dart' as n;
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/audio_player/main.dart';
 import 'package:provider/provider.dart';
@@ -11,10 +12,12 @@ import 'navigation_bar.dart';
 class BottomAppBar extends StatelessWidget {
   BottomAppBar({
     Key key,
+    @required this.currentTab,
     @required this.animations,
     @required this.audioPlayerTabController,
   }) : super(key: key);
 
+  final n.Tab currentTab;
   final BottomAppBarAnimation animations;
   final TabController audioPlayerTabController;
 
@@ -36,7 +39,10 @@ class BottomAppBar extends StatelessWidget {
           bottom: 0.0,
           left: 0.0,
           right: 0.0,
-          child: NavigationBar(animations: animations),
+          child: NavigationBar(
+            currentTab: currentTab,
+            animations: animations,
+          ),
         ),
       ],
     );
