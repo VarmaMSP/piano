@@ -8,20 +8,6 @@ part of 'podcast.dart';
 // CopyWithGenerator
 // **************************************************************************
 
-extension PodcastScreenDataCopyWithExtension on PodcastScreenData {
-  PodcastScreenData copyWith({
-    List<Episode> episodes,
-    Podcast podcast,
-    bool receivedAllEpisodes,
-  }) {
-    return PodcastScreenData(
-      episodes: episodes ?? this.episodes,
-      podcast: podcast ?? this.podcast,
-      receivedAllEpisodes: receivedAllEpisodes ?? this.receivedAllEpisodes,
-    );
-  }
-}
-
 extension PodcastCopyWithExtension on Podcast {
   Podcast copyWith({
     String author,

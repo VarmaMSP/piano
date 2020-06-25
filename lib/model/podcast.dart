@@ -2,25 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
-import 'episode.dart';
 
 part 'podcast.g.dart';
-
-@CopyWith()
-class PodcastScreenData extends Equatable {
-  final Podcast podcast;
-  final List<Episode> episodes;
-  final bool receivedAllEpisodes;
-
-  PodcastScreenData({
-    this.podcast,
-    this.episodes,
-    this.receivedAllEpisodes,
-  });
-
-  @override
-  List<Object> get props => [podcast, episodes];
-}
 
 @CopyWith()
 @JsonSerializable(fieldRename: FieldRename.snake)
