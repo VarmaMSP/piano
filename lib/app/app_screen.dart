@@ -105,7 +105,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                   _buildTab(
                     audioPlayerBloc: audioPlayerBloc,
                     key: tabNavigatorKeys[n.Tab.subscriptions],
-                    initialRoute: '/',
+                    initialRoute: '/subscriptions',
                     offstage: snapshot.data.currentTab != n.Tab.subscriptions,
                   ),
                   Container(
@@ -129,9 +129,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
         ? FloatingActionButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => MoorDbViewer(
-                  Provider.of<SqlDb>(context),
-                ),
+                builder: (_) => MoorDbViewer(Provider.of<SqlDb>(context)),
               ),
             ),
             mini: true,
@@ -150,7 +148,6 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
     return Offstage(
       offstage: offstage,
       child: StreamBuilder<AudioTrack>(
-        initialData: null,
         stream: audioPlayerBloc.nowPlaying,
         builder: (context, snapshot) {
           final padding = !snapshot.hasData ? 56.0 : 102.0;
