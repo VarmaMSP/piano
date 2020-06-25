@@ -54,10 +54,12 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
               floating: true,
               snap: true,
               elevation: 2,
+              automaticallyImplyLeading: false,
               title: Text(
                 'Subscriptions',
                 style: TextStyle(color: Colors.black87),
               ),
+              backgroundColor: Colors.white,
             ),
             SliverImplicitlyAnimatedList<Tuple2<Episode, Podcast>>(
               items: [

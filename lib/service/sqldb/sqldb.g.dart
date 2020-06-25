@@ -2199,6 +2199,384 @@ class $PreferencesTable extends Preferences
       PreferenceValueTypeConverter();
 }
 
+class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
+  final String podcastId;
+  final String filterId;
+  SubscriptionRow({@required this.podcastId, @required this.filterId});
+  factory SubscriptionRow.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return SubscriptionRow(
+      podcastId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}podcast_id']),
+      filterId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}filter_id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || podcastId != null) {
+      map['podcast_id'] = Variable<String>(podcastId);
+    }
+    if (!nullToAbsent || filterId != null) {
+      map['filter_id'] = Variable<String>(filterId);
+    }
+    return map;
+  }
+
+  SubscriptionsCompanion toCompanion(bool nullToAbsent) {
+    return SubscriptionsCompanion(
+      podcastId: podcastId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(podcastId),
+      filterId: filterId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(filterId),
+    );
+  }
+
+  factory SubscriptionRow.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return SubscriptionRow(
+      podcastId: serializer.fromJson<String>(json['podcastId']),
+      filterId: serializer.fromJson<String>(json['filterId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'podcastId': serializer.toJson<String>(podcastId),
+      'filterId': serializer.toJson<String>(filterId),
+    };
+  }
+
+  SubscriptionRow copyWith({String podcastId, String filterId}) =>
+      SubscriptionRow(
+        podcastId: podcastId ?? this.podcastId,
+        filterId: filterId ?? this.filterId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SubscriptionRow(')
+          ..write('podcastId: $podcastId, ')
+          ..write('filterId: $filterId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(podcastId.hashCode, filterId.hashCode));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is SubscriptionRow &&
+          other.podcastId == this.podcastId &&
+          other.filterId == this.filterId);
+}
+
+class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
+  final Value<String> podcastId;
+  final Value<String> filterId;
+  const SubscriptionsCompanion({
+    this.podcastId = const Value.absent(),
+    this.filterId = const Value.absent(),
+  });
+  SubscriptionsCompanion.insert({
+    @required String podcastId,
+    @required String filterId,
+  })  : podcastId = Value(podcastId),
+        filterId = Value(filterId);
+  static Insertable<SubscriptionRow> custom({
+    Expression<String> podcastId,
+    Expression<String> filterId,
+  }) {
+    return RawValuesInsertable({
+      if (podcastId != null) 'podcast_id': podcastId,
+      if (filterId != null) 'filter_id': filterId,
+    });
+  }
+
+  SubscriptionsCompanion copyWith(
+      {Value<String> podcastId, Value<String> filterId}) {
+    return SubscriptionsCompanion(
+      podcastId: podcastId ?? this.podcastId,
+      filterId: filterId ?? this.filterId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (podcastId.present) {
+      map['podcast_id'] = Variable<String>(podcastId.value);
+    }
+    if (filterId.present) {
+      map['filter_id'] = Variable<String>(filterId.value);
+    }
+    return map;
+  }
+}
+
+class $SubscriptionsTable extends Subscriptions
+    with TableInfo<$SubscriptionsTable, SubscriptionRow> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $SubscriptionsTable(this._db, [this._alias]);
+  final VerificationMeta _podcastIdMeta = const VerificationMeta('podcastId');
+  GeneratedTextColumn _podcastId;
+  @override
+  GeneratedTextColumn get podcastId => _podcastId ??= _constructPodcastId();
+  GeneratedTextColumn _constructPodcastId() {
+    return GeneratedTextColumn('podcast_id', $tableName, false,
+        $customConstraints: 'REFERENCES podcasts(id)');
+  }
+
+  final VerificationMeta _filterIdMeta = const VerificationMeta('filterId');
+  GeneratedTextColumn _filterId;
+  @override
+  GeneratedTextColumn get filterId => _filterId ??= _constructFilterId();
+  GeneratedTextColumn _constructFilterId() {
+    return GeneratedTextColumn('filter_id', $tableName, false,
+        $customConstraints: 'REFERENCES subscription_filters(id)');
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [podcastId, filterId];
+  @override
+  $SubscriptionsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'subscriptions';
+  @override
+  final String actualTableName = 'subscriptions';
+  @override
+  VerificationContext validateIntegrity(Insertable<SubscriptionRow> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('podcast_id')) {
+      context.handle(_podcastIdMeta,
+          podcastId.isAcceptableOrUnknown(data['podcast_id'], _podcastIdMeta));
+    } else if (isInserting) {
+      context.missing(_podcastIdMeta);
+    }
+    if (data.containsKey('filter_id')) {
+      context.handle(_filterIdMeta,
+          filterId.isAcceptableOrUnknown(data['filter_id'], _filterIdMeta));
+    } else if (isInserting) {
+      context.missing(_filterIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {podcastId};
+  @override
+  SubscriptionRow map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return SubscriptionRow.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $SubscriptionsTable createAlias(String alias) {
+    return $SubscriptionsTable(_db, alias);
+  }
+}
+
+class SubscriptionFilterRow extends DataClass
+    implements Insertable<SubscriptionFilterRow> {
+  final String id;
+  final String name;
+  SubscriptionFilterRow({@required this.id, @required this.name});
+  factory SubscriptionFilterRow.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return SubscriptionFilterRow(
+      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<String>(id);
+    }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    return map;
+  }
+
+  SubscriptionFiltersCompanion toCompanion(bool nullToAbsent) {
+    return SubscriptionFiltersCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+    );
+  }
+
+  factory SubscriptionFilterRow.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return SubscriptionFilterRow(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  SubscriptionFilterRow copyWith({String id, String name}) =>
+      SubscriptionFilterRow(
+        id: id ?? this.id,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SubscriptionFilterRow(')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(id.hashCode, name.hashCode));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is SubscriptionFilterRow &&
+          other.id == this.id &&
+          other.name == this.name);
+}
+
+class SubscriptionFiltersCompanion
+    extends UpdateCompanion<SubscriptionFilterRow> {
+  final Value<String> id;
+  final Value<String> name;
+  const SubscriptionFiltersCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+  });
+  SubscriptionFiltersCompanion.insert({
+    @required String id,
+    @required String name,
+  })  : id = Value(id),
+        name = Value(name);
+  static Insertable<SubscriptionFilterRow> custom({
+    Expression<String> id,
+    Expression<String> name,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+    });
+  }
+
+  SubscriptionFiltersCompanion copyWith(
+      {Value<String> id, Value<String> name}) {
+    return SubscriptionFiltersCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    return map;
+  }
+}
+
+class $SubscriptionFiltersTable extends SubscriptionFilters
+    with TableInfo<$SubscriptionFiltersTable, SubscriptionFilterRow> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $SubscriptionFiltersTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedTextColumn _id;
+  @override
+  GeneratedTextColumn get id => _id ??= _constructId();
+  GeneratedTextColumn _constructId() {
+    return GeneratedTextColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, name];
+  @override
+  $SubscriptionFiltersTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'subscription_filters';
+  @override
+  final String actualTableName = 'subscription_filters';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<SubscriptionFilterRow> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SubscriptionFilterRow map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return SubscriptionFilterRow.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $SubscriptionFiltersTable createAlias(String alias) {
+    return $SubscriptionFiltersTable(_db, alias);
+  }
+}
+
 abstract class _$SqlDb extends GeneratedDatabase {
   _$SqlDb(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   _$SqlDb.connect(DatabaseConnection c) : super.connect(c);
@@ -2212,6 +2590,12 @@ abstract class _$SqlDb extends GeneratedDatabase {
   $PlaybacksTable get playbacks => _playbacks ??= $PlaybacksTable(this);
   $PreferencesTable _preferences;
   $PreferencesTable get preferences => _preferences ??= $PreferencesTable(this);
+  $SubscriptionsTable _subscriptions;
+  $SubscriptionsTable get subscriptions =>
+      _subscriptions ??= $SubscriptionsTable(this);
+  $SubscriptionFiltersTable _subscriptionFilters;
+  $SubscriptionFiltersTable get subscriptionFilters =>
+      _subscriptionFilters ??= $SubscriptionFiltersTable(this);
   PodcastDao _podcastDao;
   PodcastDao get podcastDao => _podcastDao ??= PodcastDao(this as SqlDb);
   QueueDao _queueDao;
@@ -2221,11 +2605,21 @@ abstract class _$SqlDb extends GeneratedDatabase {
   PreferenceDao _preferenceDao;
   PreferenceDao get preferenceDao =>
       _preferenceDao ??= PreferenceDao(this as SqlDb);
+  SubscriptionDao _subscriptionDao;
+  SubscriptionDao get subscriptionDao =>
+      _subscriptionDao ??= SubscriptionDao(this as SqlDb);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [podcasts, episodes, audioTracks, playbacks, preferences];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        podcasts,
+        episodes,
+        audioTracks,
+        playbacks,
+        preferences,
+        subscriptions,
+        subscriptionFilters
+      ];
 }
 
 // **************************************************************************
@@ -2248,3 +2642,4 @@ mixin _$QueueDaoMixin on DatabaseAccessor<SqlDb> {
   $AudioTracksTable get audioTracks => attachedDatabase.audioTracks;
   $PreferencesTable get preferences => attachedDatabase.preferences;
 }
+mixin _$SubscriptionDaoMixin on DatabaseAccessor<SqlDb> {}

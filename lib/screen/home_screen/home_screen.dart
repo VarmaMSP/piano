@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 import 'widgets/trending.dart';
 import 'package:phenopod/widgets/screen/loading_layout.dart';
 import 'package:rxdart/rxdart.dart';
@@ -50,12 +51,23 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverAppBar(
               floating: true,
               snap: true,
+              elevation: 2,
+              backgroundColor: Colors.white,
               title: Text(
                 'Phenopod',
                 style: TextStyle(color: Colors.black87),
               ),
-              backgroundColor: Colors.white,
-              elevation: 2,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    size: 23,
+                    color: TWColors.gray.shade700,
+                  ),
+                  onPressed: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed('/search'),
+                ),
+              ],
             ),
             SliverToBoxAdapter(
               child: Padding(
