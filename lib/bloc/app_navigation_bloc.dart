@@ -32,9 +32,7 @@ class TabHistory {
   }
 
   TabHistory pop() {
-    return TabHistory(
-      [if (previousTab != null) ...s.sublist(0, s.length - 1) else ...s],
-    );
+    return TabHistory(previousTab != null ? s.sublist(0, s.length - 1) : s);
   }
 
   /// Return current tab

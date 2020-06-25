@@ -1,47 +1,69 @@
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:super_enum/super_enum.dart';
+
+part 'podcast_actions_bloc.g.dart';
+
+@superEnum
+enum _PodcastAction {
+  @Data(fields: [
+    DataField<String>('podcastId'),
+    DataField<String>('podcastUrlParam'),
+    DataField<bool>('synced'),
+  ])
+  Subscribed,
+  @Data(fields: [
+    DataField<String>('podcastId'),
+    DataField<String>('podcastUrlParam'),
+    DataField<bool>('synced'),
+  ])
+  Unsubscribed,
+}
 
 class PodcastActionsBloc {
   final Store store;
 
-  // Contoller for podcast subscription actions
-  final BehaviorSubject<Podcast> _subscribeTo = BehaviorSubject<Podcast>();
+  /// Stream controller for actions
+  final PublishSubject<PodcastAction> _actions =
+      PublishSubject<PodcastAction>();
 
-  // Controller for podcast unsubscription actions
-  final BehaviorSubject<Podcast> _unsubscribeTo = BehaviorSubject<Podcast>();
-
-  PodcastActionsBloc(this.store) {
-    _handleSubscribeActions();
-    _handleUnsubscribeActions();
-  }
-
-  void _handleSubscribeActions() {
-    _subscribeTo.stream.listen((podcast) async {
-      await store.subscription.subscribe(podcast.id);
-    });
-  }
-
-  void _handleUnsubscribeActions() {
-    _unsubscribeTo.stream.listen((podcast) async {
-      await store.subscription.unsubscribe(podcast.id);
-    });
-  }
+  PodcastActionsBloc(this.store);
 
   // Subscribe to podcast
-  void Function(Podcast) get subscribe => _subscribeTo.add;
+  Future<void> subscribe(Podcast podcast) async {
+    _actions.add(PodcastAction.subscribed(
+      podcastId: podcast.id,
+      podcastUrlParam: podcast.urlParam,
+      synced: false,
+    ));
+    await store.subscription.subscribe(podcast.id);
+    _actions.add(PodcastAction.subscribed(
+      podcastId: podcast.id,
+      podcastUrlParam: podcast.urlParam,
+      synced: true,
+    ));
+  }
 
   // Unsubscribe to podcast
-  void Function(Podcast) get unsubscribe => _unsubscribeTo.add;
+  Future<void> unsubscribe(Podcast podcast) async {
+    _actions.add(PodcastAction.unsubscribed(
+      podcastId: podcast.id,
+      podcastUrlParam: podcast.urlParam,
+      synced: false,
+    ));
+    await store.subscription.unsubscribe(podcast.id);
+    _actions.add(PodcastAction.unsubscribed(
+      podcastId: podcast.id,
+      podcastUrlParam: podcast.urlParam,
+      synced: true,
+    ));
+  }
 
-  // Stream representing latest subscriptions
-  Stream<Podcast> get latestSubscription => _subscribeTo.stream;
-
-  // Stream representing latest unsubscriptions
-  Stream<Podcast> get latestUnsubscription => _unsubscribeTo.stream;
+  // Stream of actions
+  Stream<PodcastAction> get actions => _actions.stream;
 
   Future<void> dispose() async {
-    await _subscribeTo.close();
-    await _unsubscribeTo.close();
+    await _actions.close();
   }
 }
