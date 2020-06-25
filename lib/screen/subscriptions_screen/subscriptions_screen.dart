@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
+import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/widgets/episode_list_item/episode_list_item.dart';
-// import 'package:phenopod/widgets/screen/layout.dart';
 import 'package:phenopod/widgets/screen/loading_layout.dart';
 import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
 import 'subscriptions_screen_bloc.dart';
-// import 'widgets/episode_list.dart';
-// import 'widgets/subscriptions_header_delegate.dart';
 
 class SubscriptionsScreen extends StatefulWidget {
   SubscriptionsScreen({Key key}) : super(key: key);
@@ -53,28 +53,30 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
             SliverAppBar(
               floating: true,
               snap: true,
-              leading: Text(
+              elevation: 2,
+              title: Text(
                 'Subscriptions',
                 style: TextStyle(color: Colors.black87),
               ),
-              elevation: 2,
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  if (index < snapshot.data.episodes.length) {
-                    return EpisodeListItem(
-                      episode: snapshot.data.episodes[index],
-                      podcast: snapshot.data
-                          .podcastById[snapshot.data.episodes[index].podcastId],
-                    );
-                  }
-
-                  return null;
-                },
-                childCount: snapshot.data.episodes.length,
-              ),
-            )
+            SliverImplicitlyAnimatedList<Tuple2<Episode, Podcast>>(
+              items: [
+                for (var e in snapshot.data.episodes)
+                  Tuple2(e, snapshot.data.podcastById[e.podcastId])
+              ],
+              areItemsTheSame: (a, b) => a.item1.id == b.item1.id,
+              itemBuilder: (context, animation, item, _) {
+                return SizeFadeTransition(
+                  sizeFraction: 0.7,
+                  curve: Curves.easeInOut,
+                  animation: animation,
+                  child: EpisodeListItem(
+                    episode: item.item1,
+                    podcast: item.item2,
+                  ),
+                );
+              },
+            ),
           ],
         );
       },

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/screen/podcast_screen/widgets/podcast_actions.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/model/main.dart';
 import 'widgets/trending.dart';
-import 'package:phenopod/widgets/screen/header/tab_screen.dart';
-import 'package:phenopod/widgets/screen/layout.dart';
 import 'package:phenopod/widgets/screen/loading_layout.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
