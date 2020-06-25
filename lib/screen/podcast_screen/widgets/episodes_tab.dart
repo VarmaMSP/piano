@@ -27,7 +27,7 @@ class EpisodesTab extends StatelessWidget {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverPadding(
-              padding: const EdgeInsets.only(top: 90),
+              padding: const EdgeInsets.only(top: 95),
               sliver: SliverList(
                 key: key,
                 delegate: SliverChildBuilderDelegate(
@@ -38,7 +38,6 @@ class EpisodesTab extends StatelessWidget {
                         podcast: podcast,
                       );
                     }
-
                     loadMore();
                     return Container(
                       alignment: Alignment.center,

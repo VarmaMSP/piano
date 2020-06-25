@@ -26,8 +26,8 @@ class Trending extends StatelessWidget {
               child: Text(
                 'Trending',
                 style: TextStyle(
-                  fontSize: 16.0,
-                  letterSpacing: 0.4,
+                  fontSize: 14.0,
+                  letterSpacing: 0.3,
                   fontWeight: FontWeight.w500,
                   color: TWColors.gray.shade800,
                 ),

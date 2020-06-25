@@ -105,7 +105,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                   _buildTab(
                     audioPlayerBloc: audioPlayerBloc,
                     key: tabNavigatorKeys[n.Tab.subscriptions],
-                    initialRoute: '/',
+                    initialRoute: '/subscriptions',
                     offstage: snapshot.data.currentTab != n.Tab.subscriptions,
                   ),
                   Container(

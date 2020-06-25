@@ -6,6 +6,7 @@ import 'package:phenopod/model/main.dart';
 import 'package:phenopod/screen/podcast_screen/widgets/podcast_actions.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:flutter/foundation.dart';
 
@@ -15,9 +16,9 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.tabController,
   });
 
-  static const double appBarHeight = 45;
+  static const double appBarHeight = 55;
   static const double tabBarHeight = 36;
-  static const double flexibleAreaHeight = 150;
+  static const double flexibleAreaHeight = 142;
 
   final Podcast podcast;
   final TabController tabController;
@@ -79,28 +80,97 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Transform.translate(
-            offset: const Offset(-16, 0),
+            offset: const Offset(-14, 0),
             child: Material(
               color: Colors.white,
               child: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  size: 23,
-                  color: TWColors.gray.shade700,
+                  size: 24,
+                  color: TWColors.gray.shade800,
                 ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
+          ),
+          AnimatedOpacity(
+            duration: Duration(milliseconds: 200),
+            opacity: (maxExtent - shrinkOffset - minExtent).abs() < 0.001
+                ? 1.0
+                : 0.0,
+            child: Transform.translate(
+              offset: Offset(23, 0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
+                child: CachedNetworkImage(
+                  imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
+                  fit: BoxFit.fill,
+                  height: 35,
+                  width: 35,
+                  placeholder: (BuildContext context, String url) => Container(
+                    height: 35,
+                    width: 35,
+                    color: TWColors.gray.shade300,
+                  ),
+                ),
               ),
             ),
           ),
           Transform.translate(
-            offset: const Offset(20, 0),
+            offset: const Offset(16, 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                PodcastActions(
-                  podcast: podcast,
+                Material(
+                  color: Colors.white,
+                  child: SizedBox(
+                    width: 40,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.search,
+                        size: 24,
+                        color: TWColors.gray.shade800,
+                      ),
+                      onPressed: () =>
+                          Navigator.of(context, rootNavigator: true)
+                              .pushNamed('/search'),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 40,
+                  child: PopupMenuButton<String>(
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: TWColors.gray.shade800,
+                      size: 24,
+                    ),
+                    padding: const EdgeInsets.all(0),
+                    elevation: 3,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                    ),
+                    offset: Offset(0, 40),
+                    itemBuilder: (BuildContext context) {
+                      return <String>[
+                        'Share',
+                      ].map((String t) {
+                        return PopupMenuItem<String>(
+                          value: t,
+                          child: Text(t),
+                        );
+                      }).toList();
+                    },
+                    onSelected: (value) {
+                      switch (value) {
+                        case 'Share':
+                          Share.share(
+                            'https://phenopod.com/podcasts/${podcast.urlParam}',
+                          );
+                          return;
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
@@ -125,7 +195,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         labelStyle: TextStyle(
           fontSize: 13.5,
           letterSpacing: 0.8,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w400,
           color: Colors.black,
         ),
         unselectedLabelColor: TWColors.gray.shade500,
@@ -234,7 +304,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       opacity: opacity >= 0.0 ? opacity : 0.0,
       child: Container(
         height: flexibleAreaHeight,
-        padding: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 8),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

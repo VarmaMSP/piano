@@ -68,7 +68,7 @@ class BottomAppBarAnimation {
     );
   }
 
-  static const double audioPlayerPreviewHeight = 50.0;
+  static const double audioPlayerPreviewHeight = 48.0;
   static const double bottomNavigationBarHeight = 54.0;
   static const double bottomAppBarHeight =
       audioPlayerPreviewHeight + bottomNavigationBarHeight;

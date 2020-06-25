@@ -47,29 +47,36 @@ class _HomeScreenState extends State<HomeScreen> {
           return LoadingLayout(pageType: PageType.tab);
         }
 
-        return ScreenLayout(
-          header: TabScreenHeaderDelegate(),
-          body: CustomScrollView(
-            slivers: <Widget>[
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 45),
-                  child: Trending(
-                    trending: snapshot.data.item1.fold<List<Podcast>>(
-                      [],
-                      (acc, curation) => [
-                        ...acc,
-                        ...curation.podcasts,
-                      ],
-                    ).toList(),
-                  ),
+        return CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              title: Text(
+                'Phenopod',
+                style: TextStyle(color: Colors.black87),
+              ),
+              backgroundColor: Colors.white,
+              elevation: 2,
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 0),
+                child: Trending(
+                  trending: snapshot.data.item1.fold<List<Podcast>>(
+                    [],
+                    (acc, curation) => [
+                      ...acc,
+                      ...curation.podcasts,
+                    ],
+                  ).toList(),
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Categories(categories: snapshot.data.item2),
-              ),
-            ],
-          ),
+            ),
+            SliverToBoxAdapter(
+              child: Categories(categories: snapshot.data.item2),
+            ),
+          ],
         );
       },
     );
