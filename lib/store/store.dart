@@ -22,12 +22,17 @@ abstract class PodcastStore {
 
 abstract class EpisodeStore {
   Future<List<Episode>> getByPodcastPaginated(
-      String podcastId, int offset, int limit);
+    String podcastId,
+    int offset,
+    int limit,
+  );
+  Future<List<Episode>> getFromSubscriptionsPaginated(int offset, int limit);
 }
 
 abstract class SubscriptionStore {
   Future<void> subscribe(String podcastId);
   Future<void> unsubscribe(String podcastId);
+  Future<SubscriptionsScreenData> getScreenData();
 }
 
 abstract class QueueStore {

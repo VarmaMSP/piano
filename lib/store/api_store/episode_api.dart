@@ -16,7 +16,7 @@ class EpisodeApi extends EpisodeStore {
     final apiResponse = await httpClient.makeRequest(
       method: 'GET',
       path: '/ajax/browse',
-      queryParams: <String, String>{
+      queryParams: {
         'endpoint': 'podcast_episodes',
         'podcast_id': podcastId,
         'offset': offset.toString(),
@@ -24,7 +24,23 @@ class EpisodeApi extends EpisodeStore {
         'order': 'pub_date_desc',
       },
     );
+    return apiResponse.episodes;
+  }
 
+  @override
+  Future<List<Episode>> getFromSubscriptionsPaginated(
+    int offset,
+    int limit,
+  ) async {
+    final apiResponse = await httpClient.makeRequest(
+      method: 'GET',
+      path: '`/ajax/browse',
+      queryParams: {
+        'endpoint': 'subscriptions_feed',
+        'offset': offset.toString(),
+        'limit': limit.toString(),
+      },
+    );
     return apiResponse.episodes;
   }
 }
