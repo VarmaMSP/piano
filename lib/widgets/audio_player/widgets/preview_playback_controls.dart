@@ -17,8 +17,8 @@ class PreviewPlaybackControls extends StatelessWidget {
     return StreamBuilder<AudioState>(
       stream: audioPlayerBloc.audioState,
       builder: (context, snapshot) => Container(
-        height: 32,
-        width: 32,
+        height: 30,
+        width: 30,
         child: Stack(
           children: <Widget>[
             if (snapshot.data != AudioState.none &&
@@ -43,9 +43,7 @@ class PreviewPlaybackControls extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressIndicator(
-    Stream<PositionState> positionState,
-  ) {
+  Widget _buildProgressIndicator(Stream<PositionState> positionState) {
     return StreamBuilder<PositionState>(
       stream: positionState,
       builder: (context, snapshot) {

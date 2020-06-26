@@ -7,6 +7,7 @@ import 'package:phenopod/store/store.dart';
 import 'package:phenopod/widgets/episode_list_item/episode_list_item.dart';
 import 'package:phenopod/widgets/screen/loading_layout.dart';
 import 'package:provider/provider.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tuple/tuple.dart';
 
 import 'subscriptions_screen_bloc.dart';
@@ -57,7 +58,10 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
               automaticallyImplyLeading: false,
               title: Text(
                 'Subscriptions',
-                style: TextStyle(color: Colors.black87),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: TWColors.gray.shade800,
+                ),
               ),
               backgroundColor: Colors.white,
             ),

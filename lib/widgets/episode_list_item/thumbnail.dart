@@ -140,15 +140,15 @@ class Thumbnail extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5.0),
       child: Container(
-        color: const Color.fromRGBO(0, 0, 0, 0.65),
-        padding: const EdgeInsets.only(left: 4, right: 4, bottom: 0.9),
+        color: const Color.fromRGBO(0, 0, 0, 0.7),
+        padding: const EdgeInsets.only(left: 4, right: 4, top: 1.9),
         child: Text(
           res ?? '00:00',
           style: TextStyle(
             fontSize: 11.5,
             fontWeight: FontWeight.w700,
             color: Colors.white,
-            height: 1.3,
+            height: 1,
             letterSpacing: 0.5,
           ),
         ),
@@ -162,15 +162,11 @@ class Thumbnail extends StatelessWidget {
     }
 
     return Container(
-      height: 6.25,
+      height: 6,
       width: thumbnailSize,
       decoration: BoxDecoration(
-        border: Border.all(color: TWColors.gray.shade300, width: 1),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(2),
-          bottomRight: Radius.circular(2),
-        ),
-        color: TWColors.gray.shade100,
+        borderRadius: const BorderRadius.all(Radius.circular(4)),
+        color: const Color.fromRGBO(0, 0, 0, 0.55),
       ),
       alignment: Alignment.centerLeft,
       child: FractionallySizedBox(
@@ -178,11 +174,8 @@ class Thumbnail extends StatelessWidget {
         widthFactor: playback.position.inSeconds / playback.duration.inSeconds,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(2),
-              bottomRight: Radius.circular(2),
-            ),
-            color: TWColors.red.shade600,
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
+            color: TWColors.yellow.shade400,
           ),
         ),
       ),

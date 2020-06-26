@@ -92,29 +92,6 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          AnimatedOpacity(
-            duration: Duration(milliseconds: 200),
-            opacity: (maxExtent - shrinkOffset - minExtent).abs() < 0.001
-                ? 1.0
-                : 0.0,
-            child: Transform.translate(
-              offset: Offset(23, 0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(4.0),
-                child: CachedNetworkImage(
-                  imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
-                  fit: BoxFit.fill,
-                  height: 35,
-                  width: 35,
-                  placeholder: (BuildContext context, String url) => Container(
-                    height: 35,
-                    width: 35,
-                    color: TWColors.gray.shade300,
-                  ),
-                ),
-              ),
-            ),
-          ),
           Transform.translate(
             offset: const Offset(16, 0),
             child: Row(
@@ -193,14 +170,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         labelPadding: EdgeInsets.symmetric(horizontal: 14),
         labelStyle: TextStyle(
           fontSize: 13.5,
-          letterSpacing: 0.8,
-          fontWeight: FontWeight.w400,
-          color: Colors.black,
+          letterSpacing: 0.5,
+          fontWeight: FontWeight.w500,
+          color: TWColors.gray.shade900,
         ),
         unselectedLabelColor: TWColors.gray.shade500,
         unselectedLabelStyle: TextStyle(
           fontSize: 13.5,
-          letterSpacing: 0.8,
+          letterSpacing: 0.5,
           fontWeight: FontWeight.w500,
         ),
         controller: tabController,

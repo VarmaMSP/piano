@@ -85,6 +85,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                   !await tabNavigatorKeys[tabHistory.currentTab]
                       .currentState
                       .maybePop();
+              print(isFirstRoute);
               // Show previous tab if you cannot pop route from current tab
               if (isFirstRoute && tabHistory.previousTab != null) {
                 appNavigationBloc.popTab();
@@ -99,7 +100,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                   _buildTab(
                     audioPlayerBloc: audioPlayerBloc,
                     key: tabNavigatorKeys[n.Tab.home],
-                    initialRoute: '/',
+                    initialRoute: '/home',
                     offstage: snapshot.data.currentTab != n.Tab.home,
                   ),
                   _buildTab(
@@ -159,7 +160,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
             child: Navigator(
               key: key,
               initialRoute: initialRoute,
-              onGenerateRoute: makeGenerateRoute,
+              onGenerateRoute: makeGenerateRoute(),
             ),
           );
         },
