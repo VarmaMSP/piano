@@ -24,8 +24,8 @@ class Menu extends StatelessWidget {
       child: PopupMenuButton<String>(
         icon: Icon(
           Icons.more_vert,
-          color: TWColors.gray.shade600,
-          size: 20,
+          color: TWColors.gray.shade700,
+          size: 22,
         ),
         padding: const EdgeInsets.all(0),
         elevation: 3,

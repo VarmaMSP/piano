@@ -119,6 +119,12 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
         return MaterialApp(
           title: 'Phenopod',
           debugShowCheckedModeBanner: false,
+          builder: (context, child) {
+            return ScrollConfiguration(
+              behavior: CustomScrollBehavior(),
+              child: child,
+            );
+          },
           initialRoute: '/app',
           onGenerateRoute: (settings) {
             switch (settings.name) {
@@ -147,5 +153,16 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
         );
       }),
     );
+  }
+}
+
+class CustomScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+    BuildContext context,
+    Widget child,
+    AxisDirection axisDirection,
+  ) {
+    return child;
   }
 }

@@ -50,6 +50,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
         }
 
         return CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             SliverAppBar(
               floating: true,

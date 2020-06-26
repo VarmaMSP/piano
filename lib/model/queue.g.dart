@@ -10,11 +10,9 @@ part of 'queue.dart';
 
 extension QueuePreferenceCopyWithExtension on QueuePreference {
   QueuePreference copyWith({
-    bool enabled,
     int position,
   }) {
     return QueuePreference(
-      enabled: enabled ?? this.enabled,
       position: position ?? this.position,
     );
   }
@@ -23,12 +21,10 @@ extension QueuePreferenceCopyWithExtension on QueuePreference {
 extension QueueCopyWithExtension on Queue {
   Queue copyWith({
     List<AudioTrack> audioTracks,
-    bool enabled,
     int position,
   }) {
     return Queue(
       audioTracks: audioTracks ?? this.audioTracks,
-      enabled: enabled ?? this.enabled,
       position: position ?? this.position,
     );
   }
@@ -55,12 +51,10 @@ extension AudioTrackCopyWithExtension on AudioTrack {
 QueuePreference _$QueuePreferenceFromJson(Map<String, dynamic> json) {
   return QueuePreference(
     position: json['position'] as int,
-    enabled: json['enabled'] as bool,
   );
 }
 
 Map<String, dynamic> _$QueuePreferenceToJson(QueuePreference instance) =>
     <String, dynamic>{
       'position': instance.position,
-      'enabled': instance.enabled,
     };

@@ -23,11 +23,11 @@ class EpisodeListItem extends StatelessWidget {
       episode.title,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 14.2,
+        fontSize: 14,
         color: TWColors.gray.shade900,
         height: 1.35,
         letterSpacing: 0.2,
-        wordSpacing: 0.3,
+        wordSpacing: 0.2,
         fontWeight: FontWeight.w500,
       ),
       maxLines: 2,
@@ -56,8 +56,9 @@ class EpisodeListItem extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: 12.1,
-        color: Color(0xff657389), //TWColors.gray.shade600,
-        height: 1.3,
+        color: TWColors
+            .gray.shade700, // Color(0xff657389), //TWColors.gray.shade600,
+        height: 1.275,
         letterSpacing: 0.175,
         wordSpacing: 0.1,
       ),

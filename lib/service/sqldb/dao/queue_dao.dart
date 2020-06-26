@@ -12,7 +12,6 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
   Future<void> saveQueue(Queue queue) async {
     if (queue.isEmpty) {
       await transaction(() async {
-        //Clear all audio tracks
         await delete(audioTracks).go();
         await into(preferences).insert(
           PreferenceRow(
@@ -94,11 +93,7 @@ class QueueDao extends DatabaseAccessor<SqlDb> with _$QueueDaoMixin {
       (prefs, tracks) =>
           prefs == null || prefs.position < 0 || prefs.position >= tracks.length
               ? Queue.empty()
-              : Queue(
-                  audioTracks: tracks,
-                  position: prefs.position,
-                  enabled: prefs.enabled,
-                ),
+              : Queue(audioTracks: tracks, position: prefs.position),
     );
   }
 

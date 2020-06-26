@@ -157,7 +157,7 @@ class AudioPlayerBloc {
 
   // Get queue if enabled
   Stream<Queue> get queue =>
-      _queueSubject.stream.map((q) => q.enabled ? q : null);
+      _queueSubject.stream.map((q) => !q.isEmpty ? q : null);
 
   // Get current audio state
   Stream<AudioState> get audioState => audioService.audioState;

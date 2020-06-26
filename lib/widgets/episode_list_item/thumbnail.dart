@@ -25,21 +25,6 @@ class Thumbnail extends StatelessWidget {
     final store = Provider.of<Store>(context);
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
-    final Widget image = ClipRRect(
-      borderRadius: BorderRadius.circular(10.0),
-      child: CachedNetworkImage(
-        imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
-        fit: BoxFit.fill,
-        height: thumbnailSize,
-        width: thumbnailSize,
-        placeholder: (BuildContext context, String url) => Container(
-          height: thumbnailSize,
-          width: thumbnailSize,
-          color: TWColors.gray.shade300,
-        ),
-      ),
-    );
-
     final Widget playIconBg = Container(
       height: thumbnailSize,
       width: thumbnailSize,
@@ -73,27 +58,6 @@ class Thumbnail extends StatelessWidget {
       child: _buildDuration(episode.duration),
     );
 
-    final Widget progresbar = Container(
-      alignment: Alignment.bottomCenter,
-      child: StreamBuilder<AudioTrack>(
-        stream: Provider.of<AudioPlayerBloc>(context).nowPlaying,
-        builder: (context, snapshot) =>
-            snapshot?.data?.episode?.id == episode.id
-                ? StreamBuilder<PlaybackPosition>(
-                    stream: store.playbackPosition.watch(episode.id),
-                    builder: (context, snapshot) => _buildProgressbar(
-                      snapshot.data,
-                    ),
-                  )
-                : FutureBuilder<PlaybackPosition>(
-                    future: store.playbackPosition.get_(episode.id),
-                    builder: (context, snapshot) => _buildProgressbar(
-                      snapshot.data,
-                    ),
-                  ),
-      ),
-    );
-
     return GestureDetector(
       onTap: () {
         audioPlayerBloc.transistionQueue(QueueTransistion.playAudioTrack(
@@ -104,17 +68,64 @@ class Thumbnail extends StatelessWidget {
           ),
         ));
       },
-      child: Container(
+      child: StreamBuilder<PlaybackPosition>(
+        stream: store.playbackPosition.watch(episode.id),
+        builder: (context, snapshot) {
+          return Container(
+            height: thumbnailSize,
+            width: thumbnailSize,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0),
+                bottomLeft: Radius.circular(
+                    snapshot.data == null || snapshot.data.isEmpty
+                        ? 10.0
+                        : 5.0),
+                bottomRight: Radius.circular(
+                    snapshot.data == null || snapshot.data.isEmpty
+                        ? 10.0
+                        : 5.0),
+              ),
+              border: Border.all(color: TWColors.gray.shade400, width: 0.5),
+            ),
+            child: Stack(
+              children: <Widget>[
+                _buildImage(snapshot.data),
+                playIconBg,
+                playIcon,
+                duration,
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: _buildProgressbar(snapshot.data),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildImage(PlaybackPosition playback) {
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(10.0),
+        topRight: Radius.circular(10.0),
+        bottomLeft:
+            Radius.circular(playback == null || playback.isEmpty ? 10.0 : 4.0),
+        bottomRight:
+            Radius.circular(playback == null || playback.isEmpty ? 10.0 : 4.0),
+      ),
+      child: CachedNetworkImage(
+        imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
+        fit: BoxFit.fill,
         height: thumbnailSize,
         width: thumbnailSize,
-        child: Stack(
-          children: <Widget>[
-            image,
-            playIconBg,
-            playIcon,
-            duration,
-            progresbar,
-          ],
+        placeholder: (BuildContext context, String url) => Container(
+          height: thumbnailSize,
+          width: thumbnailSize,
+          color: TWColors.gray.shade300,
         ),
       ),
     );
@@ -162,11 +173,11 @@ class Thumbnail extends StatelessWidget {
     }
 
     return Container(
-      height: 6,
+      height: 4.5,
       width: thumbnailSize,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(4)),
-        color: const Color.fromRGBO(0, 0, 0, 0.55),
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        color: const Color.fromRGBO(0, 0, 0, 0.5),
       ),
       alignment: Alignment.centerLeft,
       child: FractionallySizedBox(
@@ -175,7 +186,7 @@ class Thumbnail extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            color: TWColors.yellow.shade400,
+            color: TWColors.yellow.shade500,
           ),
         ),
       ),

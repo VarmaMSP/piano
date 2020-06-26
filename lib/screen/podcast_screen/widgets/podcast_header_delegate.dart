@@ -86,7 +86,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                 icon: Icon(
                   Icons.arrow_back,
                   size: 24,
-                  color: TWColors.gray.shade800,
+                  color: TWColors.gray.shade700,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -105,7 +105,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                       icon: Icon(
                         Icons.search,
                         size: 24,
-                        color: TWColors.gray.shade800,
+                        color: TWColors.gray.shade700,
                       ),
                       onPressed: () =>
                           Navigator.of(context, rootNavigator: true)
@@ -118,7 +118,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                   child: PopupMenuButton<String>(
                     icon: Icon(
                       Icons.more_vert,
-                      color: TWColors.gray.shade800,
+                      color: TWColors.gray.shade700,
                       size: 24,
                     ),
                     padding: const EdgeInsets.all(0),
@@ -238,7 +238,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     final podcastActionsBloc = Provider.of<PodcastActionsBloc>(context);
 
     final Widget actions = Container(
-      height: 22,
+      height: 24,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -259,8 +259,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                 child: Text(
                   podcast.isSubscribed ? 'SUBSCRIBED' : 'SUBSCRIBE',
                   style: TextStyle(
-                    letterSpacing: 0.75,
-                    fontSize: 12.5,
+                    letterSpacing: 0.65,
+                    fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

@@ -15,11 +15,9 @@ part 'queue.g.dart';
 class QueuePreference extends Equatable {
   static const key = 'QUEUE_PREFERENCE';
   final int position;
-  final bool enabled;
 
   const QueuePreference({
     this.position,
-    this.enabled,
   });
 
   factory QueuePreference.fromJson(Map<String, dynamic> json) {
@@ -31,36 +29,30 @@ class QueuePreference extends Equatable {
   }
 
   @override
-  List<Object> get props => [position, enabled];
+  List<Object> get props => [position];
 }
 
 @CopyWith()
 class Queue extends Equatable {
   final int position;
 
-  /// The Queue can be disabled when user chooses to play only one track.
-  final bool enabled;
-
   /// Store AudioTracks currently in audio player
   final List<AudioTrack> audioTracks;
 
   const Queue({
     this.position,
-    this.enabled,
     this.audioTracks,
   });
 
   factory Queue.empty() {
     return Queue(
       position: -1,
-      enabled: false,
       audioTracks: [],
     );
   }
 
   Queue add(AudioTrack audioTrack) {
     return Queue(
-      enabled: false,
       position: 0,
       audioTracks: [audioTrack.copyWith(position: 0)],
     );
@@ -70,7 +62,6 @@ class Queue extends Equatable {
   Queue addToTop(AudioTrack audioTrack) {
     final trackPos = position + 1;
     return Queue(
-      enabled: true,
       position: trackPos == 0 ? 0 : position,
       audioTracks: [
         ...audioTracks.sublist(0, trackPos),
@@ -86,7 +77,6 @@ class Queue extends Equatable {
   Queue addToBottom(AudioTrack audioTrack) {
     final trackPos = audioTracks.length;
     return Queue(
-      enabled: true,
       position: trackPos == 0 ? 0 : position,
       audioTracks: [
         ...audioTracks,
@@ -98,7 +88,6 @@ class Queue extends Equatable {
   /// Returns a new queue with next track in active position
   Queue skipToNext() {
     return Queue(
-      enabled: enabled,
       position: position + 1,
       audioTracks: audioTracks,
     );
@@ -108,23 +97,19 @@ class Queue extends Equatable {
   bool get isEmpty => position == -1;
 
   /// Returns true if next track is available
-  bool get hasNextTrack =>
-      !isEmpty && enabled || position + 1 < audioTracks.length;
+  bool get hasNextTrack => !isEmpty || position + 1 < audioTracks.length;
 
   /// Returns true if prev track is available
-  bool get hasPreviousTrack => !isEmpty && enabled && position - 1 >= 0;
+  bool get hasPreviousTrack => !isEmpty && position - 1 >= 0;
 
   /// Returns active audio track
   AudioTrack get nowPlaying => position != -1 ? audioTracks[position] : null;
 
   /// Returns preference
-  QueuePreference get preference => QueuePreference(
-        enabled: enabled,
-        position: position,
-      );
+  QueuePreference get preference => QueuePreference(position: position);
 
   @override
-  List<Object> get props => [position, enabled, audioTracks];
+  List<Object> get props => [position, audioTracks];
 
   @override
   String toString() => '{ position: $position tracks: ${audioTracks.length} }';
