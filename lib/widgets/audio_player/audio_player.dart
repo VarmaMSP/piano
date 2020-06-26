@@ -46,29 +46,36 @@ class AudioPlayer extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade400, width: 0.5),
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: AspectRatio(
-                aspectRatio: 1.0,
-                child: CachedNetworkImage(
-                  imageUrl: '$thumbnailUrl/${nowPlaying.podcast.urlParam}.jpg',
-                  fit: BoxFit.fill,
-                  placeholder: (BuildContext context, String url) => Container(
-                    constraints: BoxConstraints.expand(),
-                    color: TWColors.gray.shade300,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade400, width: 0.5),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          '$thumbnailUrl/${nowPlaying.podcast.urlParam}.jpg',
+                      fit: BoxFit.fill,
+                      placeholder: (BuildContext context, String url) =>
+                          Container(
+                        constraints: BoxConstraints.expand(),
+                        color: TWColors.gray.shade300,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: SeekBar(),
+              Padding(
+                padding: EdgeInsets.only(top: 30),
+                child: SeekBar(),
+              ),
+            ],
           ),
           Container(
             alignment: Alignment.topCenter,

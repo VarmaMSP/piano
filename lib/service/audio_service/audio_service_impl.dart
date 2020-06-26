@@ -118,6 +118,7 @@ class _audioServiceImpl implements AudioService {
       backgroundTaskEntrypoint: backgroundPlayerTaskEntrypoint,
       androidNotificationChannelName: 'Phenopod',
       androidNotificationColor: 0xFF2196f3,
+      androidStopForegroundOnPause: true,
       androidNotificationIcon: 'mipmap/ic_launcher',
       androidEnableQueue: true,
       params: <String, String>{

@@ -44,13 +44,58 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
   }
 
   @override
-  Future<void> onClick(audioservice.MediaButton button) async {
-    await _audioPlayerController.pauseOrPlay();
+  Future<void> onAudioBecomingNoisy() async {
+    await _audioPlayerController.pause();
   }
 
   @override
-  Future<void> onAudioBecomingNoisy() async {
-    await _audioPlayerController.pause();
+  Future<void> onClick(audioservice.MediaButton button) async {
+    switch (button) {
+      case audioservice.MediaButton.media:
+        await _audioPlayerController.pauseOrPlay();
+        break;
+      case audioservice.MediaButton.next:
+        break;
+      case audioservice.MediaButton.previous:
+        break;
+    }
+  }
+
+  @override
+  Future<void> onAudioFocusLost(audioservice.AudioInterruption i) async {
+    switch (i) {
+      case audioservice.AudioInterruption.pause:
+        await _audioPlayerController.pause();
+        break;
+      case audioservice.AudioInterruption.temporaryPause:
+        await _audioPlayerController.pause();
+        break;
+      case audioservice.AudioInterruption.temporaryDuck:
+        break;
+      case audioservice.AudioInterruption.unknownPause:
+        await _audioPlayerController.pause();
+        break;
+    }
+  }
+
+  @override
+  Future<void> onAudioFocusGained(audioservice.AudioInterruption i) async {
+    switch (i) {
+      case audioservice.AudioInterruption.pause:
+        break;
+      case audioservice.AudioInterruption.temporaryPause:
+        await _audioPlayerController.play();
+        break;
+      case audioservice.AudioInterruption.temporaryDuck:
+        break;
+      case audioservice.AudioInterruption.unknownPause:
+        break;
+    }
+  }
+
+  @override
+  Future<void> onTaskRemoved() async {
+    await onStop();
   }
 
   @override
