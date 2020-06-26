@@ -87,7 +87,7 @@ class Thumbnail extends StatelessWidget {
                         ? 10.0
                         : 5.0),
               ),
-              border: Border.all(color: TWColors.gray.shade400, width: 0.5),
+              border: Border.all(color: Colors.grey.shade400, width: 0.5),
             ),
             child: Stack(
               children: <Widget>[
@@ -173,11 +173,11 @@ class Thumbnail extends StatelessWidget {
     }
 
     return Container(
-      height: 4.5,
+      height: 5,
       width: thumbnailSize,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(5)),
-        color: const Color.fromRGBO(0, 0, 0, 0.5),
+        color: const Color.fromRGBO(255, 255, 255, 0.75),
       ),
       alignment: Alignment.centerLeft,
       child: FractionallySizedBox(
@@ -186,7 +186,7 @@ class Thumbnail extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            color: TWColors.yellow.shade500,
+            color: Colors.red.shade600,
           ),
         ),
       ),

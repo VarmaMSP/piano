@@ -5,7 +5,6 @@ import 'package:phenopod/bloc/app_navigation_bloc.dart' as n;
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/audio_player/main.dart';
 import 'package:provider/provider.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 import 'navigation_bar.dart';
 
@@ -68,7 +67,7 @@ class BottomAppBar extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: <BoxShadow>[
-                    BoxShadow(color: TWColors.gray.shade400, blurRadius: 2),
+                    BoxShadow(color: Colors.grey.shade500, blurRadius: 2),
                   ],
                 ),
                 child: child,

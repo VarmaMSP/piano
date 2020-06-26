@@ -52,13 +52,12 @@ class BottomAppBarAnimation {
     AnimationController controller,
   ) {
     final controllerBeginWhenShow = mapRange(
-          bottomNavigationBarHeight,
-          screenHeight,
-          0.0,
-          0.9,
-          bottomAppBarHeight,
-        ) +
-        0.002;
+      bottomNavigationBarHeight,
+      screenHeight,
+      0.0,
+      0.9,
+      bottomAppBarHeight,
+    );
 
     return BottomAppBarAnimation(
       controller: controller,
@@ -68,7 +67,7 @@ class BottomAppBarAnimation {
     );
   }
 
-  static const double audioPlayerPreviewHeight = 48.0;
+  static const double audioPlayerPreviewHeight = 46.0;
   static const double bottomNavigationBarHeight = 54.0;
   static const double bottomAppBarHeight =
       audioPlayerPreviewHeight + bottomNavigationBarHeight;

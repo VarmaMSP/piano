@@ -190,17 +190,23 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   }
 
   Widget _flexibleArea(BuildContext context, double shrinkOffset) {
-    final Widget thumbnail = ClipRRect(
-      borderRadius: BorderRadius.circular(10.0),
-      child: CachedNetworkImage(
-        imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
-        fit: BoxFit.fill,
-        height: 120,
-        width: 120,
-        placeholder: (BuildContext context, String url) => Container(
+    final Widget thumbnail = Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade400, width: 0.5),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: CachedNetworkImage(
+          imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
+          fit: BoxFit.fill,
           height: 120,
           width: 120,
-          color: TWColors.gray.shade300,
+          placeholder: (BuildContext context, String url) => Container(
+            height: 120,
+            width: 120,
+            color: TWColors.gray.shade300,
+          ),
         ),
       ),
     );

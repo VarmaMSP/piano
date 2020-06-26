@@ -45,10 +45,6 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     return StreamBuilder<SubscriptionsScreenData>(
       stream: _subscriptionsScreenBloc.screenData,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return LoadingLayout(pageType: PageType.normal);
-        }
-
         return CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
@@ -56,34 +52,56 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
               floating: true,
               snap: true,
               elevation: 2,
-              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
               title: Text(
-                'Subscriptions',
+                'Phenopod',
                 style: TextStyle(
-                  fontSize: 18,
-                  color: TWColors.gray.shade800,
+                  fontSize: 19,
+                  color: Colors.purple.shade800,
+                  letterSpacing: 0.3,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              backgroundColor: Colors.white,
-            ),
-            SliverImplicitlyAnimatedList<Tuple2<Episode, Podcast>>(
-              items: [
-                for (var e in snapshot.data.episodes)
-                  Tuple2(e, snapshot.data.podcastById[e.podcastId])
-              ],
-              areItemsTheSame: (a, b) => a.item1.id == b.item1.id,
-              itemBuilder: (context, animation, item, _) {
-                return SizeFadeTransition(
-                  sizeFraction: 0.7,
-                  curve: Curves.easeInOut,
-                  animation: animation,
-                  child: EpisodeListItem(
-                    episode: item.item1,
-                    podcast: item.item2,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    size: 23,
+                    color: TWColors.gray.shade700,
                   ),
-                );
-              },
+                  onPressed: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed('/search'),
+                ),
+              ],
             ),
+            if (!snapshot.hasData)
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Container(
+                  color: Colors.white,
+                  constraints: BoxConstraints.expand(),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              ),
+            if (snapshot.hasData)
+              SliverImplicitlyAnimatedList<Tuple2<Episode, Podcast>>(
+                items: [
+                  for (var e in snapshot.data.episodes)
+                    Tuple2(e, snapshot.data.podcastById[e.podcastId])
+                ],
+                areItemsTheSame: (a, b) => a.item1.id == b.item1.id,
+                itemBuilder: (context, animation, item, _) {
+                  return SizeFadeTransition(
+                    sizeFraction: 0.7,
+                    curve: Curves.easeInOut,
+                    animation: animation,
+                    child: EpisodeListItem(
+                      episode: item.item1,
+                      podcast: item.item2,
+                    ),
+                  );
+                },
+              ),
           ],
         );
       },

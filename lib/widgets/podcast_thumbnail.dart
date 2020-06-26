@@ -21,8 +21,8 @@ class PodcastThumbnail extends StatelessWidget {
     var thumbnailSize = 90.0;
     var borderRadius = 10.0;
     if (size == PodcastThumbnailSize.xs) {
-      thumbnailSize = 34.0;
-      borderRadius = 5.0;
+      thumbnailSize = 36.0;
+      borderRadius = 4.0;
     } else if (size == PodcastThumbnailSize.sm) {
       thumbnailSize = 80.0;
       borderRadius = 10.0;
@@ -31,6 +31,10 @@ class PodcastThumbnail extends StatelessWidget {
     return Container(
       height: thumbnailSize,
       width: thumbnailSize,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+        border: Border.all(color: Colors.grey.shade400, width: 0.5),
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius),
         child: CachedNetworkImage(

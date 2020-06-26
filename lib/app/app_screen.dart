@@ -127,7 +127,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildFloatingActionBar(BuildContext context) {
-    return kDebugMode
+    return kProfileMode
         ? FloatingActionButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(

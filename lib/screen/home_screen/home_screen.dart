@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'widgets/trending.dart';
-import 'package:phenopod/widgets/screen/loading_layout.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
@@ -42,10 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
         (a, b) => Tuple2(a, b),
       ),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return LoadingLayout(pageType: PageType.tab);
-        }
-
         return CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -55,7 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: Colors.white,
               title: Text(
                 'Phenopod',
-                style: TextStyle(color: Colors.black87),
+                style: TextStyle(
+                  fontSize: 19,
+                  color: Colors.purple.shade800,
+                  letterSpacing: 0.3,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               actions: <Widget>[
                 IconButton(
@@ -69,23 +69,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 0),
-                child: Trending(
-                  trending: snapshot.data.item1.fold<List<Podcast>>(
-                    [],
-                    (acc, curation) => [
-                      ...acc,
-                      ...curation.podcasts,
-                    ],
-                  ).toList(),
+            if (!snapshot.hasData)
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Container(
+                  color: Colors.white,
+                  constraints: BoxConstraints.expand(),
+                  child: Center(child: CircularProgressIndicator()),
                 ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Categories(categories: snapshot.data.item2),
-            ),
+            if (snapshot.hasData)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 0),
+                  child: Trending(
+                    trending: snapshot.data.item1.fold<List<Podcast>>(
+                      [],
+                      (acc, curation) => [
+                        ...acc,
+                        ...curation.podcasts,
+                      ],
+                    ).toList(),
+                  ),
+                ),
+              ),
+            if (snapshot.hasData)
+              SliverToBoxAdapter(
+                child: Categories(categories: snapshot.data.item2),
+              ),
           ],
         );
       },
