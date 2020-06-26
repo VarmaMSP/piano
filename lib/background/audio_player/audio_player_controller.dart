@@ -115,10 +115,11 @@ class AudioPlayerController {
   Future<void> _syncPlaybackStart(Duration duration) async {
     final nowPlaying = await _nowPlayingSubject.first;
     if (nowPlaying != null) {
-      await _store.playback.save(Playback(
+      await _store.playbackPosition.save(PlaybackPosition(
         episodeId: nowPlaying.episode.id,
+        position: Duration.zero,
         duration: duration,
-        lastPlayedAt: '',
+        percentage: 0.0,
       ));
     }
   }
@@ -127,7 +128,7 @@ class AudioPlayerController {
     final nowPlaying = await _nowPlayingSubject.first;
     final playbackState = audioservice.AudioServiceBackground.state;
     if (nowPlaying != null && utils.isValidState(playbackState)) {
-      await _store.playback.updateProgress(Playback(
+      await _store.playbackPosition.update(PlaybackPosition(
         episodeId: nowPlaying.episode.id,
         position: playbackState.currentPosition,
       ));
@@ -150,10 +151,12 @@ class AudioPlayerController {
   void _handleStateChanges() {
     _nowPlayingSubject.stream.distinct().listen((audioTrack) async {
       if (audioTrack != null) {
-        final playback = await _store.playback.get_(audioTrack.episode.id);
+        final playbackPos = await _store.playbackPosition.get_(
+          audioTrack.episode.id,
+        );
         unawaited(_audioPlayer.playMediaItem(
           audioTrack.toMediaItem(),
-          start: !playback.isEmpty ? playback.position : null,
+          start: !playbackPos.isEmpty ? playbackPos.position : null,
         ));
       }
     });

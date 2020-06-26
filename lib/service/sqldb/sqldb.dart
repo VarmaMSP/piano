@@ -17,14 +17,14 @@ part 'sqldb.g.dart';
 part 'table/podcasts.dart';
 part 'table/episodes.dart';
 part 'table/audio_tacks.dart';
-part 'table/playbacks.dart';
+part 'table/playback_positions.dart';
 part 'table/preferences.dart';
 part 'table/subscriptions.dart';
 part 'table/subscription_filters.dart';
 
 /// Daos
 part 'dao/podcast_dao.dart';
-part 'dao/playback_dao.dart';
+part 'dao/playback_position_dao.dart';
 part 'dao/preference_dao.dart';
 part 'dao/queue_dao.dart';
 part 'dao/subscription_dao.dart';
@@ -40,7 +40,7 @@ Future<SqlDb> newSqlDb() async {
     Podcasts,
     Episodes,
     AudioTracks,
-    Playbacks,
+    PlaybackPositions,
     Preferences,
     Subscriptions,
     SubscriptionFilters,
@@ -48,7 +48,7 @@ Future<SqlDb> newSqlDb() async {
   daos: [
     PodcastDao,
     QueueDao,
-    PlaybackDao,
+    PlaybackPositionDao,
     PreferenceDao,
     SubscriptionDao,
   ],

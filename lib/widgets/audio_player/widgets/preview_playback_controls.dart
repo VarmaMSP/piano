@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -43,9 +44,9 @@ class PreviewPlaybackControls extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressIndicator(Stream<PositionState> positionState) {
-    return StreamBuilder<PositionState>(
-      stream: positionState,
+  Widget _buildProgressIndicator(Stream<PlaybackPosition> playbackPos) {
+    return StreamBuilder<PlaybackPosition>(
+      stream: playbackPos,
       builder: (context, snapshot) {
         return CircularProgressIndicator(
           value: snapshot.hasData ? snapshot.data.percentage : 0.0,

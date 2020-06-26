@@ -9,13 +9,13 @@ class DbLayer extends Store {
   final Store baseStore;
   PodcastStore _podcastDb;
   QueueStore _queueDb;
-  PlaybackStore _playbackDb;
+  PlaybackPositionStore _playbackPositionDb;
   PreferenceStore _preferenceDb;
 
   DbLayer({this.baseStore, SqlDb sqlDb}) {
     _podcastDb = PodcastDb(baseStore: baseStore, sqlDb: sqlDb);
     _queueDb = QueueDb(baseStore: null, sqlDb: sqlDb);
-    _playbackDb = PlaybackDb(baseStore: null, sqlDb: sqlDb);
+    _playbackPositionDb = PlaybackPositionDb(baseStore: null, sqlDb: sqlDb);
     _preferenceDb = PreferenceDb(baseStore: null, sqldb: sqlDb);
   }
 
@@ -35,7 +35,7 @@ class DbLayer extends Store {
   QueueStore get queue => _queueDb;
 
   @override
-  PlaybackStore get playback => _playbackDb;
+  PlaybackPositionStore get playbackPosition => _playbackPositionDb;
 
   @override
   PreferenceStore get preference => _preferenceDb;

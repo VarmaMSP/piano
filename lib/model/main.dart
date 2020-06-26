@@ -6,7 +6,7 @@ export 'playlist.dart';
 export 'podcast.dart';
 export 'search_suggestion.dart';
 export 'user.dart';
-export 'playback.dart';
+export 'playback_position.dart';
 export 'queue.dart';
 export 'setting.dart';
 export 'screen.dart';

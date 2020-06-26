@@ -79,14 +79,14 @@ class Thumbnail extends StatelessWidget {
         stream: Provider.of<AudioPlayerBloc>(context).nowPlaying,
         builder: (context, snapshot) =>
             snapshot?.data?.episode?.id == episode.id
-                ? StreamBuilder<Playback>(
-                    stream: store.playback.watch(episode.id),
+                ? StreamBuilder<PlaybackPosition>(
+                    stream: store.playbackPosition.watch(episode.id),
                     builder: (context, snapshot) => _buildProgressbar(
                       snapshot.data,
                     ),
                   )
-                : FutureBuilder<Playback>(
-                    future: store.playback.get_(episode.id),
+                : FutureBuilder<PlaybackPosition>(
+                    future: store.playbackPosition.get_(episode.id),
                     builder: (context, snapshot) => _buildProgressbar(
                       snapshot.data,
                     ),
@@ -156,7 +156,7 @@ class Thumbnail extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressbar(Playback playback) {
+  Widget _buildProgressbar(PlaybackPosition playback) {
     if (playback == null || playback.isEmpty) {
       return Container(height: 0);
     }

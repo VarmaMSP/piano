@@ -7,7 +7,7 @@ import 'package:rxdart/subjects.dart';
 import 'package:super_enum/super_enum.dart';
 
 export 'package:phenopod/service/audio_service/audio_service.dart'
-    show AudioState, PositionState;
+    show AudioState;
 
 part 'audio_player_bloc.g.dart';
 
@@ -42,8 +42,8 @@ class AudioPlayerBloc {
   final BehaviorSubject<Queue> _queueSubject = BehaviorSubject<Queue>();
 
   /// Stream of positionStates
-  final BehaviorSubject<PositionState> _positionStateSubject =
-      BehaviorSubject<PositionState>();
+  final BehaviorSubject<PlaybackPosition> _playbackPositionSubject =
+      BehaviorSubject<PlaybackPosition>();
 
   /// Sink for snapshot transistions
   final PublishSubject<QueueTransistion> _queueTransistion =
@@ -96,13 +96,15 @@ class AudioPlayerBloc {
       _queueSubject.add(q);
       final nowPlaying = q.nowPlaying;
       if (nowPlaying != null) {
-        final playback = await store.playback.get_(nowPlaying.episode.id);
-        if (!playback.isEmpty) {
-          _positionStateSubject.add(PositionState(
-            duration: playback.duration,
-            position: playback.position,
-            percentage: playback.position.inMilliseconds /
-                playback.duration.inMilliseconds,
+        final playbackPos = await store.playbackPosition.get_(
+          nowPlaying.episode.id,
+        );
+        if (!playbackPos.isEmpty) {
+          _playbackPositionSubject.add(PlaybackPosition(
+            duration: playbackPos.duration,
+            position: playbackPos.position,
+            percentage: playbackPos.position.inMilliseconds /
+                playbackPos.duration.inMilliseconds,
           ));
         }
       }
@@ -131,7 +133,8 @@ class AudioPlayerBloc {
   }
 
   void _handlePosistionTransistions() {
-    audioService.positionState.listen((d) => _positionStateSubject.add(d));
+    audioService.playbackPosition
+        .listen((d) => _playbackPositionSubject.add(d));
 
     _posistionTransistion.stream.listen((position) async {
       logger.i('Position transistion: $position');
@@ -160,11 +163,11 @@ class AudioPlayerBloc {
   Stream<AudioState> get audioState => audioService.audioState;
 
   // Get current posistion state
-  Stream<PositionState> get positionState => _positionStateSubject.stream;
+  Stream<PlaybackPosition> get positionState => _playbackPositionSubject.stream;
 
   Future<void> dispose() async {
     await _queueSubject.close();
-    await _positionStateSubject.close();
+    await _playbackPositionSubject.close();
     await _queueTransistion.close();
     await _stateTransistion.close();
     await _posistionTransistion.close();

@@ -32,11 +32,10 @@ class ApiStore extends Store {
   SubscriptionStore get subscription => _subscriptionStore;
 
   @override
-  // This needs to be implemented at db layer
   QueueStore get queue => throw UnimplementedError();
 
   @override
-  PlaybackStore get playback => throw UnimplementedError();
+  PlaybackPositionStore get playbackPosition => throw UnimplementedError();
 
   @override
   PreferenceStore get preference => throw UnimplementedError();

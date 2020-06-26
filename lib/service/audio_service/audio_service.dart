@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:audio_service/audio_service.dart' as audioservice;
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/background/audio_player/background_player_task.dart';
 
 part 'audio_service_impl.dart';
@@ -22,31 +21,12 @@ enum AudioState {
   stopped,
 }
 
-class PositionState extends Equatable {
-  final Duration position;
-  final Duration duration;
-  final double percentage;
-
-  PositionState({
-    @required this.position,
-    @required this.duration,
-    @required this.percentage,
-  });
-
-  @override
-  List<Object> get props => [position, duration];
-
-  @override
-  String toString() =>
-      '{ position: ${position.inSeconds}, duration: ${duration.inSeconds} }';
-}
-
 abstract class AudioService {
   // Stream of audio state transitions
   Stream<AudioState> get audioState;
 
   // Stream of changes to position
-  Stream<PositionState> get positionState;
+  Stream<PlaybackPosition> get playbackPosition;
 
   // Connect to background audio service isolate
   Future<void> connect();

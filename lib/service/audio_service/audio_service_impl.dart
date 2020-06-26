@@ -5,14 +5,14 @@ class _audioServiceImpl implements AudioService {
   final BehaviorSubject<AudioState> _audioState = BehaviorSubject<AudioState>();
 
   /// Stream of current audio position
-  final BehaviorSubject<PositionState> _positionState =
-      BehaviorSubject<PositionState>();
+  final BehaviorSubject<PlaybackPosition> _playbackPosition =
+      BehaviorSubject<PlaybackPosition>();
 
   /// Ticker to update audio position
   final Stream<int> _ticker =
       Stream<int>.periodic(Duration(milliseconds: 500)).asBroadcastStream();
 
-  /// Subscription of _positionState to _ticker
+  /// Subscription of _playbackPosition to _ticker
   StreamSubscription<dynamic> _positionSubscription;
 
   /// Subscriptions to Background audio service
@@ -27,7 +27,7 @@ class _audioServiceImpl implements AudioService {
   Stream<AudioState> get audioState => _audioState.stream;
 
   @override
-  Stream<PositionState> get positionState => _positionState.stream;
+  Stream<PlaybackPosition> get playbackPosition => _playbackPosition.stream;
 
   @override
   Future<void> connect() async {
@@ -80,12 +80,12 @@ class _audioServiceImpl implements AudioService {
 
   @override
   Future<void> seekTo(Duration t) async {
-    final prevPosition = await _positionState.first;
-    final duration = prevPosition.duration;
+    final prevPlaybackPos = await _playbackPosition.first;
+    final duration = prevPlaybackPos.duration;
 
     if (duration.inSeconds > 0) {
       // relay back new position to bloc
-      _positionState.add(PositionState(
+      _playbackPosition.add(PlaybackPosition(
         duration: duration,
         position: t,
         percentage: t.inMilliseconds / duration.inMilliseconds,
@@ -132,8 +132,8 @@ class _audioServiceImpl implements AudioService {
         audioservice.AudioService.currentMediaItemStream.listen(
       (mediaItem) {
         if ((mediaItem?.duration?.inSeconds ?? 0) > 0) {
-          _positionState.add(
-            PositionState(
+          _playbackPosition.add(
+            PlaybackPosition(
               duration: mediaItem.duration,
               position: Duration.zero,
               percentage: 0.0,
@@ -218,7 +218,7 @@ class _audioServiceImpl implements AudioService {
     final playbackState = audioservice.AudioService.playbackState;
 
     if (playbackState != null) {
-      final duration = (await _positionState.first).duration;
+      final duration = (await _playbackPosition.first).duration;
       final position = duration.inSeconds == 0
           ? Duration.zero
           : playbackState.currentPosition;
@@ -226,8 +226,8 @@ class _audioServiceImpl implements AudioService {
           ? 0.0
           : position.inMilliseconds / duration.inMilliseconds;
 
-      _positionState.add(
-        PositionState(
+      _playbackPosition.add(
+        PlaybackPosition(
           duration: duration,
           position: playbackState.currentPosition,
           percentage: percentage,

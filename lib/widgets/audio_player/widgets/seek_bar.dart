@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -16,12 +17,12 @@ class SeekBar extends StatefulWidget {
 }
 
 class _SeekBarState extends State<SeekBar> {
-  final BehaviorSubject<PositionState> _seekPositionState =
-      BehaviorSubject<PositionState>.seeded(null);
+  final BehaviorSubject<PlaybackPosition> _seekPlaybackPosition =
+      BehaviorSubject<PlaybackPosition>.seeded(null);
 
   @override
   void dispose() {
-    _seekPositionState.close();
+    _seekPlaybackPosition.close();
     super.dispose();
   }
 
@@ -29,10 +30,10 @@ class _SeekBarState extends State<SeekBar> {
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
-    return StreamBuilder<Tuple2<PositionState, PositionState>>(
+    return StreamBuilder<Tuple2<PlaybackPosition, PlaybackPosition>>(
       stream: Rx.combineLatest2(
         audioPlayerBloc.positionState,
-        _seekPositionState,
+        _seekPlaybackPosition,
         (a, b) => Tuple2(a, b),
       ),
       builder: (context, snapshot) {
@@ -71,14 +72,14 @@ class _SeekBarState extends State<SeekBar> {
                   secondProgressColor: TWColors.gray.shade400,
                   thumbColor: TWColors.purple.shade600,
                   onStartTrackingTouch: () {
-                    _seekPositionState.add(PositionState(
+                    _seekPlaybackPosition.add(PlaybackPosition(
                       duration: duration,
                       position: currentTime,
                       percentage: progress,
                     ));
                   },
                   onProgressChanged: (percentage) {
-                    _seekPositionState.add(PositionState(
+                    _seekPlaybackPosition.add(PlaybackPosition(
                       duration: duration,
                       position: Duration(
                         milliseconds:
@@ -89,7 +90,7 @@ class _SeekBarState extends State<SeekBar> {
                   },
                   onStopTrackingTouch: () {
                     audioPlayerBloc.transistionPosition(currentTime);
-                    _seekPositionState.add(null);
+                    _seekPlaybackPosition.add(null);
                   },
                 ),
               ),

@@ -1,28 +1,28 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
-part 'playback.g.dart';
+part 'playback_position.g.dart';
 
 @CopyWith()
-class Playback extends Equatable {
+class PlaybackPosition extends Equatable {
   final String episodeId;
   final Duration position;
   final Duration duration;
-  final String lastPlayedAt;
+  final double percentage;
 
-  Playback({
-    @required this.episodeId,
+  PlaybackPosition({
+    this.episodeId,
     this.position,
     this.duration,
-    this.lastPlayedAt,
+    this.percentage,
   });
 
-  factory Playback.empty(String episodeId) {
-    return Playback(
+  factory PlaybackPosition.empty(String episodeId) {
+    return PlaybackPosition(
       episodeId: episodeId,
       position: Duration.zero,
       duration: Duration.zero,
+      percentage: 0.0,
     );
   }
 

@@ -6,7 +6,7 @@ abstract class Store {
   EpisodeStore get episode;
   SubscriptionStore get subscription;
   QueueStore get queue;
-  PlaybackStore get playback;
+  PlaybackPositionStore get playbackPosition;
   PreferenceStore get preference;
 }
 
@@ -44,11 +44,11 @@ abstract class QueueStore {
   Future<AudioTrack> getNowPlaying();
 }
 
-abstract class PlaybackStore {
-  Future<void> save(Playback playback);
-  Future<void> updateProgress(Playback playback);
-  Future<Playback> get_(String episodeId);
-  Stream<Playback> watch(String episodeId);
+abstract class PlaybackPositionStore {
+  Future<void> save(PlaybackPosition playback);
+  Future<void> update(PlaybackPosition playback);
+  Future<PlaybackPosition> get_(String episodeId);
+  Stream<PlaybackPosition> watch(String episodeId);
 }
 
 abstract class PreferenceStore {

@@ -1717,30 +1717,33 @@ class $AudioTracksTable extends AudioTracks
   }
 }
 
-class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
+class PlaybackPositionRow extends DataClass
+    implements Insertable<PlaybackPositionRow> {
   final String episodeId;
   final int position;
   final int duration;
-  final String lastPlayedAt;
-  PlaybackRow(
+  final double percentage;
+  PlaybackPositionRow(
       {@required this.episodeId,
       @required this.position,
       @required this.duration,
-      @required this.lastPlayedAt});
-  factory PlaybackRow.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      @required this.percentage});
+  factory PlaybackPositionRow.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
-    return PlaybackRow(
+    final doubleType = db.typeSystem.forDartType<double>();
+    return PlaybackPositionRow(
       episodeId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}episode_id']),
       position:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
       duration:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}duration']),
-      lastPlayedAt: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}last_played_at']),
+      percentage: doubleType
+          .mapFromDatabaseResponse(data['${effectivePrefix}percentage']),
     );
   }
   @override
@@ -1755,14 +1758,14 @@ class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
     if (!nullToAbsent || duration != null) {
       map['duration'] = Variable<int>(duration);
     }
-    if (!nullToAbsent || lastPlayedAt != null) {
-      map['last_played_at'] = Variable<String>(lastPlayedAt);
+    if (!nullToAbsent || percentage != null) {
+      map['percentage'] = Variable<double>(percentage);
     }
     return map;
   }
 
-  PlaybacksCompanion toCompanion(bool nullToAbsent) {
-    return PlaybacksCompanion(
+  PlaybackPositionsCompanion toCompanion(bool nullToAbsent) {
+    return PlaybackPositionsCompanion(
       episodeId: episodeId == null && nullToAbsent
           ? const Value.absent()
           : Value(episodeId),
@@ -1772,20 +1775,20 @@ class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
       duration: duration == null && nullToAbsent
           ? const Value.absent()
           : Value(duration),
-      lastPlayedAt: lastPlayedAt == null && nullToAbsent
+      percentage: percentage == null && nullToAbsent
           ? const Value.absent()
-          : Value(lastPlayedAt),
+          : Value(percentage),
     );
   }
 
-  factory PlaybackRow.fromJson(Map<String, dynamic> json,
+  factory PlaybackPositionRow.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return PlaybackRow(
+    return PlaybackPositionRow(
       episodeId: serializer.fromJson<String>(json['episodeId']),
       position: serializer.fromJson<int>(json['position']),
       duration: serializer.fromJson<int>(json['duration']),
-      lastPlayedAt: serializer.fromJson<String>(json['lastPlayedAt']),
+      percentage: serializer.fromJson<double>(json['percentage']),
     );
   }
   @override
@@ -1795,91 +1798,86 @@ class PlaybackRow extends DataClass implements Insertable<PlaybackRow> {
       'episodeId': serializer.toJson<String>(episodeId),
       'position': serializer.toJson<int>(position),
       'duration': serializer.toJson<int>(duration),
-      'lastPlayedAt': serializer.toJson<String>(lastPlayedAt),
+      'percentage': serializer.toJson<double>(percentage),
     };
   }
 
-  PlaybackRow copyWith(
-          {String episodeId,
-          int position,
-          int duration,
-          String lastPlayedAt}) =>
-      PlaybackRow(
+  PlaybackPositionRow copyWith(
+          {String episodeId, int position, int duration, double percentage}) =>
+      PlaybackPositionRow(
         episodeId: episodeId ?? this.episodeId,
         position: position ?? this.position,
         duration: duration ?? this.duration,
-        lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
+        percentage: percentage ?? this.percentage,
       );
   @override
   String toString() {
-    return (StringBuffer('PlaybackRow(')
+    return (StringBuffer('PlaybackPositionRow(')
           ..write('episodeId: $episodeId, ')
           ..write('position: $position, ')
           ..write('duration: $duration, ')
-          ..write('lastPlayedAt: $lastPlayedAt')
+          ..write('percentage: $percentage')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      episodeId.hashCode,
-      $mrjc(
-          position.hashCode, $mrjc(duration.hashCode, lastPlayedAt.hashCode))));
+  int get hashCode => $mrjf($mrjc(episodeId.hashCode,
+      $mrjc(position.hashCode, $mrjc(duration.hashCode, percentage.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is PlaybackRow &&
+      (other is PlaybackPositionRow &&
           other.episodeId == this.episodeId &&
           other.position == this.position &&
           other.duration == this.duration &&
-          other.lastPlayedAt == this.lastPlayedAt);
+          other.percentage == this.percentage);
 }
 
-class PlaybacksCompanion extends UpdateCompanion<PlaybackRow> {
+class PlaybackPositionsCompanion extends UpdateCompanion<PlaybackPositionRow> {
   final Value<String> episodeId;
   final Value<int> position;
   final Value<int> duration;
-  final Value<String> lastPlayedAt;
-  const PlaybacksCompanion({
+  final Value<double> percentage;
+  const PlaybackPositionsCompanion({
     this.episodeId = const Value.absent(),
     this.position = const Value.absent(),
     this.duration = const Value.absent(),
-    this.lastPlayedAt = const Value.absent(),
+    this.percentage = const Value.absent(),
   });
-  PlaybacksCompanion.insert({
+  PlaybackPositionsCompanion.insert({
     @required String episodeId,
     @required int position,
     @required int duration,
-    @required String lastPlayedAt,
+    @required double percentage,
   })  : episodeId = Value(episodeId),
         position = Value(position),
         duration = Value(duration),
-        lastPlayedAt = Value(lastPlayedAt);
-  static Insertable<PlaybackRow> custom({
+        percentage = Value(percentage);
+  static Insertable<PlaybackPositionRow> custom({
     Expression<String> episodeId,
     Expression<int> position,
     Expression<int> duration,
-    Expression<String> lastPlayedAt,
+    Expression<double> percentage,
   }) {
     return RawValuesInsertable({
       if (episodeId != null) 'episode_id': episodeId,
       if (position != null) 'position': position,
       if (duration != null) 'duration': duration,
-      if (lastPlayedAt != null) 'last_played_at': lastPlayedAt,
+      if (percentage != null) 'percentage': percentage,
     });
   }
 
-  PlaybacksCompanion copyWith(
+  PlaybackPositionsCompanion copyWith(
       {Value<String> episodeId,
       Value<int> position,
       Value<int> duration,
-      Value<String> lastPlayedAt}) {
-    return PlaybacksCompanion(
+      Value<double> percentage}) {
+    return PlaybackPositionsCompanion(
       episodeId: episodeId ?? this.episodeId,
       position: position ?? this.position,
       duration: duration ?? this.duration,
-      lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
+      percentage: percentage ?? this.percentage,
     );
   }
 
@@ -1895,18 +1893,18 @@ class PlaybacksCompanion extends UpdateCompanion<PlaybackRow> {
     if (duration.present) {
       map['duration'] = Variable<int>(duration.value);
     }
-    if (lastPlayedAt.present) {
-      map['last_played_at'] = Variable<String>(lastPlayedAt.value);
+    if (percentage.present) {
+      map['percentage'] = Variable<double>(percentage.value);
     }
     return map;
   }
 }
 
-class $PlaybacksTable extends Playbacks
-    with TableInfo<$PlaybacksTable, PlaybackRow> {
+class $PlaybackPositionsTable extends PlaybackPositions
+    with TableInfo<$PlaybackPositionsTable, PlaybackPositionRow> {
   final GeneratedDatabase _db;
   final String _alias;
-  $PlaybacksTable(this._db, [this._alias]);
+  $PlaybackPositionsTable(this._db, [this._alias]);
   final VerificationMeta _episodeIdMeta = const VerificationMeta('episodeId');
   GeneratedTextColumn _episodeId;
   @override
@@ -1940,15 +1938,13 @@ class $PlaybacksTable extends Playbacks
     );
   }
 
-  final VerificationMeta _lastPlayedAtMeta =
-      const VerificationMeta('lastPlayedAt');
-  GeneratedTextColumn _lastPlayedAt;
+  final VerificationMeta _percentageMeta = const VerificationMeta('percentage');
+  GeneratedRealColumn _percentage;
   @override
-  GeneratedTextColumn get lastPlayedAt =>
-      _lastPlayedAt ??= _constructLastPlayedAt();
-  GeneratedTextColumn _constructLastPlayedAt() {
-    return GeneratedTextColumn(
-      'last_played_at',
+  GeneratedRealColumn get percentage => _percentage ??= _constructPercentage();
+  GeneratedRealColumn _constructPercentage() {
+    return GeneratedRealColumn(
+      'percentage',
       $tableName,
       false,
     );
@@ -1956,15 +1952,16 @@ class $PlaybacksTable extends Playbacks
 
   @override
   List<GeneratedColumn> get $columns =>
-      [episodeId, position, duration, lastPlayedAt];
+      [episodeId, position, duration, percentage];
   @override
-  $PlaybacksTable get asDslTable => this;
+  $PlaybackPositionsTable get asDslTable => this;
   @override
-  String get $tableName => _alias ?? 'playbacks';
+  String get $tableName => _alias ?? 'playback_positions';
   @override
-  final String actualTableName = 'playbacks';
+  final String actualTableName = 'playback_positions';
   @override
-  VerificationContext validateIntegrity(Insertable<PlaybackRow> instance,
+  VerificationContext validateIntegrity(
+      Insertable<PlaybackPositionRow> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1986,13 +1983,13 @@ class $PlaybacksTable extends Playbacks
     } else if (isInserting) {
       context.missing(_durationMeta);
     }
-    if (data.containsKey('last_played_at')) {
+    if (data.containsKey('percentage')) {
       context.handle(
-          _lastPlayedAtMeta,
-          lastPlayedAt.isAcceptableOrUnknown(
-              data['last_played_at'], _lastPlayedAtMeta));
+          _percentageMeta,
+          percentage.isAcceptableOrUnknown(
+              data['percentage'], _percentageMeta));
     } else if (isInserting) {
-      context.missing(_lastPlayedAtMeta);
+      context.missing(_percentageMeta);
     }
     return context;
   }
@@ -2000,14 +1997,14 @@ class $PlaybacksTable extends Playbacks
   @override
   Set<GeneratedColumn> get $primaryKey => {episodeId};
   @override
-  PlaybackRow map(Map<String, dynamic> data, {String tablePrefix}) {
+  PlaybackPositionRow map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return PlaybackRow.fromData(data, _db, prefix: effectivePrefix);
+    return PlaybackPositionRow.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $PlaybacksTable createAlias(String alias) {
-    return $PlaybacksTable(_db, alias);
+  $PlaybackPositionsTable createAlias(String alias) {
+    return $PlaybackPositionsTable(_db, alias);
   }
 }
 
@@ -2586,8 +2583,9 @@ abstract class _$SqlDb extends GeneratedDatabase {
   $EpisodesTable get episodes => _episodes ??= $EpisodesTable(this);
   $AudioTracksTable _audioTracks;
   $AudioTracksTable get audioTracks => _audioTracks ??= $AudioTracksTable(this);
-  $PlaybacksTable _playbacks;
-  $PlaybacksTable get playbacks => _playbacks ??= $PlaybacksTable(this);
+  $PlaybackPositionsTable _playbackPositions;
+  $PlaybackPositionsTable get playbackPositions =>
+      _playbackPositions ??= $PlaybackPositionsTable(this);
   $PreferencesTable _preferences;
   $PreferencesTable get preferences => _preferences ??= $PreferencesTable(this);
   $SubscriptionsTable _subscriptions;
@@ -2600,8 +2598,9 @@ abstract class _$SqlDb extends GeneratedDatabase {
   PodcastDao get podcastDao => _podcastDao ??= PodcastDao(this as SqlDb);
   QueueDao _queueDao;
   QueueDao get queueDao => _queueDao ??= QueueDao(this as SqlDb);
-  PlaybackDao _playbackDao;
-  PlaybackDao get playbackDao => _playbackDao ??= PlaybackDao(this as SqlDb);
+  PlaybackPositionDao _playbackPositionDao;
+  PlaybackPositionDao get playbackPositionDao =>
+      _playbackPositionDao ??= PlaybackPositionDao(this as SqlDb);
   PreferenceDao _preferenceDao;
   PreferenceDao get preferenceDao =>
       _preferenceDao ??= PreferenceDao(this as SqlDb);
@@ -2615,7 +2614,7 @@ abstract class _$SqlDb extends GeneratedDatabase {
         podcasts,
         episodes,
         audioTracks,
-        playbacks,
+        playbackPositions,
         preferences,
         subscriptions,
         subscriptionFilters
@@ -2630,8 +2629,9 @@ mixin _$PodcastDaoMixin on DatabaseAccessor<SqlDb> {
   $PodcastsTable get podcasts => attachedDatabase.podcasts;
   $EpisodesTable get episodes => attachedDatabase.episodes;
 }
-mixin _$PlaybackDaoMixin on DatabaseAccessor<SqlDb> {
-  $PlaybacksTable get playbacks => attachedDatabase.playbacks;
+mixin _$PlaybackPositionDaoMixin on DatabaseAccessor<SqlDb> {
+  $PlaybackPositionsTable get playbackPositions =>
+      attachedDatabase.playbackPositions;
 }
 mixin _$PreferenceDaoMixin on DatabaseAccessor<SqlDb> {
   $PreferencesTable get preferences => attachedDatabase.preferences;

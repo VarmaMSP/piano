@@ -2,34 +2,34 @@ part of '../sqldb.dart';
 
 /// * This table stores playback progress of each episode
 /// * that user played
-@DataClassName('PlaybackRow')
-class Playbacks extends Table {
+@DataClassName('PlaybackPositionRow')
+class PlaybackPositions extends Table {
   TextColumn get episodeId =>
       text().customConstraint('REFERENCES episodes(id)')();
   IntColumn get position => integer()();
   IntColumn get duration => integer()();
-  TextColumn get lastPlayedAt => text()();
+  RealColumn get percentage => real()();
 
   @override
   Set<Column> get primaryKey => {episodeId};
 }
 
-PlaybackRow playbackRowFromModel(Playback model) {
-  return PlaybackRow(
+PlaybackPositionRow playbackRowFromModel(PlaybackPosition model) {
+  return PlaybackPositionRow(
     episodeId: model.episodeId,
-    position: model?.position?.inSeconds ?? 0,
-    duration: model?.duration?.inSeconds ?? 0,
-    lastPlayedAt: model?.lastPlayedAt ?? 0,
+    position: model.position.inSeconds,
+    duration: model.duration.inSeconds,
+    percentage: model.percentage,
   );
 }
 
-extension PlaybackRowExtension on PlaybackRow {
-  Playback toModel() {
-    return Playback(
+extension PlaybackPositionRowExtension on PlaybackPositionRow {
+  PlaybackPosition toModel() {
+    return PlaybackPosition(
       episodeId: episodeId,
       position: Duration(seconds: position),
       duration: Duration(seconds: duration),
-      lastPlayedAt: lastPlayedAt,
+      percentage: percentage,
     );
   }
 }
