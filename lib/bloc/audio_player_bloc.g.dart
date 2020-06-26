@@ -21,6 +21,9 @@ abstract class QueueTransistion extends Equatable {
   factory QueueTransistion.addToQueueBottom({@required AudioTrack audioTrack}) =
       AddToQueueBottom;
 
+  factory QueueTransistion.changeTrackPosition(
+      {@required int from, @required int to}) = ChangeTrackPosition;
+
   factory QueueTransistion.playPrevious() = PlayPrevious;
 
   factory QueueTransistion.playNext() = PlayNext;
@@ -32,12 +35,14 @@ abstract class QueueTransistion extends Equatable {
       {@required R Function(PlayAudioTrack) playAudioTrack,
       @required R Function(AddToQueueTop) addToQueueTop,
       @required R Function(AddToQueueBottom) addToQueueBottom,
+      @required R Function(ChangeTrackPosition) changeTrackPosition,
       @required R Function(PlayPrevious) playPrevious,
       @required R Function(PlayNext) playNext}) {
     assert(() {
       if (playAudioTrack == null ||
           addToQueueTop == null ||
           addToQueueBottom == null ||
+          changeTrackPosition == null ||
           playPrevious == null ||
           playNext == null) {
         throw 'check for all possible cases';
@@ -51,6 +56,8 @@ abstract class QueueTransistion extends Equatable {
         return addToQueueTop(this as AddToQueueTop);
       case _QueueTransistion.AddToQueueBottom:
         return addToQueueBottom(this as AddToQueueBottom);
+      case _QueueTransistion.ChangeTrackPosition:
+        return changeTrackPosition(this as ChangeTrackPosition);
       case _QueueTransistion.PlayPrevious:
         return playPrevious(this as PlayPrevious);
       case _QueueTransistion.PlayNext:
@@ -63,12 +70,14 @@ abstract class QueueTransistion extends Equatable {
       {@required FutureOr<R> Function(PlayAudioTrack) playAudioTrack,
       @required FutureOr<R> Function(AddToQueueTop) addToQueueTop,
       @required FutureOr<R> Function(AddToQueueBottom) addToQueueBottom,
+      @required FutureOr<R> Function(ChangeTrackPosition) changeTrackPosition,
       @required FutureOr<R> Function(PlayPrevious) playPrevious,
       @required FutureOr<R> Function(PlayNext) playNext}) {
     assert(() {
       if (playAudioTrack == null ||
           addToQueueTop == null ||
           addToQueueBottom == null ||
+          changeTrackPosition == null ||
           playPrevious == null ||
           playNext == null) {
         throw 'check for all possible cases';
@@ -82,6 +91,8 @@ abstract class QueueTransistion extends Equatable {
         return addToQueueTop(this as AddToQueueTop);
       case _QueueTransistion.AddToQueueBottom:
         return addToQueueBottom(this as AddToQueueBottom);
+      case _QueueTransistion.ChangeTrackPosition:
+        return changeTrackPosition(this as ChangeTrackPosition);
       case _QueueTransistion.PlayPrevious:
         return playPrevious(this as PlayPrevious);
       case _QueueTransistion.PlayNext:
@@ -93,6 +104,7 @@ abstract class QueueTransistion extends Equatable {
       {R Function(PlayAudioTrack) playAudioTrack,
       R Function(AddToQueueTop) addToQueueTop,
       R Function(AddToQueueBottom) addToQueueBottom,
+      R Function(ChangeTrackPosition) changeTrackPosition,
       R Function(PlayPrevious) playPrevious,
       R Function(PlayNext) playNext,
       @required R Function(QueueTransistion) orElse}) {
@@ -112,6 +124,9 @@ abstract class QueueTransistion extends Equatable {
       case _QueueTransistion.AddToQueueBottom:
         if (addToQueueBottom == null) break;
         return addToQueueBottom(this as AddToQueueBottom);
+      case _QueueTransistion.ChangeTrackPosition:
+        if (changeTrackPosition == null) break;
+        return changeTrackPosition(this as ChangeTrackPosition);
       case _QueueTransistion.PlayPrevious:
         if (playPrevious == null) break;
         return playPrevious(this as PlayPrevious);
@@ -126,6 +141,7 @@ abstract class QueueTransistion extends Equatable {
       {FutureOr<R> Function(PlayAudioTrack) playAudioTrack,
       FutureOr<R> Function(AddToQueueTop) addToQueueTop,
       FutureOr<R> Function(AddToQueueBottom) addToQueueBottom,
+      FutureOr<R> Function(ChangeTrackPosition) changeTrackPosition,
       FutureOr<R> Function(PlayPrevious) playPrevious,
       FutureOr<R> Function(PlayNext) playNext,
       @required FutureOr<R> Function(QueueTransistion) orElse}) {
@@ -145,6 +161,9 @@ abstract class QueueTransistion extends Equatable {
       case _QueueTransistion.AddToQueueBottom:
         if (addToQueueBottom == null) break;
         return addToQueueBottom(this as AddToQueueBottom);
+      case _QueueTransistion.ChangeTrackPosition:
+        if (changeTrackPosition == null) break;
+        return changeTrackPosition(this as ChangeTrackPosition);
       case _QueueTransistion.PlayPrevious:
         if (playPrevious == null) break;
         return playPrevious(this as PlayPrevious);
@@ -160,12 +179,14 @@ abstract class QueueTransistion extends Equatable {
       {FutureOr<void> Function(PlayAudioTrack) playAudioTrack,
       FutureOr<void> Function(AddToQueueTop) addToQueueTop,
       FutureOr<void> Function(AddToQueueBottom) addToQueueBottom,
+      FutureOr<void> Function(ChangeTrackPosition) changeTrackPosition,
       FutureOr<void> Function(PlayPrevious) playPrevious,
       FutureOr<void> Function(PlayNext) playNext}) {
     assert(() {
       if (playAudioTrack == null &&
           addToQueueTop == null &&
           addToQueueBottom == null &&
+          changeTrackPosition == null &&
           playPrevious == null &&
           playNext == null) {
         throw 'provide at least one branch';
@@ -182,6 +203,9 @@ abstract class QueueTransistion extends Equatable {
       case _QueueTransistion.AddToQueueBottom:
         if (addToQueueBottom == null) break;
         return addToQueueBottom(this as AddToQueueBottom);
+      case _QueueTransistion.ChangeTrackPosition:
+        if (changeTrackPosition == null) break;
+        return changeTrackPosition(this as ChangeTrackPosition);
       case _QueueTransistion.PlayPrevious:
         if (playPrevious == null) break;
         return playPrevious(this as PlayPrevious);
@@ -232,6 +256,21 @@ class AddToQueueBottom extends QueueTransistion {
   String toString() => 'AddToQueueBottom(audioTrack:${this.audioTrack})';
   @override
   List get props => [audioTrack];
+}
+
+@immutable
+class ChangeTrackPosition extends QueueTransistion {
+  const ChangeTrackPosition({@required this.from, @required this.to})
+      : super(_QueueTransistion.ChangeTrackPosition);
+
+  final int from;
+
+  final int to;
+
+  @override
+  String toString() => 'ChangeTrackPosition(from:${this.from},to:${this.to})';
+  @override
+  List get props => [from, to];
 }
 
 @immutable

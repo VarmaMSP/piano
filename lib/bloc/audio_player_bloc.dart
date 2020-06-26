@@ -27,6 +27,8 @@ enum _QueueTransistion {
   AddToQueueTop,
   @Data(fields: [DataField<AudioTrack>('audioTrack')])
   AddToQueueBottom,
+  @Data(fields: [DataField<int>('from'), DataField<int>('to')])
+  ChangeTrackPosition,
   @object
   PlayPrevious,
   @object
@@ -124,6 +126,10 @@ class AudioPlayerBloc {
         },
         addToQueueBottom: (data) async {
           await store.queue.save(prevQueue.addToBottom(data.audioTrack));
+          await audioService.syncQueue(startTask: false);
+        },
+        changeTrackPosition: (data) async {
+          await store.queue.save(prevQueue.changePosition(data.from, data.to));
           await audioService.syncQueue(startTask: false);
         },
         playPrevious: (_) {},

@@ -85,6 +85,30 @@ class Queue extends Equatable {
     );
   }
 
+  /// Returns a new queue with updated positions
+  Queue changePosition(int from, int to) {
+    return Queue(
+      position: position != from ? position : to,
+      audioTracks: to < from
+          ? [
+              ...audioTracks.sublist(0, to),
+              audioTracks[from].copyWith(position: to),
+              ...audioTracks
+                  .sublist(to, from)
+                  .map((t) => t.copyWith(position: t.position + 1)),
+              ...audioTracks.sublist(from),
+            ]
+          : [
+              ...audioTracks.sublist(0, from),
+              ...audioTracks
+                  .sublist(from, to + 1)
+                  .map((t) => t.copyWith(position: t.position - 1)),
+              audioTracks[from].copyWith(position: to),
+              ...audioTracks.sublist(to + 1),
+            ],
+    );
+  }
+
   /// Returns a new queue with next track in active position
   Queue skipToNext() {
     return Queue(

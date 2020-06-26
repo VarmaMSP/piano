@@ -34,7 +34,12 @@ class QueueScreen extends StatelessWidget {
             children: [
               _buildAppBar(context),
               Expanded(
-                  child: _buildList(context, snapshot.data.audioTracks ?? [])),
+                child: _buildList(
+                  context,
+                  audioPlayerBloc,
+                  snapshot.data.audioTracks ?? [],
+                ),
+              ),
             ],
           );
         },
@@ -90,11 +95,19 @@ class QueueScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildList(BuildContext context, List<AudioTrack> tracks) {
+  Widget _buildList(
+    BuildContext context,
+    AudioPlayerBloc audioPlayerBloc,
+    List<AudioTrack> tracks,
+  ) {
     return ImplicitlyAnimatedReorderableList<AudioTrack>(
       items: tracks,
       areItemsTheSame: (a, b) => a.episode.id == b.episode.id,
-      onReorderFinished: (item, from, to, newItems) {},
+      onReorderFinished: (item, from, to, newItems) {
+        audioPlayerBloc.transistionQueue(
+          QueueTransistion.changeTrackPosition(from: from, to: to),
+        );
+      },
       itemBuilder: (context, itemAnimation, item, index) {
         return Reorderable(
           key: ValueKey(item.episode.id),
