@@ -4,8 +4,9 @@ part of '../sqldb.dart';
 class Subscriptions extends Table {
   TextColumn get podcastId =>
       text().customConstraint('REFERENCES podcasts(id)')();
-  TextColumn get filterId =>
-      text().customConstraint('REFERENCES subscription_filters(id)')();
+  TextColumn get filterId => text()
+      .nullable()
+      .customConstraint('NULL REFERENCES subscription_filters(id)')();
 
   @override
   Set<Column> get primaryKey => {podcastId};

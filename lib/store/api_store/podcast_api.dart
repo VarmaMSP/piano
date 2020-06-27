@@ -17,6 +17,7 @@ class PodcastApi extends PodcastStore {
     yield PodcastScreenData(
       podcast: apiResponse.podcasts[0],
       episodes: apiResponse.episodes,
+      isSubscribed: apiResponse.podcasts[0].isSubscribed,
       receivedAllEpisodes: apiResponse.episodes.length < 15,
     );
   }
@@ -27,12 +28,12 @@ class PodcastApi extends PodcastStore {
   }
 
   @override
-  Future<void> savePodcastWithEpisodes(Podcast podcast, List<Episode> episode) {
+  Future<void> saveScreenData(PodcastScreenData screenData) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> deletePodcastWithEpisodes(String podcastId) {
+  Future<void> deleteScreenData(String podcastId) {
     throw UnimplementedError();
   }
 }

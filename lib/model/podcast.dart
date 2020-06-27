@@ -99,7 +99,7 @@ class Podcast extends Equatable {
   }
 
   @override
-  List<Object> get props => [id, isSubscribed];
+  List<Object> get props => [id, urlParam, isSubscribed];
 
   @override
   String toString() => 'Podcast: { title: $title }';

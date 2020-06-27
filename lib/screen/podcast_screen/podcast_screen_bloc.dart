@@ -47,20 +47,16 @@ class PodcastScreenBloc {
         subscribed: (data) async {
           if (data.podcastUrlParam == urlParam) {
             final screenData = await _screenData.first;
-            if (!screenData.podcast.isSubscribed) {
-              _screenData.add(screenData.copyWith(
-                podcast: screenData.podcast.copyWith(isSubscribed: true),
-              ));
+            if (!screenData.isSubscribed) {
+              _screenData.add(screenData.copyWith(isSubscribed: true));
             }
           }
         },
         unsubscribed: (data) async {
           if (data.podcastUrlParam == urlParam) {
             final screenData = await _screenData.first;
-            if (screenData.podcast.isSubscribed) {
-              _screenData.add(screenData.copyWith(
-                podcast: screenData.podcast.copyWith(isSubscribed: false),
-              ));
+            if (screenData.isSubscribed) {
+              _screenData.add(screenData.copyWith(isSubscribed: false));
             }
           }
         },
@@ -88,7 +84,7 @@ class PodcastScreenBloc {
     if (!_isDisposed) {
       _screenData.add(data.copyWith(
         episodes: data.episodes + episodes,
-        receivedAllEpisodes: episodes.length > 30,
+        receivedAllEpisodes: episodes.length < 30,
       ));
     }
   }

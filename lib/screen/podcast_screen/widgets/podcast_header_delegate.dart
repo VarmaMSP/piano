@@ -12,6 +12,7 @@ import 'package:flutter/foundation.dart';
 class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   PodcastHeaderDelegate({
     @required this.podcast,
+    @required this.isSubscribed,
     @required this.tabController,
   });
 
@@ -20,6 +21,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   static const double flexibleAreaHeight = 142;
 
   final Podcast podcast;
+  final bool isSubscribed;
   final TabController tabController;
 
   @override
@@ -253,17 +255,17 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               heightFactor: 1.0,
               widthFactor: 0.65,
               child: FlatButton(
-                onPressed: () => podcast.isSubscribed
+                onPressed: () => isSubscribed
                     ? podcastActionsBloc.unsubscribe(podcast)
                     : podcastActionsBloc.subscribe(podcast),
-                color: podcast.isSubscribed
+                color: isSubscribed
                     ? TWColors.gray.shade300
                     : TWColors.purple.shade600,
-                textColor: podcast.isSubscribed
+                textColor: isSubscribed
                     ? TWColors.gray.shade800
                     : TWColors.gray.shade100,
                 child: Text(
-                  podcast.isSubscribed ? 'SUBSCRIBED' : 'SUBSCRIBE',
+                  isSubscribed ? 'SUBSCRIBED' : 'SUBSCRIBE',
                   style: TextStyle(
                     letterSpacing: 0.65,
                     fontSize: 13,

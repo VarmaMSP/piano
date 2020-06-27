@@ -2199,7 +2199,7 @@ class $PreferencesTable extends Preferences
 class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
   final String podcastId;
   final String filterId;
-  SubscriptionRow({@required this.podcastId, @required this.filterId});
+  SubscriptionRow({@required this.podcastId, this.filterId});
   factory SubscriptionRow.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -2285,9 +2285,8 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
   });
   SubscriptionsCompanion.insert({
     @required String podcastId,
-    @required String filterId,
-  })  : podcastId = Value(podcastId),
-        filterId = Value(filterId);
+    this.filterId = const Value.absent(),
+  }) : podcastId = Value(podcastId);
   static Insertable<SubscriptionRow> custom({
     Expression<String> podcastId,
     Expression<String> filterId,
@@ -2338,8 +2337,8 @@ class $SubscriptionsTable extends Subscriptions
   @override
   GeneratedTextColumn get filterId => _filterId ??= _constructFilterId();
   GeneratedTextColumn _constructFilterId() {
-    return GeneratedTextColumn('filter_id', $tableName, false,
-        $customConstraints: 'REFERENCES subscription_filters(id)');
+    return GeneratedTextColumn('filter_id', $tableName, true,
+        $customConstraints: 'NULL REFERENCES subscription_filters(id)');
   }
 
   @override
@@ -2364,8 +2363,6 @@ class $SubscriptionsTable extends Subscriptions
     if (data.containsKey('filter_id')) {
       context.handle(_filterIdMeta,
           filterId.isAcceptableOrUnknown(data['filter_id'], _filterIdMeta));
-    } else if (isInserting) {
-      context.missing(_filterIdMeta);
     }
     return context;
   }
@@ -2910,6 +2907,7 @@ abstract class _$SqlDb extends GeneratedDatabase {
 
 mixin _$PodcastDaoMixin on DatabaseAccessor<SqlDb> {
   $PodcastsTable get podcasts => attachedDatabase.podcasts;
+  $SubscriptionsTable get subscriptions => attachedDatabase.subscriptions;
 }
 mixin _$EpisodeDaoMixin on DatabaseAccessor<SqlDb> {
   $EpisodesTable get episodes => attachedDatabase.episodes;
@@ -2926,7 +2924,11 @@ mixin _$AudioTrackDaoMixin on DatabaseAccessor<SqlDb> {
   $EpisodesTable get episodes => attachedDatabase.episodes;
   $AudioTracksTable get audioTracks => attachedDatabase.audioTracks;
 }
-mixin _$SubscriptionDaoMixin on DatabaseAccessor<SqlDb> {}
+mixin _$SubscriptionDaoMixin on DatabaseAccessor<SqlDb> {
+  $SubscriptionsTable get subscriptions => attachedDatabase.subscriptions;
+  $SubscriptionFiltersTable get subscriptionFilters =>
+      attachedDatabase.subscriptionFilters;
+}
 mixin _$TaskDaoMixin on DatabaseAccessor<SqlDb> {
   $TasksTable get tasks => attachedDatabase.tasks;
 }

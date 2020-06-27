@@ -8,6 +8,7 @@ class Db {
   final PreferenceDao preferenceDao;
   final AudioTrackDao audioTrackDao;
   final TaskDao taskDao;
+  final SubscriptionDao subscriptionDao;
 
   Db({this.sqlDb})
       : podcastDao = PodcastDao(sqlDb),
@@ -15,7 +16,8 @@ class Db {
         playbackPositionDao = PlaybackPositionDao(sqlDb),
         preferenceDao = PreferenceDao(sqlDb),
         audioTrackDao = AudioTrackDao(sqlDb),
-        taskDao = TaskDao(sqlDb);
+        taskDao = TaskDao(sqlDb),
+        subscriptionDao = SubscriptionDao(sqlDb);
 
   Future<T> Function<T>(Future<T> Function()) get transaction =>
       sqlDb.transaction;

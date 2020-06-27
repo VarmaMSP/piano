@@ -1,6 +1,6 @@
 part of '../sqldb.dart';
 
-@UseDao(tables: [Podcasts])
+@UseDao(tables: [Podcasts, Subscriptions])
 class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
   PodcastDao(SqlDb db) : super(db);
 
@@ -30,14 +30,14 @@ class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
     final row = await (select(podcasts)
           ..where((tbl) => tbl.id.equals(podcastId)))
         .getSingle();
-    return row.toModel();
+    return row?.toModel();
   }
 
   Future<Podcast> getPodcastByUrlParam(String podcastUrlParam) async {
     final row = await (select(podcasts)
           ..where((tbl) => tbl.urlParam.equals(podcastUrlParam)))
         .getSingle();
-    return row.toModel();
+    return row?.toModel();
   }
 
   Future<void> deletePodcast(String podcastId) {

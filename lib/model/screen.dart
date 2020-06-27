@@ -10,16 +10,18 @@ part 'screen.g.dart';
 class PodcastScreenData extends Equatable {
   final Podcast podcast;
   final List<Episode> episodes;
+  final bool isSubscribed;
   final bool receivedAllEpisodes;
 
   PodcastScreenData({
     this.podcast,
     this.episodes,
+    this.isSubscribed,
     this.receivedAllEpisodes,
   });
 
   @override
-  List<Object> get props => [podcast, episodes];
+  List<Object> get props => [podcast, isSubscribed];
 }
 
 @CopyWith()

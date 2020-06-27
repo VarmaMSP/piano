@@ -62,6 +62,7 @@ class _PodcastScreenState extends State<PodcastScreen>
         return ScreenLayout(
           header: PodcastHeaderDelegate(
             podcast: snapshot.data.podcast,
+            isSubscribed: snapshot.data.isSubscribed,
             tabController: _tabController,
           ),
           body: TabBarView(
