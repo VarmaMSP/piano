@@ -85,6 +85,24 @@ class Queue extends Equatable {
     );
   }
 
+  /// Returns a new queue with track at given position remove
+  Queue remove(int position) {
+    return Queue(
+      position: position != this.position
+          ? this.position
+          : position == audioTracks.length - 1 ? position - 1 : position + 1,
+      audioTracks: [
+        ...audioTracks.sublist(0, position),
+        ...audioTracks.sublist(position + 1),
+      ],
+    );
+  }
+
+  /// Returns a new queue with updated now playing position
+  Queue play(int position) {
+    return Queue(position: position, audioTracks: audioTracks);
+  }
+
   /// Returns a new queue with updated positions
   Queue changePosition(int from, int to) {
     return Queue(

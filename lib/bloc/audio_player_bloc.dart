@@ -29,10 +29,10 @@ enum _QueueTransistion {
   AddToQueueBottom,
   @Data(fields: [DataField<int>('from'), DataField<int>('to')])
   ChangeTrackPosition,
-  @object
-  PlayPrevious,
-  @object
-  PlayNext,
+  @Data(fields: [DataField<int>('position')])
+  RemoveTrack,
+  @Data(fields: [DataField<int>('position')])
+  PlayTrack
 }
 
 class AudioPlayerBloc {
@@ -94,25 +94,25 @@ class AudioPlayerBloc {
 
   void _handleQueueTransistions() {
     // Load audioplayer snapshot from db
-    store.queue.watch().listen((q) async {
-      _queueSubject.add(q);
-      final nowPlaying = q.nowPlaying;
-      if (nowPlaying != null) {
-        final playbackPos = await store.playbackPosition.get_(
-          nowPlaying.episode.id,
-        );
-        if (!playbackPos.isEmpty) {
-          _playbackPositionSubject.add(PlaybackPosition(
-            duration: playbackPos.duration,
-            position: playbackPos.position,
-            percentage: playbackPos.position.inMilliseconds /
-                playbackPos.duration.inMilliseconds,
-          ));
-        }
-      }
-    });
+    store.queue.watch().listen(_queueSubject.add);
 
-    // handle snapshot transistions
+    // set initial audio position when ever now playing changes
+    _queueSubject.stream
+        .map((queue) => queue.nowPlaying)
+        .where((track) => track != null)
+        .distinct()
+        .asyncMap((track) => store.playbackPosition.get_(track.episode.id))
+        .where((pos) => !pos.isEmpty)
+        .listen((pos) => _playbackPositionSubject.add(
+              PlaybackPosition(
+                duration: pos.duration,
+                position: pos.position,
+                percentage:
+                    pos.position.inMilliseconds / pos.duration.inMilliseconds,
+              ),
+            ));
+
+    // handle queue transistions
     _queueTransistion.stream.distinct().listen((t) async {
       final prevQueue = await _queueSubject.first;
       await t.when(
@@ -132,8 +132,14 @@ class AudioPlayerBloc {
           await store.queue.save(prevQueue.changePosition(data.from, data.to));
           await audioService.syncQueue(startTask: false);
         },
-        playPrevious: (_) {},
-        playNext: (_) {},
+        removeTrack: (data) async {
+          await store.queue.save(prevQueue.remove(data.position));
+          await audioService.syncQueue(startTask: false);
+        },
+        playTrack: (data) async {
+          await store.queue.save(prevQueue.play(data.position));
+          await audioService.syncQueue(startTask: false);
+        },
       );
     });
   }

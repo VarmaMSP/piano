@@ -21,13 +21,16 @@ part 'table/playback_positions.dart';
 part 'table/preferences.dart';
 part 'table/subscriptions.dart';
 part 'table/subscription_filters.dart';
+part 'table/tasks.dart';
 
 /// Daos
 part 'dao/podcast_dao.dart';
+part 'dao/episode_dao.dart';
 part 'dao/playback_position_dao.dart';
 part 'dao/preference_dao.dart';
 part 'dao/queue_dao.dart';
 part 'dao/subscription_dao.dart';
+part 'dao/task_dao.dart';
 
 Future<SqlDb> newSqlDb() async {
   final moorIsolate = await getMoorIsolate();
@@ -44,13 +47,16 @@ Future<SqlDb> newSqlDb() async {
     Preferences,
     Subscriptions,
     SubscriptionFilters,
+    Tasks,
   ],
   daos: [
     PodcastDao,
+    EpisodeDao,
     QueueDao,
     PlaybackPositionDao,
     PreferenceDao,
     SubscriptionDao,
+    TaskDao,
   ],
 )
 class SqlDb extends _$SqlDb {

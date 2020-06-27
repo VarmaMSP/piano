@@ -4,6 +4,13 @@ part of '../sqldb.dart';
 class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
   PodcastDao(SqlDb db) : super(db);
 
+  Future<void> savePodcast(Podcast podcast) {
+    return into(podcasts).insert(
+      podcastRowFromModel(podcast),
+      mode: InsertMode.insertOrReplace,
+    );
+  }
+
   Future<void> saveScreenData(PodcastScreenData pageData) async {
     await transaction(() async {
       await into(podcasts).insert(

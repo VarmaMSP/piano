@@ -35,4 +35,14 @@ class PodcastApi extends PodcastStore {
   Stream<PodcastScreenData> watchScreenData(String podcastUrlParam) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> save(Podcast podcast) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> savePodcastWithEpisodes(Podcast podcast, List<Episode> episode) {
+    throw UnimplementedError();
+  }
 }

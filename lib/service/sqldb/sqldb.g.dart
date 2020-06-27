@@ -2574,6 +2574,284 @@ class $SubscriptionFiltersTable extends SubscriptionFilters
   }
 }
 
+class TaskRow extends DataClass implements Insertable<TaskRow> {
+  final int id;
+  final dynamic func;
+  final String status;
+  final DateTime lastUpdated;
+  TaskRow(
+      {@required this.id,
+      @required this.func,
+      @required this.status,
+      @required this.lastUpdated});
+  factory TaskRow.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return TaskRow(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      func: $TasksTable.$converter0.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}func'])),
+      status:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}status']),
+      lastUpdated: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}last_updated']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || func != null) {
+      final converter = $TasksTable.$converter0;
+      map['func'] = Variable<String>(converter.mapToSql(func));
+    }
+    if (!nullToAbsent || status != null) {
+      map['status'] = Variable<String>(status);
+    }
+    if (!nullToAbsent || lastUpdated != null) {
+      map['last_updated'] = Variable<DateTime>(lastUpdated);
+    }
+    return map;
+  }
+
+  TasksCompanion toCompanion(bool nullToAbsent) {
+    return TasksCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      func: func == null && nullToAbsent ? const Value.absent() : Value(func),
+      status:
+          status == null && nullToAbsent ? const Value.absent() : Value(status),
+      lastUpdated: lastUpdated == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastUpdated),
+    );
+  }
+
+  factory TaskRow.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return TaskRow(
+      id: serializer.fromJson<int>(json['id']),
+      func: serializer.fromJson<dynamic>(json['func']),
+      status: serializer.fromJson<String>(json['status']),
+      lastUpdated: serializer.fromJson<DateTime>(json['lastUpdated']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'func': serializer.toJson<dynamic>(func),
+      'status': serializer.toJson<String>(status),
+      'lastUpdated': serializer.toJson<DateTime>(lastUpdated),
+    };
+  }
+
+  TaskRow copyWith(
+          {int id, dynamic func, String status, DateTime lastUpdated}) =>
+      TaskRow(
+        id: id ?? this.id,
+        func: func ?? this.func,
+        status: status ?? this.status,
+        lastUpdated: lastUpdated ?? this.lastUpdated,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TaskRow(')
+          ..write('id: $id, ')
+          ..write('func: $func, ')
+          ..write('status: $status, ')
+          ..write('lastUpdated: $lastUpdated')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(func.hashCode, $mrjc(status.hashCode, lastUpdated.hashCode))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is TaskRow &&
+          other.id == this.id &&
+          other.func == this.func &&
+          other.status == this.status &&
+          other.lastUpdated == this.lastUpdated);
+}
+
+class TasksCompanion extends UpdateCompanion<TaskRow> {
+  final Value<int> id;
+  final Value<dynamic> func;
+  final Value<String> status;
+  final Value<DateTime> lastUpdated;
+  const TasksCompanion({
+    this.id = const Value.absent(),
+    this.func = const Value.absent(),
+    this.status = const Value.absent(),
+    this.lastUpdated = const Value.absent(),
+  });
+  TasksCompanion.insert({
+    this.id = const Value.absent(),
+    @required dynamic func,
+    @required String status,
+    @required DateTime lastUpdated,
+  })  : func = Value(func),
+        status = Value(status),
+        lastUpdated = Value(lastUpdated);
+  static Insertable<TaskRow> custom({
+    Expression<int> id,
+    Expression<String> func,
+    Expression<String> status,
+    Expression<DateTime> lastUpdated,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (func != null) 'func': func,
+      if (status != null) 'status': status,
+      if (lastUpdated != null) 'last_updated': lastUpdated,
+    });
+  }
+
+  TasksCompanion copyWith(
+      {Value<int> id,
+      Value<dynamic> func,
+      Value<String> status,
+      Value<DateTime> lastUpdated}) {
+    return TasksCompanion(
+      id: id ?? this.id,
+      func: func ?? this.func,
+      status: status ?? this.status,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (func.present) {
+      final converter = $TasksTable.$converter0;
+      map['func'] = Variable<String>(converter.mapToSql(func.value));
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (lastUpdated.present) {
+      map['last_updated'] = Variable<DateTime>(lastUpdated.value);
+    }
+    return map;
+  }
+}
+
+class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $TasksTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _funcMeta = const VerificationMeta('func');
+  GeneratedTextColumn _func;
+  @override
+  GeneratedTextColumn get func => _func ??= _constructFunc();
+  GeneratedTextColumn _constructFunc() {
+    return GeneratedTextColumn(
+      'func',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _statusMeta = const VerificationMeta('status');
+  GeneratedTextColumn _status;
+  @override
+  GeneratedTextColumn get status => _status ??= _constructStatus();
+  GeneratedTextColumn _constructStatus() {
+    return GeneratedTextColumn(
+      'status',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _lastUpdatedMeta =
+      const VerificationMeta('lastUpdated');
+  GeneratedDateTimeColumn _lastUpdated;
+  @override
+  GeneratedDateTimeColumn get lastUpdated =>
+      _lastUpdated ??= _constructLastUpdated();
+  GeneratedDateTimeColumn _constructLastUpdated() {
+    return GeneratedDateTimeColumn(
+      'last_updated',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, func, status, lastUpdated];
+  @override
+  $TasksTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'tasks';
+  @override
+  final String actualTableName = 'tasks';
+  @override
+  VerificationContext validateIntegrity(Insertable<TaskRow> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    context.handle(_funcMeta, const VerificationResult.success());
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status'], _statusMeta));
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('last_updated')) {
+      context.handle(
+          _lastUpdatedMeta,
+          lastUpdated.isAcceptableOrUnknown(
+              data['last_updated'], _lastUpdatedMeta));
+    } else if (isInserting) {
+      context.missing(_lastUpdatedMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TaskRow map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return TaskRow.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $TasksTable createAlias(String alias) {
+    return $TasksTable(_db, alias);
+  }
+
+  static TypeConverter<dynamic, String> $converter0 =
+      TaskFunctionTypeConverter();
+}
+
 abstract class _$SqlDb extends GeneratedDatabase {
   _$SqlDb(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   _$SqlDb.connect(DatabaseConnection c) : super.connect(c);
@@ -2594,8 +2872,12 @@ abstract class _$SqlDb extends GeneratedDatabase {
   $SubscriptionFiltersTable _subscriptionFilters;
   $SubscriptionFiltersTable get subscriptionFilters =>
       _subscriptionFilters ??= $SubscriptionFiltersTable(this);
+  $TasksTable _tasks;
+  $TasksTable get tasks => _tasks ??= $TasksTable(this);
   PodcastDao _podcastDao;
   PodcastDao get podcastDao => _podcastDao ??= PodcastDao(this as SqlDb);
+  EpisodeDao _episodeDao;
+  EpisodeDao get episodeDao => _episodeDao ??= EpisodeDao(this as SqlDb);
   QueueDao _queueDao;
   QueueDao get queueDao => _queueDao ??= QueueDao(this as SqlDb);
   PlaybackPositionDao _playbackPositionDao;
@@ -2607,6 +2889,8 @@ abstract class _$SqlDb extends GeneratedDatabase {
   SubscriptionDao _subscriptionDao;
   SubscriptionDao get subscriptionDao =>
       _subscriptionDao ??= SubscriptionDao(this as SqlDb);
+  TaskDao _taskDao;
+  TaskDao get taskDao => _taskDao ??= TaskDao(this as SqlDb);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -2617,7 +2901,8 @@ abstract class _$SqlDb extends GeneratedDatabase {
         playbackPositions,
         preferences,
         subscriptions,
-        subscriptionFilters
+        subscriptionFilters,
+        tasks
       ];
 }
 
@@ -2627,6 +2912,9 @@ abstract class _$SqlDb extends GeneratedDatabase {
 
 mixin _$PodcastDaoMixin on DatabaseAccessor<SqlDb> {
   $PodcastsTable get podcasts => attachedDatabase.podcasts;
+  $EpisodesTable get episodes => attachedDatabase.episodes;
+}
+mixin _$EpisodeDaoMixin on DatabaseAccessor<SqlDb> {
   $EpisodesTable get episodes => attachedDatabase.episodes;
 }
 mixin _$PlaybackPositionDaoMixin on DatabaseAccessor<SqlDb> {
@@ -2643,3 +2931,6 @@ mixin _$QueueDaoMixin on DatabaseAccessor<SqlDb> {
   $PreferencesTable get preferences => attachedDatabase.preferences;
 }
 mixin _$SubscriptionDaoMixin on DatabaseAccessor<SqlDb> {}
+mixin _$TaskDaoMixin on DatabaseAccessor<SqlDb> {
+  $TasksTable get tasks => attachedDatabase.tasks;
+}

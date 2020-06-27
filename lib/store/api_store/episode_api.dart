@@ -8,6 +8,11 @@ class EpisodeApi extends EpisodeStore {
   EpisodeApi(this.httpClient);
 
   @override
+  Future<void> saveAll(List<Episode> episodes) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<List<Episode>> getByPodcastPaginated(
     String podcastId,
     int offset,

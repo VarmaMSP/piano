@@ -39,4 +39,7 @@ class ApiStore extends Store {
 
   @override
   PreferenceStore get preference => throw UnimplementedError();
+
+  @override
+  TaskStore get task => throw UnimplementedError();
 }

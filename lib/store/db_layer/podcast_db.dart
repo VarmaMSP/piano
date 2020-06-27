@@ -4,11 +4,14 @@ import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/utils.dart';
 
 class PodcastDb extends PodcastStore {
+  final SqlDb sqlDb;
   final Store baseStore;
   PodcastDao _podcastDao;
+  EpisodeDao _episodeDao;
 
-  PodcastDb({this.baseStore, SqlDb sqlDb}) {
+  PodcastDb({this.baseStore, this.sqlDb}) {
     _podcastDao = PodcastDao(sqlDb);
+    _episodeDao = EpisodeDao(sqlDb);
   }
 
   @override
@@ -59,5 +62,21 @@ class PodcastDb extends PodcastStore {
   @override
   Future<void> deleteScreenData(String podcastUrlParam) {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<void> save(Podcast podcast) {
+    return _podcastDao.savePodcast(podcast);
+  }
+
+  @override
+  Future<void> savePodcastWithEpisodes(
+    Podcast podcast,
+    List<Episode> episodes,
+  ) {
+    return sqlDb.transaction(() async {
+      await _podcastDao.savePodcast(podcast);
+      await _episodeDao.saveEpisodes(episodes);
+    });
   }
 }

@@ -8,6 +8,7 @@ abstract class Store {
   QueueStore get queue;
   PlaybackPositionStore get playbackPosition;
   PreferenceStore get preference;
+  TaskStore get task;
 }
 
 abstract class UserStore {
@@ -16,6 +17,8 @@ abstract class UserStore {
 }
 
 abstract class PodcastStore {
+  Future<void> save(Podcast podcast);
+  Future<void> savePodcastWithEpisodes(Podcast podcast, List<Episode> episode);
   Future<void> saveScreeData(String podcastUrlParam);
   Future<PodcastScreenData> getScreenData(String podcastUrlParam);
   Stream<PodcastScreenData> watchScreenData(String podcastUrlParam);
@@ -23,6 +26,7 @@ abstract class PodcastStore {
 }
 
 abstract class EpisodeStore {
+  Future<void> saveAll(List<Episode> episodes);
   Future<List<Episode>> getByPodcastPaginated(
     String podcastId,
     int offset,
@@ -55,4 +59,11 @@ abstract class PreferenceStore {
   Future<void> saveAudioSetting(AudioPlayerSetting setting);
   Future<AudioPlayerSetting> getAudioSetting();
   Stream<AudioPlayerSetting> watchAudioSetting();
+}
+
+abstract class TaskStore {
+  Future<void> save(Task task);
+  Stream<List<Task>> watchReady();
+  Future<void> setProgress(List<int> taskIds, TaskStatus status);
+  Future<void> delete(int taskId);
 }
