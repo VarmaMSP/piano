@@ -33,13 +33,14 @@ class QueueScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _buildAppBar(context),
-              Expanded(
-                child: _buildList(
-                  context,
-                  audioPlayerBloc,
-                  snapshot.data.audioTracks ?? [],
+              if (snapshot.hasData)
+                Expanded(
+                  child: _buildList(
+                    context,
+                    audioPlayerBloc,
+                    snapshot.data.audioTracks ?? [],
+                  ),
                 ),
-              ),
             ],
           );
         },

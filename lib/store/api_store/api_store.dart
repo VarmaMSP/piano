@@ -32,9 +32,6 @@ class ApiStore extends Store {
   SubscriptionStore get subscription => _subscriptionStore;
 
   @override
-  QueueStore get queue => throw UnimplementedError();
-
-  @override
   PlaybackPositionStore get playbackPosition => throw UnimplementedError();
 
   @override
@@ -42,4 +39,7 @@ class ApiStore extends Store {
 
   @override
   TaskStore get task => throw UnimplementedError();
+
+  @override
+  AudioPlayerStore get audioPlayer => throw UnimplementedError();
 }

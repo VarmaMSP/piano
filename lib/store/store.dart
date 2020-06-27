@@ -5,7 +5,7 @@ abstract class Store {
   PodcastStore get podcast;
   EpisodeStore get episode;
   SubscriptionStore get subscription;
-  QueueStore get queue;
+  AudioPlayerStore get audioPlayer;
   PlaybackPositionStore get playbackPosition;
   PreferenceStore get preference;
   TaskStore get task;
@@ -41,11 +41,14 @@ abstract class SubscriptionStore {
   Future<SubscriptionsScreenData> getScreenData();
 }
 
-abstract class QueueStore {
-  Future<void> save(Queue queue);
-  Future<Queue> get_();
-  Stream<Queue> watch();
+abstract class AudioPlayerStore {
+  Future<void> saveQueue(Queue queue);
+  Future<void> saveSetting(AudioPlayerSetting setting);
+  Future<Queue> getQueue();
+  Stream<Queue> watchQueue();
   Future<AudioTrack> getNowPlaying();
+  Future<AudioPlayerSetting> getSetting();
+  Stream<AudioPlayerSetting> watchSetting();
 }
 
 abstract class PlaybackPositionStore {

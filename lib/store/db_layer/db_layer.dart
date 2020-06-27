@@ -1,22 +1,25 @@
 import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/store/db_layer/playback_db.dart';
 import 'package:phenopod/store/db_layer/preference_db.dart';
-import 'package:phenopod/store/db_layer/queue_db.dart';
+import 'package:phenopod/store/db_layer/audio_player_db.dart';
 import 'package:phenopod/store/db_layer/podcast_db.dart';
 import 'package:phenopod/store/db_layer/task_db.dart';
 import 'package:phenopod/store/store.dart';
 
+import 'db.dart';
+
 class DbLayer extends Store {
   final Store baseStore;
+  final Db db;
   PodcastStore _podcastDb;
-  QueueStore _queueDb;
+  AudioPlayerStore _audioPlayerDb;
   PlaybackPositionStore _playbackPositionDb;
   PreferenceStore _preferenceDb;
   TaskStore _taskDb;
 
-  DbLayer({this.baseStore, SqlDb sqlDb}) {
-    _podcastDb = PodcastDb(baseStore: baseStore, sqlDb: sqlDb);
-    _queueDb = QueueDb(baseStore: null, sqlDb: sqlDb);
+  DbLayer({this.baseStore, SqlDb sqlDb}) : db = Db(sqlDb: sqlDb) {
+    _podcastDb = PodcastDb(baseStore: baseStore, db: db);
+    _audioPlayerDb = AudioPlayerDb(baseStore: null, db: db);
     _playbackPositionDb = PlaybackPositionDb(baseStore: null, sqlDb: sqlDb);
     _preferenceDb = PreferenceDb(baseStore: null, sqldb: sqlDb);
     _taskDb = TaskDb(sqlDb: sqlDb);
@@ -35,7 +38,7 @@ class DbLayer extends Store {
   UserStore get user => baseStore.user;
 
   @override
-  QueueStore get queue => _queueDb;
+  AudioPlayerStore get audioPlayer => _audioPlayerDb;
 
   @override
   PlaybackPositionStore get playbackPosition => _playbackPositionDb;

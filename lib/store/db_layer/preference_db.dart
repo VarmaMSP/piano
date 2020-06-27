@@ -12,7 +12,7 @@ class PreferenceDb extends PreferenceStore {
 
   @override
   Future<void> saveAudioSetting(AudioPlayerSetting setting) {
-    return _preferenceDao.saveValue(
+    return _preferenceDao.savePreference(
       key: AudioPlayerSetting.key,
       value: PreferenceValue(audioPlayerSetting: setting),
     );
@@ -20,14 +20,14 @@ class PreferenceDb extends PreferenceStore {
 
   @override
   Future<AudioPlayerSetting> getAudioSetting() async {
-    final value = await _preferenceDao.getValue(AudioPlayerSetting.key);
+    final value = await _preferenceDao.getPreference(AudioPlayerSetting.key);
     return value?.audioPlayerSetting ?? AudioPlayerSetting.standard();
   }
 
   @override
   Stream<AudioPlayerSetting> watchAudioSetting() {
     return _preferenceDao
-        .watchValue(AudioPlayerSetting.key)
+        .watchPreference(AudioPlayerSetting.key)
         .map((x) => x?.audioPlayerSetting ?? AudioPlayerSetting.standard());
   }
 }

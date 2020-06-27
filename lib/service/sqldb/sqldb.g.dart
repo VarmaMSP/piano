@@ -2878,8 +2878,9 @@ abstract class _$SqlDb extends GeneratedDatabase {
   PodcastDao get podcastDao => _podcastDao ??= PodcastDao(this as SqlDb);
   EpisodeDao _episodeDao;
   EpisodeDao get episodeDao => _episodeDao ??= EpisodeDao(this as SqlDb);
-  QueueDao _queueDao;
-  QueueDao get queueDao => _queueDao ??= QueueDao(this as SqlDb);
+  AudioTrackDao _audioTrackDao;
+  AudioTrackDao get audioTrackDao =>
+      _audioTrackDao ??= AudioTrackDao(this as SqlDb);
   PlaybackPositionDao _playbackPositionDao;
   PlaybackPositionDao get playbackPositionDao =>
       _playbackPositionDao ??= PlaybackPositionDao(this as SqlDb);
@@ -2924,11 +2925,10 @@ mixin _$PlaybackPositionDaoMixin on DatabaseAccessor<SqlDb> {
 mixin _$PreferenceDaoMixin on DatabaseAccessor<SqlDb> {
   $PreferencesTable get preferences => attachedDatabase.preferences;
 }
-mixin _$QueueDaoMixin on DatabaseAccessor<SqlDb> {
+mixin _$AudioTrackDaoMixin on DatabaseAccessor<SqlDb> {
   $PodcastsTable get podcasts => attachedDatabase.podcasts;
   $EpisodesTable get episodes => attachedDatabase.episodes;
   $AudioTracksTable get audioTracks => attachedDatabase.audioTracks;
-  $PreferencesTable get preferences => attachedDatabase.preferences;
 }
 mixin _$SubscriptionDaoMixin on DatabaseAccessor<SqlDb> {}
 mixin _$TaskDaoMixin on DatabaseAccessor<SqlDb> {

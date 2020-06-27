@@ -94,7 +94,7 @@ class AudioPlayerBloc {
 
   void _handleQueueTransistions() {
     // Load audioplayer snapshot from db
-    store.queue.watch().listen(_queueSubject.add);
+    store.audioPlayer.watchQueue().listen(_queueSubject.add);
 
     // set initial audio position when ever now playing changes
     _queueSubject.stream
@@ -117,27 +117,30 @@ class AudioPlayerBloc {
       final prevQueue = await _queueSubject.first;
       await t.when(
         playAudioTrack: (data) async {
-          await store.queue.save(prevQueue.add(data.audioTrack));
+          await store.audioPlayer.saveQueue(prevQueue.add(data.audioTrack));
           await audioService.syncNowPlaying();
         },
         addToQueueTop: (data) async {
-          await store.queue.save(prevQueue.addToTop(data.audioTrack));
+          await store.audioPlayer
+              .saveQueue(prevQueue.addToTop(data.audioTrack));
           await audioService.syncQueue(startTask: false);
         },
         addToQueueBottom: (data) async {
-          await store.queue.save(prevQueue.addToBottom(data.audioTrack));
+          await store.audioPlayer
+              .saveQueue(prevQueue.addToBottom(data.audioTrack));
           await audioService.syncQueue(startTask: false);
         },
         changeTrackPosition: (data) async {
-          await store.queue.save(prevQueue.changePosition(data.from, data.to));
+          await store.audioPlayer
+              .saveQueue(prevQueue.changePosition(data.from, data.to));
           await audioService.syncQueue(startTask: false);
         },
         removeTrack: (data) async {
-          await store.queue.save(prevQueue.remove(data.position));
+          await store.audioPlayer.saveQueue(prevQueue.remove(data.position));
           await audioService.syncQueue(startTask: false);
         },
         playTrack: (data) async {
-          await store.queue.save(prevQueue.play(data.position));
+          await store.audioPlayer.saveQueue(prevQueue.play(data.position));
           await audioService.syncQueue(startTask: false);
         },
       );

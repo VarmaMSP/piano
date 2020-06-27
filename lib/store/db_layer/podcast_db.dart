@@ -1,47 +1,40 @@
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/store/store.dart';
-import 'package:phenopod/utils/utils.dart';
+
+import 'db.dart';
 
 class PodcastDb extends PodcastStore {
-  final SqlDb sqlDb;
+  final Db db;
   final Store baseStore;
-  PodcastDao _podcastDao;
-  EpisodeDao _episodeDao;
 
-  PodcastDb({this.baseStore, this.sqlDb}) {
-    _podcastDao = PodcastDao(sqlDb);
-    _episodeDao = EpisodeDao(sqlDb);
-  }
+  PodcastDb({this.baseStore, this.db});
 
   @override
   Future<PodcastScreenData> getScreenData(String podcastUrlParam) async {
-    return _podcastDao.getScreenData(podcastUrlParam);
+    return db.podcastDao.getScreenData(podcastUrlParam);
   }
 
   @override
   Stream<PodcastScreenData> watchScreenData(String podcastUrlParam) async* {
-    final fromDb = await _podcastDao.getScreenData(podcastUrlParam);
+    final fromDb = await db.podcastDao.getScreenData(podcastUrlParam);
     if (fromDb != null) {
       yield fromDb.copyWith(receivedAllEpisodes: true);
+      return;
     }
 
     final fromApi = await baseStore.podcast.getScreenData(podcastUrlParam);
+    await savePodcastWithEpisodes(fromApi.podcast, fromApi.episodes);
     yield PodcastScreenData(
       podcast: fromApi.podcast,
-      episodes: listRemoveDuplicates(
-        [...fromApi.episodes, ...(fromDb?.episodes ?? [])],
-        (x) => x.id,
-      ),
-      receivedAllEpisodes:
-          fromDb?.receivedAllEpisodes ?? fromApi.receivedAllEpisodes,
+      episodes: fromApi.episodes,
+      receivedAllEpisodes: true,
     );
   }
 
   @override
   Future<void> saveScreeData(String podcastUrlParam) async {
     final screenData = await baseStore.podcast.getScreenData(podcastUrlParam);
-    await _podcastDao.saveScreenData(screenData);
+    await db.podcastDao.saveScreenData(screenData);
 
     var receivedAll = screenData.receivedAllEpisodes;
     var episodesLength = screenData.episodes.length;
@@ -51,7 +44,7 @@ class PodcastDb extends PodcastStore {
         episodesLength,
         30,
       );
-      await _podcastDao.saveEpisodes(episodes);
+      await db.podcastDao.saveEpisodes(episodes);
       if (episodes.length < 30) {
         receivedAll = true;
       }
@@ -66,7 +59,7 @@ class PodcastDb extends PodcastStore {
 
   @override
   Future<void> save(Podcast podcast) {
-    return _podcastDao.savePodcast(podcast);
+    return db.podcastDao.savePodcast(podcast);
   }
 
   @override
@@ -74,9 +67,9 @@ class PodcastDb extends PodcastStore {
     Podcast podcast,
     List<Episode> episodes,
   ) {
-    return sqlDb.transaction(() async {
-      await _podcastDao.savePodcast(podcast);
-      await _episodeDao.saveEpisodes(episodes);
+    return db.transaction(() async {
+      await db.podcastDao.savePodcast(podcast);
+      await db.episodeDao.saveEpisodes(episodes);
     });
   }
 }

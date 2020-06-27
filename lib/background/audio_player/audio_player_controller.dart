@@ -86,13 +86,13 @@ class AudioPlayerController {
   }
 
   Future<void> syncQueue() async {
-    final queue = await _store.queue.get_();
+    final queue = await _store.audioPlayer.getQueue();
     _queueSubject.add(queue);
     _nowPlayingSubject.add(queue.nowPlaying);
   }
 
   Future<void> syncNowPlaying() async {
-    final nowPlaying = await _store.queue.getNowPlaying();
+    final nowPlaying = await _store.audioPlayer.getNowPlaying();
     _nowPlayingSubject.add(nowPlaying);
   }
 
@@ -106,7 +106,7 @@ class AudioPlayerController {
     if (queue.hasNextTrack) {
       final newQueue = queue.skipToNext();
       await Future.wait([
-        _store.queue.save(newQueue),
+        _store.audioPlayer.saveQueue(newQueue),
         _audioPlayer.playMediaItem(newQueue.nowPlaying.toMediaItem()),
       ]);
     }
