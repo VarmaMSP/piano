@@ -6,17 +6,17 @@ class TaskDao extends DatabaseAccessor<SqlDb> with _$TaskDaoMixin {
 
   Future<void> saveTask(Task task) async {
     await into(tasks)
-        .insert(taskRowFromModel(task), mode: InsertMode.insertOrIgnore);
+        .insert(taskRowFromModel(task), mode: InsertMode.insertOrReplace);
   }
 
-  Stream<List<Task>> watchReady() {
+  Stream<List<Task>> watchReadyTasks() {
     final statusStr = taskStatusToString(TaskStatus.ready);
     return (select(tasks)..where((tbl) => tbl.status.equals(statusStr)))
         .watch()
-        .map((x) => x.map((y) => y.toModel()));
+        .map((xs) => xs.map((x) => x.toModel()));
   }
 
-  Future<void> setProgress(List<int> taskIds, TaskStatus status) async {
+  Future<void> setTaskStatus(List<int> taskIds, TaskStatus status) async {
     final statusStr = taskStatusToString(status);
     await (update(tasks)..where((tbl) => tbl.id.isIn(taskIds)))
         .write(TasksCompanion(status: Value(statusStr)));

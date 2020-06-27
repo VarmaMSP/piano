@@ -2768,11 +2768,8 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
   @override
   GeneratedTextColumn get func => _func ??= _constructFunc();
   GeneratedTextColumn _constructFunc() {
-    return GeneratedTextColumn(
-      'func',
-      $tableName,
-      false,
-    );
+    return GeneratedTextColumn('func', $tableName, false,
+        $customConstraints: 'UNIQUE');
   }
 
   final VerificationMeta _statusMeta = const VerificationMeta('status');
@@ -2913,7 +2910,6 @@ abstract class _$SqlDb extends GeneratedDatabase {
 
 mixin _$PodcastDaoMixin on DatabaseAccessor<SqlDb> {
   $PodcastsTable get podcasts => attachedDatabase.podcasts;
-  $EpisodesTable get episodes => attachedDatabase.episodes;
 }
 mixin _$EpisodeDaoMixin on DatabaseAccessor<SqlDb> {
   $EpisodesTable get episodes => attachedDatabase.episodes;

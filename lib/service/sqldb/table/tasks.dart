@@ -3,7 +3,8 @@ part of '../sqldb.dart';
 @DataClassName('TaskRow')
 class Tasks extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get func => text().map(TaskFunctionTypeConverter())();
+  TextColumn get func =>
+      text().map(TaskFunctionTypeConverter()).customConstraint('UNIQUE')();
   TextColumn get status => text()();
   DateTimeColumn get lastUpdated => dateTime()();
 }

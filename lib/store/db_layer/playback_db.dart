@@ -1,32 +1,31 @@
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/store/store.dart';
 
-class PlaybackPositionDb extends PlaybackPositionStore {
-  final PlaybackPositionStore baseStore;
-  PlaybackPositionDao _playbackPositionDao;
+import 'db.dart';
 
-  PlaybackPositionDb({this.baseStore, SqlDb sqlDb}) {
-    _playbackPositionDao = PlaybackPositionDao(sqlDb);
-  }
+class PlaybackPositionDb extends PlaybackPositionStore {
+  final Db db;
+  final PlaybackPositionStore baseStore;
+
+  PlaybackPositionDb({this.baseStore, this.db});
 
   @override
   Future<void> save(PlaybackPosition playback) {
-    return _playbackPositionDao.savePlayback(playback);
-  }
-
-  @override
-  Future<void> update(PlaybackPosition playback) {
-    return _playbackPositionDao.updateProgress(playback);
-  }
-
-  @override
-  Future<PlaybackPosition> get_(String episodeId) {
-    return _playbackPositionDao.getPlayback(episodeId);
+    return db.playbackPositionDao.savePlaybackPosition(playback);
   }
 
   @override
   Stream<PlaybackPosition> watch(String episodeId) {
-    return _playbackPositionDao.watchPlayback(episodeId);
+    return db.playbackPositionDao.watchPlaybackPosition(episodeId);
+  }
+
+  @override
+  Future<PlaybackPosition> get_(String episodeId) {
+    return watch(episodeId).first;
+  }
+
+  @override
+  Future<void> update(PlaybackPosition playback) {
+    return db.playbackPositionDao.setPosition(playback);
   }
 }

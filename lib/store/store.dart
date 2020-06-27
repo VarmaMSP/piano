@@ -19,19 +19,14 @@ abstract class UserStore {
 abstract class PodcastStore {
   Future<void> save(Podcast podcast);
   Future<void> savePodcastWithEpisodes(Podcast podcast, List<Episode> episode);
-  Future<void> saveScreeData(String podcastUrlParam);
-  Future<PodcastScreenData> getScreenData(String podcastUrlParam);
   Stream<PodcastScreenData> watchScreenData(String podcastUrlParam);
-  Future<void> deleteScreenData(String podcastUrlParam);
+  Future<void> deletePodcastWithEpisodes(String podcastId);
 }
 
 abstract class EpisodeStore {
   Future<void> saveAll(List<Episode> episodes);
   Future<List<Episode>> getByPodcastPaginated(
-    String podcastId,
-    int offset,
-    int limit,
-  );
+      String podcastId, int offset, int limit);
   Future<List<Episode>> getFromSubscriptionsPaginated(int offset, int limit);
 }
 
@@ -67,6 +62,6 @@ abstract class PreferenceStore {
 abstract class TaskStore {
   Future<void> save(Task task);
   Stream<List<Task>> watchReady();
-  Future<void> setProgress(List<int> taskIds, TaskStatus status);
+  Future<void> setStatus(List<int> taskIds, TaskStatus status);
   Future<void> delete(int taskId);
 }

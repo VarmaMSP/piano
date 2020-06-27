@@ -5,22 +5,14 @@ class PlaybackPositionDao extends DatabaseAccessor<SqlDb>
     with _$PlaybackPositionDaoMixin {
   PlaybackPositionDao(SqlDb db) : super(db);
 
-  Future<void> savePlayback(PlaybackPosition playback) async {
+  Future<void> savePlaybackPosition(PlaybackPosition playback) async {
     await into(playbackPositions).insert(
       playbackRowFromModel(playback),
       mode: InsertMode.insertOrReplace,
     );
   }
 
-  Future<void> updateProgress(PlaybackPosition playback) async {
-    await (update(playbackPositions)
-          ..where((tbl) => tbl.episodeId.equals(playback.episodeId)))
-        .write(
-      PlaybackPositionsCompanion(position: Value(playback.position.inSeconds)),
-    );
-  }
-
-  Stream<PlaybackPosition> watchPlayback(String episodeId) {
+  Stream<PlaybackPosition> watchPlaybackPosition(String episodeId) {
     return (select(playbackPositions)
           ..where((tbl) => tbl.episodeId.equals(episodeId)))
         .watchSingle()
@@ -28,7 +20,11 @@ class PlaybackPositionDao extends DatabaseAccessor<SqlDb>
             row != null ? row.toModel() : PlaybackPosition.empty(episodeId));
   }
 
-  Future<PlaybackPosition> getPlayback(String episodeId) {
-    return watchPlayback(episodeId).first;
+  Future<void> setPosition(PlaybackPosition playback) async {
+    await (update(playbackPositions)
+          ..where((tbl) => tbl.episodeId.equals(playback.episodeId)))
+        .write(
+      PlaybackPositionsCompanion(position: Value(playback.position.inSeconds)),
+    );
   }
 }

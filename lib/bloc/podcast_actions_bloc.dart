@@ -58,7 +58,6 @@ class PodcastActionsBloc {
       podcastUrlParam: podcast.urlParam,
       synced: true,
     ));
-    await store.podcast.saveScreeData(podcast.urlParam);
   }
 
   // Stream of actions

@@ -84,3 +84,14 @@ List<T> listRemoveDuplicates<T>(List<T> list, String Function(T) getId) {
   }
   return res;
 }
+
+List<T> listDifference<T>(List<T> a, List<T> b, String Function(T) getId) {
+  var ids = {for (var t in b) getId(t): true};
+  var res = <T>[];
+  for (var t in a) {
+    if (ids[getId(t)] == null) {
+      res.add(t);
+    }
+  }
+  return res;
+}

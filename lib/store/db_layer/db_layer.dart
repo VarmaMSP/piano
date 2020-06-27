@@ -18,11 +18,11 @@ class DbLayer extends Store {
   TaskStore _taskDb;
 
   DbLayer({this.baseStore, SqlDb sqlDb}) : db = Db(sqlDb: sqlDb) {
-    _podcastDb = PodcastDb(baseStore: baseStore, db: db);
+    _podcastDb = PodcastDb(baseStore: baseStore.podcast, db: db);
     _audioPlayerDb = AudioPlayerDb(baseStore: null, db: db);
-    _playbackPositionDb = PlaybackPositionDb(baseStore: null, sqlDb: sqlDb);
+    _playbackPositionDb = PlaybackPositionDb(baseStore: null, db: db);
     _preferenceDb = PreferenceDb(baseStore: null, sqldb: sqlDb);
-    _taskDb = TaskDb(sqlDb: sqlDb);
+    _taskDb = TaskDb(db: db);
   }
 
   @override

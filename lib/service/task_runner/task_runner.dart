@@ -12,7 +12,7 @@ class TaskRunner {
     /// pipe ready tasks from db to taskSubject
     store.task.watchReady().listen((tasks) async {
       tasks.forEach(_taskSubject.add);
-      await store.task.setProgress(tasks.map((x) => x.id), TaskStatus.enqueued);
+      await store.task.setStatus(tasks.map((x) => x.id), TaskStatus.enqueued);
     });
 
     /// Run new tasks
@@ -20,16 +20,15 @@ class TaskRunner {
   }
 
   Future<void> _runTask(Task task) async {
-    await store.task.setProgress([task.id], TaskStatus.running);
+    await store.task.setStatus([task.id], TaskStatus.running);
     try {
       await task.func.when(
         savePodcastToDb: (data) => savePodcastToDb(store, data.urlParam),
         invalid: (_) => null,
       );
-
       await store.task.delete(task.id);
     } catch (err) {
-      await store.task.setProgress([task.id], TaskStatus.failed);
+      await store.task.setStatus([task.id], TaskStatus.failed);
     }
   }
 }
