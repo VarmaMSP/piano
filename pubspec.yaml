@@ -44,6 +44,7 @@ dependencies:
   share: ^0.6.4+3
   implicitly_animated_reorderable_list: ^0.2.3
   google_fonts: ^1.1.0
+  retry: ^3.0.0+1
 
 dev_dependencies:
   flutter_test:
