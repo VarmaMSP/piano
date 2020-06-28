@@ -65,9 +65,14 @@ class PodcastScreenBloc {
   }
 
   void _loadScreen() {
-    store.podcast.watchScreenData(urlParam).listen((d) {
+    store.podcast.watchScreenData(urlParam).listen((d) async {
       if (!_isDisposed) {
         _screenData.add(d);
+      }
+      if (d.isSubscribed) {
+        await store.taskQueue.push(
+          Task.cachePodcastToDb(urlParam: d.podcast.urlParam),
+        );
       }
     });
   }

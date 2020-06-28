@@ -21,6 +21,7 @@ abstract class PodcastStore {
   Future<void> saveScreenData(PodcastScreenData screenData);
   Stream<PodcastScreenData> watchScreenData(String podcastUrlParam);
   Future<void> deleteScreenData(String podcastId);
+  Future<bool> isCached({String id, String urlParam});
 }
 
 abstract class EpisodeStore {

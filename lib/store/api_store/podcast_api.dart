@@ -36,4 +36,9 @@ class PodcastApi extends PodcastStore {
   Future<void> deleteScreenData(String podcastId) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<bool> isCached({String id, String urlParam}) {
+    throw UnimplementedError();
+  }
 }

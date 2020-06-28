@@ -91,4 +91,15 @@ class PodcastDb extends PodcastStore {
     }
     return updated;
   }
+
+  @override
+  Future<bool> isCached({String id, String urlParam}) async {
+    if (id != null) {
+      return await db.podcastDao.getPodcast(id) != null;
+    }
+    if (urlParam != null) {
+      return await db.podcastDao.getPodcastByUrlParam(urlParam) != null;
+    }
+    return false;
+  }
 }

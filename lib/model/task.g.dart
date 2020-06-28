@@ -9,56 +9,45 @@ part of 'task.dart';
 // **************************************************************************
 
 @immutable
-abstract class TaskFunction extends Equatable {
-  const TaskFunction(this._type);
+abstract class Task extends Equatable {
+  const Task(this._type);
 
-  factory TaskFunction.savePodcastToDb({@required String urlParam}) =
-      SavePodcastToDb;
+  factory Task.cachePodcastToDb({@required String urlParam}) = CachePodcastToDb;
 
-  factory TaskFunction.invalid() = Invalid;
-
-  final _TaskFunction _type;
+  final _Task _type;
 
 //ignore: missing_return
-  R when<R>(
-      {@required R Function(SavePodcastToDb) savePodcastToDb,
-      @required R Function(Invalid) invalid}) {
+  R when<R>({@required R Function(CachePodcastToDb) cachePodcastToDb}) {
     assert(() {
-      if (savePodcastToDb == null || invalid == null) {
+      if (cachePodcastToDb == null) {
         throw 'check for all possible cases';
       }
       return true;
     }());
     switch (this._type) {
-      case _TaskFunction.SavePodcastToDb:
-        return savePodcastToDb(this as SavePodcastToDb);
-      case _TaskFunction.Invalid:
-        return invalid(this as Invalid);
+      case _Task.CachePodcastToDb:
+        return cachePodcastToDb(this as CachePodcastToDb);
     }
   }
 
 //ignore: missing_return
   Future<R> asyncWhen<R>(
-      {@required FutureOr<R> Function(SavePodcastToDb) savePodcastToDb,
-      @required FutureOr<R> Function(Invalid) invalid}) {
+      {@required FutureOr<R> Function(CachePodcastToDb) cachePodcastToDb}) {
     assert(() {
-      if (savePodcastToDb == null || invalid == null) {
+      if (cachePodcastToDb == null) {
         throw 'check for all possible cases';
       }
       return true;
     }());
     switch (this._type) {
-      case _TaskFunction.SavePodcastToDb:
-        return savePodcastToDb(this as SavePodcastToDb);
-      case _TaskFunction.Invalid:
-        return invalid(this as Invalid);
+      case _Task.CachePodcastToDb:
+        return cachePodcastToDb(this as CachePodcastToDb);
     }
   }
 
   R whenOrElse<R>(
-      {R Function(SavePodcastToDb) savePodcastToDb,
-      R Function(Invalid) invalid,
-      @required R Function(TaskFunction) orElse}) {
+      {R Function(CachePodcastToDb) cachePodcastToDb,
+      @required R Function(Task) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -66,20 +55,16 @@ abstract class TaskFunction extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _TaskFunction.SavePodcastToDb:
-        if (savePodcastToDb == null) break;
-        return savePodcastToDb(this as SavePodcastToDb);
-      case _TaskFunction.Invalid:
-        if (invalid == null) break;
-        return invalid(this as Invalid);
+      case _Task.CachePodcastToDb:
+        if (cachePodcastToDb == null) break;
+        return cachePodcastToDb(this as CachePodcastToDb);
     }
     return orElse(this);
   }
 
   Future<R> asyncWhenOrElse<R>(
-      {FutureOr<R> Function(SavePodcastToDb) savePodcastToDb,
-      FutureOr<R> Function(Invalid) invalid,
-      @required FutureOr<R> Function(TaskFunction) orElse}) {
+      {FutureOr<R> Function(CachePodcastToDb) cachePodcastToDb,
+      @required FutureOr<R> Function(Task) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -87,33 +72,26 @@ abstract class TaskFunction extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _TaskFunction.SavePodcastToDb:
-        if (savePodcastToDb == null) break;
-        return savePodcastToDb(this as SavePodcastToDb);
-      case _TaskFunction.Invalid:
-        if (invalid == null) break;
-        return invalid(this as Invalid);
+      case _Task.CachePodcastToDb:
+        if (cachePodcastToDb == null) break;
+        return cachePodcastToDb(this as CachePodcastToDb);
     }
     return orElse(this);
   }
 
 //ignore: missing_return
   Future<void> whenPartial(
-      {FutureOr<void> Function(SavePodcastToDb) savePodcastToDb,
-      FutureOr<void> Function(Invalid) invalid}) {
+      {FutureOr<void> Function(CachePodcastToDb) cachePodcastToDb}) {
     assert(() {
-      if (savePodcastToDb == null && invalid == null) {
+      if (cachePodcastToDb == null) {
         throw 'provide at least one branch';
       }
       return true;
     }());
     switch (this._type) {
-      case _TaskFunction.SavePodcastToDb:
-        if (savePodcastToDb == null) break;
-        return savePodcastToDb(this as SavePodcastToDb);
-      case _TaskFunction.Invalid:
-        if (invalid == null) break;
-        return invalid(this as Invalid);
+      case _Task.CachePodcastToDb:
+        if (cachePodcastToDb == null) break;
+        return cachePodcastToDb(this as CachePodcastToDb);
     }
   }
 
@@ -122,26 +100,14 @@ abstract class TaskFunction extends Equatable {
 }
 
 @immutable
-class SavePodcastToDb extends TaskFunction {
-  const SavePodcastToDb({@required this.urlParam})
-      : super(_TaskFunction.SavePodcastToDb);
+class CachePodcastToDb extends Task {
+  const CachePodcastToDb({@required this.urlParam})
+      : super(_Task.CachePodcastToDb);
 
   final String urlParam;
 
   @override
-  String toString() => 'SavePodcastToDb(urlParam:${this.urlParam})';
+  String toString() => 'CachePodcastToDb(urlParam:${this.urlParam})';
   @override
   List get props => [urlParam];
-}
-
-@immutable
-class Invalid extends TaskFunction {
-  const Invalid._() : super(_TaskFunction.Invalid);
-
-  factory Invalid() {
-    _instance ??= const Invalid._();
-    return _instance;
-  }
-
-  static Invalid _instance;
 }

@@ -2,27 +2,30 @@ import 'package:super_enum/super_enum.dart';
 
 part 'task.g.dart';
 
+/// Every task should be idempotent
 @superEnum
-enum _TaskFunction {
+enum _Task {
   @Data(fields: [DataField<String>('urlParam')])
-  SavePodcastToDb,
-  @object
-  Invalid,
+  CachePodcastToDb,
 }
 
-enum TaskStatus {
-  ready,
-  enqueued,
-  running,
-  failed,
-  invalid,
+extension TaskExtension on Task {
+  Map<String, dynamic> toJson() {
+    return when(
+      cachePodcastToDb: (data) {
+        return {
+          'key': _Task.CachePodcastToDb.index,
+          'url_param': data.urlParam,
+        };
+      },
+    );
+  }
 }
 
-class Task {
-  final int id;
-  final TaskFunction func;
-  final TaskStatus status;
-  final DateTime lastUpdated;
-
-  Task({this.id, this.func, this.status, this.lastUpdated});
+//ignore: missing_return
+Task taskFromJson(Map<String, dynamic> json) {
+  switch (_Task.values[json['key']]) {
+    case _Task.CachePodcastToDb:
+      return Task.cachePodcastToDb(urlParam: json['url_param']);
+  }
 }
