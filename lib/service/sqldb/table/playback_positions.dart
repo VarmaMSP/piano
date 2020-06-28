@@ -8,7 +8,6 @@ class PlaybackPositions extends Table {
       text().customConstraint('REFERENCES episodes(id)')();
   IntColumn get position => integer()();
   IntColumn get duration => integer()();
-  RealColumn get percentage => real()();
 
   @override
   Set<Column> get primaryKey => {episodeId};
@@ -19,7 +18,6 @@ PlaybackPositionRow playbackRowFromModel(PlaybackPosition model) {
     episodeId: model.episodeId,
     position: model.position.inSeconds,
     duration: model.duration.inSeconds,
-    percentage: model.percentage ?? 0.0,
   );
 }
 

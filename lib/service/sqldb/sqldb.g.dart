@@ -1722,19 +1722,16 @@ class PlaybackPositionRow extends DataClass
   final String episodeId;
   final int position;
   final int duration;
-  final double percentage;
   PlaybackPositionRow(
       {@required this.episodeId,
       @required this.position,
-      @required this.duration,
-      @required this.percentage});
+      @required this.duration});
   factory PlaybackPositionRow.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
-    final doubleType = db.typeSystem.forDartType<double>();
     return PlaybackPositionRow(
       episodeId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}episode_id']),
@@ -1742,8 +1739,6 @@ class PlaybackPositionRow extends DataClass
           intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
       duration:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}duration']),
-      percentage: doubleType
-          .mapFromDatabaseResponse(data['${effectivePrefix}percentage']),
     );
   }
   @override
@@ -1757,9 +1752,6 @@ class PlaybackPositionRow extends DataClass
     }
     if (!nullToAbsent || duration != null) {
       map['duration'] = Variable<int>(duration);
-    }
-    if (!nullToAbsent || percentage != null) {
-      map['percentage'] = Variable<double>(percentage);
     }
     return map;
   }
@@ -1775,9 +1767,6 @@ class PlaybackPositionRow extends DataClass
       duration: duration == null && nullToAbsent
           ? const Value.absent()
           : Value(duration),
-      percentage: percentage == null && nullToAbsent
-          ? const Value.absent()
-          : Value(percentage),
     );
   }
 
@@ -1788,7 +1777,6 @@ class PlaybackPositionRow extends DataClass
       episodeId: serializer.fromJson<String>(json['episodeId']),
       position: serializer.fromJson<int>(json['position']),
       duration: serializer.fromJson<int>(json['duration']),
-      percentage: serializer.fromJson<double>(json['percentage']),
     );
   }
   @override
@@ -1798,86 +1786,72 @@ class PlaybackPositionRow extends DataClass
       'episodeId': serializer.toJson<String>(episodeId),
       'position': serializer.toJson<int>(position),
       'duration': serializer.toJson<int>(duration),
-      'percentage': serializer.toJson<double>(percentage),
     };
   }
 
   PlaybackPositionRow copyWith(
-          {String episodeId, int position, int duration, double percentage}) =>
+          {String episodeId, int position, int duration}) =>
       PlaybackPositionRow(
         episodeId: episodeId ?? this.episodeId,
         position: position ?? this.position,
         duration: duration ?? this.duration,
-        percentage: percentage ?? this.percentage,
       );
   @override
   String toString() {
     return (StringBuffer('PlaybackPositionRow(')
           ..write('episodeId: $episodeId, ')
           ..write('position: $position, ')
-          ..write('duration: $duration, ')
-          ..write('percentage: $percentage')
+          ..write('duration: $duration')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(episodeId.hashCode,
-      $mrjc(position.hashCode, $mrjc(duration.hashCode, percentage.hashCode))));
+  int get hashCode => $mrjf(
+      $mrjc(episodeId.hashCode, $mrjc(position.hashCode, duration.hashCode)));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is PlaybackPositionRow &&
           other.episodeId == this.episodeId &&
           other.position == this.position &&
-          other.duration == this.duration &&
-          other.percentage == this.percentage);
+          other.duration == this.duration);
 }
 
 class PlaybackPositionsCompanion extends UpdateCompanion<PlaybackPositionRow> {
   final Value<String> episodeId;
   final Value<int> position;
   final Value<int> duration;
-  final Value<double> percentage;
   const PlaybackPositionsCompanion({
     this.episodeId = const Value.absent(),
     this.position = const Value.absent(),
     this.duration = const Value.absent(),
-    this.percentage = const Value.absent(),
   });
   PlaybackPositionsCompanion.insert({
     @required String episodeId,
     @required int position,
     @required int duration,
-    @required double percentage,
   })  : episodeId = Value(episodeId),
         position = Value(position),
-        duration = Value(duration),
-        percentage = Value(percentage);
+        duration = Value(duration);
   static Insertable<PlaybackPositionRow> custom({
     Expression<String> episodeId,
     Expression<int> position,
     Expression<int> duration,
-    Expression<double> percentage,
   }) {
     return RawValuesInsertable({
       if (episodeId != null) 'episode_id': episodeId,
       if (position != null) 'position': position,
       if (duration != null) 'duration': duration,
-      if (percentage != null) 'percentage': percentage,
     });
   }
 
   PlaybackPositionsCompanion copyWith(
-      {Value<String> episodeId,
-      Value<int> position,
-      Value<int> duration,
-      Value<double> percentage}) {
+      {Value<String> episodeId, Value<int> position, Value<int> duration}) {
     return PlaybackPositionsCompanion(
       episodeId: episodeId ?? this.episodeId,
       position: position ?? this.position,
       duration: duration ?? this.duration,
-      percentage: percentage ?? this.percentage,
     );
   }
 
@@ -1892,9 +1866,6 @@ class PlaybackPositionsCompanion extends UpdateCompanion<PlaybackPositionRow> {
     }
     if (duration.present) {
       map['duration'] = Variable<int>(duration.value);
-    }
-    if (percentage.present) {
-      map['percentage'] = Variable<double>(percentage.value);
     }
     return map;
   }
@@ -1938,21 +1909,8 @@ class $PlaybackPositionsTable extends PlaybackPositions
     );
   }
 
-  final VerificationMeta _percentageMeta = const VerificationMeta('percentage');
-  GeneratedRealColumn _percentage;
   @override
-  GeneratedRealColumn get percentage => _percentage ??= _constructPercentage();
-  GeneratedRealColumn _constructPercentage() {
-    return GeneratedRealColumn(
-      'percentage',
-      $tableName,
-      false,
-    );
-  }
-
-  @override
-  List<GeneratedColumn> get $columns =>
-      [episodeId, position, duration, percentage];
+  List<GeneratedColumn> get $columns => [episodeId, position, duration];
   @override
   $PlaybackPositionsTable get asDslTable => this;
   @override
@@ -1982,14 +1940,6 @@ class $PlaybackPositionsTable extends PlaybackPositions
           duration.isAcceptableOrUnknown(data['duration'], _durationMeta));
     } else if (isInserting) {
       context.missing(_durationMeta);
-    }
-    if (data.containsKey('percentage')) {
-      context.handle(
-          _percentageMeta,
-          percentage.isAcceptableOrUnknown(
-              data['percentage'], _percentageMeta));
-    } else if (isInserting) {
-      context.missing(_percentageMeta);
     }
     return context;
   }
