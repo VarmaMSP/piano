@@ -3,7 +3,7 @@ import 'package:phenopod/store/db_layer/playback_db.dart';
 import 'package:phenopod/store/db_layer/preference_db.dart';
 import 'package:phenopod/store/db_layer/audio_player_db.dart';
 import 'package:phenopod/store/db_layer/podcast_db.dart';
-import 'package:phenopod/store/db_layer/task_db.dart';
+import 'package:phenopod/store/db_layer/task_queue_db.dart';
 import 'package:phenopod/store/store.dart';
 
 import 'db.dart';
@@ -15,14 +15,14 @@ class DbLayer extends Store {
   AudioPlayerStore _audioPlayerDb;
   PlaybackPositionStore _playbackPositionDb;
   PreferenceStore _preferenceDb;
-  TaskStore _taskDb;
+  TaskQueueStore _taskQueueDb;
 
   DbLayer({this.baseStore, SqlDb sqlDb}) : db = Db(sqlDb: sqlDb) {
     _podcastDb = PodcastDb(baseStore: baseStore.podcast, db: db);
     _audioPlayerDb = AudioPlayerDb(baseStore: null, db: db);
     _playbackPositionDb = PlaybackPositionDb(baseStore: null, db: db);
     _preferenceDb = PreferenceDb(baseStore: null, sqldb: sqlDb);
-    _taskDb = TaskDb(db: db);
+    _taskQueueDb = TaskQueueDb(db: db);
   }
 
   @override
@@ -47,5 +47,5 @@ class DbLayer extends Store {
   PreferenceStore get preference => _preferenceDb;
 
   @override
-  TaskStore get task => _taskDb;
+  TaskQueueStore get taskQueue => _taskQueueDb;
 }

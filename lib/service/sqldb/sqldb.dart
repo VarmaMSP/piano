@@ -55,7 +55,7 @@ Future<SqlDb> newSqlDb() async {
     PlaybackPositionDao,
     PreferenceDao,
     SubscriptionDao,
-    TaskDao,
+    TaskDao
   ],
 )
 class SqlDb extends _$SqlDb {

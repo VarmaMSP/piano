@@ -38,8 +38,8 @@ class ApiStore extends Store {
   PreferenceStore get preference => throw UnimplementedError();
 
   @override
-  TaskStore get task => throw UnimplementedError();
+  AudioPlayerStore get audioPlayer => throw UnimplementedError();
 
   @override
-  AudioPlayerStore get audioPlayer => throw UnimplementedError();
+  TaskQueueStore get taskQueue => throw UnimplementedError();
 }

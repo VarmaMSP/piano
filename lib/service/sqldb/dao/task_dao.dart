@@ -4,25 +4,18 @@ part of '../sqldb.dart';
 class TaskDao extends DatabaseAccessor<SqlDb> with _$TaskDaoMixin {
   TaskDao(SqlDb db) : super(db);
 
-  Future<void> saveTask(Task task) async {
-    await into(tasks)
-        .insert(taskRowFromModel(task), mode: InsertMode.insertOrReplace);
+  Future<void> saveTask(Task task) {
+    return into(tasks).insert(taskRowFromModel(task));
   }
 
-  Stream<List<Task>> watchReadyTasks() {
-    final statusStr = taskStatusToString(TaskStatus.ready);
-    return (select(tasks)..where((tbl) => tbl.status.equals(statusStr)))
-        .watch()
-        .map((xs) => xs.map((x) => x.toModel()));
+  Stream<TaskRow> watchOldestTask() {
+    return (select(tasks)
+          ..orderBy([(tbl) => OrderingTerm(expression: tbl.id)])
+          ..limit(1))
+        .watchSingle();
   }
 
-  Future<void> setTaskStatus(List<int> taskIds, TaskStatus status) async {
-    final statusStr = taskStatusToString(status);
-    await (update(tasks)..where((tbl) => tbl.id.isIn(taskIds)))
-        .write(TasksCompanion(status: Value(statusStr)));
-  }
-
-  Future<void> deleteTask(int taskId) async {
-    await (delete(tasks)..where((tbl) => tbl.id.equals(taskId))).go();
+  Future<void> deleteTask(int id) {
+    return (delete(tasks)..where((tbl) => tbl.id.equals(id))).go();
   }
 }

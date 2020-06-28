@@ -8,7 +8,7 @@ abstract class Store {
   AudioPlayerStore get audioPlayer;
   PlaybackPositionStore get playbackPosition;
   PreferenceStore get preference;
-  TaskStore get task;
+  TaskQueueStore get taskQueue;
 }
 
 abstract class UserStore {
@@ -59,9 +59,8 @@ abstract class PreferenceStore {
   Stream<AudioPlayerSetting> watchAudioSetting();
 }
 
-abstract class TaskStore {
-  Future<void> save(Task task);
-  Stream<List<Task>> watchReady();
-  Future<void> setStatus(List<int> taskIds, TaskStatus status);
-  Future<void> delete(int taskId);
+abstract class TaskQueueStore {
+  Future<void> push(Task task);
+  Future<void> pop();
+  Stream<Task> watchFront();
 }
