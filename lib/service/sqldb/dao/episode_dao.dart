@@ -4,14 +4,19 @@ part of '../sqldb.dart';
 class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
   EpisodeDao(SqlDb db) : super(db);
 
-  Future<void> saveEpisodes(List<Episode> episodes_, {bool replace = true}) {
-    return batch(
-      (b) => b.insertAll(
-        episodes,
-        episodes_.map((e) => episodeRowFromModel(e)).toList(),
-        mode: replace ? InsertMode.insertOrReplace : InsertMode.insertOrIgnore,
-      ),
-    );
+  Future<void> saveEpisodes(
+    List<Episode> episodes_, {
+    bool replace = true,
+  }) async {
+    if (episodes_.isNotEmpty) {
+      return batch((b) => b.insertAll(
+            episodes,
+            episodes_.map((e) => episodeRowFromModel(e)).toList(),
+            mode: replace
+                ? InsertMode.insertOrReplace
+                : InsertMode.insertOrIgnore,
+          ));
+    }
   }
 
   Future<List<Episode>> getEpisodesByPodcast(String podcastId) async {

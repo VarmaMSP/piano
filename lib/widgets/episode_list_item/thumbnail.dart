@@ -151,7 +151,7 @@ class Thumbnail extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5.0),
       child: Container(
-        color: const Color.fromRGBO(0, 0, 0, 0.7),
+        color: const Color.fromRGBO(0, 0, 0, 0.55),
         padding: const EdgeInsets.only(left: 4, right: 4, top: 1.9),
         child: Text(
           res ?? '00:00',
@@ -172,22 +172,17 @@ class Thumbnail extends StatelessWidget {
       return Container(height: 0);
     }
 
-    return Container(
-      height: 5,
-      width: thumbnailSize,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
+    return ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(5)),
+      child: Container(
+        height: 5,
+        width: thumbnailSize,
         color: const Color.fromRGBO(255, 255, 255, 0.75),
-      ),
-      alignment: Alignment.centerLeft,
-      child: FractionallySizedBox(
-        heightFactor: 1.0,
-        widthFactor: playback.position.inSeconds / playback.duration.inSeconds,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(4)),
-            color: Colors.red.shade600,
-          ),
+        alignment: Alignment.centerLeft,
+        child: FractionallySizedBox(
+          heightFactor: 1.0,
+          widthFactor: playback.percentage,
+          child: Container(color: Colors.red.shade600),
         ),
       ),
     );

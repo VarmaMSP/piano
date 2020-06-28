@@ -19,7 +19,7 @@ PlaybackPositionRow playbackRowFromModel(PlaybackPosition model) {
     episodeId: model.episodeId,
     position: model.position.inSeconds,
     duration: model.duration.inSeconds,
-    percentage: model.percentage,
+    percentage: model.percentage ?? 0.0,
   );
 }
 
@@ -29,7 +29,7 @@ extension PlaybackPositionRowExtension on PlaybackPositionRow {
       episodeId: episodeId,
       position: Duration(seconds: position),
       duration: Duration(seconds: duration),
-      percentage: percentage,
+      percentage: duration > 0 ? position / duration : 0.0,
     );
   }
 }

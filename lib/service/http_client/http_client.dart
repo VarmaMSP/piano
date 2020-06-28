@@ -16,28 +16,26 @@ Future<HttpClient> newHttpClient({String appDocDirPath}) async {
 class HttpClient {
   final Dio dio;
 
-  HttpClient({this.dio});
+  HttpClient({String appDocDirPath})
+      : dio = Dio(
+          BaseOptions(
+            baseUrl: kReleaseMode
+                ? 'https://phenopod.com/api'
+                : 'https://phenopod.com/api',
+            connectTimeout: 5000,
+            receiveTimeout: 3000,
+            headers: <String, dynamic>{'X-PHENOPOD-CLIENT': 'android'},
+          ),
+        )..interceptors.add(
+            CookieManager(PersistCookieJar(dir: '$appDocDirPath/.cookies/')),
+          );
 
   factory HttpClient.new_(String appDocDirPath) {
-    final baseOptions = BaseOptions(
-      baseUrl: kReleaseMode
-          ? 'https://phenopod.com/api'
-          : 'https://phenopod.com/api',
-      connectTimeout: 5000,
-      receiveTimeout: 3000,
-      headers: <String, dynamic>{'X-PHENOPOD-CLIENT': 'android'},
-    );
-
-    return HttpClient(
-      dio: Dio(baseOptions)
-        ..interceptors.add(
-          CookieManager(PersistCookieJar(dir: '$appDocDirPath/.cookies/')),
-        ),
-    );
+    return HttpClient(appDocDirPath: appDocDirPath);
   }
 
   Future<ApiResponse> makeRequest({
-    String path,
+    @required String path,
     String method,
     Map<String, String> queryParams,
     Map<String, dynamic> body,
@@ -51,7 +49,6 @@ class HttpClient {
         responseType: ResponseType.json,
       ),
     );
-
     return ApiResponse.fromJson(response.data);
   }
 }

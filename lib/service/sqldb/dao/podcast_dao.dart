@@ -15,7 +15,7 @@ class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
     List<Podcast> podcasts_, {
     bool replace = true,
   }) async {
-    if (podcasts_.isEmpty) {
+    if (podcasts_.isNotEmpty) {
       await batch((b) => b.insertAll(
             podcasts,
             podcasts_.map((p) => podcastRowFromModel(p)).toList(),

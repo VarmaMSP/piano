@@ -55,7 +55,7 @@ class BottomAppBarAnimation {
       bottomNavigationBarHeight,
       screenHeight,
       0.0,
-      0.9,
+      1.0,
       bottomAppBarHeight,
     );
 
