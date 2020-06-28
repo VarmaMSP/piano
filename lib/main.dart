@@ -5,6 +5,7 @@ import 'package:phenopod/app/app.dart';
 import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
+import 'package:phenopod/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
@@ -21,6 +22,7 @@ void main() async {
   final sqlDb = await newSqlDb();
   final httpClient = await newHttpClient();
   final audioService = newAudioService();
+  final store = newStore(sqlDb, httpClient);
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -28,6 +30,7 @@ void main() async {
   ]);
 
   runApp(Root(
+    store: store,
     sqlDb: sqlDb,
     httpClient: httpClient,
     audioService: audioService,
@@ -36,11 +39,13 @@ void main() async {
 
 class Root extends StatefulWidget {
   Root({
+    @required this.store,
     @required this.sqlDb,
     @required this.httpClient,
     @required this.audioService,
   });
 
+  final Store store;
   final SqlDb sqlDb;
   final HttpClient httpClient;
   final AudioService audioService;
@@ -50,14 +55,11 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> with WidgetsBindingObserver {
-  Store _store;
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     widget.audioService.connect();
-    _store = newStore(widget.sqlDb, widget.httpClient);
   }
 
   @override
@@ -96,22 +98,22 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
           create: (_) => widget.sqlDb,
         ),
         Provider<Store>(
-          create: (_) => _store,
+          create: (_) => widget.store,
         ),
         Provider<AppNavigationBloc>(
           create: (_) => AppNavigationBloc(),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<AudioPlayerBloc>(
-          create: (_) => AudioPlayerBloc(_store, widget.audioService),
+          create: (_) => AudioPlayerBloc(widget.store, widget.audioService),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<UserBloc>(
-          create: (_) => UserBloc(_store),
+          create: (_) => UserBloc(widget.store),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<PodcastActionsBloc>(
-          create: (_) => PodcastActionsBloc(_store),
+          create: (_) => PodcastActionsBloc(widget.store),
           dispose: (_, value) => value.dispose(),
         ),
       ],
@@ -125,6 +127,7 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
               child: child,
             );
           },
+          theme: appTheme,
           initialRoute: '/app',
           onGenerateRoute: (settings) {
             switch (settings.name) {

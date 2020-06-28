@@ -16,7 +16,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.tabController,
   });
 
-  static const double appBarHeight = 55;
+  static const double appBarHeight = 50;
   static const double tabBarHeight = 36;
   static const double flexibleAreaHeight = 142;
 
@@ -87,7 +87,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               child: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  size: 24,
+                  size: 22,
                   color: TWColors.gray.shade700,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -95,18 +95,18 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             ),
           ),
           Transform.translate(
-            offset: const Offset(16, 0),
+            offset: const Offset(20, 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Material(
                   color: Colors.white,
                   child: SizedBox(
-                    width: 40,
+                    width: 42,
                     child: IconButton(
                       icon: Icon(
                         Icons.search,
-                        size: 24,
+                        size: 20,
                         color: TWColors.gray.shade700,
                       ),
                       onPressed: () =>
@@ -116,12 +116,12 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                   ),
                 ),
                 SizedBox(
-                  width: 40,
+                  width: 42,
                   child: PopupMenuButton<String>(
                     icon: Icon(
                       Icons.more_vert,
                       color: TWColors.gray.shade700,
-                      size: 24,
+                      size: 22,
                     ),
                     padding: const EdgeInsets.all(0),
                     elevation: 3,
@@ -218,27 +218,19 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       children: <Widget>[
         Text(
           podcast.title,
-          maxLines: 2,
+          style: Theme.of(context).textTheme.headline5,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            height: 1.4,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: TWColors.gray.shade800,
-            letterSpacing: 0.2,
-          ),
+          maxLines: 2,
         ),
-        Container(height: 6),
+        Container(height: 8),
         Text(
           podcast.author,
-          maxLines: 1,
+          style: Theme.of(context)
+              .textTheme
+              .headline6
+              .copyWith(fontWeight: FontWeight.w400),
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            height: 1.35,
-            fontSize: 14,
-            color: TWColors.gray.shade900,
-            letterSpacing: 0.25,
-          ),
+          maxLines: 1,
         ),
       ],
     );
@@ -246,14 +238,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     final podcastActionsBloc = Provider.of<PodcastActionsBloc>(context);
 
     final Widget actions = Container(
-      height: 24,
+      height: 22,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Flexible(
             child: FractionallySizedBox(
               heightFactor: 1.0,
-              widthFactor: 0.65,
+              widthFactor: 0.57,
               child: FlatButton(
                 onPressed: () => isSubscribed
                     ? podcastActionsBloc.unsubscribe(podcast)
@@ -268,12 +260,12 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                   isSubscribed ? 'SUBSCRIBED' : 'SUBSCRIBE',
                   style: TextStyle(
                     letterSpacing: 0.65,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
+                  borderRadius: BorderRadius.circular(3.0),
                 ),
               ),
             ),

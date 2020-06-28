@@ -25,7 +25,7 @@ class Menu extends StatelessWidget {
         icon: Icon(
           Icons.more_vert,
           color: TWColors.gray.shade700,
-          size: 22,
+          size: 20,
         ),
         padding: const EdgeInsets.all(0),
         elevation: 3,
