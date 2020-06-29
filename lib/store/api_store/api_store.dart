@@ -1,4 +1,4 @@
-import 'package:phenopod/service/http_client/http_client.dart';
+import 'package:phenopod/service/http_client.dart';
 import 'package:phenopod/store/store.dart';
 
 import 'podcast_api.dart';

@@ -51,4 +51,24 @@ class HttpClient {
     );
     return ApiResponse.fromJson(response.data);
   }
+
+  Future<Map<String, dynamic>> makeRequestGeneric({
+    @required String path,
+    String method,
+    Map<String, String> queryParams,
+    Map<String, String> headers,
+    Map<String, dynamic> body,
+  }) async {
+    final response = await Dio().request(
+      path,
+      data: body,
+      queryParameters: queryParams,
+      options: Options(
+        method: method,
+        headers: headers,
+        responseType: ResponseType.json,
+      ),
+    );
+    return response.data as Map<String, dynamic>;
+  }
 }

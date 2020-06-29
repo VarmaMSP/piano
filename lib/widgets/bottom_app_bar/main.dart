@@ -67,7 +67,7 @@ class BottomAppBar extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: <BoxShadow>[
-                    BoxShadow(color: Colors.grey.shade800, blurRadius: 1.0),
+                    BoxShadow(color: Colors.grey.shade700, blurRadius: 1.0),
                   ],
                 ),
                 child: child,

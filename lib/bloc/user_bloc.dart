@@ -1,4 +1,7 @@
+import 'package:device_info/device_info.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/keychain.dart';
+import 'package:phenopod/service/social_sign_in.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -35,10 +38,48 @@ class UserBloc {
     _user.add(await store.user.getSignedInUser());
   }
 
-  // Sign in user with guest account
   Future<void> signInWithGuest() async {
     _userSigningIn.add(true);
-    await store.user.signInWithGuest();
+    // Create credentials
+    final keychain = Keychain();
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    final guestCredentials = await keychain.getGuestCredentials() ??
+        GuestCredentials.fromAndroidDeviceInfo(androidInfo);
+    // Sign in and load user
+    await store.user.signInWithGuest(guestCredentials);
+    await keychain.saveGuestCredentials(guestCredentials);
+    await _loadUser();
+  }
+
+  Future<void> signInWithGoogle() async {
+    _userSigningIn.add(true);
+
+    final keychain = Keychain();
+    final guestCredentials = await keychain.getGuestCredentials();
+    final socialSignIn = SocialSignIn();
+    final googleIdToken = await socialSignIn.getGoogleIdToken();
+    // Sign in with facebook and delete guest credentials
+    await store.user.signInWithGoogle(
+      idToken: googleIdToken,
+      guestId: guestCredentials?.id,
+    );
+    await keychain.deleteGuestCredentials();
+    await _loadUser();
+  }
+
+  Future<void> signInWithFacebook() async {
+    _userSigningIn.add(true);
+
+    final keychain = Keychain();
+    final guestCredentials = await keychain.getGuestCredentials();
+    final socialSignIn = SocialSignIn();
+    final facebookAccessToken = await socialSignIn.getFacebookAccessToken();
+    // Sign in with facebook and delete guest credentials
+    await store.user.signInWithFacebook(
+      accessToken: facebookAccessToken,
+      guestId: guestCredentials?.id,
+    );
+    await keychain.deleteGuestCredentials();
     await _loadUser();
   }
 

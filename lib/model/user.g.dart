@@ -15,3 +15,20 @@ User _$UserFromJson(Map<String, dynamic> json) {
     email: json['email'] as String ?? '',
   );
 }
+
+GuestCredentials _$GuestCredentialsFromJson(Map<String, dynamic> json) {
+  return GuestCredentials(
+    id: json['id'] as String,
+    deviceUuid: json['device_uuid'] as String,
+    deviceOs: json['device_os'] as String,
+    deviceModel: json['device_model'] as String,
+  );
+}
+
+Map<String, dynamic> _$GuestCredentialsToJson(GuestCredentials instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'device_uuid': instance.deviceUuid,
+      'device_os': instance.deviceOs,
+      'device_model': instance.deviceModel,
+    };

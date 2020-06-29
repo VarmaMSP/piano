@@ -56,7 +56,15 @@ class AppNavigationBloc {
   /// Switch tab
   void switchTab(Tab tab) async {
     final prev = await _tabHistorySubject.first;
-    _tabHistorySubject.add(prev.push(tab));
+    if (prev.currentTab == tab) {
+      _tabNavigatorKeys[tab].currentState.popUntil(
+            (route) =>
+                ModalRoute.withName('/home')(route) ||
+                ModalRoute.withName('/subscriptions')(route),
+          );
+    } else {
+      _tabHistorySubject.add(prev.push(tab));
+    }
   }
 
   /// Switched to previous tab if one exists

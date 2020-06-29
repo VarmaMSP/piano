@@ -1,6 +1,6 @@
 import 'package:audio_service/audio_service.dart' as audioservice;
 import 'package:phenopod/background/audio_player/audio_player_controller.dart';
-import 'package:phenopod/service/http_client/http_client.dart';
+import 'package:phenopod/service/http_client.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 
 class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
