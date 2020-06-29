@@ -1,17 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BottomAppBar;
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart' as n;
+import 'package:phenopod/app/app_screen_content.dart';
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
-import 'package:phenopod/widgets/bottom_app_bar/main.dart' as appbar;
 import 'package:provider/provider.dart';
-
-import 'app_router.dart';
+import 'package:phenopod/widgets/bottom_app_bar/main.dart';
 
 class AppScreen extends StatefulWidget {
   const AppScreen({
@@ -29,7 +26,6 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   TabController _audioPlayerTabController;
   AnimationController _bottomAppBarController;
   BottomAppBarAnimation _bottomAppBarAnimation;
-  StreamSubscription<dynamic> _notificationSubscription;
 
   @override
   void initState() {
@@ -53,14 +49,13 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   void dispose() {
     _bottomAppBarController.dispose();
     _audioPlayerTabController.dispose();
-    _notificationSubscription?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
-    final appNavigationBloc = Provider.of<n.AppNavigationBloc>(context);
+    final appNavigationBloc = Provider.of<AppNavigationBloc>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -70,83 +65,83 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
         child: Container(),
       ),
       floatingActionButton: _buildFloatingActionBar(context),
-      body: StreamBuilder<AudioTrack>(
-        stream: audioPlayerBloc.nowPlaying,
+      body: StreamBuilder<TabHistory>(
+        initialData: TabHistory.init(),
+        stream: appNavigationBloc.tabHistory,
         builder: (context, snapshot) {
-          final padding = !snapshot.hasData ? 56.0 : 102.0;
+          final tabHistory = snapshot.data;
+          final tabNavigatorKeys = appNavigationBloc.tabNavigatorKeys;
 
-          return StreamBuilder<n.TabHistory>(
-            initialData: n.TabHistory.init(),
-            stream: appNavigationBloc.tabHistory,
-            builder: (context, snapshot) {
-              final tabHistory = snapshot.data;
-              final tabNavigatorKeys = appNavigationBloc.tabNavigatorKeys;
-
-              return WillPopScope(
-                onWillPop: () async {
-                  // Close audio player if open
-                  if (_bottomAppBarAnimation.controller.value == 1.0) {
-                    _bottomAppBarAnimation.collapseBottomAppBar();
-                    return false;
-                  }
-                  // Pop route if possible
-                  final isFirstRoute =
-                      !await tabNavigatorKeys[tabHistory.currentTab]
-                          .currentState
-                          .maybePop();
-                  print(isFirstRoute);
-                  // Show previous tab if you cannot pop route from current tab
-                  if (isFirstRoute && tabHistory.previousTab != null) {
-                    appNavigationBloc.popTab();
-                    return false;
-                  }
-                  // default to os
-                  return isFirstRoute;
-                },
-                child: SafeArea(
+          return WillPopScope(
+            onWillPop: () async {
+              // Close audio player if open
+              if (_bottomAppBarAnimation.controller.value == 1.0) {
+                _bottomAppBarAnimation.collapseBottomAppBar();
+                return false;
+              }
+              // Pop route if possible
+              final isFirstRoute =
+                  !await tabNavigatorKeys[tabHistory.currentTab]
+                      .currentState
+                      .maybePop();
+              // Show previous tab if you cannot pop route from current tab
+              if (isFirstRoute && tabHistory.previousTab != null) {
+                appNavigationBloc.popTab();
+                return false;
+              }
+              // default to os
+              return isFirstRoute;
+            },
+            child: StreamBuilder<AudioTrack>(
+              stream: audioPlayerBloc.nowPlaying,
+              builder: (context, snapshot) {
+                return SafeArea(
                   child: Stack(
                     children: <Widget>[
                       Positioned(
                         top: 0,
                         left: 0,
                         right: 0,
-                        bottom: padding,
-                        child: Stack(
-                          children: <Widget>[
-                            _buildTab(
-                              audioPlayerBloc: audioPlayerBloc,
-                              key: tabNavigatorKeys[n.Tab.home],
-                              initialRoute: '/home',
-                              padding: padding,
-                              offstage: snapshot.data.currentTab != n.Tab.home,
-                            ),
-                            _buildTab(
-                              audioPlayerBloc: audioPlayerBloc,
-                              key: tabNavigatorKeys[n.Tab.subscriptions],
-                              initialRoute: '/subscriptions',
-                              padding: padding,
-                              offstage: snapshot.data.currentTab !=
-                                  n.Tab.subscriptions,
-                            ),
-                          ],
-                        ),
+                        bottom: !snapshot.hasData ? 56.0 : 102.0,
+                        child: _buildContentPage(context),
                       ),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        child: appbar.BottomAppBar(
-                          currentTab: snapshot.data.currentTab,
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: BottomAppBar(
+                          currentTab: tabHistory.currentTab,
                           animations: _bottomAppBarAnimation,
                           audioPlayerTabController: _audioPlayerTabController,
                         ),
                       ),
                     ],
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
         },
       ),
+    );
+  }
+
+  Widget _buildContentPage(BuildContext context) {
+    return Navigator(
+      initialRoute: '/main',
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/main':
+            return MaterialPageRoute(
+              builder: (_) => AppScreenContent(
+                audioPlayerTabController: _audioPlayerTabController,
+                bottomAppBarAnimation: _bottomAppBarAnimation,
+              ),
+            );
+          default:
+            return null;
+        }
+      },
     );
   }
 
@@ -164,31 +159,4 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
           )
         : null;
   }
-
-  Widget _buildTab({
-    AudioPlayerBloc audioPlayerBloc,
-    GlobalKey<NavigatorState> key,
-    String initialRoute,
-    double padding,
-    bool offstage,
-  }) {
-    return Offstage(
-      offstage: offstage,
-      child: Container(
-        color: Colors.white,
-        child: Navigator(
-          key: key,
-          initialRoute: initialRoute,
-          onGenerateRoute: makeGenerateRoute(),
-        ),
-      ),
-    );
-  }
 }
-
-// class CustomPage extends Page {
-//   @override
-//   Route createRoute(BuildContext context) {
-//     return MaterialPageRoute(builder: (BuildContext context) {});
-//   }
-// }

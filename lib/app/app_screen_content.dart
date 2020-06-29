@@ -7,11 +7,11 @@ import 'package:provider/provider.dart';
 
 import 'app_router.dart';
 
-class AppScreenMainView extends StatelessWidget {
+class AppScreenContent extends StatelessWidget {
   final TabController audioPlayerTabController;
   final BottomAppBarAnimation bottomAppBarAnimation;
 
-  const AppScreenMainView({
+  const AppScreenContent({
     Key key,
     this.audioPlayerTabController,
     this.bottomAppBarAnimation,
