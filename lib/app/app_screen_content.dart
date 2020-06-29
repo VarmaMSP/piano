@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Tab;
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart' as n;
-import 'package:phenopod/widgets/show_snack_bar/show_snack_bar.dart';
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
+import 'package:phenopod/hook/use_snack_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'app_router.dart';
 
-class AppScreenContent extends StatelessWidget {
+class AppScreenContent extends HookWidget {
   final TabController audioPlayerTabController;
   final BottomAppBarAnimation bottomAppBarAnimation;
 
@@ -19,10 +20,12 @@ class AppScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appNavigationBloc = Provider.of<n.AppNavigationBloc>(context);
+    useSnackBar();
 
-    return StreamBuilder<n.TabHistory>(
-      initialData: n.TabHistory.init(),
+    final appNavigationBloc = Provider.of<AppNavigationBloc>(context);
+
+    return StreamBuilder<TabHistory>(
+      initialData: TabHistory.init(),
       stream: appNavigationBloc.tabHistory,
       builder: (context, snapshot) {
         final tabNavigatorKeys = appNavigationBloc.tabNavigatorKeys;
@@ -31,16 +34,15 @@ class AppScreenContent extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               _buildTab(
-                key: tabNavigatorKeys[n.Tab.home],
+                key: tabNavigatorKeys[Tab.home],
                 initialRoute: '/home',
-                offstage: snapshot.data.currentTab != n.Tab.home,
+                offstage: snapshot.data.currentTab != Tab.home,
               ),
               _buildTab(
-                key: tabNavigatorKeys[n.Tab.subscriptions],
+                key: tabNavigatorKeys[Tab.subscriptions],
                 initialRoute: '/subscriptions',
-                offstage: snapshot.data.currentTab != n.Tab.subscriptions,
+                offstage: snapshot.data.currentTab != Tab.subscriptions,
               ),
-              ShowSnackBar(),
             ],
           ),
         );
