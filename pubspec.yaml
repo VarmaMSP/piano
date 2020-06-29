@@ -23,6 +23,7 @@ dependencies:
   flutter_html: ^1.0.0
   flutter_hooks: ^0.10.0
   flutter_secure_storage: ^3.3.3
+  flutter_signin_button: ^1.0.0
   google_fonts: ^1.1.0
   implicitly_animated_reorderable_list: ^0.2.3
   intl: ^0.16.1
