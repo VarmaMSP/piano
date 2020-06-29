@@ -25,6 +25,7 @@ dependencies:
   flutter_secure_storage: ^3.3.3
   flutter_signin_button: ^1.0.0
   google_fonts: ^1.1.0
+  google_sign_in: ^4.5.1
   implicitly_animated_reorderable_list: ^0.2.3
   intl: ^0.16.1
   json_annotation: ^3.0.1
