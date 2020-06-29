@@ -97,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SliverToBoxAdapter(
                 child: Categories(categories: snapshot.data.item2),
               ),
+            // SliverToBoxAdapter(child: AppSnackBar()),
           ],
         );
       },

@@ -84,6 +84,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
               ),
             if (snapshot.hasData)
               SliverImplicitlyAnimatedList<Tuple2<Episode, Podcast>>(
+                spawnIsolate: true,
                 items: [
                   for (var e in snapshot.data.episodes)
                     Tuple2(e, snapshot.data.podcastById[e.podcastId])
@@ -101,6 +102,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                   );
                 },
               ),
+            // SliverToBoxAdapter(child: AppSnackBar()),
           ],
         );
       },

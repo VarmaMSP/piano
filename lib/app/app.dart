@@ -5,7 +5,7 @@ import 'package:phenopod/screen/splash_screen.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:provider/provider.dart';
 
-import 'app_screen.dart';
+import 'app_screen_alt.dart';
 
 class App extends StatelessWidget {
   const App({Key key}) : super(key: key);
