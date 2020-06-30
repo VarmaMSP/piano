@@ -43,12 +43,12 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.phenopod.phenopod"
         minSdkVersion 18
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -64,11 +64,15 @@ android {
         debug {
             signingConfig signingConfigs.debug
             resValue 'string', 'default_web_client_id', '844087729764-4kof4gr262r2u0lhtb5d2a3viqr1p08a.apps.googleusercontent.com'
+            resValue 'string', 'facebook_app_id', '1461695093970060'
+            resValue 'string', 'fb_login_protocol_scheme', 'fb1461695093970060'
         }
 
         release {
             signingConfig signingConfigs.debug
             resValue 'string', 'default_web_client_id', '844087729764-jr100s9uie0ugipab10jr0uik16f88o6.apps.googleusercontent.com'
+            resValue 'string', 'facebook_app_id', '526472207897979'
+            resValue 'string', 'fb_login_protocol_scheme', 'fb526472207897979'
             shrinkResources false
         }
     }
@@ -80,4 +84,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.multidex:multidex:2.0.1'
 }
