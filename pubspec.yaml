@@ -20,6 +20,7 @@ dependencies:
   dio_cookie_manager: ^1.0.0
   equatable: ^1.1.1
   flushbar: ^1.10.4
+  flutter_facebook_login: ^3.0.0
   flutter_html: ^1.0.0
   flutter_hooks: ^0.10.0
   flutter_secure_storage: ^3.3.3
