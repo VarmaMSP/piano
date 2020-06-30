@@ -35,7 +35,7 @@ class SignInScreen extends StatelessWidget {
                   SignInButton(
                     Buttons.Facebook,
                     text: 'Sign in with Facebook',
-                    onPressed: () {},
+                    onPressed: userBloc.signInWithFacebook,
                   ),
                   Container(height: 15),
                   Text('or'),
