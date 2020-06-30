@@ -13,10 +13,16 @@ generate-debug-key:
 	$(JAVA_BINARY)/keytool -genkey -v -keystore $(KEY_OUTPUT_DIRECTORY)/$(DEBUG_KEY_NAME) -keyalg RSA -keysize 2048 -validity 10000 -alias $(DEBUG_KEY_ALIAS)
 
 get-debug-key-fingerprint:
-	$(JAVA_BINARY)/keytool -keystore $(KEY_OUTPUT_DIRECTORY)/$(DEBUG_KEY_NAME)  -list -v
+	$(JAVA_BINARY)/keytool -keystore $(KEY_OUTPUT_DIRECTORY)/$(DEBUG_KEY_NAME) -list -v
+
+get-debug-key-hash:
+	$(JAVA_BINARY)/keytool -exportcert -alias $(DEBUG_KEY_ALIAS) -keystore $(KEY_OUTPUT_DIRECTORY)/$(DEBUG_KEY_NAME) | openssl sha1 -binary | openssl base64
 
 generate-release-key:
-	$(JAVA_BINARY)/keytool -genkey -v -keystore $(KEY_OUTPUT_DIRECTORY)/$(RELEASE_KEY_NAME) -keyalg RSA -keysize 2048 -validity 10000 -alias $(DEBUG_KEY_ALIAS)
+	$(JAVA_BINARY)/keytool -genkey -v -keystore $(KEY_OUTPUT_DIRECTORY)/$(RELEASE_KEY_NAME) -keyalg RSA -keysize 2048 -validity 10000 -alias $(RELEASE_KEY_ALIAS)
 
 get-release-key-fingerprint:
 	$(JAVA_BINARY)/keytool -keystore $(KEY_OUTPUT_DIRECTORY)/$(RELEASE_KEY_NAME)  -list -v
+
+get-release-key-hash:
+	$(JAVA_BINARY)/keytool -exportcert -alias $(RELEASE_KEY_ALIAS) -keystore $(KEY_OUTPUT_DIRECTORY)/$(RELEASE_KEY_NAME) | openssl sha1 -binary | openssl base64
