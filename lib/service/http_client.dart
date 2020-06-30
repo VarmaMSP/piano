@@ -21,7 +21,7 @@ class HttpClient {
           BaseOptions(
             baseUrl: kReleaseMode
                 ? 'https://phenopod.com/api'
-                : 'https://phenopod.com/api',
+                : 'http://192.168.1.27:8080/api',
             connectTimeout: 5000,
             receiveTimeout: 3000,
             headers: <String, dynamic>{'X-PHENOPOD-CLIENT': 'android'},
@@ -50,25 +50,5 @@ class HttpClient {
       ),
     );
     return ApiResponse.fromJson(response.data);
-  }
-
-  Future<Map<String, dynamic>> makeRequestGeneric({
-    @required String path,
-    String method,
-    Map<String, String> queryParams,
-    Map<String, String> headers,
-    Map<String, dynamic> body,
-  }) async {
-    final response = await Dio().request(
-      path,
-      data: body,
-      queryParameters: queryParams,
-      options: Options(
-        method: method,
-        headers: headers,
-        responseType: ResponseType.json,
-      ),
-    );
-    return response.data as Map<String, dynamic>;
   }
 }

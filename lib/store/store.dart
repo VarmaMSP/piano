@@ -14,8 +14,10 @@ abstract class Store {
 abstract class UserStore {
   Future<User> getSignedInUser();
   Future<void> signInWithGuest(GuestCredentials credentials);
-  Future<void> signInWithGoogle({String idToken, String guestId});
-  Future<void> signInWithFacebook({String accessToken, String guestId});
+  Future<void> signInWithGoogle(
+      {String idToken, GuestCredentials guestCredentials});
+  Future<void> signInWithFacebook(
+      {String accessToken, GuestCredentials guestCredentials});
 }
 
 abstract class PodcastStore {

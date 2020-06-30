@@ -6,11 +6,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:phenopod/model/api_response.dart';
 
 const String baseUrl =
-    kReleaseMode ? 'https://phenopod.com/api' : 'https://phenopod.com/api';
+    kReleaseMode ? 'https://phenopod.com/api' : 'http://192.168.1.27:8080/api';
 
 const String thumbnailUrl = kReleaseMode
     ? 'https://cdn.phenopod.com/thumbnails'
-    : 'https://cdn.phenopod.com/thumbnails';
+    : 'http://192.168.1.27:8080/thumbnails';
 
 final Future<Dio> dioF = () async {
   final baseOptions = BaseOptions(

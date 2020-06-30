@@ -40,12 +40,12 @@ class UserBloc {
 
   Future<void> signInWithGuest() async {
     _userSigningIn.add(true);
-    // Create credentials
+
     final keychain = Keychain();
     final androidInfo = await DeviceInfoPlugin().androidInfo;
     final guestCredentials = await keychain.getGuestCredentials() ??
         GuestCredentials.fromAndroidDeviceInfo(androidInfo);
-    // Sign in and load user
+
     await store.user.signInWithGuest(guestCredentials);
     await keychain.saveGuestCredentials(guestCredentials);
     await _loadUser();
@@ -55,13 +55,13 @@ class UserBloc {
     _userSigningIn.add(true);
 
     final keychain = Keychain();
-    final guestCredentials = await keychain.getGuestCredentials();
     final socialSignIn = SocialSignIn();
+    final guestCredentials = await keychain.getGuestCredentials();
     final googleIdToken = await socialSignIn.getGoogleIdToken();
-    // Sign in with facebook and delete guest credentials
+
     await store.user.signInWithGoogle(
       idToken: googleIdToken,
-      guestId: guestCredentials?.id,
+      guestCredentials: guestCredentials,
     );
     await keychain.deleteGuestCredentials();
     await _loadUser();
@@ -71,13 +71,13 @@ class UserBloc {
     _userSigningIn.add(true);
 
     final keychain = Keychain();
-    final guestCredentials = await keychain.getGuestCredentials();
     final socialSignIn = SocialSignIn();
+    final guestCredentials = await keychain.getGuestCredentials();
     final facebookAccessToken = await socialSignIn.getFacebookAccessToken();
-    // Sign in with facebook and delete guest credentials
+
     await store.user.signInWithFacebook(
       accessToken: facebookAccessToken,
-      guestId: guestCredentials?.id,
+      guestCredentials: guestCredentials,
     );
     await keychain.deleteGuestCredentials();
     await _loadUser();
