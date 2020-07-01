@@ -8,22 +8,22 @@ class SubscriptionApi extends SubscriptionStore {
   SubscriptionApi(this.httpClient);
 
   @override
-  Future<void> subscribe(String podcastId) async {
+  Future<void> subscribe(Podcast podcast) async {
     await httpClient.makeRequest(
       method: 'POST',
       path: '/ajax/service',
       queryParams: {'endpoint': 'subscribe_podcast'},
-      body: <String, dynamic>{'podcast_id': podcastId},
+      body: <String, dynamic>{'podcast_id': podcast.id},
     );
   }
 
   @override
-  Future<void> unsubscribe(String podcastId) async {
+  Future<void> unsubscribe(Podcast podcast) async {
     await httpClient.makeRequest(
       method: 'POST',
       path: '/ajax/service',
       queryParams: {'endpoint': 'unsubscribe_podcast'},
-      body: <String, dynamic>{'podcast_id': podcastId},
+      body: <String, dynamic>{'podcast_id': podcast.id},
     );
   }
 

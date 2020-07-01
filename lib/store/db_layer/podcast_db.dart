@@ -1,105 +1,108 @@
+import 'dart:async';
+
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
-import 'package:phenopod/utils/utils.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'db.dart';
 
 class PodcastDb extends PodcastStore {
   final Db db;
   final PodcastStore baseStore;
+  final EpisodeStore episodeBaseStore;
 
-  PodcastDb({this.baseStore, this.db});
-
-  @override
-  Future<void> save(Podcast podcast) {
-    return db.podcastDao.savePodcast(podcast);
-  }
+  PodcastDb({this.baseStore, this.episodeBaseStore, this.db});
 
   @override
-  Future<void> saveScreenData(PodcastScreenData screenData) {
-    return db.transaction(() async {
-      await db.podcastDao.savePodcast(screenData.podcast);
-      await db.episodeDao.saveEpisodes(screenData.episodes);
-      await db.subscriptionDao.subscribePodcast(screenData.podcast.id);
-    });
+  Future<Podcast> get_(String podcastUrlParam) {
+    return baseStore.get_(podcastUrlParam);
   }
 
+  // ignore: todo
+  // TODO: sync subscribe and unsubscribe events from different clients
   @override
-  Stream<PodcastScreenData> watchScreenData(String podcastUrlParam) async* {
-    var screenDataDb = await _getScreenData(podcastUrlParam);
-    if (screenDataDb != null) {
-      yield screenDataDb;
-    }
+  Stream<Podcast> watch(String podcastUrlParam) async* {
+    if (await isCached(urlParam: podcastUrlParam)) {
+      // ignore: unawaited_futures
+      baseStore.get_(podcastUrlParam).then((podcast) async {
+        await db.transaction(() async {
+          await db.podcastDao.savePodcast(podcast);
+          await db.episodeDao.saveEpisodes(podcast.episodes);
+        });
+        if (podcast.isSubscribed) {
+          await db.taskDao.saveTask(
+            Task.cachePodcast(urlParam: podcast.urlParam),
+          );
+        }
+      });
 
-    /// Yield screendata from api if podcast is not cached
-    var screenDataApi = await baseStore.watchScreenData(podcastUrlParam).first;
-    if (screenDataDb == null) {
-      yield screenDataApi;
-      return;
+      yield* _watchCache(urlParam: podcastUrlParam);
+    } else {
+      final podcast = await baseStore.get_(podcastUrlParam);
+      yield podcast;
     }
-
-    /// Yield screenData after persisting any updates
-    if (await _updateScreenData(screenDataDb, screenDataApi)) {
-      yield (await _getScreenData(podcastUrlParam));
-    }
-  }
-
-  @override
-  Future<void> deleteScreenData(String podcastId) {
-    return db.transaction(() async {
-      await db.subscriptionDao.unsubscribePodcast(podcastId);
-      await db.episodeDao.deleteEpisodesByPodcast(podcastId);
-      await db.podcastDao.deletePodcast(podcastId);
-    });
-  }
-
-  Future<PodcastScreenData> _getScreenData(String podcastUrlParam) async {
-    final podcast = await db.podcastDao.getPodcastByUrlParam(podcastUrlParam);
-    return podcast != null
-        ? PodcastScreenData(
-            podcast: podcast,
-            episodes: await db.episodeDao.getEpisodesByPodcast(podcast.id),
-            isSubscribed: await db.subscriptionDao.isSubscribed(podcast.id),
-            receivedAllEpisodes: true,
-          )
-        : null;
-  }
-
-  /// Returns true if any updates are made
-  Future<bool> _updateScreenData(
-    PodcastScreenData oldData,
-    PodcastScreenData newData,
-  ) async {
-    var updated = false;
-    var newEpisodes = listDifference(
-      newData.episodes,
-      oldData.episodes,
-      (e) => e.id,
-    );
-    if (newEpisodes.isNotEmpty) {
-      updated = true;
-      await db.episodeDao.saveEpisodes(newEpisodes);
-    }
-    if (newData.podcast != oldData.podcast) {
-      updated = true;
-      await db.podcastDao.savePodcast(newData.podcast);
-    }
-    if (newData.podcast.isSubscribed != oldData.podcast.isSubscribed) {
-      newData.podcast.isSubscribed
-          ? await db.subscriptionDao.subscribePodcast(newData.podcast.id)
-          : await db.subscriptionDao.unsubscribePodcast(newData.podcast.id);
-    }
-    return updated;
   }
 
   @override
   Future<bool> isCached({String id, String urlParam}) async {
-    if (id != null) {
-      return await db.podcastDao.getPodcast(id) != null;
+    assert((id != null) != (urlParam != null));
+    final podcast = await db.podcastDao.getPodcast(id: id, urlParam: urlParam);
+    return podcast != null && podcast.isCached;
+  }
+
+  @override
+  Future<void> cache(String urlParam) async {
+    final podcast = await baseStore.get_(urlParam);
+    final episodes = podcast.episodes;
+    while (!podcast.moreEpisodes) {
+      final moreEpisodes = await episodeBaseStore.getByPodcastPaginated(
+        podcast.id,
+        episodes.length,
+        75,
+      );
+      episodes.addAll(moreEpisodes);
+      if (moreEpisodes.length < 75) {
+        break;
+      }
     }
-    if (urlParam != null) {
-      return await db.podcastDao.getPodcastByUrlParam(urlParam) != null;
+
+    await db.transaction(() async {
+      await db.podcastDao.savePodcast(podcast.copyWith(
+        isCached: true,
+        cachedAt: DateTime.now(),
+        moreEpisodes: false,
+      ));
+      await db.episodeDao.saveEpisodes(episodes);
+    });
+  }
+
+  @override
+  Future<void> deleteCache({String id, String urlParam}) async {
+    assert((id != null) != (urlParam != null));
+    final podcast = await db.podcastDao.getPodcast(id: id, urlParam: urlParam);
+
+    if (podcast == null || !podcast.isCached) {
+      return;
     }
-    return false;
+    id ??= podcast.id;
+    await db.transaction(() async {
+      await db.episodeDao.deleteEpisodesFromPodcast(id);
+      await db.podcastDao.deletePodcasts([id]);
+    });
+  }
+
+  Stream<Podcast> _watchCache({String id, String urlParam}) async* {
+    assert((id != null) != (urlParam != null));
+    id ??= (await db.podcastDao.getPodcast(id: id, urlParam: urlParam)).id;
+
+    yield* Rx.combineLatest3<Podcast, List<Episode>, Subscription, Podcast>(
+      db.podcastDao.watchPodcast(id),
+      db.episodeDao.watchEpisodesFromPodcast(id),
+      db.subscriptionDao.watchPodcastSubscription(id),
+      (podcast, episodes, subscription) => podcast?.copyWith(
+        episodes: episodes,
+        isSubscribed: subscription != null,
+      ),
+    );
   }
 }

@@ -1,10 +1,14 @@
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/model/screen.dart';
 import 'package:phenopod/store/store.dart';
 
+import 'db.dart';
+
 class SubscriptionDb extends SubscriptionStore {
+  final Db db;
   final SubscriptionStore baseStore;
 
-  SubscriptionDb({this.baseStore});
+  SubscriptionDb({this.baseStore, this.db});
 
   @override
   Future<SubscriptionsScreenData> getScreenData() {
@@ -12,12 +16,13 @@ class SubscriptionDb extends SubscriptionStore {
   }
 
   @override
-  Future<void> subscribe(String podcastId) {
-    return baseStore.subscribe(podcastId);
+  Future<void> subscribe(Podcast podcast) async {
+    await baseStore.subscribe(podcast);
+    await db.taskDao.saveTask(Task.cachePodcast(urlParam: podcast.urlParam));
   }
 
   @override
-  Future<void> unsubscribe(String podcastId) {
-    return baseStore.unsubscribe(podcastId);
+  Future<void> unsubscribe(Podcast podcast) {
+    return baseStore.unsubscribe(podcast);
   }
 }

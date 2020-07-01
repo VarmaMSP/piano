@@ -21,11 +21,11 @@ abstract class UserStore {
 }
 
 abstract class PodcastStore {
-  Future<void> save(Podcast podcast);
-  Future<void> saveScreenData(PodcastScreenData screenData);
-  Stream<PodcastScreenData> watchScreenData(String podcastUrlParam);
-  Future<void> deleteScreenData(String podcastId);
+  Future<Podcast> get_(String podcastUrlParam);
+  Stream<Podcast> watch(String podcastUrlParam);
+  Future<void> cache(String _urlParam);
   Future<bool> isCached({String id, String urlParam});
+  Future<void> deleteCache({String id, String urlParam});
 }
 
 abstract class EpisodeStore {
@@ -36,8 +36,8 @@ abstract class EpisodeStore {
 }
 
 abstract class SubscriptionStore {
-  Future<void> subscribe(String podcastId);
-  Future<void> unsubscribe(String podcastId);
+  Future<void> subscribe(Podcast podcast);
+  Future<void> unsubscribe(Podcast podcast);
   Future<SubscriptionsScreenData> getScreenData();
 }
 
@@ -65,7 +65,6 @@ abstract class PreferenceStore {
 }
 
 abstract class TaskQueueStore {
-  Future<void> push(Task task);
-  Future<void> pop();
   Stream<Task> watchFront();
+  Future<void> pop();
 }

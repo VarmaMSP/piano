@@ -8,37 +8,34 @@ class PodcastApi extends PodcastStore {
   PodcastApi(this.httpClient);
 
   @override
-  Stream<PodcastScreenData> watchScreenData(String podcastUrlParam) async* {
+  Future<Podcast> get_(String podcastUrlParam) async {
     final apiResponse = await httpClient.makeRequest(
       method: 'GET',
       path: '/podcasts/$podcastUrlParam',
     );
-
-    yield PodcastScreenData(
-      podcast: apiResponse.podcasts[0],
+    return apiResponse.podcasts[0]?.copyWith(
       episodes: apiResponse.episodes,
-      isSubscribed: apiResponse.podcasts[0].isSubscribed,
-      receivedAllEpisodes: apiResponse.episodes.length < 15,
+      moreEpisodes: apiResponse.episodes.length < 15,
     );
   }
 
   @override
-  Future<void> save(Podcast podcast) {
+  Stream<Podcast> watch(String podcastUrlParam) async* {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> saveScreenData(PodcastScreenData screenData) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> deleteScreenData(String podcastId) {
+  Future<void> cache(String _urlParam) {
     throw UnimplementedError();
   }
 
   @override
   Future<bool> isCached({String id, String urlParam}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteCache({String id, String urlParam}) {
     throw UnimplementedError();
   }
 }

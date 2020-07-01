@@ -15,11 +15,6 @@ class TaskQueueDb extends TaskQueueStore {
   }
 
   @override
-  Future<void> push(Task task) {
-    return db.taskDao.saveTask(task);
-  }
-
-  @override
   Stream<Task> watchFront() {
     return db.taskDao.watchOldestTask().map((row) => row?.task);
   }
