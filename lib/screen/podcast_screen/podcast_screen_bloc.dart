@@ -17,8 +17,7 @@ class PodcastScreenBloc {
   final PodcastActionsBloc podcastActionsBloc;
 
   /// controller for podcastScreenData
-  final BehaviorSubject<PodcastScreenData> _screenData =
-      BehaviorSubject<PodcastScreenData>();
+  final BehaviorSubject<Podcast> _podcast = BehaviorSubject<Podcast>();
 
   /// This flag is turned on when [dispose()] is invoked
   /// Because the podcast screen widget can dispose this bloc at any
@@ -46,17 +45,17 @@ class PodcastScreenBloc {
       (action) => action.whenPartial(
         subscribed: (data) async {
           if (data.podcastUrlParam == urlParam) {
-            final screenData = await _screenData.first;
+            final screenData = await _podcast.first;
             if (!screenData.isSubscribed) {
-              _screenData.add(screenData.copyWith(isSubscribed: true));
+              _podcast.add(screenData.copyWith(isSubscribed: true));
             }
           }
         },
         unsubscribed: (data) async {
           if (data.podcastUrlParam == urlParam) {
-            final screenData = await _screenData.first;
+            final screenData = await _podcast.first;
             if (screenData.isSubscribed) {
-              _screenData.add(screenData.copyWith(isSubscribed: false));
+              _podcast.add(screenData.copyWith(isSubscribed: false));
             }
           }
         },
@@ -65,40 +64,34 @@ class PodcastScreenBloc {
   }
 
   void _loadScreen() {
-    store.podcast.watchScreenData(urlParam).listen((d) async {
+    store.podcast.watch(urlParam).listen((p) async {
       if (!_isDisposed) {
-        _screenData.add(d);
-      }
-      if (d.isSubscribed) {
-        await store.taskQueue.push(
-          Task.cachePodcastToDb(urlParam: d.podcast.urlParam),
-        );
+        _podcast.add(p);
       }
     });
   }
 
   /// load more episodes
   Future<void> loadMoreEpisodes() async {
-    final data = await _screenData.first;
+    final podcast = await _podcast.first;
     final episodes = await store.episode.getByPodcastPaginated(
-      data.podcast.id,
-      data.episodes.length,
+      podcast.id,
+      podcast.episodes.length,
       30,
     );
 
     if (!_isDisposed) {
-      _screenData.add(data.copyWith(
-        episodes: data.episodes + episodes,
-        receivedAllEpisodes: episodes.length < 30,
+      _podcast.add(podcast.copyWith(
+        episodes: podcast.episodes + episodes,
       ));
     }
   }
 
   /// Screen data
-  Stream<PodcastScreenData> get screenData => _screenData.stream;
+  Stream<Podcast> get screenData => _podcast.stream;
 
   Future<void> dispose() async {
-    await _screenData.close();
+    await _podcast.close();
     await _podcastActionsSubscription.cancel();
     _isDisposed = true;
   }

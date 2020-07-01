@@ -37,10 +37,7 @@ class PodcastActionsBloc {
       podcastUrlParam: podcast.urlParam,
       synced: false,
     ));
-    await store.subscription.subscribe(podcast.id);
-    await store.taskQueue.push(
-      Task.cachePodcastToDb(urlParam: podcast.urlParam),
-    );
+    await store.subscription.subscribe(podcast);
     _actions.add(PodcastAction.subscribed(
       podcastId: podcast.id,
       podcastUrlParam: podcast.urlParam,
@@ -55,7 +52,7 @@ class PodcastActionsBloc {
       podcastUrlParam: podcast.urlParam,
       synced: false,
     ));
-    await store.subscription.unsubscribe(podcast.id);
+    await store.subscription.unsubscribe(podcast);
 
     _actions.add(PodcastAction.unsubscribed(
       podcastId: podcast.id,

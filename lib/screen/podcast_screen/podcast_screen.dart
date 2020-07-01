@@ -52,7 +52,7 @@ class _PodcastScreenState extends State<PodcastScreen>
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PodcastScreenData>(
+    return StreamBuilder<Podcast>(
       stream: _podcastScreenBloc.screenData,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -61,7 +61,7 @@ class _PodcastScreenState extends State<PodcastScreen>
 
         return ScreenLayout(
           header: PodcastHeaderDelegate(
-            podcast: snapshot.data.podcast,
+            podcast: snapshot.data,
             isSubscribed: snapshot.data.isSubscribed,
             tabController: _tabController,
           ),
@@ -70,14 +70,14 @@ class _PodcastScreenState extends State<PodcastScreen>
             children: <Widget>[
               EpisodesTab(
                 key: const PageStorageKey<String>('   Episodes   '),
-                podcast: snapshot.data.podcast,
+                podcast: snapshot.data,
                 episodes: snapshot.data.episodes,
-                receivedAll: snapshot.data.receivedAllEpisodes,
+                receivedAll: false,
                 loadMore: _podcastScreenBloc.loadMoreEpisodes,
               ),
               AboutTab(
                 key: const PageStorageKey<String>('   About   '),
-                podcast: snapshot.data.podcast,
+                podcast: snapshot.data,
               ),
             ],
           ),
