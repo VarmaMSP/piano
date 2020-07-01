@@ -103,7 +103,17 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                         left: 0,
                         right: 0,
                         bottom: !snapshot.hasData ? 56.0 : 102.0,
-                        child: _buildContentPage(context),
+                        child: Navigator(
+                          initialRoute: '/main',
+                          onGenerateRoute: (settings) {
+                            if (settings.name == '/main') {
+                              return MaterialPageRoute(
+                                builder: (_) => AppScreenContent(),
+                              );
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                       Positioned(
                         left: 0,
@@ -123,25 +133,6 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
           );
         },
       ),
-    );
-  }
-
-  Widget _buildContentPage(BuildContext context) {
-    return Navigator(
-      initialRoute: '/main',
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case '/main':
-            return MaterialPageRoute(
-              builder: (_) => AppScreenContent(
-                audioPlayerTabController: _audioPlayerTabController,
-                bottomAppBarAnimation: _bottomAppBarAnimation,
-              ),
-            );
-          default:
-            return null;
-        }
-      },
     );
   }
 
