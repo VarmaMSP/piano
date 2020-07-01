@@ -1,6 +1,6 @@
 part of '../sqldb.dart';
 
-@UseDao(tables: [Episodes])
+@UseDao(tables: [Episodes, AudioTracks, PlaybackPositions])
 class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
   EpisodeDao(SqlDb db) : super(db);
 
@@ -19,6 +19,19 @@ class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
     }
   }
 
+  Stream<List<Episode>> watchEpisodesFromPodcast(String podcastId) {
+    return (select(episodes)
+          ..where((tbl) => tbl.podcastId.equals(podcastId))
+          ..orderBy([
+            (tbl) => OrderingTerm(
+                  expression: tbl.pubDate,
+                  mode: OrderingMode.desc,
+                )
+          ]))
+        .watch()
+        .map((xs) => xs.map((x) => x.toModel()).toList());
+  }
+
   Future<List<Episode>> getEpisodesByPodcast(String podcastId) async {
     final rows = await (select(episodes)
           ..where((tbl) => tbl.podcastId.equals(podcastId))
@@ -32,8 +45,45 @@ class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
     return rows.map((e) => e.toModel()).toList();
   }
 
-  Future<void> deleteEpisodesByPodcast(String podcastId) {
-    return (delete(episodes)..where((tbl) => tbl.podcastId.equals(podcastId)))
-        .go();
+  Future<void> deleteEpisodesFromPodcast(String podcastId) async {
+    final episodeIds = (await (select(episodes)
+              ..where((tbl) => tbl.podcastId.equals(podcastId)))
+            .get())
+        ?.map((i) => i.id);
+    await deleteEpisodes(episodeIds ?? []);
+  }
+
+  Future<void> deleteEpisodes(List<String> episodeIds) async {
+    final toDelete = await _filterEpisodesWithReferences(episodeIds);
+    if (toDelete.isNotEmpty) {
+      await (delete(episodes)..where((tbl) => tbl.id.isIn(toDelete))).go();
+    }
+  }
+
+  /// Filters episodes ids that have any references to other tables
+  Future<List<String>> _filterEpisodesWithReferences(
+    List<String> episodeIds,
+  ) async {
+    final idSet = {for (var id in episodeIds) id};
+
+    // References from audioTracks table
+    if (idSet.isNotEmpty) {
+      final fromAudioTracks = (await (select(audioTracks)
+                ..where((tbl) => tbl.episodeId.isIn(idSet.toList())))
+              .get())
+          .map((i) => i.episodeId);
+      idSet.removeAll(fromAudioTracks);
+    }
+
+    // References from playback positions table
+    if (idSet.isNotEmpty) {
+      final fromPlaybackPositions = (await (select(playbackPositions)
+                ..where((tbl) => tbl.episodeId.isIn(idSet.toList())))
+              .get())
+          .map((i) => i.episodeId);
+      idSet.removeAll(fromPlaybackPositions);
+    }
+
+    return idSet.toList();
   }
 }
