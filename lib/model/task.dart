@@ -6,15 +6,15 @@ part 'task.g.dart';
 @superEnum
 enum _Task {
   @Data(fields: [DataField<String>('urlParam')])
-  CachePodcastToDb,
+  CachePodcast,
 }
 
 extension TaskExtension on Task {
   Map<String, dynamic> toJson() {
     return when(
-      cachePodcastToDb: (data) {
+      cachePodcast: (data) {
         return {
-          'key': _Task.CachePodcastToDb.index,
+          'key': _Task.CachePodcast.index,
           'url_param': data.urlParam,
         };
       },
@@ -25,7 +25,7 @@ extension TaskExtension on Task {
 //ignore: missing_return
 Task taskFromJson(Map<String, dynamic> json) {
   switch (_Task.values[json['key']]) {
-    case _Task.CachePodcastToDb:
-      return Task.cachePodcastToDb(urlParam: json['url_param']);
+    case _Task.CachePodcast:
+      return Task.cachePodcast(urlParam: json['url_param']);
   }
 }

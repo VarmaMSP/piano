@@ -8,22 +8,6 @@ part of 'screen.dart';
 // CopyWithGenerator
 // **************************************************************************
 
-extension PodcastScreenDataCopyWithExtension on PodcastScreenData {
-  PodcastScreenData copyWith({
-    List<Episode> episodes,
-    bool isSubscribed,
-    Podcast podcast,
-    bool receivedAllEpisodes,
-  }) {
-    return PodcastScreenData(
-      episodes: episodes ?? this.episodes,
-      isSubscribed: isSubscribed ?? this.isSubscribed,
-      podcast: podcast ?? this.podcast,
-      receivedAllEpisodes: receivedAllEpisodes ?? this.receivedAllEpisodes,
-    );
-  }
-}
-
 extension SubscriptionsScreenDataCopyWithExtension on SubscriptionsScreenData {
   SubscriptionsScreenData copyWith({
     List<Episode> episodes,

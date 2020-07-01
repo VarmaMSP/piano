@@ -4,7 +4,7 @@ class Subscription {
   final Podcast podcast;
   final SubscriptionFilter filter;
 
-  Subscription(this.podcast, this.filter);
+  Subscription({this.podcast, this.filter});
 }
 
 class SubscriptionFilter {
