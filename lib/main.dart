@@ -13,7 +13,7 @@ import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/service/http_client.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
-import 'package:phenopod/service/task_runner/task_runner.dart';
+import 'package:phenopod/service/task_runner.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/store/store_impl.dart';
 
