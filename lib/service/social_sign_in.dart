@@ -9,6 +9,16 @@ class SocialSignIn {
     return authentication.idToken;
   }
 
+  Future<bool> isAuthenticatedByGoogle() {
+    final googleSignIn = GoogleSignIn();
+    return googleSignIn.isSignedIn();
+  }
+
+  Future<void> signOutGoogle() async {
+    final googleSignIn = GoogleSignIn();
+    await googleSignIn.signOut();
+  }
+
   // ignore: missing_return
   Future<String> getFacebookAccessToken() async {
     final facebookLogin = FacebookLogin();
@@ -22,5 +32,15 @@ class SocialSignIn {
       case FacebookLoginStatus.error:
         return null;
     }
+  }
+
+  Future<bool> isAuthenticatedByFacebook() {
+    final facebookLogin = FacebookLogin();
+    return facebookLogin.isLoggedIn;
+  }
+
+  Future<void> signOutFacebook() async {
+    final facebookLogin = FacebookLogin();
+    await facebookLogin.logOut();
   }
 }
