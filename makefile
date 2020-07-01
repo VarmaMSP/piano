@@ -1,10 +1,9 @@
 JAVA_BINARY := /Applications/Android\ Studio.app/Contents/jre/jdk/Contents/Home/bin
-
 KEY_OUTPUT_DIRECTORY := ~/Documents/keys/android
-RELEASE_KEY_NAME := releasekey.jks
-RELEASE_KEY_ALIAS := androidreleasekey
 DEBUG_KEY_NAME := debugkey.jks
 DEBUG_KEY_ALIAS := androiddebugkey
+RELEASE_KEY_NAME := releasekey.jks
+RELEASE_KEY_ALIAS := androidreleasekey
 
 build-runner:
 	flutter pub run build_runner watch --delete-conflicting-outputs
@@ -26,3 +25,6 @@ get-release-key-fingerprint:
 
 get-release-key-hash:
 	$(JAVA_BINARY)/keytool -exportcert -alias $(RELEASE_KEY_ALIAS) -keystore $(KEY_OUTPUT_DIRECTORY)/$(RELEASE_KEY_NAME) | openssl sha1 -binary | openssl base64
+
+build-release-apk:
+	flutter build apk --target-platform=android-arm64
