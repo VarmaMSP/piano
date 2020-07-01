@@ -18,8 +18,6 @@ class PodcastDb extends PodcastStore {
     return baseStore.get_(podcastUrlParam);
   }
 
-  // ignore: todo
-  // TODO: sync subscribe and unsubscribe events from different clients
   @override
   Stream<Podcast> watch(String podcastUrlParam) async* {
     if (await isCached(urlParam: podcastUrlParam)) {
@@ -29,17 +27,19 @@ class PodcastDb extends PodcastStore {
           await db.podcastDao.savePodcast(podcast);
           await db.episodeDao.saveEpisodes(podcast.episodes);
         });
-        if (podcast.isSubscribed) {
-          await db.taskDao.saveTask(
-            Task.cachePodcast(urlParam: podcast.urlParam),
-          );
-        }
+        // TODO handle unsubscription
+        if (!podcast.isSubscribed) {}
       });
 
       yield* _watchCache(urlParam: podcastUrlParam);
     } else {
       final podcast = await baseStore.get_(podcastUrlParam);
       yield podcast;
+      if (podcast.isSubscribed) {
+        await db.taskDao.saveTask(
+          Task.cachePodcast(urlParam: podcast.urlParam),
+        );
+      }
     }
   }
 

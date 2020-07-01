@@ -20,12 +20,30 @@ class DbLayer extends Store {
   TaskQueueStore _taskQueueDb;
 
   DbLayer({this.baseStore, SqlDb sqlDb}) : db = Db(sqlDb: sqlDb) {
-    _podcastDb = PodcastDb(baseStore: baseStore.podcast, db: db);
-    _audioPlayerDb = AudioPlayerDb(baseStore: null, db: db);
-    _playbackPositionDb = PlaybackPositionDb(baseStore: null, db: db);
-    _subscriptionDb = SubscriptionDb(baseStore: baseStore.subscription, db: db);
-    _preferenceDb = PreferenceDb(baseStore: null, sqldb: sqlDb);
-    _taskQueueDb = TaskQueueDb(db: db);
+    _podcastDb = PodcastDb(
+      baseStore: baseStore.podcast,
+      episodeBaseStore: baseStore.episode,
+      db: db,
+    );
+    _audioPlayerDb = AudioPlayerDb(
+      baseStore: null,
+      db: db,
+    );
+    _playbackPositionDb = PlaybackPositionDb(
+      baseStore: null,
+      db: db,
+    );
+    _subscriptionDb = SubscriptionDb(
+      baseStore: baseStore.subscription,
+      db: db,
+    );
+    _preferenceDb = PreferenceDb(
+      baseStore: null,
+      sqldb: sqlDb,
+    );
+    _taskQueueDb = TaskQueueDb(
+      db: db,
+    );
   }
 
   @override
