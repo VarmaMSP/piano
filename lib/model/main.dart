@@ -9,6 +9,5 @@ export 'user.dart';
 export 'playback_position.dart';
 export 'queue.dart';
 export 'setting.dart';
-export 'screen.dart';
 export 'subscription.dart';
 export 'task.dart';
