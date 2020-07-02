@@ -4,13 +4,6 @@ part of '../sqldb.dart';
 class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
   PodcastDao(SqlDb db) : super(db);
 
-  Future<void> savePodcast(Podcast podcast, {bool replace = true}) async {
-    await into(podcasts).insert(
-      podcastRowFromModel(podcast),
-      mode: replace ? InsertMode.insertOrReplace : InsertMode.insertOrIgnore,
-    );
-  }
-
   Future<void> savePodcasts(
     List<Podcast> podcasts_, {
     bool replace = true,
@@ -41,6 +34,23 @@ class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
     return (select(podcasts)..where((tbl) => tbl.id.equals(id)))
         .watchSingle()
         .map((row) => row?.toModel());
+  }
+
+  Stream<List<Podcast>> watchSubscribedPodcasts() {
+    return select(podcasts)
+        .join([
+          innerJoin(
+            subscriptions,
+            subscriptions.podcastId.equalsExp(podcasts.id),
+          )
+        ])
+        .watch()
+        .map(
+          (rows) => rows.map((row) {
+            final podcast = row.readTable(podcasts);
+            return podcast.toModel();
+          }).toList(),
+        );
   }
 
   Future<void> deletePodcasts(List<String> podcastIds) async {

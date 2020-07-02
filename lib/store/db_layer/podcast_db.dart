@@ -24,21 +24,23 @@ class PodcastDb extends PodcastStore {
       // ignore: unawaited_futures
       baseStore.get_(podcastUrlParam).then((podcast) async {
         await db.transaction(() async {
-          await db.podcastDao.savePodcast(podcast);
+          await db.podcastDao.savePodcasts([podcast]);
           await db.episodeDao.saveEpisodes(podcast.episodes);
+          !podcast.isSubscribed
+              ? await db.subscriptionDao.deleteSubscription(podcast.id)
+              : await db.subscriptionDao.saveSubscription(
+                  Subscription(podcastId: podcast.id),
+                );
         });
-        // TODO handle unsubscription
-        if (!podcast.isSubscribed) {}
       });
-
       yield* _watchCache(urlParam: podcastUrlParam);
     } else {
       final podcast = await baseStore.get_(podcastUrlParam);
       yield podcast;
       if (podcast.isSubscribed) {
-        await db.taskDao.saveTask(
+        await db.taskDao.saveTasks([
           Task.cachePodcast(urlParam: podcast.urlParam),
-        );
+        ]);
       }
     }
   }
@@ -67,11 +69,13 @@ class PodcastDb extends PodcastStore {
     }
 
     await db.transaction(() async {
-      await db.podcastDao.savePodcast(podcast.copyWith(
-        isCached: true,
-        cachedAt: DateTime.now(),
-        moreEpisodes: false,
-      ));
+      await db.podcastDao.savePodcasts([
+        podcast.copyWith(
+          isCached: true,
+          cachedAt: DateTime.now(),
+          moreEpisodes: false,
+        )
+      ]);
       await db.episodeDao.saveEpisodes(episodes);
     });
   }
@@ -98,7 +102,7 @@ class PodcastDb extends PodcastStore {
     yield* Rx.combineLatest3<Podcast, List<Episode>, Subscription, Podcast>(
       db.podcastDao.watchPodcast(id),
       db.episodeDao.watchEpisodesFromPodcast(id),
-      db.subscriptionDao.watchPodcastSubscription(id),
+      db.subscriptionDao.watchSubscription(id),
       (podcast, episodes, subscription) => podcast?.copyWith(
         episodes: episodes,
         isSubscribed: subscription != null,

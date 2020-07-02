@@ -32,17 +32,24 @@ class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
         .map((xs) => xs.map((x) => x.toModel()).toList());
   }
 
-  Future<List<Episode>> getEpisodesByPodcast(String podcastId) async {
-    final rows = await (select(episodes)
-          ..where((tbl) => tbl.podcastId.equals(podcastId))
+  Stream<List<Episode>> watchEpisodesFromPodcasts(List<String> podcastIds) {
+    return (select(episodes)
+          ..where((tbl) => tbl.podcastId.isIn(podcastIds))
           ..orderBy([
             (tbl) => OrderingTerm(
                   expression: tbl.pubDate,
                   mode: OrderingMode.desc,
                 )
           ]))
-        .get();
-    return rows.map((e) => e.toModel()).toList();
+        .watch()
+        .map((xs) => xs.map((x) => x.toModel()).toList());
+  }
+
+  Future<void> deleteEpisodes(List<String> episodeIds) async {
+    final toDelete = await _filterEpisodesWithReferences(episodeIds);
+    if (toDelete.isNotEmpty) {
+      await (delete(episodes)..where((tbl) => tbl.id.isIn(toDelete))).go();
+    }
   }
 
   Future<void> deleteEpisodesFromPodcast(String podcastId) async {
@@ -51,13 +58,6 @@ class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
             .get())
         ?.map((i) => i.id);
     await deleteEpisodes(episodeIds ?? []);
-  }
-
-  Future<void> deleteEpisodes(List<String> episodeIds) async {
-    final toDelete = await _filterEpisodesWithReferences(episodeIds);
-    if (toDelete.isNotEmpty) {
-      await (delete(episodes)..where((tbl) => tbl.id.isIn(toDelete))).go();
-    }
   }
 
   /// Filters episodes ids that have any references to other tables

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:flutter_page_transition/flutter_page_transition.dart';
 import 'package:phenopod/app/app.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
@@ -140,17 +140,13 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
                 );
               case '/queue':
                 return PageTransition(
+                  type: PageTransitionType.slideUp,
                   child: QueueScreen(),
-                  type: PageTransitionType.downToUp,
-                  duration: Duration(milliseconds: 150),
-                  curve: Curves.easeIn,
                 );
               case '/search':
                 return PageTransition(
+                  type: PageTransitionType.slideUp,
                   child: SearchScreen(),
-                  type: PageTransitionType.downToUp,
-                  duration: Duration(milliseconds: 150),
-                  curve: Curves.easeIn,
                 );
               default:
                 return null;

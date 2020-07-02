@@ -2243,8 +2243,7 @@ class $PreferencesTable extends Preferences
 
 class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
   final String podcastId;
-  final String filterId;
-  SubscriptionRow({@required this.podcastId, this.filterId});
+  SubscriptionRow({@required this.podcastId});
   factory SubscriptionRow.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -2253,8 +2252,6 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     return SubscriptionRow(
       podcastId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}podcast_id']),
-      filterId: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}filter_id']),
     );
   }
   @override
@@ -2262,9 +2259,6 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     final map = <String, Expression>{};
     if (!nullToAbsent || podcastId != null) {
       map['podcast_id'] = Variable<String>(podcastId);
-    }
-    if (!nullToAbsent || filterId != null) {
-      map['filter_id'] = Variable<String>(filterId);
     }
     return map;
   }
@@ -2274,9 +2268,6 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
       podcastId: podcastId == null && nullToAbsent
           ? const Value.absent()
           : Value(podcastId),
-      filterId: filterId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(filterId),
     );
   }
 
@@ -2285,7 +2276,6 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return SubscriptionRow(
       podcastId: serializer.fromJson<String>(json['podcastId']),
-      filterId: serializer.fromJson<String>(json['filterId']),
     );
   }
   @override
@@ -2293,60 +2283,47 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'podcastId': serializer.toJson<String>(podcastId),
-      'filterId': serializer.toJson<String>(filterId),
     };
   }
 
-  SubscriptionRow copyWith({String podcastId, String filterId}) =>
-      SubscriptionRow(
+  SubscriptionRow copyWith({String podcastId}) => SubscriptionRow(
         podcastId: podcastId ?? this.podcastId,
-        filterId: filterId ?? this.filterId,
       );
   @override
   String toString() {
     return (StringBuffer('SubscriptionRow(')
-          ..write('podcastId: $podcastId, ')
-          ..write('filterId: $filterId')
+          ..write('podcastId: $podcastId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(podcastId.hashCode, filterId.hashCode));
+  int get hashCode => $mrjf(podcastId.hashCode);
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is SubscriptionRow &&
-          other.podcastId == this.podcastId &&
-          other.filterId == this.filterId);
+      (other is SubscriptionRow && other.podcastId == this.podcastId);
 }
 
 class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
   final Value<String> podcastId;
-  final Value<String> filterId;
   const SubscriptionsCompanion({
     this.podcastId = const Value.absent(),
-    this.filterId = const Value.absent(),
   });
   SubscriptionsCompanion.insert({
     @required String podcastId,
-    this.filterId = const Value.absent(),
   }) : podcastId = Value(podcastId);
   static Insertable<SubscriptionRow> custom({
     Expression<String> podcastId,
-    Expression<String> filterId,
   }) {
     return RawValuesInsertable({
       if (podcastId != null) 'podcast_id': podcastId,
-      if (filterId != null) 'filter_id': filterId,
     });
   }
 
-  SubscriptionsCompanion copyWith(
-      {Value<String> podcastId, Value<String> filterId}) {
+  SubscriptionsCompanion copyWith({Value<String> podcastId}) {
     return SubscriptionsCompanion(
       podcastId: podcastId ?? this.podcastId,
-      filterId: filterId ?? this.filterId,
     );
   }
 
@@ -2355,9 +2332,6 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
     final map = <String, Expression>{};
     if (podcastId.present) {
       map['podcast_id'] = Variable<String>(podcastId.value);
-    }
-    if (filterId.present) {
-      map['filter_id'] = Variable<String>(filterId.value);
     }
     return map;
   }
@@ -2377,17 +2351,8 @@ class $SubscriptionsTable extends Subscriptions
         $customConstraints: 'REFERENCES podcasts(id)');
   }
 
-  final VerificationMeta _filterIdMeta = const VerificationMeta('filterId');
-  GeneratedTextColumn _filterId;
   @override
-  GeneratedTextColumn get filterId => _filterId ??= _constructFilterId();
-  GeneratedTextColumn _constructFilterId() {
-    return GeneratedTextColumn('filter_id', $tableName, true,
-        $customConstraints: 'NULL REFERENCES subscription_filters(id)');
-  }
-
-  @override
-  List<GeneratedColumn> get $columns => [podcastId, filterId];
+  List<GeneratedColumn> get $columns => [podcastId];
   @override
   $SubscriptionsTable get asDslTable => this;
   @override
@@ -2404,10 +2369,6 @@ class $SubscriptionsTable extends Subscriptions
           podcastId.isAcceptableOrUnknown(data['podcast_id'], _podcastIdMeta));
     } else if (isInserting) {
       context.missing(_podcastIdMeta);
-    }
-    if (data.containsKey('filter_id')) {
-      context.handle(_filterIdMeta,
-          filterId.isAcceptableOrUnknown(data['filter_id'], _filterIdMeta));
     }
     return context;
   }

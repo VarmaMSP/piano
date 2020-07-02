@@ -38,7 +38,9 @@ abstract class EpisodeStore {
 abstract class SubscriptionStore {
   Future<void> subscribe(Podcast podcast);
   Future<void> unsubscribe(Podcast podcast);
-  Future<SubscriptionsScreenData> getScreenData();
+  Future<SubscriptionsFeed> getFeed();
+  Stream<SubscriptionsFeed> watchFeed();
+  Future<void> updateFeed();
 }
 
 abstract class AudioPlayerStore {

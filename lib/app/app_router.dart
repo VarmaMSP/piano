@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:phenopod/screen/home_screen/home_screen.dart';
 import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
 import 'package:phenopod/screen/subscriptions_screen/subscriptions_screen.dart';
+import 'package:flutter_page_transition/flutter_page_transition.dart';
 
 Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
   return (RouteSettings settings) {
@@ -10,26 +11,20 @@ Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
     switch (settings.name) {
       case '/home':
         return PageTransition(
+          type: PageTransitionType.slideParallaxLeft,
           child: HomeScreen(),
-          type: PageTransitionType.fade,
-          duration: Duration(milliseconds: 150),
-          curve: Curves.easeInOutExpo,
         );
 
       case '/subscriptions':
         return PageTransition(
+          type: PageTransitionType.slideParallaxLeft,
           child: SubscriptionsScreen(),
-          type: PageTransitionType.fade,
-          duration: Duration(milliseconds: 150),
-          curve: Curves.easeIn,
         );
 
       case '/podcast':
         return PageTransition(
+          type: PageTransitionType.slideParallaxLeft,
           child: PodcastScreen(urlParam: args['urlParam']),
-          type: PageTransitionType.fade,
-          duration: Duration(milliseconds: 150),
-          curve: Curves.easeIn,
         );
 
       default:

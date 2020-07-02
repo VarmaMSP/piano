@@ -12,8 +12,8 @@ class SubscriptionsScreenBloc {
   final PodcastActionsBloc podcastActionsBloc;
 
   /// Stream of subscription screen data
-  final BehaviorSubject<SubscriptionsScreenData> _screenData =
-      BehaviorSubject<SubscriptionsScreenData>();
+  final BehaviorSubject<SubscriptionsFeed> _subscriptionsFeed =
+      BehaviorSubject<SubscriptionsFeed>();
 
   StreamSubscription<dynamic> _podcastActionsSubscription;
 
@@ -21,11 +21,17 @@ class SubscriptionsScreenBloc {
     @required this.store,
     @required this.podcastActionsBloc,
   }) {
-    /// Load screen data
-    _loadScreen();
+    /// pipe feed from db
+    _handleFeedChanges();
 
     /// Listen to new subscriptions
     _handlePodcastActions();
+  }
+
+  void _handleFeedChanges() {
+    store.subscription.watchFeed().distinct().listen((feed) {
+      _subscriptionsFeed.add(feed);
+    });
   }
 
   void _handlePodcastActions() {
@@ -33,28 +39,23 @@ class SubscriptionsScreenBloc {
       (action) => action.whenPartial(
         subscribed: (data) async {
           if (data.synced) {
-            await _loadScreen();
+            // await _loadScreen();
           }
         },
         unsubscribed: (data) async {
           if (data.synced) {
-            await _loadScreen();
+            // await _loadScreen();
           }
         },
       ),
     );
   }
 
-  Future<void> _loadScreen() async {
-    final screenData = await store.subscription.getScreenData();
-    _screenData.add(screenData);
-  }
-
-  /// Get Screen data
-  Stream<SubscriptionsScreenData> get screenData => _screenData.stream;
+  /// Get feed
+  Stream<SubscriptionsFeed> get feed => _subscriptionsFeed.stream;
 
   Future<void> dispose() async {
-    await _screenData.close();
+    await _subscriptionsFeed.close();
     await _podcastActionsSubscription.cancel();
   }
 }

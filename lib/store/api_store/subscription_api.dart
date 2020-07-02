@@ -28,14 +28,24 @@ class SubscriptionApi extends SubscriptionStore {
   }
 
   @override
-  Future<SubscriptionsScreenData> getScreenData() async {
+  Future<SubscriptionsFeed> getFeed() async {
     final apiResponse = await httpClient.makeRequest(
       method: 'GET',
       path: '/subscriptions',
     );
-    return SubscriptionsScreenData(
-      podcastById: {for (var p in apiResponse.podcasts) p.id: p},
+    return SubscriptionsFeed(
       episodes: apiResponse.episodes,
+      podcasts: apiResponse.podcasts,
     );
+  }
+
+  @override
+  Stream<SubscriptionsFeed> watchFeed() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateFeed() {
+    throw UnimplementedError();
   }
 }

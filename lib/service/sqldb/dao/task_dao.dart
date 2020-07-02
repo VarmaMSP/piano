@@ -4,8 +4,10 @@ part of '../sqldb.dart';
 class TaskDao extends DatabaseAccessor<SqlDb> with _$TaskDaoMixin {
   TaskDao(SqlDb db) : super(db);
 
-  Future<void> saveTask(Task task) {
-    return into(tasks).insert(taskRowFromModel(task));
+  Future<void> saveTasks(List<Task> tasks_) {
+    return batch((b) {
+      b.insertAll(tasks, tasks_.map((t) => taskRowFromModel(t)).toList());
+    });
   }
 
   Stream<TaskRow> watchOldestTask() {

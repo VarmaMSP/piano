@@ -41,8 +41,8 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<SubscriptionsScreenData>(
-      stream: _subscriptionsScreenBloc.screenData,
+    return StreamBuilder<SubscriptionsFeed>(
+      stream: _subscriptionsScreenBloc.feed,
       builder: (context, snapshot) {
         return CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -87,7 +87,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                 spawnIsolate: true,
                 items: [
                   for (var e in snapshot.data.episodes)
-                    Tuple2(e, snapshot.data.podcastById[e.podcastId])
+                    Tuple2(e, snapshot.data.subscriptionById[e.podcastId])
                 ],
                 areItemsTheSame: (a, b) => a.item1.id == b.item1.id,
                 itemBuilder: (context, animation, item, _) {
