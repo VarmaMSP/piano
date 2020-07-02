@@ -57,11 +57,7 @@ class AppNavigationBloc {
   void switchTab(Tab tab) async {
     final prev = await _tabHistorySubject.first;
     if (prev.currentTab == tab) {
-      _tabNavigatorKeys[tab].currentState.popUntil(
-            (route) =>
-                ModalRoute.withName('/home')(route) ||
-                ModalRoute.withName('/subscriptions')(route),
-          );
+      _tabNavigatorKeys[tab].currentState.popUntil((route) => route.isFirst);
     } else {
       _tabHistorySubject.add(prev.push(tab));
     }
