@@ -74,21 +74,6 @@ class Thumbnail extends StatelessWidget {
           return Container(
             height: thumbnailSize,
             width: thumbnailSize,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0),
-                bottomLeft: Radius.circular(
-                    snapshot.data == null || snapshot.data.isEmpty
-                        ? 10.0
-                        : 5.0),
-                bottomRight: Radius.circular(
-                    snapshot.data == null || snapshot.data.isEmpty
-                        ? 10.0
-                        : 5.0),
-              ),
-              border: Border.all(color: Colors.grey.shade400, width: 0.5),
-            ),
             child: Stack(
               children: <Widget>[
                 _buildImage(snapshot.data),
@@ -108,24 +93,37 @@ class Thumbnail extends StatelessWidget {
   }
 
   Widget _buildImage(PlaybackPosition playback) {
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(10.0),
-        topRight: Radius.circular(10.0),
-        bottomLeft:
-            Radius.circular(playback == null || playback.isEmpty ? 10.0 : 4.0),
-        bottomRight:
-            Radius.circular(playback == null || playback.isEmpty ? 10.0 : 4.0),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8.0),
+          topRight: Radius.circular(8.0),
+          bottomLeft:
+              Radius.circular(playback == null || playback.isEmpty ? 8.0 : 4.0),
+          bottomRight:
+              Radius.circular(playback == null || playback.isEmpty ? 8.0 : 4.0),
+        ),
+        border: Border.all(color: Colors.grey.shade400, width: 0.5),
       ),
-      child: CachedNetworkImage(
-        imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
-        fit: BoxFit.fill,
-        height: thumbnailSize,
-        width: thumbnailSize,
-        placeholder: (BuildContext context, String url) => Container(
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8.0),
+          topRight: Radius.circular(8.0),
+          bottomLeft:
+              Radius.circular(playback == null || playback.isEmpty ? 8.0 : 4.0),
+          bottomRight:
+              Radius.circular(playback == null || playback.isEmpty ? 8.0 : 4.0),
+        ),
+        child: CachedNetworkImage(
+          imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
+          fit: BoxFit.fill,
           height: thumbnailSize,
           width: thumbnailSize,
-          color: TWColors.gray.shade300,
+          placeholder: (BuildContext context, String url) => Container(
+            height: thumbnailSize,
+            width: thumbnailSize,
+            color: TWColors.gray.shade300,
+          ),
         ),
       ),
     );
@@ -149,7 +147,7 @@ class Thumbnail extends StatelessWidget {
     }
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(5.0),
+      borderRadius: BorderRadius.circular(4.0),
       child: Container(
         color: const Color.fromRGBO(0, 0, 0, 0.55),
         padding: const EdgeInsets.only(left: 4, right: 4, top: 1.9),
@@ -173,16 +171,19 @@ class Thumbnail extends StatelessWidget {
     }
 
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(5)),
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(4),
+        bottomRight: Radius.circular(4),
+      ),
       child: Container(
         height: 5,
         width: thumbnailSize,
-        color: const Color.fromRGBO(255, 255, 255, 0.75),
+        color: const Color.fromRGBO(0, 0, 0, 0.35),
         alignment: Alignment.centerLeft,
         child: FractionallySizedBox(
           heightFactor: 1.0,
           widthFactor: playback.percentage,
-          child: Container(color: Colors.red.shade600),
+          child: Container(color: Colors.yellow.shade200),
         ),
       ),
     );

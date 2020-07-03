@@ -4,53 +4,53 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutTab extends StatelessWidget {
-  const AboutTab({Key key, @required this.podcast}) : super(key: key);
-
-  final Podcast podcast;
+  const AboutTab({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Widget description = Text(
-      podcast.description
-          .replaceAll('\n', ' ')
-          .replaceAll('&nbsp;', ' ')
-          .replaceAll('&amp', '&'),
-      style: TextStyle(
-        height: 1.5,
-        fontSize: 13.5,
-        color: TWColors.gray.shade800,
-        letterSpacing: 0.25,
-      ),
-    );
+    return StreamBuilder<Podcast>(builder: (context, snapshot) {
+      if (!snapshot.hasData) {
+        return Container();
+      }
 
-    final Widget links = Transform.translate(
-      offset: const Offset(-10, 0),
-      child: Row(
-        children: <Widget>[
-          _link(podcast.link, 'Website', Icons.launch),
-          _link(podcast.feedUrl, 'RSS', Icons.launch),
-        ],
-      ),
-    );
-
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.only(left: 18, right: 18),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(height: 98),
-            description,
-            Container(height: 12),
-            links,
-          ],
+      return SafeArea(
+        top: false,
+        bottom: false,
+        child: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.only(left: 18, right: 18),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(height: 98),
+              Text(
+                snapshot.data.description
+                    .replaceAll('\n', ' ')
+                    .replaceAll('&nbsp;', ' ')
+                    .replaceAll('&amp', '&'),
+                style: TextStyle(
+                  height: 1.5,
+                  fontSize: 13.5,
+                  color: TWColors.gray.shade800,
+                  letterSpacing: 0.25,
+                ),
+              ),
+              Container(height: 12),
+              Transform.translate(
+                offset: const Offset(-10, 0),
+                child: Row(
+                  children: <Widget>[
+                    _link(snapshot.data.link, 'Website', Icons.launch),
+                    _link(snapshot.data.feedUrl, 'RSS', Icons.launch),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _link(String url, String text, IconData icon) {

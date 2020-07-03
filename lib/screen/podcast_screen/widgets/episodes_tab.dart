@@ -1,65 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
+import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/screen/podcast_screen/podcast_screen_bloc.dart';
 import 'package:phenopod/widgets/episode_list_item/episode_list_item.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
+import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:tuple/tuple.dart';
 
 class EpisodesTab extends StatelessWidget {
-  const EpisodesTab({
-    Key key,
-    @required this.podcast,
-    @required this.episodes,
-    @required this.receivedAll,
-    @required this.loadMore,
-  }) : super(key: key);
-
-  final Podcast podcast;
-  final List<Episode> episodes;
-  final bool receivedAll;
-  final Function loadMore;
+  const EpisodesTab({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final podcastScreenBloc = Provider.of<PodcastScreenBloc>(context);
+
     return SafeArea(
       top: false,
       bottom: false,
       child: Container(
         color: Colors.white,
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverPadding(
-              padding: const EdgeInsets.only(top: 95),
-              sliver: SliverList(
-                key: key,
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    if (index < episodes.length) {
-                      return EpisodeListItem(
-                        episode: episodes[index],
-                        podcast: podcast,
-                      );
-                    }
-                    loadMore();
-                    return Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 3,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            TWColors.gray.shade800,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  childCount:
-                      receivedAll ? episodes.length : episodes.length + 1,
+        child: StreamBuilder<Tuple2<Podcast, List<Episode>>>(
+          stream: Rx.combineLatest2<Podcast, List<Episode>,
+              Tuple2<Podcast, List<Episode>>>(
+            podcastScreenBloc.podcast,
+            podcastScreenBloc.episodes,
+            (a, b) => Tuple2(a, b),
+          ),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData || snapshot.data.item2 == null) {
+              return Container();
+            }
+
+            final podcast = snapshot.data?.item1;
+            final episodes = podcast != null ? snapshot.data?.item2 ?? [] : [];
+
+            return CustomScrollView(
+              slivers: <Widget>[
+                SliverPadding(
+                  padding: const EdgeInsets.only(top: 95),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        if (index < episodes.length) {
+                          return EpisodeListItem(
+                            episode: episodes[index],
+                            podcast: podcast,
+                          );
+                        }
+                        return null;
+                      },
+                      childCount: episodes.length,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );

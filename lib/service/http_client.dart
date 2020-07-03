@@ -21,7 +21,7 @@ class HttpClient {
           BaseOptions(
             baseUrl: kReleaseMode
                 ? 'https://phenopod.com/api'
-                : 'http://192.168.1.27:8080/api',
+                : 'https://phenopod.com/api', //  'http://192.168.1.27:8080/api',
             connectTimeout: 5000,
             receiveTimeout: 3000,
             headers: <String, dynamic>{'X-PHENOPOD-CLIENT': 'android'},

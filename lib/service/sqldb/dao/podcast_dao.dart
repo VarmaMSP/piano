@@ -30,10 +30,15 @@ class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
     return row?.toModel();
   }
 
-  Stream<Podcast> watchPodcast(String id) {
-    return (select(podcasts)..where((tbl) => tbl.id.equals(id)))
-        .watchSingle()
-        .map((row) => row?.toModel());
+  Stream<Podcast> watchPodcast({String id, String urlParam}) {
+    assert((id != null) != (urlParam != null));
+    return id != null
+        ? (select(podcasts)..where((tbl) => tbl.id.equals(id)))
+            .watchSingle()
+            .map((row) => row?.toModel())
+        : (select(podcasts)..where((tbl) => tbl.urlParam.equals(urlParam)))
+            .watchSingle()
+            .map((row) => row?.toModel());
   }
 
   Stream<List<Podcast>> watchSubscribedPodcasts() {

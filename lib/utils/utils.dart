@@ -59,6 +59,10 @@ double mapRange(double x1, double x2, double y1, double y2, double value) {
   return y1 + ((y2 - y1) / (x2 - x1)) * (value - x1);
 }
 
+String getIdFromUrlParam(String urlParam) {
+  return urlParam.split('-').last;
+}
+
 /// use this to silent pedantic linting rules
 void unawaited(Future<void> future) {}
 

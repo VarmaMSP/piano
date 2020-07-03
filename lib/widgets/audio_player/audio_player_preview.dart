@@ -26,13 +26,13 @@ class AudioPlayerPreview extends StatelessWidget {
           height: 50,
           color: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: _buildPreview(),
+          child: _buildPreview(context),
         ),
       ),
     );
   }
 
-  Widget _buildPreview() {
+  Widget _buildPreview(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,9 +55,9 @@ class AudioPlayerPreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     nowPlaying.episode.title,
+                    style: Theme.of(context).textTheme.headline6,
                     maxLines: 1,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 14, letterSpacing: 0.2),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],

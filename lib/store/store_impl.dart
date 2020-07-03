@@ -8,5 +8,6 @@ Store newStore(SqlDb sqlDb, HttpClient httpClient) {
   return DbLayer(
     baseStore: ApiStore(httpClient),
     sqlDb: sqlDb,
+    httpClient: httpClient,
   );
 }

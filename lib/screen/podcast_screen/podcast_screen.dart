@@ -52,37 +52,28 @@ class _PodcastScreenState extends State<PodcastScreen>
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Podcast>(
-      stream: _podcastScreenBloc.screenData,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return LoadingLayout(pageType: PageType.normal);
-        }
+    final store = Provider.of<Store>(context);
+    final podcastAcionsBloc = Provider.of<PodcastActionsBloc>(context);
 
-        return ScreenLayout(
-          header: PodcastHeaderDelegate(
-            podcast: snapshot.data,
-            isSubscribed: snapshot.data.isSubscribed,
-            tabController: _tabController,
-          ),
-          body: TabBarView(
-            controller: _tabController,
-            children: <Widget>[
-              EpisodesTab(
-                key: const PageStorageKey<String>('   Episodes   '),
-                podcast: snapshot.data,
-                episodes: snapshot.data.episodes,
-                receivedAll: false,
-                loadMore: _podcastScreenBloc.loadMoreEpisodes,
-              ),
-              AboutTab(
-                key: const PageStorageKey<String>('   About   '),
-                podcast: snapshot.data,
-              ),
-            ],
-          ),
-        );
-      },
+    return Provider<PodcastScreenBloc>(
+      create: (context) => PodcastScreenBloc(
+        urlParam: widget.urlParam,
+        store: store,
+        podcastActionsBloc: podcastAcionsBloc,
+      ),
+      dispose: (_, value) => value.dispose(),
+      child: ScreenLayout(
+        header: PodcastHeaderDelegate(
+          tabController: _tabController,
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: <Widget>[
+            EpisodesTab(key: const PageStorageKey<String>('   Episodes   ')),
+            AboutTab(key: const PageStorageKey<String>('   About   ')),
+          ],
+        ),
+      ),
     );
   }
 }

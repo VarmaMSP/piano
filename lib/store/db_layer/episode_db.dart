@@ -1,14 +1,12 @@
 import 'package:phenopod/model/episode.dart';
-import 'package:phenopod/service/sqldb/sqldb.dart';
+import 'package:phenopod/store/db_layer/db.dart';
 import 'package:phenopod/store/store.dart';
 
 class EpisodeDb extends EpisodeStore {
+  final Db db;
   final EpisodeStore baseStore;
-  EpisodeDao _episodeDao;
 
-  EpisodeDb({this.baseStore, SqlDb sqlDb}) {
-    _episodeDao = EpisodeDao(sqlDb);
-  }
+  EpisodeDb({this.baseStore, this.db});
 
   @override
   Future<List<Episode>> getByPodcastPaginated(
@@ -29,6 +27,11 @@ class EpisodeDb extends EpisodeStore {
 
   @override
   Future<void> saveAll(List<Episode> episodes) {
-    return _episodeDao.saveEpisodes(episodes);
+    return db.episodeDao.saveEpisodes(episodes);
+  }
+
+  @override
+  Stream<List<Episode>> watchByPodcast(String podcastId) {
+    return db.episodeDao.watchEpisodesFromPodcast(podcastId);
   }
 }

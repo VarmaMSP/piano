@@ -48,4 +48,9 @@ class EpisodeApi extends EpisodeStore {
     );
     return apiResponse.episodes;
   }
+
+  @override
+  Stream<List<Episode>> watchByPodcast(String urlParam) {
+    throw UnimplementedError();
+  }
 }

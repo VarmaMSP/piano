@@ -23,6 +23,8 @@ abstract class UserStore {
 abstract class PodcastStore {
   Future<Podcast> get_(String podcastUrlParam);
   Stream<Podcast> watch(String podcastUrlParam);
+  Stream<Podcast> watch_(String urlParam);
+  Future<void> refresh(String urlParam);
   Future<void> cache(String _urlParam);
   Future<bool> isCached({String id, String urlParam});
   Future<void> deleteCache({String id, String urlParam});
@@ -32,6 +34,7 @@ abstract class EpisodeStore {
   Future<void> saveAll(List<Episode> episodes);
   Future<List<Episode>> getByPodcastPaginated(
       String podcastId, int offset, int limit);
+  Stream<List<Episode>> watchByPodcast(String podcastId);
   Future<List<Episode>> getFromSubscriptionsPaginated(int offset, int limit);
 }
 

@@ -38,4 +38,14 @@ class PodcastApi extends PodcastStore {
   Future<void> deleteCache({String id, String urlParam}) {
     throw UnimplementedError();
   }
+
+  @override
+  Stream<Podcast> watch_(String urlParam) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> refresh(String urlParam) {
+    throw UnimplementedError();
+  }
 }

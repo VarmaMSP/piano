@@ -75,6 +75,7 @@ class SqlDb extends _$SqlDb {
   MigrationStrategy get migration => MigrationStrategy(
         beforeOpen: (details) async {
           await customStatement('PRAGMA foreign_keys = ON');
+          await customStatement('PRAGMA temp_store = 2');
         },
       );
 }

@@ -1,4 +1,6 @@
+import 'package:phenopod/service/http_client.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
+import 'package:phenopod/store/db_layer/episode_db.dart';
 import 'package:phenopod/store/db_layer/playback_db.dart';
 import 'package:phenopod/store/db_layer/preference_db.dart';
 import 'package:phenopod/store/db_layer/audio_player_db.dart';
@@ -12,17 +14,25 @@ import 'db.dart';
 class DbLayer extends Store {
   final Store baseStore;
   final Db db;
+  final HttpClient httpClient;
   PodcastStore _podcastDb;
+  EpisodeStore _episodeDb;
   AudioPlayerStore _audioPlayerDb;
   PlaybackPositionStore _playbackPositionDb;
   SubscriptionStore _subscriptionDb;
   PreferenceStore _preferenceDb;
   TaskQueueStore _taskQueueDb;
 
-  DbLayer({this.baseStore, SqlDb sqlDb}) : db = Db(sqlDb: sqlDb) {
+  DbLayer({this.baseStore, this.httpClient, SqlDb sqlDb})
+      : db = Db(sqlDb: sqlDb) {
     _podcastDb = PodcastDb(
+      httpClient: httpClient,
       baseStore: baseStore.podcast,
       episodeBaseStore: baseStore.episode,
+      db: db,
+    );
+    _episodeDb = EpisodeDb(
+      baseStore: baseStore.episode,
       db: db,
     );
     _audioPlayerDb = AudioPlayerDb(
@@ -47,7 +57,7 @@ class DbLayer extends Store {
   }
 
   @override
-  EpisodeStore get episode => baseStore.episode;
+  EpisodeStore get episode => _episodeDb;
 
   @override
   PodcastStore get podcast => _podcastDb;
