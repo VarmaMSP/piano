@@ -18,7 +18,7 @@ dependencies:
   device_info: ^0.4.2+4
   dio: ^3.0.9
   dio_cookie_manager: ^1.0.0
-  equatable: ^1.1.1
+  equatable: ^1.2.0
   flushbar: ^1.10.4
   flutter_facebook_login: ^3.0.0
   flutter_html: ^1.0.0
