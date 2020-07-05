@@ -3,7 +3,7 @@ import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/model/task.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 
-TaskStore newTaskStore(Api api, Db_ db) {
+TaskStore newTaskStore(Api api, Db db) {
   return _TaskStoreImpl(api: api, db: db);
 }
 
@@ -14,7 +14,7 @@ abstract class TaskStore {
 
 class _TaskStoreImpl extends TaskStore {
   final Api api;
-  final Db_ db;
+  final Db db;
 
   _TaskStoreImpl({
     @required this.api,

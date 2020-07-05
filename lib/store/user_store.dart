@@ -3,7 +3,7 @@ import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 
-UserStore newUserStore(Api api, Db_ db) {
+UserStore newUserStore(Api api, Db db) {
   return _UserStoreImpl(api: api, db: db);
 }
 
@@ -22,7 +22,7 @@ abstract class UserStore {
 
 class _UserStoreImpl extends UserStore {
   final Api api;
-  final Db_ db;
+  final Db db;
 
   _UserStoreImpl({
     @required this.api,

@@ -1,4 +1,4 @@
-part of '../sqldb.dart';
+part of 'db.dart';
 
 @UseDao(tables: [Episodes, AudioTracks, PlaybackPositions])
 class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {

@@ -1,4 +1,4 @@
-part of '../sqldb.dart';
+part of 'db.dart';
 
 @DataClassName('TaskRow')
 class Tasks extends Table {

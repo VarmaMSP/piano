@@ -32,7 +32,7 @@ class AudioPlayerController {
   /// Subscription to ticker
   StreamSubscription<dynamic> _tickerSubscription;
 
-  AudioPlayerController({Api api, Db_ db}) {
+  AudioPlayerController({Api api, Db db}) {
     _store = newStore(api, db);
     _audioPlayer = AudioPlayer(
       onComplete: _playNext,

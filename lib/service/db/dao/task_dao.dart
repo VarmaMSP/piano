@@ -1,4 +1,4 @@
-part of '../sqldb.dart';
+part of 'db.dart';
 
 @UseDao(tables: [Tasks])
 class TaskDao extends DatabaseAccessor<SqlDb> with _$TaskDaoMixin {

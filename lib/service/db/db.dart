@@ -10,7 +10,7 @@ import 'package:phenopod/background/moor_server/main.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:json_annotation/json_annotation.dart' as j;
 
-part 'sqldb.g.dart';
+part 'db.g.dart';
 
 /// Tables
 part 'table/podcasts.dart';
@@ -37,14 +37,14 @@ Future<SqlDb> newSqlDb() async {
   return SqlDb.connect(databaseConnection);
 }
 
-Future<Db_> newDb() async {
+Future<Db> newDb() async {
   final moorIsolate = await getMoorIsolate();
   final databaseConnection = await moorIsolate.connect();
   final sqldb = SqlDb.connect(databaseConnection);
-  return Db_(sqldb);
+  return Db(sqldb);
 }
 
-class Db_ {
+class Db {
   final SqlDb sqlDb;
   final PodcastDao podcastDao;
   final EpisodeDao episodeDao;
@@ -54,7 +54,7 @@ class Db_ {
   final SubscriptionDao subscriptionDao;
   final TaskDao taskDao;
 
-  Db_(this.sqlDb)
+  Db(this.sqlDb)
       : podcastDao = PodcastDao(sqlDb),
         episodeDao = EpisodeDao(sqlDb),
         playbackPositionDao = PlaybackPositionDao(sqlDb),

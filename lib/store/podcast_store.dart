@@ -3,7 +3,7 @@ import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 
-PodcastStore newPodcastStore(Api api, Db_ db) {
+PodcastStore newPodcastStore(Api api, Db db) {
   return _PodcastStoreImpl(api: api, db: db);
 }
 
@@ -13,7 +13,7 @@ abstract class PodcastStore {
 
 class _PodcastStoreImpl extends PodcastStore {
   final Api api;
-  final Db_ db;
+  final Db db;
 
   _PodcastStoreImpl({
     @required this.api,

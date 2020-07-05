@@ -1,4 +1,4 @@
-part of '../sqldb.dart';
+part of 'db.dart';
 
 @UseDao(tables: [Preferences])
 class PreferenceDao extends DatabaseAccessor<SqlDb> with _$PreferenceDaoMixin {

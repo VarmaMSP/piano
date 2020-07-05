@@ -4,6 +4,7 @@ import 'package:phenopod/app/app.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
 import 'package:phenopod/service/api/api.dart';
+// import 'package:phenopod/task_runner/task_runner.dart';
 import 'package:phenopod/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
@@ -21,8 +22,7 @@ void main() async {
   final db = await newDb();
   final store = newStore(api, db);
   final audioService = newAudioService();
-
-  // TaskRunner(store: store).init();
+  // final taskRunner = TaskRunner(api: api, db: db);
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

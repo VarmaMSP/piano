@@ -10,7 +10,7 @@ import 'audio_player_store.dart';
 import 'playback_position_store.dart';
 import 'task_store.dart';
 
-Store newStore(Api api, Db_ db) {
+Store newStore(Api api, Db db) {
   return _StoreImpl(api: api, db: db);
 }
 
@@ -35,7 +35,7 @@ class _StoreImpl extends Store {
 
   _StoreImpl({
     @required Api api,
-    @required Db_ db,
+    @required Db db,
   })  : _user = newUserStore(api, db),
         _podcast = newPodcastStore(api, db),
         _episode = newEpisodeStore(api, db),

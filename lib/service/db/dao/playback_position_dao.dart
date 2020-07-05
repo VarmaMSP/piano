@@ -1,4 +1,4 @@
-part of '../sqldb.dart';
+part of 'db.dart';
 
 @UseDao(tables: [PlaybackPositions])
 class PlaybackPositionDao extends DatabaseAccessor<SqlDb>

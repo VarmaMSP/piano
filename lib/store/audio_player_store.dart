@@ -4,7 +4,7 @@ import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:rxdart/rxdart.dart';
 
-AudioPlayerStore newAudioPlayerStore(Api api, Db_ db) {
+AudioPlayerStore newAudioPlayerStore(Api api, Db db) {
   return _AudioPlayerStoreImpl(api: api, db: db);
 }
 
@@ -18,7 +18,7 @@ abstract class AudioPlayerStore {
 
 class _AudioPlayerStoreImpl extends AudioPlayerStore {
   final Api api;
-  final Db_ db;
+  final Db db;
 
   _AudioPlayerStoreImpl({
     @required this.api,

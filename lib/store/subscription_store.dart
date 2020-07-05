@@ -3,7 +3,7 @@ import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 
-SubscriptionStore newSubscriptionStore(Api api, Db_ db) {
+SubscriptionStore newSubscriptionStore(Api api, Db db) {
   return _SubscriptionStoreImpl(api: api, db: db);
 }
 
@@ -15,7 +15,7 @@ abstract class SubscriptionStore {
 
 class _SubscriptionStoreImpl extends SubscriptionStore {
   final Api api;
-  final Db_ db;
+  final Db db;
 
   _SubscriptionStoreImpl({
     @required this.api,
