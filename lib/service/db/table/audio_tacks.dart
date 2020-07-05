@@ -1,4 +1,4 @@
-part of 'db.dart';
+part of '../db.dart';
 
 /// * This table stores tracks that are in queue.
 /// * - Tracks start from position 0.

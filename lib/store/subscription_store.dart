@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/sqldb/sqldb.dart';
+import 'package:phenopod/service/db/db.dart';
 
 SubscriptionStore newSubscriptionStore(Api api, Db db) {
   return _SubscriptionStoreImpl(api: api, db: db);

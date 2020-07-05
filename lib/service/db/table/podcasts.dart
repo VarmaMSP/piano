@@ -1,4 +1,4 @@
-part of 'db.dart';
+part of '../db.dart';
 
 @DataClassName('PodcastRow')
 class Podcasts extends Table {

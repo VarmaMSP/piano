@@ -1,4 +1,4 @@
-part of 'db.dart';
+part of '../db.dart';
 
 /// * This table stores playback progress of each episode
 /// * that user played

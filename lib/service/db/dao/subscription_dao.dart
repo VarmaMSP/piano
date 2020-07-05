@@ -1,4 +1,4 @@
-part of 'db.dart';
+part of '../db.dart';
 
 @UseDao(tables: [Subscriptions, SubscriptionFilters])
 class SubscriptionDao extends DatabaseAccessor<SqlDb>

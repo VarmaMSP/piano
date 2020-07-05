@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/model/task.dart';
-import 'package:phenopod/service/sqldb/sqldb.dart';
+import 'package:phenopod/service/db/db.dart';
 
 TaskStore newTaskStore(Api api, Db db) {
   return _TaskStoreImpl(api: api, db: db);

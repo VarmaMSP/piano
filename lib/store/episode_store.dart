@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/model/episode.dart';
-import 'package:phenopod/service/sqldb/sqldb.dart';
+import 'package:phenopod/service/db/db.dart';
 
 EpisodeStore newEpisodeStore(Api api, Db db) {
   return _EpisodeStoreImpl(api: api, db: db);

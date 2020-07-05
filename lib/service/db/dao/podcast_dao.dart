@@ -1,4 +1,4 @@
-part of 'db.dart';
+part of '../db.dart';
 
 @UseDao(tables: [Podcasts, Episodes, Subscriptions])
 class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
