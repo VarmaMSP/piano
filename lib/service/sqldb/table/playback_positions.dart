@@ -13,7 +13,7 @@ class PlaybackPositions extends Table {
   Set<Column> get primaryKey => {episodeId};
 }
 
-PlaybackPositionRow playbackRowFromModel(PlaybackPosition model) {
+PlaybackPositionRow playbackPositionRowFromModel(PlaybackPosition model) {
   return PlaybackPositionRow(
     episodeId: model.episodeId,
     position: model.position.inSeconds,

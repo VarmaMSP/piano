@@ -101,7 +101,10 @@ class AudioPlayerBloc {
         .map((queue) => queue.nowPlaying)
         .where((track) => track != null)
         .distinct()
-        .asyncMap((track) => store.playbackPosition.get_(track.episode.id))
+        .asyncMap(
+          (track) =>
+              store.playbackPosition.watchByEpisode(track.episode.id).first,
+        )
         .where((pos) => !pos.isEmpty)
         .listen((pos) => _playbackPositionSubject.add(
               PlaybackPosition(

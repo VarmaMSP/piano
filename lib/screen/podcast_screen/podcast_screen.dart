@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
-import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/widgets/screen/layout.dart';
-import 'package:phenopod/widgets/screen/loading_layout.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/about_tab.dart';

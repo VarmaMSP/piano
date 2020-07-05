@@ -29,9 +29,9 @@ class SubscriptionsScreenBloc {
   }
 
   void _handleFeedChanges() {
-    store.subscription.watchFeed().distinct().listen((feed) {
-      _subscriptionsFeed.add(feed);
-    });
+    // store.subscription.watchFeed().distinct().listen((feed) {
+    //   _subscriptionsFeed.add(feed);
+    // });
   }
 
   void _handlePodcastActions() {

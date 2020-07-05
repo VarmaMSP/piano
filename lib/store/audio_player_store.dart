@@ -1,16 +1,29 @@
+import 'package:flutter/foundation.dart';
+import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/model/queue.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
-import 'package:phenopod/store/store.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'db.dart';
+AudioPlayerStore newAudioPlayerStore(Api api, Db_ db) {
+  return _AudioPlayerStoreImpl(api: api, db: db);
+}
 
-class AudioPlayerDb extends AudioPlayerStore {
-  final Db db;
-  final AudioPlayerStore baseStore;
+abstract class AudioPlayerStore {
+  Future<void> saveQueue(Queue queue);
+  Future<void> saveSetting(AudioPlayerSetting setting);
+  Stream<Queue> watchQueue();
+  Stream<AudioTrack> watchNowPlaying();
+  Stream<AudioPlayerSetting> watchSetting();
+}
 
-  AudioPlayerDb({this.baseStore, this.db});
+class _AudioPlayerStoreImpl extends AudioPlayerStore {
+  final Api api;
+  final Db_ db;
+
+  _AudioPlayerStoreImpl({
+    @required this.api,
+    @required this.db,
+  });
 
   @override
   Future<void> saveQueue(Queue queue) async {
@@ -40,8 +53,8 @@ class AudioPlayerDb extends AudioPlayerStore {
   }
 
   @override
-  Future<void> saveSetting(AudioPlayerSetting setting) {
-    return db.preferenceDao.savePreference(
+  Future<void> saveSetting(AudioPlayerSetting setting) async {
+    await db.preferenceDao.savePreference(
       key: AudioPlayerSetting.key,
       value: PreferenceValue(audioPlayerSetting: setting),
     );
@@ -62,17 +75,15 @@ class AudioPlayerDb extends AudioPlayerStore {
   }
 
   @override
-  Future<Queue> getQueue() {
-    return watchQueue().first;
-  }
-
-  @override
-  Future<AudioTrack> getNowPlaying() async {
-    final pref = (await db.preferenceDao.getPreference(QueuePreference.key))
-        ?.queuePreference;
-    return pref == null
-        ? null
-        : await db.audioTrackDao.getTrackByPosition(pref.position);
+  Stream<AudioTrack> watchNowPlaying() {
+    return db.preferenceDao.watchPreference(QueuePreference.key).asyncMap(
+      (pref) {
+        final queuePref = pref?.queuePreference;
+        return queuePref != null
+            ? db.audioTrackDao.getTrackByPosition(queuePref.position)
+            : Future.value(null);
+      },
+    );
   }
 
   @override
@@ -80,10 +91,5 @@ class AudioPlayerDb extends AudioPlayerStore {
     return db.preferenceDao
         .watchPreference(AudioPlayerSetting.key)
         .map((x) => x?.audioPlayerSetting ?? AudioPlayerSetting.standard());
-  }
-
-  @override
-  Future<AudioPlayerSetting> getSetting() {
-    return watchSetting().first;
   }
 }

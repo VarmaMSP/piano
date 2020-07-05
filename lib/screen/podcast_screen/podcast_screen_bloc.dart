@@ -40,8 +40,6 @@ class PodcastScreenBloc {
     @required this.urlParam,
     @required this.podcastActionsBloc,
   }) {
-    store.podcast.refresh(urlParam);
-
     /// Handle changes from db
     _handleChangesFromDb();
 
@@ -50,9 +48,14 @@ class PodcastScreenBloc {
   }
 
   void _handleChangesFromDb() {
-    _podcastDbSubscription = store.podcast.watch(urlParam).listen(_podcast.add);
+    _podcastDbSubscription =
+        store.podcast.watchByUrlParam(urlParam).listen(_podcast.add);
     _episodeDbSubscription = store.episode
-        .watchByPodcast(getIdFromUrlParam(urlParam))
+        .watchByPodcastPaginated(
+          podcastId: getIdFromUrlParam(urlParam),
+          offset: 0,
+          limit: 15,
+        )
         .listen(_episodes.add);
   }
 
@@ -82,11 +85,13 @@ class PodcastScreenBloc {
   /// load more episodes
   Future<void> loadMoreEpisodes() async {
     final podcast = await _podcast.first;
-    final episodes = await store.episode.getByPodcastPaginated(
-      podcast.id,
-      podcast.episodes.length,
-      30,
-    );
+    final episodes = await store.episode
+        .watchByPodcastPaginated(
+          podcastId: podcast.id,
+          offset: podcast.episodes.length,
+          limit: 30,
+        )
+        .first;
 
     if (!_isDisposed) {
       _podcast.add(podcast.copyWith(

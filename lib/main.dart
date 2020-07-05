@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_page_transition/flutter_page_transition.dart';
 import 'package:phenopod/app/app.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
+import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
@@ -11,21 +11,18 @@ import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
 import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/service/audio_service/audio_service.dart';
-import 'package:phenopod/service/http_client.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
-import 'package:phenopod/service/task_runner.dart';
 import 'package:phenopod/store/store.dart';
-import 'package:phenopod/store/store_impl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final sqlDb = await newSqlDb();
-  final httpClient = await newHttpClient();
+  final api = await newApi();
+  final db = await newDb();
+  final store = newStore(api, db);
   final audioService = newAudioService();
-  final store = newStore(sqlDb, httpClient);
 
-  TaskRunner(store: store).init();
+  // TaskRunner(store: store).init();
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -34,8 +31,7 @@ void main() async {
 
   runApp(Root(
     store: store,
-    sqlDb: sqlDb,
-    httpClient: httpClient,
+    sqlDb: db.sqlDb,
     audioService: audioService,
   ));
 }
@@ -44,13 +40,11 @@ class Root extends StatefulWidget {
   Root({
     @required this.store,
     @required this.sqlDb,
-    @required this.httpClient,
     @required this.audioService,
   });
 
   final Store store;
   final SqlDb sqlDb;
-  final HttpClient httpClient;
   final AudioService audioService;
 
   @override
@@ -139,15 +133,30 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
                   builder: (context) => App(),
                 );
               case '/queue':
-                return PageTransition(
-                  type: PageTransitionType.slideUp,
-                  child: QueueScreen(),
+                return PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => QueueScreen(),
+                  transitionsBuilder: (_, animation, __, child) =>
+                      SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0.0, 1.0),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  ),
                 );
               case '/search':
-                return PageTransition(
-                  type: PageTransitionType.slideUp,
-                  child: SearchScreen(),
+                return PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => SearchScreen(),
+                  transitionsBuilder: (_, animation, __, child) =>
+                      SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0.0, 1.0),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  ),
                 );
+
               default:
                 return null;
             }

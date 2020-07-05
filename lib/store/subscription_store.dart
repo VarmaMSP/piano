@@ -10,9 +10,7 @@ SubscriptionStore newSubscriptionStore(Api api, Db_ db) {
 abstract class SubscriptionStore {
   Future<void> subscribe(Podcast podcast);
   Future<void> unsubscribe(Podcast podcast);
-  Future<SubscriptionsFeed> getFeed();
-  Stream<SubscriptionsFeed> watchFeed();
-  Future<void> updateFeed();
+  Future<void> watchSubscribedPodcasts();
 }
 
 class _SubscriptionStoreImpl extends SubscriptionStore {
@@ -25,32 +23,17 @@ class _SubscriptionStoreImpl extends SubscriptionStore {
   });
 
   @override
-  Future<SubscriptionsFeed> getFeed() {
-    // TODO: implement getFeed
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> subscribe(Podcast podcast) {
-    // TODO: implement subscribe
     throw UnimplementedError();
   }
 
   @override
   Future<void> unsubscribe(Podcast podcast) {
-    // TODO: implement unsubscribe
     throw UnimplementedError();
   }
 
   @override
-  Future<void> updateFeed() {
-    // TODO: implement updateFeed
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<SubscriptionsFeed> watchFeed() {
-    // TODO: implement watchFeed
+  Future<void> watchSubscribedPodcasts() {
     throw UnimplementedError();
   }
 }

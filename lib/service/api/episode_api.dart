@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:phenopod/model/episode.dart';
-import 'package:phenopod/service/http_client.dart';
+
+import 'http_client.dart';
 
 EpisodeApi newEpisodeApi(HttpClient httpClient) {
   return _EpisodeApiImpl(httpClient);

@@ -69,11 +69,15 @@ class Thumbnail extends StatelessWidget {
         ));
       },
       child: StreamBuilder<PlaybackPosition>(
-        stream: store.playbackPosition.watch(episode.id),
+        stream: store.playbackPosition.watchByEpisode(episode.id),
         builder: (context, snapshot) {
           return Container(
             height: thumbnailSize,
             width: thumbnailSize,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              border: Border.all(color: Colors.grey.shade400, width: 0.5),
+            ),
             child: Stack(
               children: <Widget>[
                 _buildImage(snapshot.data),
@@ -93,37 +97,17 @@ class Thumbnail extends StatelessWidget {
   }
 
   Widget _buildImage(PlaybackPosition playback) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(8.0),
-          topRight: Radius.circular(8.0),
-          bottomLeft:
-              Radius.circular(playback == null || playback.isEmpty ? 8.0 : 4.0),
-          bottomRight:
-              Radius.circular(playback == null || playback.isEmpty ? 8.0 : 4.0),
-        ),
-        border: Border.all(color: Colors.grey.shade400, width: 0.5),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(8.0),
-          topRight: Radius.circular(8.0),
-          bottomLeft:
-              Radius.circular(playback == null || playback.isEmpty ? 8.0 : 4.0),
-          bottomRight:
-              Radius.circular(playback == null || playback.isEmpty ? 8.0 : 4.0),
-        ),
-        child: CachedNetworkImage(
-          imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
-          fit: BoxFit.fill,
+    return ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      child: CachedNetworkImage(
+        imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
+        fit: BoxFit.fill,
+        height: thumbnailSize,
+        width: thumbnailSize,
+        placeholder: (BuildContext context, String url) => Container(
           height: thumbnailSize,
           width: thumbnailSize,
-          placeholder: (BuildContext context, String url) => Container(
-            height: thumbnailSize,
-            width: thumbnailSize,
-            color: TWColors.gray.shade300,
-          ),
+          color: TWColors.gray.shade300,
         ),
       ),
     );
@@ -178,12 +162,12 @@ class Thumbnail extends StatelessWidget {
       child: Container(
         height: 5,
         width: thumbnailSize,
-        color: const Color.fromRGBO(0, 0, 0, 0.35),
+        color: const Color.fromRGBO(255, 255, 255, 0.45),
         alignment: Alignment.centerLeft,
         child: FractionallySizedBox(
           heightFactor: 1.0,
           widthFactor: playback.percentage,
-          child: Container(color: Colors.yellow.shade200),
+          child: Container(color: Colors.red.shade200),
         ),
       ),
     );

@@ -37,6 +37,36 @@ Future<SqlDb> newSqlDb() async {
   return SqlDb.connect(databaseConnection);
 }
 
+Future<Db_> newDb() async {
+  final moorIsolate = await getMoorIsolate();
+  final databaseConnection = await moorIsolate.connect();
+  final sqldb = SqlDb.connect(databaseConnection);
+  return Db_(sqldb);
+}
+
+class Db_ {
+  final SqlDb sqlDb;
+  final PodcastDao podcastDao;
+  final EpisodeDao episodeDao;
+  final PlaybackPositionDao playbackPositionDao;
+  final PreferenceDao preferenceDao;
+  final AudioTrackDao audioTrackDao;
+  final SubscriptionDao subscriptionDao;
+  final TaskDao taskDao;
+
+  Db_(this.sqlDb)
+      : podcastDao = PodcastDao(sqlDb),
+        episodeDao = EpisodeDao(sqlDb),
+        playbackPositionDao = PlaybackPositionDao(sqlDb),
+        preferenceDao = PreferenceDao(sqlDb),
+        audioTrackDao = AudioTrackDao(sqlDb),
+        subscriptionDao = SubscriptionDao(sqlDb),
+        taskDao = TaskDao(sqlDb);
+
+  Future<T> Function<T>(Future<T> Function()) get transaction =>
+      sqlDb.transaction;
+}
+
 @UseMoor(
   tables: [
     Podcasts,

@@ -35,13 +35,6 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     return StreamBuilder<Podcast>(
       stream: Provider.of<PodcastScreenBloc>(context).podcast,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Container(
-            height: maxExtent - shrinkOffset,
-            padding: const EdgeInsets.symmetric(horizontal: 18),
-          );
-        }
-
         return Container(
           height: maxExtent - shrinkOffset,
           padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -61,19 +54,21 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                 right: 0.0,
                 child: _appBar(context, snapshot.data, shrinkOffset),
               ),
-              if ((maxExtent - shrinkOffset - minExtent).abs() > 0.001)
+              if (snapshot.hasData)
+                if ((maxExtent - shrinkOffset - minExtent).abs() > 0.001)
+                  Positioned(
+                    bottom: tabBarHeight,
+                    left: 0.0,
+                    right: 0.0,
+                    child: _flexibleArea(context, snapshot.data, shrinkOffset),
+                  ),
+              if (snapshot.hasData)
                 Positioned(
-                  bottom: tabBarHeight,
+                  bottom: 0.0,
                   left: 0.0,
                   right: 0.0,
-                  child: _flexibleArea(context, snapshot.data, shrinkOffset),
+                  child: _tabBar(context, shrinkOffset),
                 ),
-              Positioned(
-                bottom: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: _tabBar(context, shrinkOffset),
-              ),
             ],
           ),
         );
@@ -139,14 +134,16 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                     ),
                     offset: Offset(0, 40),
                     itemBuilder: (BuildContext context) {
-                      return <String>[
-                        'Share',
-                      ].map((String t) {
-                        return PopupMenuItem<String>(
-                          value: t,
-                          child: Text(t),
-                        );
-                      }).toList();
+                      return podcast == null
+                          ? []
+                          : <String>[
+                              'Share',
+                            ].map((String t) {
+                              return PopupMenuItem<String>(
+                                value: t,
+                                child: Text(t),
+                              );
+                            }).toList();
                     },
                     onSelected: (value) {
                       switch (value) {

@@ -12,21 +12,24 @@ void useSnackBar() {
       listen: false,
     );
     final podcastActionsSubscription = podcastActionsBloc.actions.listen(
-      (a) => a.when(subscribed: (data) {
-        if (data.synced) {
-          Flushbar(
-            message: 'Subscription added.',
-            duration: Duration(seconds: 2),
-          )..show(context);
-        }
-      }, unsubscribed: (data) {
-        if (data.synced) {
-          Flushbar(
-            message: 'Unsubscribed.',
-            duration: Duration(seconds: 2),
-          )..show(context);
-        }
-      }),
+      (a) => a.when(
+        subscribed: (data) {
+          if (data.synced) {
+            Flushbar(
+              message: 'Subscription added.',
+              duration: Duration(seconds: 2),
+            )..show(context);
+          }
+        },
+        unsubscribed: (data) {
+          if (data.synced) {
+            Flushbar(
+              message: 'Unsubscribed.',
+              duration: Duration(seconds: 2),
+            )..show(context);
+          }
+        },
+      ),
     );
 
     return () {

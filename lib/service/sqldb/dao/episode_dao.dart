@@ -32,6 +32,24 @@ class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
         .map((xs) => xs.map((x) => x.toModel()).toList());
   }
 
+  Stream<List<Episode>> watchEpisodesByPodcastsPaginated({
+    List<String> podcastIds,
+    int offset = 0,
+    int limit,
+  }) {
+    return (select(episodes)
+          ..where((tbl) => tbl.podcastId.isIn(podcastIds))
+          ..orderBy([
+            (tbl) => OrderingTerm(
+                  expression: tbl.pubDate,
+                  mode: OrderingMode.desc,
+                )
+          ])
+          ..limit(limit, offset: offset))
+        .watch()
+        .map((xs) => xs.map((x) => x.toModel()).toList());
+  }
+
   Stream<List<Episode>> watchEpisodesFromPodcasts(List<String> podcastIds) {
     return (select(episodes)
           ..where((tbl) => tbl.podcastId.isIn(podcastIds))

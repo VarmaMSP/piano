@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
-import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/screen/podcast_screen/podcast_screen_bloc.dart';
 import 'package:phenopod/widgets/episode_list_item/episode_list_item.dart';

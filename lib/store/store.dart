@@ -1,4 +1,18 @@
-import 'package:phenopod/model/main.dart';
+import 'package:flutter/foundation.dart';
+import 'package:phenopod/service/api/api.dart';
+import 'package:phenopod/service/sqldb/sqldb.dart';
+
+import 'user_store.dart';
+import 'podcast_store.dart';
+import 'episode_store.dart';
+import 'subscription_store.dart';
+import 'audio_player_store.dart';
+import 'playback_position_store.dart';
+import 'task_store.dart';
+
+Store newStore(Api api, Db_ db) {
+  return _StoreImpl(api: api, db: db);
+}
 
 abstract class Store {
   UserStore get user;
@@ -7,69 +21,47 @@ abstract class Store {
   SubscriptionStore get subscription;
   AudioPlayerStore get audioPlayer;
   PlaybackPositionStore get playbackPosition;
-  PreferenceStore get preference;
-  TaskQueueStore get taskQueue;
+  TaskStore get task;
 }
 
-abstract class UserStore {
-  Future<User> getSignedInUser();
-  Future<void> signInWithGuest(GuestCredentials credentials);
-  Future<void> signInWithGoogle(
-      {String idToken, GuestCredentials guestCredentials});
-  Future<void> signInWithFacebook(
-      {String accessToken, GuestCredentials guestCredentials});
-}
+class _StoreImpl extends Store {
+  final UserStore _user;
+  final PodcastStore _podcast;
+  final EpisodeStore _episode;
+  final SubscriptionStore _subscription;
+  final AudioPlayerStore _audioPlayer;
+  final PlaybackPositionStore _playbackPosition;
+  final TaskStore _task;
 
-abstract class PodcastStore {
-  Future<Podcast> get_(String podcastUrlParam);
-  Stream<Podcast> watch(String podcastUrlParam);
-  Stream<Podcast> watch_(String urlParam);
-  Future<void> refresh(String urlParam);
-  Future<void> cache(String _urlParam);
-  Future<bool> isCached({String id, String urlParam});
-  Future<void> deleteCache({String id, String urlParam});
-}
+  _StoreImpl({
+    @required Api api,
+    @required Db_ db,
+  })  : _user = newUserStore(api, db),
+        _podcast = newPodcastStore(api, db),
+        _episode = newEpisodeStore(api, db),
+        _subscription = newSubscriptionStore(api, db),
+        _audioPlayer = newAudioPlayerStore(api, db),
+        _playbackPosition = newPlaybackPositionStore(api, db),
+        _task = newTaskStore(api, db);
 
-abstract class EpisodeStore {
-  Future<void> saveAll(List<Episode> episodes);
-  Future<List<Episode>> getByPodcastPaginated(
-      String podcastId, int offset, int limit);
-  Stream<List<Episode>> watchByPodcast(String podcastId);
-  Future<List<Episode>> getFromSubscriptionsPaginated(int offset, int limit);
-}
+  @override
+  AudioPlayerStore get audioPlayer => _audioPlayer;
 
-abstract class SubscriptionStore {
-  Future<void> subscribe(Podcast podcast);
-  Future<void> unsubscribe(Podcast podcast);
-  Future<SubscriptionsFeed> getFeed();
-  Stream<SubscriptionsFeed> watchFeed();
-  Future<void> updateFeed();
-}
+  @override
+  EpisodeStore get episode => _episode;
 
-abstract class AudioPlayerStore {
-  Future<void> saveQueue(Queue queue);
-  Future<void> saveSetting(AudioPlayerSetting setting);
-  Future<Queue> getQueue();
-  Stream<Queue> watchQueue();
-  Future<AudioTrack> getNowPlaying();
-  Future<AudioPlayerSetting> getSetting();
-  Stream<AudioPlayerSetting> watchSetting();
-}
+  @override
+  PlaybackPositionStore get playbackPosition => _playbackPosition;
 
-abstract class PlaybackPositionStore {
-  Future<void> save(PlaybackPosition playback);
-  Future<void> update(PlaybackPosition playback);
-  Future<PlaybackPosition> get_(String episodeId);
-  Stream<PlaybackPosition> watch(String episodeId);
-}
+  @override
+  PodcastStore get podcast => _podcast;
 
-abstract class PreferenceStore {
-  Future<void> saveAudioSetting(AudioPlayerSetting setting);
-  Future<AudioPlayerSetting> getAudioSetting();
-  Stream<AudioPlayerSetting> watchAudioSetting();
-}
+  @override
+  SubscriptionStore get subscription => _subscription;
 
-abstract class TaskQueueStore {
-  Stream<Task> watchFront();
-  Future<void> pop();
+  @override
+  TaskStore get task => _task;
+
+  @override
+  UserStore get user => _user;
 }

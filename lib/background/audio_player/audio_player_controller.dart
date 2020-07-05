@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:phenopod/service/http_client.dart';
+import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/sqldb/sqldb.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/store/store_impl.dart';
 import 'package:phenopod/utils/audio_player.dart' as utils;
-import 'package:phenopod/utils/utils.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:audio_service/audio_service.dart' as audioservice;
 
@@ -34,8 +32,8 @@ class AudioPlayerController {
   /// Subscription to ticker
   StreamSubscription<dynamic> _tickerSubscription;
 
-  AudioPlayerController({SqlDb sqlDb, HttpClient httpClient}) {
-    _store = newStore(sqlDb, httpClient);
+  AudioPlayerController({Api api, Db_ db}) {
+    _store = newStore(api, db);
     _audioPlayer = AudioPlayer(
       onComplete: _playNext,
       onPlaying: _startPlaybackSync,
@@ -86,18 +84,18 @@ class AudioPlayerController {
   }
 
   Future<void> syncQueue() async {
-    final queue = await _store.audioPlayer.getQueue();
+    final queue = await _store.audioPlayer.watchQueue().first;
     _queueSubject.add(queue);
     _nowPlayingSubject.add(queue.nowPlaying);
   }
 
   Future<void> syncNowPlaying() async {
-    final nowPlaying = await _store.audioPlayer.getNowPlaying();
+    final nowPlaying = await _store.audioPlayer.watchNowPlaying().first;
     _nowPlayingSubject.add(nowPlaying);
   }
 
   Future<void> syncSetting() async {
-    final setting = await _store.preference.getAudioSetting();
+    final setting = await _store.audioPlayer.watchSetting().first;
     _settingSubject.add(setting);
   }
 
@@ -115,7 +113,7 @@ class AudioPlayerController {
   Future<void> _syncPlaybackStart(Duration duration) async {
     final nowPlaying = await _nowPlayingSubject.first;
     if (nowPlaying != null) {
-      await _store.playbackPosition.save(PlaybackPosition(
+      await _store.playbackPosition.upsert(PlaybackPosition(
         episodeId: nowPlaying.episode.id,
         position: Duration.zero,
         duration: duration,
@@ -128,7 +126,7 @@ class AudioPlayerController {
     final nowPlaying = await _nowPlayingSubject.first;
     final playbackState = audioservice.AudioServiceBackground.state;
     if (nowPlaying != null && utils.isValidState(playbackState)) {
-      await _store.playbackPosition.update(PlaybackPosition(
+      await _store.playbackPosition.upsert(PlaybackPosition(
         episodeId: nowPlaying.episode.id,
         position: playbackState.currentPosition,
       ));
@@ -151,13 +149,14 @@ class AudioPlayerController {
   void _handleStateChanges() {
     _nowPlayingSubject.stream.distinct().listen((audioTrack) async {
       if (audioTrack != null) {
-        final playbackPos = await _store.playbackPosition.get_(
-          audioTrack.episode.id,
-        );
-        unawaited(_audioPlayer.playMediaItem(
+        final playbackPos = await _store.playbackPosition
+            .watchByEpisode(audioTrack.episode.id)
+            .first;
+        // ignore: unawaited_futures
+        _audioPlayer.playMediaItem(
           audioTrack.toMediaItem(),
           start: !playbackPos.isEmpty ? playbackPos.position : null,
-        ));
+        );
       }
     });
   }
