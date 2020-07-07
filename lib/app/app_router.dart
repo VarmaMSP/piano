@@ -10,20 +10,24 @@ Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
     switch (settings.name) {
       case '/home':
         return PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),
+          transitionDuration: Duration.zero,
+          pageBuilder: (_, __, ___) => HomeScreen(),
         );
 
       case '/subscriptions':
         return PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              SubscriptionsScreen(),
+          transitionDuration: Duration.zero,
+          pageBuilder: (_, __, ___) => SubscriptionsScreen(),
         );
 
       case '/podcast':
         return PageRouteBuilder(
-          transitionDuration: Duration(milliseconds: 500),
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              PodcastScreen(urlParam: args['urlParam']),
+          transitionDuration: Duration.zero,
+          pageBuilder: (_, __, ___) => PodcastScreen(
+            urlParam: args['urlParam'],
+            title: args['title'],
+            author: args['author'],
+          ),
         );
 
       default:
