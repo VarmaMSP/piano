@@ -1,80 +1,91 @@
 import 'dart:async';
 
+import 'package:async/async.dart';
 import 'package:flutter/foundation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tuple/tuple.dart';
 
 /// This bloc is used to represent local state of podcast screen
 class PodcastScreenBloc {
   final Store store;
 
+  /// id of current podcast
+  final String id;
+
   /// urlParam of current podcast;
   final String urlParam;
 
-  /// This is used to apply updates to podcast
+  /// This is used to apply updates to screenData
   final PodcastActionsBloc podcastActionsBloc;
 
-  /// controller for podcast
-  final BehaviorSubject<Podcast> _podcast = BehaviorSubject<Podcast>();
+  /// Controller for screen data
+  final BehaviorSubject<PodcastScreenData> _screenData =
+      BehaviorSubject<PodcastScreenData>();
 
-  /// controller for episodes
-  final BehaviorSubject<List<Episode>> _episodes =
-      BehaviorSubject<List<Episode>>();
+  /// [_episodePageOffsets] contains offsets of pages in episodePageGroup
+  /// EpisodePageStreams are added to _episodePageGroup when required
+  final Set<int> _episodePageOffsets = {};
+  final StreamGroup<Tuple2<int, List<Episode>>> _episodePageGroup =
+      StreamGroup<Tuple2<int, List<Episode>>>();
 
-  /// This flag is turned on when [dispose()] is invoked
-  /// Because the podcast screen widget can dispose this bloc at any
-  /// time, check this flag before pushing values into stream controllers
-  /// to avoid exceptions
-  bool _isDisposed = false;
-
-  /// Subscriptions to podcast actions
+  /// Subscriptions made in this bloc
+  StreamSubscription<dynamic> _storeSubscription;
   StreamSubscription<dynamic> _podcastActionsSubscription;
-  StreamSubscription<dynamic> _podcastDbSubscription;
-  StreamSubscription<dynamic> _episodeDbSubscription;
 
   PodcastScreenBloc({
     @required this.store,
     @required this.urlParam,
     @required this.podcastActionsBloc,
-  }) {
-    /// Handle changes from db
-    _handleChangesFromDb();
+  }) : id = getIdFromUrlParam(urlParam) {
+    /// load data from streams
+    _handleDataFromStore();
 
     /// Handle any changes as a result of podcast actions
     _handlePodcastActions();
   }
 
-  void _handleChangesFromDb() {
-    _podcastDbSubscription =
-        store.podcast.watchByUrlParam(urlParam).listen(_podcast.add);
-    _episodeDbSubscription = store.episode
-        .watchByPodcastPaginated(
-          podcastId: getIdFromUrlParam(urlParam),
-          offset: 0,
-          limit: 15,
-        )
-        .listen(_episodes.add);
+  Future<void> _handleDataFromStore() async {
+    _storeSubscription = Rx.combineLatest3<Podcast, Subscription,
+        List<List<Episode>>, PodcastScreenData>(
+      store.podcast.watchByUrlParam(urlParam),
+      store.subscription.watchByPodcast(id),
+      _episodePageGroup.stream.scan<Map<int, List<Episode>>>(
+        (acc, tup, _) => {...acc, tup.item1: tup.item2},
+        {},
+      ).map((m) => m.values.toList()),
+      (podcast, subscription, episodes) => PodcastScreenData(
+        podcast: podcast,
+        episodes: episodes.expand((x) => x).toList(),
+        isSubscribed: subscription != null,
+        receivedAllEpisodes: episodes.length == 1
+            ? episodes.first.length < 15
+            : episodes.last.length < 30,
+      ),
+    ).listen(_screenData.add);
+
+    _watchEpisodePage(0, 15);
   }
 
   void _handlePodcastActions() {
     _podcastActionsSubscription = podcastActionsBloc.actions.listen(
       (action) => action.whenPartial(
         subscribed: (data) async {
-          if (data.podcastUrlParam == urlParam) {
-            final screenData = await _podcast.first;
+          if (data.podcastId == id) {
+            final screenData = await _screenData.first;
             if (!screenData.isSubscribed) {
-              _podcast.add(screenData.copyWith(isSubscribed: true));
+              _screenData.add(screenData.copyWith(isSubscribed: true));
             }
           }
         },
         unsubscribed: (data) async {
-          if (data.podcastUrlParam == urlParam) {
-            final screenData = await _podcast.first;
+          if (data.podcastId == id) {
+            final screenData = await _screenData.first;
             if (screenData.isSubscribed) {
-              _podcast.add(screenData.copyWith(isSubscribed: false));
+              _screenData.add(screenData.copyWith(isSubscribed: false));
             }
           }
         },
@@ -82,37 +93,36 @@ class PodcastScreenBloc {
     );
   }
 
-  /// load more episodes
-  Future<void> loadMoreEpisodes() async {
-    final podcast = await _podcast.first;
-    final episodes = await store.episode
-        .watchByPodcastPaginated(
-          podcastId: podcast.id,
-          offset: podcast.episodes.length,
-          limit: 30,
-        )
-        .first;
-
-    if (!_isDisposed) {
-      _podcast.add(podcast.copyWith(
-        episodes: podcast.episodes + episodes,
-      ));
-    }
+  /// Sink to load more episodes
+  void loadMoreEpisodes() async {
+    final screenData = await _screenData.first;
+    final offset = screenData.episodes.length;
+    _watchEpisodePage(offset, 30);
   }
 
-  Stream<Podcast> get podcast => _podcast.stream;
+  void _watchEpisodePage(int offset, int limit) {
+    if (_episodePageOffsets.contains(offset)) {
+      return;
+    }
 
-  Stream<List<Episode>> get episodes => _episodes.stream;
+    _episodePageOffsets.add(offset);
+    _episodePageGroup.add(
+      store.episode
+          .watchByPodcastPaginated(
+            podcastId: id,
+            offset: offset,
+            limit: 30,
+          )
+          .map((val) => Tuple2(offset, val)),
+    );
+  }
 
-  /// Screen data
-  Stream<Podcast> get screenData => _podcast.stream;
+  /// Stream of ScreenData
+  Stream<PodcastScreenData> get screenData => _screenData.stream.distinct();
 
   Future<void> dispose() async {
-    await _podcast.close();
-    await _episodes.close();
+    await _screenData.close();
+    await _storeSubscription.cancel();
     await _podcastActionsSubscription.cancel();
-    await _podcastDbSubscription.cancel();
-    await _episodeDbSubscription.cancel();
-    _isDisposed = true;
   }
 }
