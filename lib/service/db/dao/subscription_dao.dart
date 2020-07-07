@@ -12,7 +12,7 @@ class SubscriptionDao extends DatabaseAccessor<SqlDb>
     );
   }
 
-  Stream<Subscription> watchSubscription(String podcastId) {
+  Stream<Subscription> watchByPodcast(String podcastId) {
     return (select(subscriptions)
           ..where((tbl) => tbl.podcastId.equals(podcastId)))
         .watchSingle()

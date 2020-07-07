@@ -11,6 +11,7 @@ abstract class SubscriptionStore {
   Future<void> subscribe(Podcast podcast);
   Future<void> unsubscribe(Podcast podcast);
   Future<void> watchSubscribedPodcasts();
+  Stream<Subscription> watchByPodcast(String podcastId);
 }
 
 class _SubscriptionStoreImpl extends SubscriptionStore {
@@ -35,5 +36,10 @@ class _SubscriptionStoreImpl extends SubscriptionStore {
   @override
   Future<void> watchSubscribedPodcasts() {
     throw UnimplementedError();
+  }
+
+  @override
+  Stream<Subscription> watchByPodcast(String podcastId) {
+    return db.subscriptionDao.watchByPodcast(podcastId);
   }
 }

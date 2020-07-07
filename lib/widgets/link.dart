@@ -18,7 +18,11 @@ class PodcastLink extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pushNamed(
           '/podcast',
-          arguments: {'urlParam': podcast.urlParam},
+          arguments: {
+            'urlParam': podcast.urlParam,
+            'title': podcast.title,
+            'author': podcast.author,
+          },
         );
       },
       child: child,

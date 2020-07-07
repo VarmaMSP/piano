@@ -71,11 +71,11 @@ class EpisodeListItem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 4.5),
+                                padding: const EdgeInsets.only(bottom: 6),
                                 child: title,
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 3),
+                                padding: const EdgeInsets.only(bottom: 4),
                                 child: info,
                               ),
                             ],
