@@ -10,6 +10,7 @@ import 'package:phenopod/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+import 'package:flutter/services.dart';
 
 class QueueScreen extends StatelessWidget {
   const QueueScreen({Key key}) : super(key: key);
@@ -17,6 +18,13 @@ class QueueScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
 
     return Scaffold(
       backgroundColor: Colors.white,

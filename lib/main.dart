@@ -132,6 +132,7 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
                 return MaterialPageRoute(
                   builder: (context) => App(),
                 );
+
               case '/queue':
                 return PageRouteBuilder(
                   pageBuilder: (_, __, ___) => QueueScreen(),
@@ -144,18 +145,20 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
                     child: child,
                   ),
                 );
+
               case '/search':
-                return PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => SearchScreen(),
-                  transitionsBuilder: (_, animation, __, child) =>
-                      SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(0.0, 1.0),
-                      end: Offset.zero,
-                    ).animate(animation),
-                    child: child,
-                  ),
-                );
+                return MaterialPageRoute(builder: (context) => SearchScreen());
+              // return PageRouteBuilder(
+              //   pageBuilder: (_, __, ___) => SearchScreen(),
+              //   transitionsBuilder: (_, animation, __, child) =>
+              //       SlideTransition(
+              //     position: Tween<Offset>(
+              //       begin: const Offset(0.0, 1.0),
+              //       end: Offset.zero,
+              //     ).animate(animation),
+              //     child: child,
+              //   ),
+              // );
 
               default:
                 return null;

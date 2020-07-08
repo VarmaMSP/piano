@@ -23,40 +23,44 @@ class AboutTab extends StatelessWidget {
       child: Container(
         color: Colors.white,
         padding: const EdgeInsets.only(left: 18, right: 18),
-        child: _about(screenData.podcast),
+        child: CustomScrollView(
+          key: const PageStorageKey('about'),
+          slivers: [
+            SliverOverlapInjector(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                padding: EdgeInsets.only(top: 15),
+                child: Text(
+                  screenData.podcast.description
+                      .replaceAll('\n', ' ')
+                      .replaceAll('&nbsp;', ' ')
+                      .replaceAll('&amp', '&'),
+                  style: TextStyle(
+                    height: 1.5,
+                    fontSize: 13.5,
+                    color: TWColors.gray.shade800,
+                    letterSpacing: 0.25,
+                  ),
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                padding: EdgeInsets.only(top: 8),
+                transform: Matrix4.translationValues(-10, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    _link(screenData.podcast.link, 'Website', Icons.launch),
+                    _link(screenData.podcast.feedUrl, 'RSS', Icons.launch),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget _about(Podcast podcast) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(height: 98),
-        Text(
-          podcast.description
-              .replaceAll('\n', ' ')
-              .replaceAll('&nbsp;', ' ')
-              .replaceAll('&amp', '&'),
-          style: TextStyle(
-            height: 1.5,
-            fontSize: 13.5,
-            color: TWColors.gray.shade800,
-            letterSpacing: 0.25,
-          ),
-        ),
-        Container(height: 12),
-        Transform.translate(
-          offset: const Offset(-10, 0),
-          child: Row(
-            children: <Widget>[
-              _link(podcast.link, 'Website', Icons.launch),
-              _link(podcast.feedUrl, 'RSS', Icons.launch),
-            ],
-          ),
-        ),
-      ],
     );
   }
 

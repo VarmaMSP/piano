@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/screen/layout.dart';
+import 'package:flutter/services.dart';
 
 import 'widgets/search_header_delegate.dart';
 import 'widgets/suggestions_list.dart';
@@ -37,6 +38,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
+
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,

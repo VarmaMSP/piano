@@ -24,30 +24,26 @@ class EpisodesTab extends StatelessWidget {
         color: Colors.white,
         child: CustomScrollView(
           key: const PageStorageKey('episodes'),
-          slivers: <Widget>[
-            SliverToBoxAdapter(child: Container(height: 105)),
-            if (screenData == null)
-              SliverToBoxAdapter(
-                child: Container(
-                  padding: const EdgeInsets.only(top: 100),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-              ),
-            if (screenData != null)
-              _buildAnimatedEpisodeList(
+          slivers: [
+            SliverOverlapInjector(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.only(top: 15),
+              sliver: _buildAnimatedEpisodeList(
                 screenData.podcast,
                 screenData.episodes.length <= 15
                     ? screenData.episodes
                     : screenData.episodes.sublist(0, 15),
               ),
-            if (screenData != null)
-              _buildEpisodeList(
-                screenData.podcast,
-                screenData.episodes.length <= 15
-                    ? []
-                    : screenData.episodes.sublist(15),
-                screenData.receivedAllEpisodes,
-              ),
+            ),
+            _buildEpisodeList(
+              screenData.podcast,
+              screenData.episodes.length <= 15
+                  ? []
+                  : screenData.episodes.sublist(15),
+              screenData.receivedAllEpisodes,
+            ),
           ],
         ),
       ),

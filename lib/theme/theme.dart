@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final ThemeData appTheme = ThemeData(
+  pageTransitionsTheme: PageTransitionsTheme(
+    builders: {
+      TargetPlatform.iOS: OpenUpwardsPageTransitionsBuilder(),
+      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+    },
+  ),
   textTheme: TextTheme(
     headline5: GoogleFonts.inter(
       fontSize: 16,
