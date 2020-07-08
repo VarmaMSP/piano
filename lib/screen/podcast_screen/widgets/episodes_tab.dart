@@ -34,14 +34,40 @@ class EpisodesTab extends StatelessWidget {
                 ),
               ),
             if (screenData != null)
+              _buildAnimatedEpisodeList(
+                screenData.podcast,
+                screenData.episodes.length <= 15
+                    ? screenData.episodes
+                    : screenData.episodes.sublist(0, 15),
+              ),
+            if (screenData != null)
               _buildEpisodeList(
                 screenData.podcast,
-                screenData.episodes,
+                screenData.episodes.length <= 15
+                    ? []
+                    : screenData.episodes.sublist(15),
                 screenData.receivedAllEpisodes,
               ),
-            if (screenData != null && !screenData.receivedAllEpisodes)
-              SliverToBoxAdapter(child: _buildLoadingIndicator()),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAnimatedEpisodeList(
+    Podcast podcast,
+    List<Episode> episodes,
+  ) {
+    return SliverImplicitlyAnimatedList<Episode>(
+      items: episodes,
+      areItemsTheSame: (a, b) => a.id == b.id,
+      itemBuilder: (context, animation, episode, index) => SizeFadeTransition(
+        sizeFraction: 0.7,
+        curve: Curves.easeInOut,
+        animation: animation,
+        child: EpisodeListItem(
+          episode: episode,
+          podcast: podcast,
         ),
       ),
     );
@@ -52,23 +78,20 @@ class EpisodesTab extends StatelessWidget {
     List<Episode> episodes,
     bool receivedAllEpisodes,
   ) {
-    return SliverImplicitlyAnimatedList<Episode>(
-      items: episodes,
-      areItemsTheSame: (a, b) => a.id == b.id,
-      itemBuilder: (context, animation, episode, index) {
-        if (index == episodes.length - 1 && !receivedAllEpisodes) {
-          loadMoreEpisodes();
-        }
-        return SizeFadeTransition(
-          sizeFraction: 0.7,
-          curve: Curves.easeInOut,
-          animation: animation,
-          child: EpisodeListItem(
-            episode: episode,
-            podcast: podcast,
-          ),
-        );
-      },
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          if (index < episodes.length) {
+            return EpisodeListItem(
+              episode: episodes[index],
+              podcast: podcast,
+            );
+          }
+          Future.delayed(Duration(milliseconds: 100), loadMoreEpisodes);
+          return _buildLoadingIndicator();
+        },
+        childCount: receivedAllEpisodes ? episodes.length : episodes.length + 1,
+      ),
     );
   }
 

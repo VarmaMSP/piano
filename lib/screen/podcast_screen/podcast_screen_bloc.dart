@@ -101,16 +101,21 @@ class PodcastScreenBloc {
       return;
     }
 
+    final episodePageStream = store.episode
+        .watchByPodcastPaginated(
+          podcastId: id,
+          offset: offset,
+          limit: limit,
+        )
+        .map((x) => Tuple2(offset, x));
+
     _episodePageOffsets.add(offset);
-    _episodePageGroup.add(
-      store.episode
-          .watchByPodcastPaginated(
-            podcastId: id,
-            offset: offset,
-            limit: limit,
-          )
-          .map((x) => Tuple2(offset, x)),
-    );
+    _episodePageGroup.add(Rx.combineLatest2<Tuple2<int, List<Episode>>, dynamic,
+        Tuple2<int, List<Episode>>>(
+      episodePageStream,
+      Stream.periodic(Duration(milliseconds: 500)).take(1),
+      (a, _) => a,
+    ));
   }
 
   /// Sink to load more episodes
