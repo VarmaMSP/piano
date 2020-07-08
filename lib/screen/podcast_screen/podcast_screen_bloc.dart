@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:async/async.dart';
 import 'package:flutter/foundation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
+import 'package:phenopod/utils/stream.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:tuple/tuple.dart';
 
 /// This bloc is used to represent local state of podcast screen
 class PodcastScreenBloc {
@@ -26,11 +25,9 @@ class PodcastScreenBloc {
   final BehaviorSubject<PodcastScreenData> _screenData =
       BehaviorSubject<PodcastScreenData>();
 
-  /// [_episodePageOffsets] contains offsets of pages in episodePageGroup
-  /// EpisodePageStreams are added to _episodePageGroup when required
-  final Set<int> _episodePageOffsets = {};
-  final StreamGroup<Tuple2<int, List<Episode>>> _episodePageGroup =
-      StreamGroup<Tuple2<int, List<Episode>>>();
+  /// Stream for episode pages
+  final PaginationStream<Episode> _episodePagesStream =
+      PaginationStream<Episode>();
 
   /// Subscriptions made in this bloc
   StreamSubscription<dynamic> _storeSubscription;
@@ -49,17 +46,11 @@ class PodcastScreenBloc {
   }
 
   Future<void> _handleDataFromStore() async {
-    final episodePagesMap =
-        _episodePageGroup.stream.scan<Map<int, List<Episode>>>(
-      (acc, tup, _) => {...acc, tup.item1: tup.item2},
-      {},
-    );
-
     _storeSubscription = Rx.combineLatest3<Podcast, Subscription,
         List<List<Episode>>, PodcastScreenData>(
       store.podcast.watchByUrlParam(urlParam),
       store.subscription.watchByPodcast(id),
-      episodePagesMap.map((m) => m.values.toList()),
+      _episodePagesStream.stream,
       (podcast, subscription, episodesPages) => PodcastScreenData(
         podcast: podcast,
         episodes: episodesPages.expand((x) => x).toList(),
@@ -68,9 +59,18 @@ class PodcastScreenBloc {
             ? episodesPages.first.length < 15
             : episodesPages.last.length < 30,
       ),
-    ).where((x) => x.episodes.isNotEmpty).distinct().listen(_screenData.add);
+    ).distinct().listen(_screenData.add);
 
-    _watchEpisodePage(0, 15);
+    if (!_episodePagesStream.containsPage(0)) {
+      _episodePagesStream.addStream(
+        0,
+        store.episode.watchByPodcastPaginated(
+          podcastId: id,
+          offset: 0,
+          limit: 15,
+        ),
+      );
+    }
   }
 
   void _handlePodcastActions() {
@@ -96,33 +96,21 @@ class PodcastScreenBloc {
     );
   }
 
-  void _watchEpisodePage(int offset, int limit) {
-    if (_episodePageOffsets.contains(offset)) {
-      return;
-    }
-
-    final episodePageStream = store.episode
-        .watchByPodcastPaginated(
-          podcastId: id,
-          offset: offset,
-          limit: limit,
-        )
-        .map((x) => Tuple2(offset, x));
-
-    _episodePageOffsets.add(offset);
-    _episodePageGroup.add(Rx.combineLatest2<Tuple2<int, List<Episode>>, dynamic,
-        Tuple2<int, List<Episode>>>(
-      episodePageStream,
-      Stream.periodic(Duration(milliseconds: 500)).take(1),
-      (a, _) => a,
-    ));
-  }
-
   /// Sink to load more episodes
   void loadMoreEpisodes() async {
     final screenData = await _screenData.first;
     final offset = screenData.episodes.length;
-    _watchEpisodePage(offset, 30);
+
+    if (!_episodePagesStream.containsPage(offset)) {
+      _episodePagesStream.addStream(
+        offset,
+        store.episode.watchByPodcastPaginated(
+          podcastId: id,
+          offset: offset,
+          limit: 30,
+        ),
+      );
+    }
   }
 
   /// Stream of ScreenData
