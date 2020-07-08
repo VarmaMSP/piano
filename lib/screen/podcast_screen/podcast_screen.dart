@@ -55,9 +55,7 @@ class PodcastScreen extends HookWidget {
           body: !snapshot.hasData
               ? Container(
                   constraints: BoxConstraints.expand(),
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: Center(child: CircularProgressIndicator()),
                 )
               : TabBarView(
                   controller: tabController,

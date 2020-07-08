@@ -49,23 +49,26 @@ class PodcastScreenBloc {
   }
 
   Future<void> _handleDataFromStore() async {
+    final episodePagesMap =
+        _episodePageGroup.stream.scan<Map<int, List<Episode>>>(
+      (acc, tup, _) => {...acc, tup.item1: tup.item2},
+      {},
+    );
+
     _storeSubscription = Rx.combineLatest3<Podcast, Subscription,
         List<List<Episode>>, PodcastScreenData>(
       store.podcast.watchByUrlParam(urlParam),
       store.subscription.watchByPodcast(id),
-      _episodePageGroup.stream.scan<Map<int, List<Episode>>>(
-        (acc, tup, _) => {...acc, tup.item1: tup.item2},
-        {},
-      ).map((m) => m.values.toList()),
-      (podcast, subscription, episodes) => PodcastScreenData(
+      episodePagesMap.map((m) => m.values.toList()),
+      (podcast, subscription, episodesPages) => PodcastScreenData(
         podcast: podcast,
-        episodes: episodes.expand((x) => x).toList(),
+        episodes: episodesPages.expand((x) => x).toList(),
         isSubscribed: subscription != null,
-        receivedAllEpisodes: episodes.length == 1
-            ? episodes.first.length < 15
-            : episodes.last.length < 30,
+        receivedAllEpisodes: episodesPages.length == 1
+            ? episodesPages.first.length < 15
+            : episodesPages.last.length < 30,
       ),
-    ).listen(_screenData.add);
+    ).where((x) => x.episodes.isNotEmpty).distinct().listen(_screenData.add);
 
     _watchEpisodePage(0, 15);
   }
@@ -93,13 +96,6 @@ class PodcastScreenBloc {
     );
   }
 
-  /// Sink to load more episodes
-  void loadMoreEpisodes() async {
-    final screenData = await _screenData.first;
-    final offset = screenData.episodes.length;
-    _watchEpisodePage(offset, 30);
-  }
-
   void _watchEpisodePage(int offset, int limit) {
     if (_episodePageOffsets.contains(offset)) {
       return;
@@ -111,14 +107,21 @@ class PodcastScreenBloc {
           .watchByPodcastPaginated(
             podcastId: id,
             offset: offset,
-            limit: 30,
+            limit: limit,
           )
-          .map((val) => Tuple2(offset, val)),
+          .map((x) => Tuple2(offset, x)),
     );
   }
 
+  /// Sink to load more episodes
+  void loadMoreEpisodes() async {
+    final screenData = await _screenData.first;
+    final offset = screenData.episodes.length;
+    _watchEpisodePage(offset, 30);
+  }
+
   /// Stream of ScreenData
-  Stream<PodcastScreenData> get screenData => _screenData.stream.distinct();
+  Stream<PodcastScreenData> get screenData => _screenData.stream;
 
   Future<void> dispose() async {
     await _screenData.close();
