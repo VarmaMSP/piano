@@ -18,6 +18,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.screenData,
     @required this.animation,
     @required this.scrollToTop,
+    @required this.forceElevated,
   });
 
   static const double appBarHeight = 65;
@@ -31,6 +32,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   final PodcastScreenData screenData;
   final PodcastScreenAnimation animation;
   final Function scrollToTop;
+  final bool forceElevated;
 
   @override
   final double minExtent = appBarHeight + tabBarHeight;
@@ -51,7 +53,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
-          if (animation.ended)
+          if (forceElevated)
             BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
         ],
       ),
@@ -108,12 +110,12 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           ),
           if (screenData != null && animation.started)
             Expanded(
-              child: Transform.translate(
-                offset: Offset(-10, 0),
-                child: FadeTransition(
-                  opacity: animation.appBarTitleOpacity,
-                  child: GestureDetector(
-                    onTap: scrollToTop,
+              child: GestureDetector(
+                onTap: scrollToTop,
+                child: Transform.translate(
+                  offset: Offset(-10, 0),
+                  child: FadeTransition(
+                    opacity: animation.appBarTitleOpacity,
                     child: Text(
                       screenData.podcast.title,
                       style: Theme.of(context)
@@ -298,7 +300,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
+    return oldDelegate != this;
   }
 
   @override

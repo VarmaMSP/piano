@@ -9,6 +9,7 @@ import 'package:phenopod/hook/use_value.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:provider/provider.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 
 import 'widgets/about_tab.dart';
 import 'widgets/episodes_tab.dart';
@@ -53,8 +54,7 @@ class PodcastScreen extends HookWidget {
       builder: (context, snapshot) {
         return NestedScrollView(
           key: nestedScrollViewKey,
-          reverse: false,
-          headerSliverBuilder: (context, scrolled) {
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverPersistentHeader(
                 pinned: true,
@@ -65,6 +65,7 @@ class PodcastScreen extends HookWidget {
                   author: author,
                   screenData: snapshot.data,
                   animation: podcastScreenAnimation,
+                  forceElevated: innerBoxIsScrolled,
                   scrollToTop: () => nestedScrollViewKey
                       .currentState.outerController
                       .jumpTo(0.0),
@@ -81,8 +82,28 @@ class PodcastScreen extends HookWidget {
           body: !snapshot.hasData
               ? Container(
                   constraints: BoxConstraints.expand(),
+                  padding: EdgeInsets.only(bottom: 180),
                   color: Colors.white,
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(
+                    child: Container(
+                      height: 75,
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Center(
+                        child: Container(
+                          constraints: BoxConstraints.expand(
+                            width: 25,
+                            height: 25,
+                          ),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            valueColor: AlwaysStoppedAnimation(
+                              TWColors.blue.shade600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 )
               : TabBarView(
                   controller: tabController,
