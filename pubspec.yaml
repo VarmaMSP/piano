@@ -20,6 +20,7 @@ dependencies:
   dio: ^3.0.9
   dio_cookie_manager: ^1.0.0
   equatable: ^1.2.0
+  extended_nested_scroll_view: ^1.0.1
   flushbar: ^1.10.4
   flutter_facebook_login: ^3.0.0
   flutter_html: ^1.0.0
