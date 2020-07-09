@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
 import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/hook/use_tab_controller.dart';
+import 'package:phenopod/hook/use_value.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/widgets/screen/layout.dart';
@@ -29,21 +30,17 @@ class PodcastScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final tabController = useTabController(length: 2);
-    final podcastScreenBloc = useMemoized(() {
-      final context = useContext();
-      final store = Provider.of<Store>(context);
-      final podcastAcionsBloc = Provider.of<PodcastActionsBloc>(context);
-      return PodcastScreenBloc(
-        urlParam: urlParam,
-        store: store,
-        podcastActionsBloc: podcastAcionsBloc,
-      );
-    }, []);
     final podcastScreenAnimation = PodcastScreenAnimation(
       controller: useAnimationController(),
     );
-
-    useEffect(() => podcastScreenBloc.dispose, []);
+    final podcastScreenBloc = useValue<PodcastScreenBloc>(
+      create: (context) => PodcastScreenBloc(
+        urlParam: urlParam,
+        store: Provider.of<Store>(context),
+        podcastActionsBloc: Provider.of<PodcastActionsBloc>(context),
+      ),
+      dispose: (_, value) => value.dispose(),
+    );
 
     return StreamBuilder<PodcastScreenData>(
       stream: podcastScreenBloc.screenData,
