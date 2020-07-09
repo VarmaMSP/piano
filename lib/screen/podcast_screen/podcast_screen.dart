@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
 import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
@@ -7,7 +7,6 @@ import 'package:phenopod/hook/use_tab_controller.dart';
 import 'package:phenopod/hook/use_value.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
-import 'package:phenopod/widgets/screen/layout.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/about_tab.dart';
@@ -45,15 +44,28 @@ class PodcastScreen extends HookWidget {
     return StreamBuilder<PodcastScreenData>(
       stream: podcastScreenBloc.screenData,
       builder: (context, snapshot) {
-        return ScreenLayout(
-          header: PodcastHeaderDelegate(
-            tabController: tabController,
-            urlParam: urlParam,
-            title: title,
-            author: author,
-            screenData: snapshot.data,
-            animation: podcastScreenAnimation,
-          ),
+        return NestedScrollView(
+          headerSliverBuilder: (context, scrolled) {
+            return [
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: PodcastHeaderDelegate(
+                  tabController: tabController,
+                  urlParam: urlParam,
+                  title: title,
+                  author: author,
+                  screenData: snapshot.data,
+                  animation: podcastScreenAnimation,
+                ),
+              ),
+            ];
+          },
+          pinnedHeaderSliverHeightBuilder: () {
+            return 95.0;
+          },
+          innerScrollPositionKeyBuilder: () {
+            return Key('Tab${tabController.index.toString()}');
+          },
           body: !snapshot.hasData
               ? Container(
                   constraints: BoxConstraints.expand(),

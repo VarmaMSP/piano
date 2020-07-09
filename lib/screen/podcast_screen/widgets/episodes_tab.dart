@@ -1,3 +1,4 @@
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
@@ -17,34 +18,34 @@ class EpisodesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Container(
-        color: Colors.white,
-        child: CustomScrollView(
-          key: const PageStorageKey('episodes'),
-          slivers: [
-            SliverOverlapInjector(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-            ),
-            SliverPadding(
-              padding: EdgeInsets.only(top: 10),
-              sliver: _buildAnimatedEpisodeList(
+    return NestedScrollViewInnerScrollPositionKeyWidget(
+      const Key('Tab0'),
+      SafeArea(
+        top: false,
+        bottom: false,
+        child: Container(
+          color: Colors.white,
+          child: CustomScrollView(
+            key: const PageStorageKey('episodes'),
+            slivers: [
+              SliverPadding(
+                padding: EdgeInsets.only(top: 10),
+                sliver: _buildAnimatedEpisodeList(
+                  screenData.podcast,
+                  screenData.episodes.length <= 15
+                      ? screenData.episodes
+                      : screenData.episodes.sublist(0, 15),
+                ),
+              ),
+              _buildEpisodeList(
                 screenData.podcast,
                 screenData.episodes.length <= 15
-                    ? screenData.episodes
-                    : screenData.episodes.sublist(0, 15),
+                    ? []
+                    : screenData.episodes.sublist(15),
+                screenData.receivedAllEpisodes,
               ),
-            ),
-            _buildEpisodeList(
-              screenData.podcast,
-              screenData.episodes.length <= 15
-                  ? []
-                  : screenData.episodes.sublist(15),
-              screenData.receivedAllEpisodes,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
