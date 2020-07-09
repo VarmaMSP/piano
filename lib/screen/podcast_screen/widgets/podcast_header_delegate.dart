@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/request.dart';
@@ -15,6 +16,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.title,
     @required this.author,
     @required this.screenData,
+    @required this.animation,
   });
 
   static const double appBarHeight = 65;
@@ -26,6 +28,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   final String title;
   final String author;
   final PodcastScreenData screenData;
+  final PodcastScreenAnimation animation;
 
   @override
   final double minExtent = appBarHeight + tabBarHeight;
@@ -38,13 +41,15 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
+    animation.aniamteTo(shrinkOffset, maxExtent, minExtent);
+
     return Container(
       height: maxExtent - shrinkOffset,
       padding: const EdgeInsets.symmetric(horizontal: 18),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
-          if ((maxExtent - shrinkOffset - minExtent).abs() <= 0.001)
+          if (animation.ended)
             BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
         ],
       ),
@@ -55,31 +60,27 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             top: 0.0,
             left: 0.0,
             right: 0.0,
-            child: _appBar(context, screenData, shrinkOffset),
+            child: _appBar(context),
           ),
-          if ((maxExtent - shrinkOffset - minExtent).abs() > 0.001)
+          if (!animation.ended)
             Positioned(
               bottom: tabBarHeight,
               left: 0.0,
               right: 0.0,
-              child: _flexibleArea(context, screenData, shrinkOffset),
+              child: _flexibleArea(context),
             ),
           Positioned(
             bottom: 0.0,
             left: 0.0,
             right: 0.0,
-            child: _tabBar(context, screenData, shrinkOffset),
+            child: _tabBar(context),
           ),
         ],
       ),
     );
   }
 
-  Widget _appBar(
-    BuildContext context,
-    PodcastScreenData screenData,
-    double shrinkOffset,
-  ) {
+  Widget _appBar(BuildContext context) {
     return Container(
       height: appBarHeight,
       padding: EdgeInsets.only(bottom: 5),
@@ -102,6 +103,22 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
             ),
           ),
+          if (screenData != null && animation.started)
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.only(left: 4, right: 4),
+                child: FadeTransition(
+                  opacity: animation.appBarTitleOpacity,
+                  child: Text(
+                    screenData.podcast.title,
+                    style: Theme.of(context).textTheme.headline5,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
           Transform.translate(
             offset: const Offset(12, 0),
             child: Row(
@@ -114,7 +131,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                     child: IconButton(
                       icon: Icon(
                         Icons.search,
-                        size: 22,
+                        size: 23,
                         color: TWColors.gray.shade700,
                       ),
                       onPressed: () =>
@@ -131,11 +148,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     );
   }
 
-  Widget _tabBar(
-    BuildContext context,
-    PodcastScreenData screenData,
-    double shrinkOffset,
-  ) {
+  Widget _tabBar(BuildContext context) {
     if (screenData == null) {
       return Container();
     }
@@ -150,10 +163,12 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         indicatorSize: TabBarIndicatorSize.label,
         indicatorWeight: 3.5,
         labelColor: Colors.grey.shade900,
-        labelStyle: Theme.of(context).textTheme.headline6,
+        labelStyle:
+            Theme.of(context).textTheme.headline6.copyWith(fontSize: 13),
         unselectedLabelColor: TWColors.gray.shade600,
-        unselectedLabelStyle: Theme.of(context).textTheme.headline6,
-        labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 6),
+        unselectedLabelStyle:
+            Theme.of(context).textTheme.headline6.copyWith(fontSize: 13),
+        labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 4),
         controller: tabController,
         tabs: const <Widget>[
           Tab(text: ' Episodes '),
@@ -163,11 +178,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     );
   }
 
-  Widget _flexibleArea(
-    BuildContext context,
-    PodcastScreenData screenData,
-    double shrinkOffset,
-  ) {
+  Widget _flexibleArea(BuildContext context) {
     if (screenData == null && title == null) {
       return Container();
     }
@@ -259,10 +270,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             ),
           );
 
-    final opacity = 1.0 - shrinkOffset / (flexibleAreaHeight - 10.0);
-
-    return Opacity(
-      opacity: opacity >= 0.0 ? opacity : 0.0,
+    return FadeTransition(
+      opacity: animation.podcastDetailsOpacity,
       child: Container(
         height: flexibleAreaHeight,
         padding: const EdgeInsets.only(top: 2),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
+import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/hook/use_tab_controller.dart';
 import 'package:phenopod/model/main.dart';
@@ -38,6 +39,9 @@ class PodcastScreen extends HookWidget {
         podcastActionsBloc: podcastAcionsBloc,
       );
     }, []);
+    final podcastScreenAnimation = PodcastScreenAnimation(
+      controller: useAnimationController(),
+    );
 
     useEffect(() => podcastScreenBloc.dispose, []);
 
@@ -51,6 +55,7 @@ class PodcastScreen extends HookWidget {
             title: title,
             author: author,
             screenData: snapshot.data,
+            animation: podcastScreenAnimation,
           ),
           body: !snapshot.hasData
               ? Container(

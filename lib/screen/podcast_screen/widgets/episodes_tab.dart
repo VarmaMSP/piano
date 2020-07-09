@@ -29,7 +29,7 @@ class EpisodesTab extends StatelessWidget {
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
             ),
             SliverPadding(
-              padding: EdgeInsets.only(top: 15),
+              padding: EdgeInsets.only(top: 10),
               sliver: _buildAnimatedEpisodeList(
                 screenData.podcast,
                 screenData.episodes.length <= 15
