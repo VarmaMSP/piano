@@ -5,9 +5,10 @@ T useValue<T>({
   T Function(BuildContext) create,
   void Function(BuildContext, T) dispose,
 }) {
-  final value = useMemoized(() => create(useContext()), []);
+  final context = useContext();
+  final value = useMemoized(() => create(context), []);
 
-  useEffect(() => () => dispose(useContext(), value), []);
+  useEffect(() => () => dispose(context, value), []);
 
   return value;
 }
