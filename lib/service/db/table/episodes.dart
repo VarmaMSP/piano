@@ -8,7 +8,7 @@ class Episodes extends Table {
   TextColumn get urlParam => text().customConstraint('UNIQUE')();
   TextColumn get title => text()();
   TextColumn get mediaUrl => text()();
-  TextColumn get pubDate => text()();
+  DateTimeColumn get pubDate => dateTime()();
   TextColumn get summary => text()();
   TextColumn get description => text()();
   IntColumn get duration => integer()();

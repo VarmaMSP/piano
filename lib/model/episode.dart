@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:phenopod/utils/utils.dart';
 
 part 'episode.g.dart';
 
@@ -16,8 +17,8 @@ class Episode extends Equatable {
   @JsonKey(defaultValue: '')
   final String podcastId;
 
-  @JsonKey(defaultValue: '')
-  final String pubDate;
+  @JsonKey(fromJson: parseDateTime)
+  final DateTime pubDate;
 
   @JsonKey(defaultValue: '')
   final String summary;

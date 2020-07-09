@@ -25,9 +25,14 @@ String formatDuration({
       '00:00';
 }
 
+DateTime parseDateTime(String dateTimeStr) {
+  return dateTimeStr != null
+      ? DateTime.parse('$dateTimeStr +00:00')
+      : DateTime.now();
+}
+
 // Fomats datetime to human readable date
-String formatDateTime(String dateTimeStr) {
-  final dateTime = DateTime.parse('$dateTimeStr +00:00');
+String formatPubDate(DateTime dateTime) {
   return intl.DateFormat('MMM d, yyyy').format(dateTime);
 }
 

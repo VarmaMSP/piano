@@ -911,7 +911,7 @@ class EpisodeRow extends DataClass implements Insertable<EpisodeRow> {
   final String urlParam;
   final String title;
   final String mediaUrl;
-  final String pubDate;
+  final DateTime pubDate;
   final String summary;
   final String description;
   final int duration;
@@ -937,6 +937,7 @@ class EpisodeRow extends DataClass implements Insertable<EpisodeRow> {
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final intType = db.typeSystem.forDartType<int>();
     return EpisodeRow(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
@@ -948,7 +949,7 @@ class EpisodeRow extends DataClass implements Insertable<EpisodeRow> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
       mediaUrl: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}media_url']),
-      pubDate: stringType
+      pubDate: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}pub_date']),
       summary:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}summary']),
@@ -983,7 +984,7 @@ class EpisodeRow extends DataClass implements Insertable<EpisodeRow> {
       map['media_url'] = Variable<String>(mediaUrl);
     }
     if (!nullToAbsent || pubDate != null) {
-      map['pub_date'] = Variable<String>(pubDate);
+      map['pub_date'] = Variable<DateTime>(pubDate);
     }
     if (!nullToAbsent || summary != null) {
       map['summary'] = Variable<String>(summary);
@@ -1056,7 +1057,7 @@ class EpisodeRow extends DataClass implements Insertable<EpisodeRow> {
       urlParam: serializer.fromJson<String>(json['urlParam']),
       title: serializer.fromJson<String>(json['title']),
       mediaUrl: serializer.fromJson<String>(json['mediaUrl']),
-      pubDate: serializer.fromJson<String>(json['pubDate']),
+      pubDate: serializer.fromJson<DateTime>(json['pubDate']),
       summary: serializer.fromJson<String>(json['summary']),
       description: serializer.fromJson<String>(json['description']),
       duration: serializer.fromJson<int>(json['duration']),
@@ -1075,7 +1076,7 @@ class EpisodeRow extends DataClass implements Insertable<EpisodeRow> {
       'urlParam': serializer.toJson<String>(urlParam),
       'title': serializer.toJson<String>(title),
       'mediaUrl': serializer.toJson<String>(mediaUrl),
-      'pubDate': serializer.toJson<String>(pubDate),
+      'pubDate': serializer.toJson<DateTime>(pubDate),
       'summary': serializer.toJson<String>(summary),
       'description': serializer.toJson<String>(description),
       'duration': serializer.toJson<int>(duration),
@@ -1092,7 +1093,7 @@ class EpisodeRow extends DataClass implements Insertable<EpisodeRow> {
           String urlParam,
           String title,
           String mediaUrl,
-          String pubDate,
+          DateTime pubDate,
           String summary,
           String description,
           int duration,
@@ -1185,7 +1186,7 @@ class EpisodesCompanion extends UpdateCompanion<EpisodeRow> {
   final Value<String> urlParam;
   final Value<String> title;
   final Value<String> mediaUrl;
-  final Value<String> pubDate;
+  final Value<DateTime> pubDate;
   final Value<String> summary;
   final Value<String> description;
   final Value<int> duration;
@@ -1214,7 +1215,7 @@ class EpisodesCompanion extends UpdateCompanion<EpisodeRow> {
     @required String urlParam,
     @required String title,
     @required String mediaUrl,
-    @required String pubDate,
+    @required DateTime pubDate,
     @required String summary,
     @required String description,
     @required int duration,
@@ -1241,7 +1242,7 @@ class EpisodesCompanion extends UpdateCompanion<EpisodeRow> {
     Expression<String> urlParam,
     Expression<String> title,
     Expression<String> mediaUrl,
-    Expression<String> pubDate,
+    Expression<DateTime> pubDate,
     Expression<String> summary,
     Expression<String> description,
     Expression<int> duration,
@@ -1273,7 +1274,7 @@ class EpisodesCompanion extends UpdateCompanion<EpisodeRow> {
       Value<String> urlParam,
       Value<String> title,
       Value<String> mediaUrl,
-      Value<String> pubDate,
+      Value<DateTime> pubDate,
       Value<String> summary,
       Value<String> description,
       Value<int> duration,
@@ -1317,7 +1318,7 @@ class EpisodesCompanion extends UpdateCompanion<EpisodeRow> {
       map['media_url'] = Variable<String>(mediaUrl.value);
     }
     if (pubDate.present) {
-      map['pub_date'] = Variable<String>(pubDate.value);
+      map['pub_date'] = Variable<DateTime>(pubDate.value);
     }
     if (summary.present) {
       map['summary'] = Variable<String>(summary.value);
@@ -1404,11 +1405,11 @@ class $EpisodesTable extends Episodes
   }
 
   final VerificationMeta _pubDateMeta = const VerificationMeta('pubDate');
-  GeneratedTextColumn _pubDate;
+  GeneratedDateTimeColumn _pubDate;
   @override
-  GeneratedTextColumn get pubDate => _pubDate ??= _constructPubDate();
-  GeneratedTextColumn _constructPubDate() {
-    return GeneratedTextColumn(
+  GeneratedDateTimeColumn get pubDate => _pubDate ??= _constructPubDate();
+  GeneratedDateTimeColumn _constructPubDate() {
+    return GeneratedDateTimeColumn(
       'pub_date',
       $tableName,
       false,
