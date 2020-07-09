@@ -97,7 +97,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               child: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  size: 24,
+                  size: 22,
                   color: TWColors.gray.shade700,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -106,8 +106,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
           ),
           if (screenData != null && animation.started)
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(left: 4, right: 4),
+              child: Transform.translate(
+                offset: Offset(-10, 0),
                 child: FadeTransition(
                   opacity: animation.appBarTitleOpacity,
                   child: Text(
@@ -118,7 +118,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                         .copyWith(color: TWColors.gray.shade800),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                   ),
                 ),
               ),
@@ -132,7 +132,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                 child: IconButton(
                   icon: Icon(
                     Icons.search,
-                    size: 23,
+                    size: 22,
                     color: TWColors.gray.shade700,
                   ),
                   onPressed: () => Navigator.of(context, rootNavigator: true)

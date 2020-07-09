@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 final ThemeData appTheme = ThemeData(
   pageTransitionsTheme: PageTransitionsTheme(
     builders: {
-      TargetPlatform.iOS: OpenUpwardsPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       TargetPlatform.android: ZoomPageTransitionsBuilder(),
     },
   ),

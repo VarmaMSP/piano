@@ -22,12 +22,27 @@ Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
 
       case '/podcast':
         return PageRouteBuilder(
-          transitionDuration: Duration.zero,
-          pageBuilder: (_, __, ___) => PodcastScreen(
-            urlParam: args['urlParam'],
-            title: args['title'],
-            author: args['author'],
-          ),
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return PodcastScreen(
+              urlParam: args['urlParam'],
+              title: args['title'],
+              author: args['author'],
+            );
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: Tween<double>(
+                begin: 0.0,
+                end: 1.0,
+              ).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: Interval(0.9, 1.0, curve: Curves.linear),
+                ),
+              ),
+              child: child,
+            );
+          },
         );
 
       default:

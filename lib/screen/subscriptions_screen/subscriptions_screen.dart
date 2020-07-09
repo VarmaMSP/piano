@@ -149,38 +149,40 @@ class SubscriptionsScreen extends HookWidget {
     BuildContext context,
     SubscriptionsScreenData screenData,
   ) {
+    final thumbnailSize = 75.0;
+    final borderRadius = 8.0;
+
     return SliverToBoxAdapter(
       child: Container(
         width: getScreenWidth(context),
-        height: 70,
+        height: thumbnailSize,
         margin: EdgeInsets.only(top: 10, bottom: 20),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
-            final podcastIds = screenData.podcasts.toList();
-            final thumbnailSize = 70.0;
-            final borderRadius = 7.0;
-
             if (index == 0) {
               return Container(width: 18);
             }
 
-            if (index <= podcastIds.length) {
+            if (index <= screenData.podcasts.length) {
               final podcast = screenData.podcasts[index - 1];
               return GestureDetector(
                 onTap: () =>
                     Provider.of<AppNavigationBloc>(context, listen: false)
                         .navigateTo(Screen.podcast(urlParam: podcast.urlParam)),
                 child: Container(
-                  margin: EdgeInsets.only(right: 6),
+                  margin: EdgeInsets.only(right: 8),
                   child: Container(
                     height: thumbnailSize,
                     width: thumbnailSize,
                     decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(borderRadius)),
-                      border:
-                          Border.all(color: Colors.grey.shade400, width: 0.5),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(borderRadius),
+                      ),
+                      border: Border.all(
+                        color: Colors.grey.shade400,
+                        width: 0.5,
+                      ),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(borderRadius),
