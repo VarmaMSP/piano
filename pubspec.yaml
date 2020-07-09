@@ -14,6 +14,7 @@ dependencies:
   async: ^2.4.1
   audio_service: ^0.11.0
   cached_network_image: ^2.2.0+1
+  connectivity: ^0.4.9
   cookie_jar: ^1.0.1
   copy_with_extension: ^1.2.0
   device_info: ^0.4.2+4
