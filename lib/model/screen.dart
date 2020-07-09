@@ -31,11 +31,18 @@ class PodcastScreenData extends Equatable {
 }
 
 @CopyWith()
-class SubscriptionScreenData {
-  final List<Podcast> subscriptions;
+class SubscriptionsScreenData extends Equatable {
+  final List<Podcast> podcasts;
   final List<Episode> episodes;
-  final Map<String, Podcast> subscriptionById;
+  final bool receivedAllEpisodes;
+  final Map<String, Podcast> podcastById;
 
-  SubscriptionScreenData({this.subscriptions, this.episodes})
-      : subscriptionById = {for (var i in subscriptions) i.id: i};
+  SubscriptionsScreenData({
+    @required this.podcasts,
+    @required this.episodes,
+    @required this.receivedAllEpisodes,
+  }) : podcastById = {for (var i in podcasts) i.id: i};
+
+  @override
+  List<Object> get props => [podcasts, episodes];
 }
