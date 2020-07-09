@@ -26,8 +26,8 @@ class PodcastScreenBloc {
       BehaviorSubject<PodcastScreenData>();
 
   /// Stream for episode pages
-  final PaginationStream<Episode> _episodePagesStream =
-      PaginationStream<Episode>();
+  final StreamMap<int, List<Episode>> _episodePageMap =
+      StreamMap<int, List<Episode>>();
 
   /// Subscriptions made in this bloc
   StreamSubscription<dynamic> _storeSubscription;
@@ -50,7 +50,7 @@ class PodcastScreenBloc {
         List<List<Episode>>, PodcastScreenData>(
       store.podcast.watchByUrlParam(urlParam),
       store.subscription.watchByPodcast(id),
-      _episodePagesStream.stream,
+      _episodePageMap.streamValues,
       (podcast, subscription, episodesPages) => PodcastScreenData(
         podcast: podcast,
         episodes: episodesPages.expand((x) => x).toList(),
@@ -61,16 +61,12 @@ class PodcastScreenBloc {
       ),
     ).distinct().listen(_screenData.add);
 
-    if (!_episodePagesStream.containsPage(0)) {
-      _episodePagesStream.addStream(
-        0,
-        store.episode.watchByPodcastPaginated(
-          podcastId: id,
-          offset: 0,
-          limit: 15,
-        ),
-      );
-    }
+    _episodePageMap.add(
+      0,
+      store.episode
+          .watchByPodcastPaginated(podcastId: id, offset: 0, limit: 15)
+          .where((e) => e.isNotEmpty),
+    );
   }
 
   void _handlePodcastActions() {
@@ -101,14 +97,17 @@ class PodcastScreenBloc {
     final screenData = await _screenData.first;
     final offset = screenData.episodes.length;
 
-    if (!_episodePagesStream.containsPage(offset)) {
-      _episodePagesStream.addStream(
+    if (!_episodePageMap.contains(offset)) {
+      _episodePageMap.add(
         offset,
-        store.episode.watchByPodcastPaginated(
-          podcastId: id,
-          offset: offset,
-          limit: 30,
-        ),
+        StreamDelayTill<List<Episode>>(
+          store.episode.watchByPodcastPaginated(
+            podcastId: id,
+            offset: offset,
+            limit: 30,
+          ),
+          (episodes) => episodes.isNotEmpty,
+        ).stream,
       );
     }
   }
