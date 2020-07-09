@@ -1,5 +1,6 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,8 +29,13 @@ class AboutTab extends StatelessWidget {
               SliverToBoxAdapter(
                 child: Container(
                   padding: EdgeInsets.only(top: 15),
-                  child: Text(
-                    screenData.podcast.description
+                  child: Linkify(
+                    onOpen: (link) async {
+                      if (await canLaunch(link.url)) {
+                        await launch(link.url);
+                      }
+                    },
+                    text: screenData.podcast.description
                         .replaceAll('\n', ' ')
                         .replaceAll('&nbsp;', ' ')
                         .replaceAll('&amp', '&'),
@@ -38,6 +44,13 @@ class AboutTab extends StatelessWidget {
                       fontSize: 13.5,
                       color: TWColors.gray.shade800,
                       letterSpacing: 0.25,
+                    ),
+                    linkStyle: TextStyle(
+                      height: 1.5,
+                      fontSize: 13.5,
+                      color: Colors.blue.shade700,
+                      letterSpacing: 0.25,
+                      decoration: TextDecoration.none,
                     ),
                   ),
                 ),

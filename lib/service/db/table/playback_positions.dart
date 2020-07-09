@@ -17,7 +17,7 @@ PlaybackPositionRow playbackPositionRowFromModel(PlaybackPosition model) {
   return PlaybackPositionRow(
     episodeId: model.episodeId,
     position: model.position.inSeconds,
-    duration: model.duration.inSeconds,
+    duration: model.duration?.inSeconds,
   );
 }
 
