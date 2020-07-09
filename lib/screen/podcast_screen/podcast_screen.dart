@@ -1,5 +1,6 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
-import 'package:flutter/material.dart' hide NestedScrollView;
+import 'package:flutter/material.dart'
+    hide NestedScrollView, NestedScrollViewState;
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
 import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
@@ -29,9 +30,11 @@ class PodcastScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final tabController = useTabController(length: 2);
+
     final podcastScreenAnimation = PodcastScreenAnimation(
       controller: useAnimationController(),
     );
+
     final podcastScreenBloc = useValue<PodcastScreenBloc>(
       create: (context) => PodcastScreenBloc(
         urlParam: urlParam,
@@ -41,10 +44,16 @@ class PodcastScreen extends HookWidget {
       dispose: (_, value) => value.dispose(),
     );
 
+    final nestedScrollViewKey = useMemoized(
+      () => GlobalKey<NestedScrollViewState>(),
+    );
+
     return StreamBuilder<PodcastScreenData>(
       stream: podcastScreenBloc.screenData,
       builder: (context, snapshot) {
         return NestedScrollView(
+          key: nestedScrollViewKey,
+          reverse: false,
           headerSliverBuilder: (context, scrolled) {
             return [
               SliverPersistentHeader(
@@ -56,6 +65,9 @@ class PodcastScreen extends HookWidget {
                   author: author,
                   screenData: snapshot.data,
                   animation: podcastScreenAnimation,
+                  scrollToTop: () => nestedScrollViewKey
+                      .currentState.outerController
+                      .jumpTo(0.0),
                 ),
               ),
             ];

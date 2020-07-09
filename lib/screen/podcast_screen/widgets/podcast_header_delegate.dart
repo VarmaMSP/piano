@@ -17,6 +17,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.author,
     @required this.screenData,
     @required this.animation,
+    @required this.scrollToTop,
   });
 
   static const double appBarHeight = 65;
@@ -29,6 +30,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   final String author;
   final PodcastScreenData screenData;
   final PodcastScreenAnimation animation;
+  final Function scrollToTop;
 
   @override
   final double minExtent = appBarHeight + tabBarHeight;
@@ -110,15 +112,18 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                 offset: Offset(-10, 0),
                 child: FadeTransition(
                   opacity: animation.appBarTitleOpacity,
-                  child: Text(
-                    screenData.podcast.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        .copyWith(color: TWColors.gray.shade800),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.left,
+                  child: GestureDetector(
+                    onTap: scrollToTop,
+                    child: Text(
+                      screenData.podcast.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5
+                          .copyWith(color: TWColors.gray.shade800),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                    ),
                   ),
                 ),
               ),
