@@ -62,19 +62,20 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             right: 0.0,
             child: _appBar(context),
           ),
-          if (!animation.ended)
+          if (!animation.ended && (screenData != null || title != null))
             Positioned(
               bottom: tabBarHeight,
               left: 0.0,
               right: 0.0,
               child: _flexibleArea(context),
             ),
-          Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: _tabBar(context),
-          ),
+          if (screenData != null)
+            Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: _tabBar(context),
+            ),
         ],
       ),
     );
@@ -121,26 +122,20 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             ),
           Transform.translate(
             offset: const Offset(12, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Material(
-                  color: Colors.white,
-                  child: SizedBox(
-                    width: 42,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        size: 23,
-                        color: TWColors.gray.shade700,
-                      ),
-                      onPressed: () =>
-                          Navigator.of(context, rootNavigator: true)
-                              .pushNamed('/search'),
-                    ),
+            child: Material(
+              color: Colors.white,
+              child: SizedBox(
+                width: 42,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    size: 23,
+                    color: TWColors.gray.shade700,
                   ),
+                  onPressed: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed('/search'),
                 ),
-              ],
+              ),
             ),
           ),
         ],
@@ -149,10 +144,6 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   }
 
   Widget _tabBar(BuildContext context) {
-    if (screenData == null) {
-      return Container();
-    }
-
     return Container(
       height: tabBarHeight,
       alignment: Alignment.bottomLeft,
@@ -179,10 +170,6 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   }
 
   Widget _flexibleArea(BuildContext context) {
-    if (screenData == null && title == null) {
-      return Container();
-    }
-
     final Widget thumbnail = Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade400, width: 0.5),
@@ -229,46 +216,46 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
     final podcastActionsBloc = Provider.of<PodcastActionsBloc>(context);
 
-    final Widget actions = screenData == null
-        ? Container()
-        : Container(
-            height: 24,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Flexible(
-                  child: FractionallySizedBox(
-                    heightFactor: 1.0,
-                    widthFactor: 0.7,
-                    child: FlatButton(
-                      onPressed: () => screenData.isSubscribed
-                          ? podcastActionsBloc.unsubscribe(screenData.podcast)
-                          : podcastActionsBloc.subscribe(screenData.podcast),
-                      color: screenData.isSubscribed
-                          ? Colors.grey.shade300
-                          : TWColors.purple.shade600,
-                      textColor: screenData.isSubscribed
-                          ? Colors.grey.shade800
-                          : Colors.grey.shade100,
-                      child: Text(
-                        screenData.isSubscribed ? 'SUBSCRIBED' : 'SUBSCRIBE',
-                        style: Theme.of(context).textTheme.headline6.copyWith(
-                              color: screenData.isSubscribed
-                                  ? Colors.grey.shade900
-                                  : Colors.white,
-                              fontSize: 12.5,
-                              letterSpacing: 0.5,
-                            ),
+    final Widget actions = Container(
+      height: 24,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Flexible(
+            child: FractionallySizedBox(
+              heightFactor: 1.0,
+              widthFactor: 0.7,
+              child: FlatButton(
+                onPressed: () => screenData != null && screenData.isSubscribed
+                    ? podcastActionsBloc.unsubscribe(screenData.podcast)
+                    : podcastActionsBloc.subscribe(screenData.podcast),
+                color: screenData?.isSubscribed ?? false
+                    ? Colors.grey.shade300
+                    : TWColors.purple.shade600,
+                textColor: screenData?.isSubscribed ?? false
+                    ? Colors.grey.shade800
+                    : Colors.grey.shade100,
+                child: Text(
+                  screenData?.isSubscribed ?? false
+                      ? 'SUBSCRIBED'
+                      : 'SUBSCRIBE',
+                  style: Theme.of(context).textTheme.headline6.copyWith(
+                        color: screenData?.isSubscribed ?? false
+                            ? Colors.grey.shade900
+                            : Colors.white,
+                        fontSize: 12.5,
+                        letterSpacing: 0.5,
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                    ),
-                  ),
                 ),
-              ],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+              ),
             ),
-          );
+          ),
+        ],
+      ),
+    );
 
     return FadeTransition(
       opacity: animation.podcastDetailsOpacity,
