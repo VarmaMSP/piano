@@ -131,7 +131,7 @@ class AudioPlayer extends StatelessWidget {
               ),
               alignment: Alignment.topLeft,
               child: Text(
-                'Published on ${formatDateTime(nowPlaying.episode.pubDate)}',
+                'Published on ${formatPubDate(nowPlaying.episode.pubDate)}',
                 style: TextStyle(
                   fontSize: 16,
                   letterSpacing: 0.25,
