@@ -4,6 +4,7 @@ import 'episode_api.dart';
 import 'user_api.dart';
 import 'podcast_api.dart';
 import 'http_client.dart';
+import 'subscription_api.dart';
 
 /// Because you cannot use platform channels in background isolate
 /// you need to pass appDocDirPath if this method is being called from
@@ -17,17 +18,20 @@ abstract class Api {
   UserApi get user;
   PodcastApi get podcast;
   EpisodeApi get episode;
+  SubscriptionApi get subscription;
 }
 
 class _ApiImpl extends Api {
   final PodcastApi _podcastApi;
   final EpisodeApi _episodeApi;
   final UserApi _userApi;
+  final SubscriptionApi _subscriptionApi;
 
   _ApiImpl(HttpClient httpClient)
       : _podcastApi = newPodcastApi(httpClient),
         _episodeApi = newEpisodeApi(httpClient),
-        _userApi = newUserApi(httpClient);
+        _userApi = newUserApi(httpClient),
+        _subscriptionApi = newSubscriptionApi(httpClient);
 
   @override
   PodcastApi get podcast => _podcastApi;
@@ -37,4 +41,7 @@ class _ApiImpl extends Api {
 
   @override
   UserApi get user => _userApi;
+
+  @override
+  SubscriptionApi get subscription => _subscriptionApi;
 }

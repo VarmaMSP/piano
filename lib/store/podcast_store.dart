@@ -9,6 +9,7 @@ PodcastStore newPodcastStore(Api api, Db db) {
 
 abstract class PodcastStore {
   Stream<Podcast> watchByUrlParam(String urlParam);
+  Stream<List<Podcast>> watchSubscribed();
 }
 
 class _PodcastStoreImpl extends PodcastStore {
@@ -39,5 +40,10 @@ class _PodcastStoreImpl extends PodcastStore {
     });
 
     return db.podcastDao.watchPodcast(urlParam: urlParam);
+  }
+
+  @override
+  Stream<List<Podcast>> watchSubscribed() {
+    return db.podcastDao.watchSubscribedPodcasts();
   }
 }

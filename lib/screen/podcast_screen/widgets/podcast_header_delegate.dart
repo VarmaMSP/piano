@@ -112,7 +112,10 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                   opacity: animation.appBarTitleOpacity,
                   child: Text(
                     screenData.podcast.title,
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        .copyWith(color: TWColors.gray.shade800),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,

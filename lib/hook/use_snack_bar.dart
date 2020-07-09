@@ -17,7 +17,9 @@ void useSnackBar() {
           if (data.synced) {
             Flushbar(
               message: 'Subscription added.',
-              duration: Duration(seconds: 2),
+              duration: Duration(seconds: 6),
+              animationDuration: Duration(milliseconds: 250),
+              isDismissible: true,
             )..show(context);
           }
         },
@@ -25,7 +27,9 @@ void useSnackBar() {
           if (data.synced) {
             Flushbar(
               message: 'Unsubscribed.',
-              duration: Duration(seconds: 2),
+              duration: Duration(seconds: 6),
+              animationDuration: Duration(milliseconds: 250),
+              isDismissible: true,
             )..show(context);
           }
         },

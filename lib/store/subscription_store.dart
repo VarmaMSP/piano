@@ -10,7 +10,6 @@ SubscriptionStore newSubscriptionStore(Api api, Db db) {
 abstract class SubscriptionStore {
   Future<void> subscribe(Podcast podcast);
   Future<void> unsubscribe(Podcast podcast);
-  Future<void> watchSubscribedPodcasts();
   Stream<Subscription> watchByPodcast(String podcastId);
 }
 
@@ -24,18 +23,16 @@ class _SubscriptionStoreImpl extends SubscriptionStore {
   });
 
   @override
-  Future<void> subscribe(Podcast podcast) {
-    throw UnimplementedError();
+  Future<void> subscribe(Podcast podcast) async {
+    await api.subscription.subscribe(podcast.id);
+    await db.subscriptionDao
+        .saveSubscription(Subscription(podcastId: podcast.id));
   }
 
   @override
-  Future<void> unsubscribe(Podcast podcast) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> watchSubscribedPodcasts() {
-    throw UnimplementedError();
+  Future<void> unsubscribe(Podcast podcast) async {
+    await api.subscription.unsubscribe(podcast.id);
+    await db.subscriptionDao.deleteSubscription(podcast.id);
   }
 
   @override

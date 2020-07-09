@@ -25,12 +25,5 @@ class SubscriptionDao extends DatabaseAccessor<SqlDb>
         .go();
   }
 
-  Future<bool> isSubscribed(String podcastId) async {
-    final row = await (select(subscriptions)
-          ..where((tbl) => tbl.podcastId.equals(podcastId)))
-        .getSingle();
-    return row != null;
-  }
-
   Future<void> watchTags() async {}
 }

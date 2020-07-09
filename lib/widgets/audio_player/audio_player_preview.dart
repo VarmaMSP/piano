@@ -3,6 +3,7 @@ import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/audio_player/widgets/preview_playback_controls.dart';
 import 'package:phenopod/widgets/podcast_thumbnail.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 
 class AudioPlayerPreview extends StatelessWidget {
   const AudioPlayerPreview({
@@ -55,7 +56,10 @@ class AudioPlayerPreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     nowPlaying.episode.title,
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        .copyWith(color: TWColors.gray.shade800),
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
