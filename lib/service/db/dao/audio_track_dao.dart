@@ -12,7 +12,7 @@ class AudioTrackDao extends DatabaseAccessor<SqlDb> with _$AudioTrackDaoMixin {
     return batch((b) {
       b.insertAll(
         audioTracks,
-        tracks.map((x) => audioTrackRowFromModel(x)).toList(),
+        tracks.map(audioTrackRowFromModel).toList(),
         mode: InsertMode.insertOrReplace,
       );
     });

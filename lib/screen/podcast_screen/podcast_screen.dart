@@ -82,7 +82,7 @@ class PodcastScreen extends HookWidget {
           body: !snapshot.hasData
               ? Container(
                   constraints: BoxConstraints.expand(),
-                  padding: EdgeInsets.only(bottom: 180),
+                  padding: EdgeInsets.only(bottom: 50),
                   color: Colors.white,
                   child: Center(
                     child: Container(

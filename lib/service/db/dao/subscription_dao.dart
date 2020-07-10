@@ -16,7 +16,7 @@ class SubscriptionDao extends DatabaseAccessor<SqlDb>
     return (select(subscriptions)
           ..where((tbl) => tbl.podcastId.equals(podcastId)))
         .watchSingle()
-        .map((row) => row != null ? Subscription() : null);
+        .map((row) => row?.toModel());
   }
 
   Future<void> deleteSubscription(String podcastId) {
@@ -24,6 +24,4 @@ class SubscriptionDao extends DatabaseAccessor<SqlDb>
           ..where((tbl) => tbl.podcastId.equals(podcastId)))
         .go();
   }
-
-  Future<void> watchTags() async {}
 }

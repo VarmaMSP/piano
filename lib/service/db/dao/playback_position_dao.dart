@@ -11,6 +11,7 @@ class PlaybackPositionDao extends DatabaseAccessor<SqlDb>
       onConflict: DoUpdate(
         (_) => PlaybackPositionsCompanion(
           position: Value(m.position.inSeconds),
+          updatedAt: Value(DateTime.now()),
         ),
       ),
     );
@@ -20,30 +21,6 @@ class PlaybackPositionDao extends DatabaseAccessor<SqlDb>
     return (select(playbackPositions)
           ..where((tbl) => tbl.episodeId.equals(episodeId)))
         .watchSingle()
-        .map((row) =>
-            row != null ? row.toModel() : PlaybackPosition.empty(episodeId));
-  }
-
-  Stream<PlaybackPosition> watchPlaybackPosition(String episodeId) {
-    return (select(playbackPositions)
-          ..where((tbl) => tbl.episodeId.equals(episodeId)))
-        .watchSingle()
-        .map((row) =>
-            row != null ? row.toModel() : PlaybackPosition.empty(episodeId));
-  }
-
-  Future<void> savePlaybackPosition(PlaybackPosition playback) async {
-    await into(playbackPositions).insert(
-      playbackPositionRowFromModel(playback),
-      mode: InsertMode.insertOrReplace,
-    );
-  }
-
-  Future<void> setPosition(PlaybackPosition playback) async {
-    await (update(playbackPositions)
-          ..where((tbl) => tbl.episodeId.equals(playback.episodeId)))
-        .write(
-      PlaybackPositionsCompanion(position: Value(playback.position.inSeconds)),
-    );
+        .map((row) => row?.toModel());
   }
 }
