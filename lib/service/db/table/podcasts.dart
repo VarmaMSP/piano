@@ -16,8 +16,7 @@ class Podcasts extends Table {
   IntColumn get totalEpisodes => integer()();
   IntColumn get totalSeasons => integer()();
   TextColumn get feedUrl => text()();
-  BoolColumn get isCached => boolean()();
-  DateTimeColumn get cachedAt => dateTime().nullable()();
+  DateTimeColumn get updatedAt => dateTime()();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -39,8 +38,7 @@ PodcastRow podcastRowFromModel(Podcast model) {
     totalEpisodes: model.totalEpisodes,
     totalSeasons: model.totalSeasons,
     feedUrl: model.feedUrl,
-    isCached: model.isCached,
-    cachedAt: model.cachedAt,
+    updatedAt: model.updatedAt ?? DateTime.now(),
   );
 }
 
@@ -68,8 +66,7 @@ extension PodcastRowExtension on PodcastRow {
       feedUrl: feedUrl,
       feedLastRefreshAt: '',
       isSubscribed: false,
-      isCached: isCached,
-      cachedAt: cachedAt,
+      updatedAt: updatedAt,
     );
   }
 }

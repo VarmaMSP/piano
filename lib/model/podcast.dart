@@ -3,9 +3,6 @@ import 'package:flutter/foundation.dart' show required;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 
-import 'category.dart';
-import 'episode.dart';
-
 part 'podcast.g.dart';
 
 @CopyWith()
@@ -66,29 +63,13 @@ class Podcast extends Equatable {
   @JsonKey(defaultValue: '')
   final String feedLastRefreshAt;
 
-  // * This field is derived when it comes to db while
-  // * it is received as it in case from the api
   @JsonKey(defaultValue: false)
   final bool isSubscribed;
 
   @JsonKey(ignore: true)
-  final List<Episode> episodes;
+  final DateTime updatedAt;
 
-  @JsonKey(ignore: true)
-  final List<Category> categories;
-
-  //* Fields derived from db
-  @JsonKey(ignore: true)
-  final bool isCached;
-
-  @JsonKey(ignore: true)
-  final DateTime cachedAt;
-
-  //* Fields derived from api response
-  @JsonKey(ignore: true)
-  final bool moreEpisodes;
-
-  const Podcast({
+  Podcast({
     @required this.id,
     @required this.urlParam,
     @required this.title,
@@ -110,11 +91,7 @@ class Podcast extends Equatable {
     @required this.feedUrl,
     @required this.feedLastRefreshAt,
     @required this.isSubscribed,
-    this.episodes = const <Episode>[],
-    this.categories = const <Category>[],
-    this.isCached = false,
-    this.cachedAt,
-    this.moreEpisodes = false,
+    this.updatedAt,
   });
 
   factory Podcast.fromJson(Map<String, dynamic> json) {

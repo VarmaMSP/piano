@@ -1,13 +1,23 @@
+import 'package:flutter/foundation.dart';
+
 class Subscription {
   final String podcastId;
-  final SubscriptionFilter filter;
+  final DateTime updatedAt;
 
-  Subscription({this.podcastId, this.filter});
+  Subscription({
+    @required this.podcastId,
+    this.updatedAt,
+  });
 }
 
 class SubscriptionFilter {
   final String id;
   final String name;
+  final DateTime updatedAt;
 
-  SubscriptionFilter({this.id, this.name});
+  SubscriptionFilter({
+    @required this.id,
+    @required this.name,
+    this.updatedAt,
+  });
 }

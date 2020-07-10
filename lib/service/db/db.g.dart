@@ -47,8 +47,7 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
   final int totalEpisodes;
   final int totalSeasons;
   final String feedUrl;
-  final bool isCached;
-  final DateTime cachedAt;
+  final DateTime updatedAt;
   PodcastRow(
       {@required this.id,
       @required this.urlParam,
@@ -64,14 +63,12 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
       @required this.totalEpisodes,
       @required this.totalSeasons,
       @required this.feedUrl,
-      @required this.isCached,
-      this.cachedAt});
+      @required this.updatedAt});
   factory PodcastRow.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
-    final boolType = db.typeSystem.forDartType<bool>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return PodcastRow(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
@@ -99,10 +96,8 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
           .mapFromDatabaseResponse(data['${effectivePrefix}total_seasons']),
       feedUrl: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}feed_url']),
-      isCached:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}is_cached']),
-      cachedAt: dateTimeType
-          .mapFromDatabaseResponse(data['${effectivePrefix}cached_at']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
   @override
@@ -150,11 +145,8 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
     if (!nullToAbsent || feedUrl != null) {
       map['feed_url'] = Variable<String>(feedUrl);
     }
-    if (!nullToAbsent || isCached != null) {
-      map['is_cached'] = Variable<bool>(isCached);
-    }
-    if (!nullToAbsent || cachedAt != null) {
-      map['cached_at'] = Variable<DateTime>(cachedAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
     }
     return map;
   }
@@ -195,12 +187,9 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
       feedUrl: feedUrl == null && nullToAbsent
           ? const Value.absent()
           : Value(feedUrl),
-      isCached: isCached == null && nullToAbsent
+      updatedAt: updatedAt == null && nullToAbsent
           ? const Value.absent()
-          : Value(isCached),
-      cachedAt: cachedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(cachedAt),
+          : Value(updatedAt),
     );
   }
 
@@ -222,8 +211,7 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
       totalEpisodes: serializer.fromJson<int>(json['totalEpisodes']),
       totalSeasons: serializer.fromJson<int>(json['totalSeasons']),
       feedUrl: serializer.fromJson<String>(json['feedUrl']),
-      isCached: serializer.fromJson<bool>(json['isCached']),
-      cachedAt: serializer.fromJson<DateTime>(json['cachedAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
   @override
@@ -244,8 +232,7 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
       'totalEpisodes': serializer.toJson<int>(totalEpisodes),
       'totalSeasons': serializer.toJson<int>(totalSeasons),
       'feedUrl': serializer.toJson<String>(feedUrl),
-      'isCached': serializer.toJson<bool>(isCached),
-      'cachedAt': serializer.toJson<DateTime>(cachedAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
 
@@ -264,8 +251,7 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
           int totalEpisodes,
           int totalSeasons,
           String feedUrl,
-          bool isCached,
-          DateTime cachedAt}) =>
+          DateTime updatedAt}) =>
       PodcastRow(
         id: id ?? this.id,
         urlParam: urlParam ?? this.urlParam,
@@ -281,8 +267,7 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
         totalEpisodes: totalEpisodes ?? this.totalEpisodes,
         totalSeasons: totalSeasons ?? this.totalSeasons,
         feedUrl: feedUrl ?? this.feedUrl,
-        isCached: isCached ?? this.isCached,
-        cachedAt: cachedAt ?? this.cachedAt,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
   @override
   String toString() {
@@ -301,8 +286,7 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
           ..write('totalEpisodes: $totalEpisodes, ')
           ..write('totalSeasons: $totalSeasons, ')
           ..write('feedUrl: $feedUrl, ')
-          ..write('isCached: $isCached, ')
-          ..write('cachedAt: $cachedAt')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
@@ -336,10 +320,8 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
                                                       totalSeasons.hashCode,
                                                       $mrjc(
                                                           feedUrl.hashCode,
-                                                          $mrjc(
-                                                              isCached.hashCode,
-                                                              cachedAt
-                                                                  .hashCode))))))))))))))));
+                                                          updatedAt
+                                                              .hashCode)))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -358,8 +340,7 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
           other.totalEpisodes == this.totalEpisodes &&
           other.totalSeasons == this.totalSeasons &&
           other.feedUrl == this.feedUrl &&
-          other.isCached == this.isCached &&
-          other.cachedAt == this.cachedAt);
+          other.updatedAt == this.updatedAt);
 }
 
 class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
@@ -377,8 +358,7 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
   final Value<int> totalEpisodes;
   final Value<int> totalSeasons;
   final Value<String> feedUrl;
-  final Value<bool> isCached;
-  final Value<DateTime> cachedAt;
+  final Value<DateTime> updatedAt;
   const PodcastsCompanion({
     this.id = const Value.absent(),
     this.urlParam = const Value.absent(),
@@ -394,8 +374,7 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
     this.totalEpisodes = const Value.absent(),
     this.totalSeasons = const Value.absent(),
     this.feedUrl = const Value.absent(),
-    this.isCached = const Value.absent(),
-    this.cachedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   PodcastsCompanion.insert({
     @required String id,
@@ -412,8 +391,7 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
     @required int totalEpisodes,
     @required int totalSeasons,
     @required String feedUrl,
-    @required bool isCached,
-    this.cachedAt = const Value.absent(),
+    @required DateTime updatedAt,
   })  : id = Value(id),
         urlParam = Value(urlParam),
         title = Value(title),
@@ -428,7 +406,7 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
         totalEpisodes = Value(totalEpisodes),
         totalSeasons = Value(totalSeasons),
         feedUrl = Value(feedUrl),
-        isCached = Value(isCached);
+        updatedAt = Value(updatedAt);
   static Insertable<PodcastRow> custom({
     Expression<String> id,
     Expression<String> urlParam,
@@ -444,8 +422,7 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
     Expression<int> totalEpisodes,
     Expression<int> totalSeasons,
     Expression<String> feedUrl,
-    Expression<bool> isCached,
-    Expression<DateTime> cachedAt,
+    Expression<DateTime> updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -462,8 +439,7 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
       if (totalEpisodes != null) 'total_episodes': totalEpisodes,
       if (totalSeasons != null) 'total_seasons': totalSeasons,
       if (feedUrl != null) 'feed_url': feedUrl,
-      if (isCached != null) 'is_cached': isCached,
-      if (cachedAt != null) 'cached_at': cachedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
@@ -482,8 +458,7 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
       Value<int> totalEpisodes,
       Value<int> totalSeasons,
       Value<String> feedUrl,
-      Value<bool> isCached,
-      Value<DateTime> cachedAt}) {
+      Value<DateTime> updatedAt}) {
     return PodcastsCompanion(
       id: id ?? this.id,
       urlParam: urlParam ?? this.urlParam,
@@ -499,8 +474,7 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
       totalEpisodes: totalEpisodes ?? this.totalEpisodes,
       totalSeasons: totalSeasons ?? this.totalSeasons,
       feedUrl: feedUrl ?? this.feedUrl,
-      isCached: isCached ?? this.isCached,
-      cachedAt: cachedAt ?? this.cachedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -549,11 +523,8 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
     if (feedUrl.present) {
       map['feed_url'] = Variable<String>(feedUrl.value);
     }
-    if (isCached.present) {
-      map['is_cached'] = Variable<bool>(isCached.value);
-    }
-    if (cachedAt.present) {
-      map['cached_at'] = Variable<DateTime>(cachedAt.value);
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
   }
@@ -735,27 +706,15 @@ class $PodcastsTable extends Podcasts
     );
   }
 
-  final VerificationMeta _isCachedMeta = const VerificationMeta('isCached');
-  GeneratedBoolColumn _isCached;
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
   @override
-  GeneratedBoolColumn get isCached => _isCached ??= _constructIsCached();
-  GeneratedBoolColumn _constructIsCached() {
-    return GeneratedBoolColumn(
-      'is_cached',
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
       $tableName,
       false,
-    );
-  }
-
-  final VerificationMeta _cachedAtMeta = const VerificationMeta('cachedAt');
-  GeneratedDateTimeColumn _cachedAt;
-  @override
-  GeneratedDateTimeColumn get cachedAt => _cachedAt ??= _constructCachedAt();
-  GeneratedDateTimeColumn _constructCachedAt() {
-    return GeneratedDateTimeColumn(
-      'cached_at',
-      $tableName,
-      true,
     );
   }
 
@@ -775,8 +734,7 @@ class $PodcastsTable extends Podcasts
         totalEpisodes,
         totalSeasons,
         feedUrl,
-        isCached,
-        cachedAt
+        updatedAt
       ];
   @override
   $PodcastsTable get asDslTable => this;
@@ -878,15 +836,11 @@ class $PodcastsTable extends Podcasts
     } else if (isInserting) {
       context.missing(_feedUrlMeta);
     }
-    if (data.containsKey('is_cached')) {
-      context.handle(_isCachedMeta,
-          isCached.isAcceptableOrUnknown(data['is_cached'], _isCachedMeta));
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
     } else if (isInserting) {
-      context.missing(_isCachedMeta);
-    }
-    if (data.containsKey('cached_at')) {
-      context.handle(_cachedAtMeta,
-          cachedAt.isAcceptableOrUnknown(data['cached_at'], _cachedAtMeta));
+      context.missing(_updatedAtMeta);
     }
     return context;
   }
@@ -1818,16 +1772,19 @@ class PlaybackPositionRow extends DataClass
   final String episodeId;
   final int position;
   final int duration;
+  final DateTime updatedAt;
   PlaybackPositionRow(
       {@required this.episodeId,
       @required this.position,
-      @required this.duration});
+      @required this.duration,
+      @required this.updatedAt});
   factory PlaybackPositionRow.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return PlaybackPositionRow(
       episodeId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}episode_id']),
@@ -1835,6 +1792,8 @@ class PlaybackPositionRow extends DataClass
           intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
       duration:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}duration']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
   @override
@@ -1848,6 +1807,9 @@ class PlaybackPositionRow extends DataClass
     }
     if (!nullToAbsent || duration != null) {
       map['duration'] = Variable<int>(duration);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
     }
     return map;
   }
@@ -1863,6 +1825,9 @@ class PlaybackPositionRow extends DataClass
       duration: duration == null && nullToAbsent
           ? const Value.absent()
           : Value(duration),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
     );
   }
 
@@ -1873,6 +1838,7 @@ class PlaybackPositionRow extends DataClass
       episodeId: serializer.fromJson<String>(json['episodeId']),
       position: serializer.fromJson<int>(json['position']),
       duration: serializer.fromJson<int>(json['duration']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
   @override
@@ -1882,72 +1848,86 @@ class PlaybackPositionRow extends DataClass
       'episodeId': serializer.toJson<String>(episodeId),
       'position': serializer.toJson<int>(position),
       'duration': serializer.toJson<int>(duration),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
 
   PlaybackPositionRow copyWith(
-          {String episodeId, int position, int duration}) =>
+          {String episodeId, int position, int duration, DateTime updatedAt}) =>
       PlaybackPositionRow(
         episodeId: episodeId ?? this.episodeId,
         position: position ?? this.position,
         duration: duration ?? this.duration,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
   @override
   String toString() {
     return (StringBuffer('PlaybackPositionRow(')
           ..write('episodeId: $episodeId, ')
           ..write('position: $position, ')
-          ..write('duration: $duration')
+          ..write('duration: $duration, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf(
-      $mrjc(episodeId.hashCode, $mrjc(position.hashCode, duration.hashCode)));
+  int get hashCode => $mrjf($mrjc(episodeId.hashCode,
+      $mrjc(position.hashCode, $mrjc(duration.hashCode, updatedAt.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is PlaybackPositionRow &&
           other.episodeId == this.episodeId &&
           other.position == this.position &&
-          other.duration == this.duration);
+          other.duration == this.duration &&
+          other.updatedAt == this.updatedAt);
 }
 
 class PlaybackPositionsCompanion extends UpdateCompanion<PlaybackPositionRow> {
   final Value<String> episodeId;
   final Value<int> position;
   final Value<int> duration;
+  final Value<DateTime> updatedAt;
   const PlaybackPositionsCompanion({
     this.episodeId = const Value.absent(),
     this.position = const Value.absent(),
     this.duration = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   PlaybackPositionsCompanion.insert({
     @required String episodeId,
     @required int position,
     @required int duration,
+    @required DateTime updatedAt,
   })  : episodeId = Value(episodeId),
         position = Value(position),
-        duration = Value(duration);
+        duration = Value(duration),
+        updatedAt = Value(updatedAt);
   static Insertable<PlaybackPositionRow> custom({
     Expression<String> episodeId,
     Expression<int> position,
     Expression<int> duration,
+    Expression<DateTime> updatedAt,
   }) {
     return RawValuesInsertable({
       if (episodeId != null) 'episode_id': episodeId,
       if (position != null) 'position': position,
       if (duration != null) 'duration': duration,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
   PlaybackPositionsCompanion copyWith(
-      {Value<String> episodeId, Value<int> position, Value<int> duration}) {
+      {Value<String> episodeId,
+      Value<int> position,
+      Value<int> duration,
+      Value<DateTime> updatedAt}) {
     return PlaybackPositionsCompanion(
       episodeId: episodeId ?? this.episodeId,
       position: position ?? this.position,
       duration: duration ?? this.duration,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -1962,6 +1942,9 @@ class PlaybackPositionsCompanion extends UpdateCompanion<PlaybackPositionRow> {
     }
     if (duration.present) {
       map['duration'] = Variable<int>(duration.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
   }
@@ -2005,8 +1988,21 @@ class $PlaybackPositionsTable extends PlaybackPositions
     );
   }
 
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
   @override
-  List<GeneratedColumn> get $columns => [episodeId, position, duration];
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [episodeId, position, duration, updatedAt];
   @override
   $PlaybackPositionsTable get asDslTable => this;
   @override
@@ -2036,6 +2032,12 @@ class $PlaybackPositionsTable extends PlaybackPositions
           duration.isAcceptableOrUnknown(data['duration'], _durationMeta));
     } else if (isInserting) {
       context.missing(_durationMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
     }
     return context;
   }
@@ -2244,15 +2246,19 @@ class $PreferencesTable extends Preferences
 
 class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
   final String podcastId;
-  SubscriptionRow({@required this.podcastId});
+  final DateTime updatedAt;
+  SubscriptionRow({@required this.podcastId, @required this.updatedAt});
   factory SubscriptionRow.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return SubscriptionRow(
       podcastId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}podcast_id']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
   @override
@@ -2260,6 +2266,9 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     final map = <String, Expression>{};
     if (!nullToAbsent || podcastId != null) {
       map['podcast_id'] = Variable<String>(podcastId);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
     }
     return map;
   }
@@ -2269,6 +2278,9 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
       podcastId: podcastId == null && nullToAbsent
           ? const Value.absent()
           : Value(podcastId),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
     );
   }
 
@@ -2277,6 +2289,7 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return SubscriptionRow(
       podcastId: serializer.fromJson<String>(json['podcastId']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
   @override
@@ -2284,47 +2297,61 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'podcastId': serializer.toJson<String>(podcastId),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
 
-  SubscriptionRow copyWith({String podcastId}) => SubscriptionRow(
+  SubscriptionRow copyWith({String podcastId, DateTime updatedAt}) =>
+      SubscriptionRow(
         podcastId: podcastId ?? this.podcastId,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
   @override
   String toString() {
     return (StringBuffer('SubscriptionRow(')
-          ..write('podcastId: $podcastId')
+          ..write('podcastId: $podcastId, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf(podcastId.hashCode);
+  int get hashCode => $mrjf($mrjc(podcastId.hashCode, updatedAt.hashCode));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is SubscriptionRow && other.podcastId == this.podcastId);
+      (other is SubscriptionRow &&
+          other.podcastId == this.podcastId &&
+          other.updatedAt == this.updatedAt);
 }
 
 class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
   final Value<String> podcastId;
+  final Value<DateTime> updatedAt;
   const SubscriptionsCompanion({
     this.podcastId = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   SubscriptionsCompanion.insert({
     @required String podcastId,
-  }) : podcastId = Value(podcastId);
+    @required DateTime updatedAt,
+  })  : podcastId = Value(podcastId),
+        updatedAt = Value(updatedAt);
   static Insertable<SubscriptionRow> custom({
     Expression<String> podcastId,
+    Expression<DateTime> updatedAt,
   }) {
     return RawValuesInsertable({
       if (podcastId != null) 'podcast_id': podcastId,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
-  SubscriptionsCompanion copyWith({Value<String> podcastId}) {
+  SubscriptionsCompanion copyWith(
+      {Value<String> podcastId, Value<DateTime> updatedAt}) {
     return SubscriptionsCompanion(
       podcastId: podcastId ?? this.podcastId,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -2333,6 +2360,9 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
     final map = <String, Expression>{};
     if (podcastId.present) {
       map['podcast_id'] = Variable<String>(podcastId.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
   }
@@ -2352,8 +2382,20 @@ class $SubscriptionsTable extends Subscriptions
         $customConstraints: 'REFERENCES podcasts(id)');
   }
 
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
   @override
-  List<GeneratedColumn> get $columns => [podcastId];
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [podcastId, updatedAt];
   @override
   $SubscriptionsTable get asDslTable => this;
   @override
@@ -2370,6 +2412,12 @@ class $SubscriptionsTable extends Subscriptions
           podcastId.isAcceptableOrUnknown(data['podcast_id'], _podcastIdMeta));
     } else if (isInserting) {
       context.missing(_podcastIdMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
     }
     return context;
   }
@@ -2392,15 +2440,20 @@ class SubscriptionFilterRow extends DataClass
     implements Insertable<SubscriptionFilterRow> {
   final String id;
   final String name;
-  SubscriptionFilterRow({@required this.id, @required this.name});
+  final DateTime updatedAt;
+  SubscriptionFilterRow(
+      {@required this.id, @required this.name, @required this.updatedAt});
   factory SubscriptionFilterRow.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return SubscriptionFilterRow(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
   @override
@@ -2412,6 +2465,9 @@ class SubscriptionFilterRow extends DataClass
     if (!nullToAbsent || name != null) {
       map['name'] = Variable<String>(name);
     }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
     return map;
   }
 
@@ -2419,6 +2475,9 @@ class SubscriptionFilterRow extends DataClass
     return SubscriptionFiltersCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
     );
   }
 
@@ -2428,6 +2487,7 @@ class SubscriptionFilterRow extends DataClass
     return SubscriptionFilterRow(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
   @override
@@ -2436,61 +2496,74 @@ class SubscriptionFilterRow extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
 
-  SubscriptionFilterRow copyWith({String id, String name}) =>
+  SubscriptionFilterRow copyWith(
+          {String id, String name, DateTime updatedAt}) =>
       SubscriptionFilterRow(
         id: id ?? this.id,
         name: name ?? this.name,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
   @override
   String toString() {
     return (StringBuffer('SubscriptionFilterRow(')
           ..write('id: $id, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode, name.hashCode));
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(name.hashCode, updatedAt.hashCode)));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is SubscriptionFilterRow &&
           other.id == this.id &&
-          other.name == this.name);
+          other.name == this.name &&
+          other.updatedAt == this.updatedAt);
 }
 
 class SubscriptionFiltersCompanion
     extends UpdateCompanion<SubscriptionFilterRow> {
   final Value<String> id;
   final Value<String> name;
+  final Value<DateTime> updatedAt;
   const SubscriptionFiltersCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   SubscriptionFiltersCompanion.insert({
     @required String id,
     @required String name,
+    @required DateTime updatedAt,
   })  : id = Value(id),
-        name = Value(name);
+        name = Value(name),
+        updatedAt = Value(updatedAt);
   static Insertable<SubscriptionFilterRow> custom({
     Expression<String> id,
     Expression<String> name,
+    Expression<DateTime> updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
   SubscriptionFiltersCompanion copyWith(
-      {Value<String> id, Value<String> name}) {
+      {Value<String> id, Value<String> name, Value<DateTime> updatedAt}) {
     return SubscriptionFiltersCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -2502,6 +2575,9 @@ class SubscriptionFiltersCompanion
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
   }
@@ -2536,8 +2612,20 @@ class $SubscriptionFiltersTable extends SubscriptionFilters
     );
   }
 
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
   @override
-  List<GeneratedColumn> get $columns => [id, name];
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, name, updatedAt];
   @override
   $SubscriptionFiltersTable get asDslTable => this;
   @override
@@ -2560,6 +2648,12 @@ class $SubscriptionFiltersTable extends SubscriptionFilters
           _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
     }
     return context;
   }
