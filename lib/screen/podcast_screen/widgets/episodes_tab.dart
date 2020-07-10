@@ -84,7 +84,7 @@ class EpisodesTab extends StatelessWidget {
               podcast: podcast,
             );
           }
-          Future.delayed(Duration(milliseconds: 100), loadMoreEpisodes);
+          loadMoreEpisodes();
           return _buildLoadingIndicator();
         },
         childCount: receivedAllEpisodes ? episodes.length : episodes.length + 1,

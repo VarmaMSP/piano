@@ -75,7 +75,7 @@ class SubscriptionsFeed extends StatelessWidget {
               podcast: podcastById[episodes[index].podcastId],
             );
           }
-          Future.delayed(Duration(milliseconds: 100), loadMoreEpisodes);
+          loadMoreEpisodes();
           return _buildLoadingIndicator();
         },
         childCount: receivedAllEpisodes ? episodes.length : episodes.length + 1,

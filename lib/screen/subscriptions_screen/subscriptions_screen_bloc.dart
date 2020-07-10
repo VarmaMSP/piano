@@ -48,7 +48,7 @@ class SubscriptionsScreenBloc {
       (subscriptions, episodePages) => SubscriptionsScreenData(
         podcasts: subscriptions,
         episodes: episodePages.expand((x) => x).toList(),
-        receivedAllEpisodes: episodePages.first.length < 30,
+        receivedAllEpisodes: episodePages.last.length < 30,
       ),
     ).distinct().listen(_screenData.add);
 
