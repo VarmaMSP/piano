@@ -4,6 +4,9 @@ targets:
       moor_generator:
         options:
           generate_connect_constructor: true
+          sqlite_modules:
+            - fts5
+            - moor_ffi
 
       source_gen|combining_builder:
         options:
