@@ -105,15 +105,8 @@ class AudioPlayerBloc {
           (track) =>
               store.playbackPosition.watchByEpisode(track.episode.id).first,
         )
-        .where((pos) => !pos.isEmpty)
-        .listen((pos) => _playbackPositionSubject.add(
-              PlaybackPosition(
-                duration: pos.duration,
-                position: pos.position,
-                percentage:
-                    pos.position.inMilliseconds / pos.duration.inMilliseconds,
-              ),
-            ));
+        .where((pos) => pos != null)
+        .listen(_playbackPositionSubject.add);
 
     // handle queue transistions
     _queueTransistion.stream.distinct().listen((t) async {

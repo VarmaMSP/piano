@@ -155,7 +155,7 @@ class AudioPlayerController {
         // ignore: unawaited_futures
         _audioPlayer.playMediaItem(
           audioTrack.toMediaItem(),
-          start: !playbackPos.isEmpty ? playbackPos.position : null,
+          start: playbackPos?.position,
         );
       }
     });

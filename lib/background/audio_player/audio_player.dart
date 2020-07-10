@@ -145,7 +145,7 @@ class AudioPlayer {
     if (!utils.isValidState(state)) {
       return;
     }
-    final position = state?.currentPosition;
+    final position = state.currentPosition;
     final newPosition = Duration(seconds: position.inSeconds - seconds);
     await seekTo(newPosition.isNegative ? Duration.zero : newPosition);
   }

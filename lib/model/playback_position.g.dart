@@ -14,12 +14,14 @@ extension PlaybackPositionCopyWithExtension on PlaybackPosition {
     String episodeId,
     double percentage,
     Duration position,
+    DateTime updatedAt,
   }) {
     return PlaybackPosition(
       duration: duration ?? this.duration,
       episodeId: episodeId ?? this.episodeId,
       percentage: percentage ?? this.percentage,
       position: position ?? this.position,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }
