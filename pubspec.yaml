@@ -35,7 +35,7 @@ dependencies:
   implicitly_animated_reorderable_list: ^0.2.3
   intl: ^0.16.1
   json_annotation: ^3.0.1
-  just_audio: ^0.2.2
+  just_audio: ^0.1.10
   logger: ^0.9.1
   modal_bottom_sheet: ^0.1.6+1
   moor: ^3.1.0
