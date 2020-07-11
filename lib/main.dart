@@ -6,6 +6,7 @@ import 'package:phenopod/screen/search_screen/search_screen.dart';
 import 'package:phenopod/service/api/api.dart';
 // import 'package:phenopod/task_runner/task_runner.dart';
 import 'package:phenopod/theme/theme.dart';
+import 'package:phenopod/utils/page_transistion.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
@@ -129,25 +130,13 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
           onGenerateRoute: (settings) {
             switch (settings.name) {
               case '/app':
-                return MaterialPageRoute(
-                  builder: (context) => App(),
-                );
+                return ParallaxRoute(builder: (_) => App());
 
               case '/queue':
-                return PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => QueueScreen(),
-                  transitionsBuilder: (_, animation, __, child) =>
-                      SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(0.0, 1.0),
-                      end: Offset.zero,
-                    ).animate(animation),
-                    child: child,
-                  ),
-                );
+                return SlideUpPageRoute(builder: (_) => QueueScreen());
 
               case '/search':
-                return MaterialPageRoute(builder: (context) => SearchScreen());
+                return ZoomPageRoute(builder: (_) => SearchScreen());
 
               default:
                 return null;
