@@ -30,6 +30,7 @@ dependencies:
   flutter_page_transition: ^0.1.6
   flutter_secure_storage: ^3.3.3
   flutter_signin_button: ^1.0.0
+  flutter_slidable: ^0.5.4
   google_fonts: ^1.1.0
   google_sign_in: ^4.5.1
   implicitly_animated_reorderable_list: ^0.2.3
@@ -37,6 +38,7 @@ dependencies:
   json_annotation: ^3.0.1
   just_audio: ^0.1.10
   logger: ^0.9.1
+  material_design_icons_flutter: ^4.0.5345
   modal_bottom_sheet: ^0.1.6+1
   moor: ^3.1.0
   moor_db_viewer: ^2.0.3
@@ -54,7 +56,6 @@ dependencies:
   tuple: ^1.0.3
   url_launcher: ^5.5.0
   uuid: ^2.2.0
-  material_design_icons_flutter: ^4.0.5345
 
 dev_dependencies:
   flutter_test:
