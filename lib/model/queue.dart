@@ -105,24 +105,33 @@ class Queue extends Equatable {
 
   /// Returns a new queue with updated positions
   Queue changePosition(int from, int to) {
+    final trackCount = audioTracks.length;
+
+    var newPosition = position;
+    if (position == from) {
+      newPosition = to;
+    } else if (position == to) {
+      newPosition = to < from ? to + 1 : to - 1;
+    }
+
     return Queue(
-      position: position != from ? position : to,
+      position: newPosition,
       audioTracks: to < from
           ? [
-              ...audioTracks.sublist(0, to),
+              if (to > 0) ...audioTracks.sublist(0, to),
               audioTracks[from].copyWith(position: to),
               ...audioTracks
                   .sublist(to, from)
                   .map((t) => t.copyWith(position: t.position + 1)),
-              ...audioTracks.sublist(from),
+              if (from + 1 < trackCount) ...audioTracks.sublist(from + 1),
             ]
           : [
-              ...audioTracks.sublist(0, from),
+              if (from > 0) ...audioTracks.sublist(0, from),
               ...audioTracks
-                  .sublist(from, to + 1)
+                  .sublist(from + 1, to + 1)
                   .map((t) => t.copyWith(position: t.position - 1)),
               audioTracks[from].copyWith(position: to),
-              ...audioTracks.sublist(to + 1),
+              if (to + 1 < trackCount) ...audioTracks.sublist(to + 1),
             ],
     );
   }

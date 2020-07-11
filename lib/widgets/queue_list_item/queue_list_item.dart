@@ -15,6 +15,7 @@ class QueueListItem extends StatelessWidget {
   QueueListItem({
     Key key,
     @required this.dragAnimation,
+    @required this.nowPlayingPosition,
     @required AudioTrack audioTrack,
   })  : position = audioTrack.position,
         episode = audioTrack.episode,
@@ -23,6 +24,7 @@ class QueueListItem extends StatelessWidget {
 
   final Animation<double> dragAnimation;
   final int position;
+  final int nowPlayingPosition;
   final Episode episode;
   final Podcast podcast;
 
@@ -34,13 +36,13 @@ class QueueListItem extends StatelessWidget {
     final elevation = lerpDouble(0, 8, t);
 
     return Box(
-      color: color,
+      color: nowPlayingPosition == position ? Colors.grey.shade200 : color,
       elevation: elevation,
       alignment: Alignment.center,
       height: 80,
       child: Container(
         constraints: BoxConstraints.expand(height: 80),
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.symmetric(vertical: 7.5),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -54,38 +56,62 @@ class QueueListItem extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              width: 28,
-              padding: EdgeInsets.only(right: 10),
-              child: Text(
-                position.toString(),
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .subtitle2
-                    .copyWith(color: TWColors.gray.shade800),
+            if (nowPlayingPosition == position)
+              Container(
+                width: 26,
+                padding: EdgeInsets.only(right: 8),
+                child: Icon(
+                  MdiIcons.play,
+                  color: TWColors.gray.shade700,
+                  size: 18,
+                ),
+              )
+            else
+              Container(
+                width: 26,
+                padding: EdgeInsets.only(right: 8),
+                child: Text(
+                  '${position - nowPlayingPosition}',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2
+                      .copyWith(color: TWColors.gray.shade800),
+                ),
               ),
-            ),
             Thumbnail(podcast: podcast),
             Expanded(
               child: Container(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       episode.title,
-                      maxLines: 2,
+                      style: Theme.of(context).textTheme.headline6.copyWith(
+                            color: TWColors.gray.shade900,
+                            fontWeight: FontWeight.w400,
+                          ),
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Container(height: 4),
+                    Text(
+                      podcast.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(color: TWColors.gray.shade900),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     Text(
                       '${formatDuration(seconds: episode.duration)}',
-                      style: TextStyle(
-                        fontSize: 13,
-                        letterSpacing: 0.15,
-                      ),
-                    )
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          .copyWith(color: TWColors.gray.shade900),
+                    ),
                   ],
                 ),
               ),
@@ -95,7 +121,7 @@ class QueueListItem extends StatelessWidget {
               color: TWColors.gray.shade600,
               size: 22,
             ),
-            Container(width: 10),
+            Container(width: 8),
           ],
         ),
       ),

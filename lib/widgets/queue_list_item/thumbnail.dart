@@ -10,7 +10,7 @@ class Thumbnail extends StatelessWidget {
     @required this.podcast,
   }) : super(key: key);
 
-  static const double thumbnailSize = 55;
+  static const double thumbnailSize = 60;
   static const double borderRadius = 5;
 
   final Podcast podcast;
