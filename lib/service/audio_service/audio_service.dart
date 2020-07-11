@@ -34,6 +34,9 @@ abstract class AudioService {
   // Disconnect from background audio service isolate
   Future<void> disconnect();
 
+  // Stop background audio service
+  Future<void> stop();
+
   /// Makes background service load latest queue from db. This
   /// method should be called anytime the UI makes changes
   /// to the queue

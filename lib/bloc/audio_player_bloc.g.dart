@@ -28,6 +28,8 @@ abstract class QueueTransistion extends Equatable {
 
   factory QueueTransistion.playTrack({@required int position}) = PlayTrack;
 
+  factory QueueTransistion.clearQueue({@required bool askUser}) = ClearQueue;
+
   final _QueueTransistion _type;
 
 //ignore: missing_return
@@ -37,14 +39,16 @@ abstract class QueueTransistion extends Equatable {
       @required R Function(AddToQueueBottom) addToQueueBottom,
       @required R Function(ChangeTrackPosition) changeTrackPosition,
       @required R Function(RemoveTrack) removeTrack,
-      @required R Function(PlayTrack) playTrack}) {
+      @required R Function(PlayTrack) playTrack,
+      @required R Function(ClearQueue) clearQueue}) {
     assert(() {
       if (playAudioTrack == null ||
           addToQueueTop == null ||
           addToQueueBottom == null ||
           changeTrackPosition == null ||
           removeTrack == null ||
-          playTrack == null) {
+          playTrack == null ||
+          clearQueue == null) {
         throw 'check for all possible cases';
       }
       return true;
@@ -62,6 +66,8 @@ abstract class QueueTransistion extends Equatable {
         return removeTrack(this as RemoveTrack);
       case _QueueTransistion.PlayTrack:
         return playTrack(this as PlayTrack);
+      case _QueueTransistion.ClearQueue:
+        return clearQueue(this as ClearQueue);
     }
   }
 
@@ -72,14 +78,16 @@ abstract class QueueTransistion extends Equatable {
       @required FutureOr<R> Function(AddToQueueBottom) addToQueueBottom,
       @required FutureOr<R> Function(ChangeTrackPosition) changeTrackPosition,
       @required FutureOr<R> Function(RemoveTrack) removeTrack,
-      @required FutureOr<R> Function(PlayTrack) playTrack}) {
+      @required FutureOr<R> Function(PlayTrack) playTrack,
+      @required FutureOr<R> Function(ClearQueue) clearQueue}) {
     assert(() {
       if (playAudioTrack == null ||
           addToQueueTop == null ||
           addToQueueBottom == null ||
           changeTrackPosition == null ||
           removeTrack == null ||
-          playTrack == null) {
+          playTrack == null ||
+          clearQueue == null) {
         throw 'check for all possible cases';
       }
       return true;
@@ -97,6 +105,8 @@ abstract class QueueTransistion extends Equatable {
         return removeTrack(this as RemoveTrack);
       case _QueueTransistion.PlayTrack:
         return playTrack(this as PlayTrack);
+      case _QueueTransistion.ClearQueue:
+        return clearQueue(this as ClearQueue);
     }
   }
 
@@ -107,6 +117,7 @@ abstract class QueueTransistion extends Equatable {
       R Function(ChangeTrackPosition) changeTrackPosition,
       R Function(RemoveTrack) removeTrack,
       R Function(PlayTrack) playTrack,
+      R Function(ClearQueue) clearQueue,
       @required R Function(QueueTransistion) orElse}) {
     assert(() {
       if (orElse == null) {
@@ -133,6 +144,9 @@ abstract class QueueTransistion extends Equatable {
       case _QueueTransistion.PlayTrack:
         if (playTrack == null) break;
         return playTrack(this as PlayTrack);
+      case _QueueTransistion.ClearQueue:
+        if (clearQueue == null) break;
+        return clearQueue(this as ClearQueue);
     }
     return orElse(this);
   }
@@ -144,6 +158,7 @@ abstract class QueueTransistion extends Equatable {
       FutureOr<R> Function(ChangeTrackPosition) changeTrackPosition,
       FutureOr<R> Function(RemoveTrack) removeTrack,
       FutureOr<R> Function(PlayTrack) playTrack,
+      FutureOr<R> Function(ClearQueue) clearQueue,
       @required FutureOr<R> Function(QueueTransistion) orElse}) {
     assert(() {
       if (orElse == null) {
@@ -170,6 +185,9 @@ abstract class QueueTransistion extends Equatable {
       case _QueueTransistion.PlayTrack:
         if (playTrack == null) break;
         return playTrack(this as PlayTrack);
+      case _QueueTransistion.ClearQueue:
+        if (clearQueue == null) break;
+        return clearQueue(this as ClearQueue);
     }
     return orElse(this);
   }
@@ -181,14 +199,16 @@ abstract class QueueTransistion extends Equatable {
       FutureOr<void> Function(AddToQueueBottom) addToQueueBottom,
       FutureOr<void> Function(ChangeTrackPosition) changeTrackPosition,
       FutureOr<void> Function(RemoveTrack) removeTrack,
-      FutureOr<void> Function(PlayTrack) playTrack}) {
+      FutureOr<void> Function(PlayTrack) playTrack,
+      FutureOr<void> Function(ClearQueue) clearQueue}) {
     assert(() {
       if (playAudioTrack == null &&
           addToQueueTop == null &&
           addToQueueBottom == null &&
           changeTrackPosition == null &&
           removeTrack == null &&
-          playTrack == null) {
+          playTrack == null &&
+          clearQueue == null) {
         throw 'provide at least one branch';
       }
       return true;
@@ -212,6 +232,9 @@ abstract class QueueTransistion extends Equatable {
       case _QueueTransistion.PlayTrack:
         if (playTrack == null) break;
         return playTrack(this as PlayTrack);
+      case _QueueTransistion.ClearQueue:
+        if (clearQueue == null) break;
+        return clearQueue(this as ClearQueue);
     }
   }
 
@@ -297,4 +320,17 @@ class PlayTrack extends QueueTransistion {
   String toString() => 'PlayTrack(position:${this.position})';
   @override
   List get props => [position];
+}
+
+@immutable
+class ClearQueue extends QueueTransistion {
+  const ClearQueue({@required this.askUser})
+      : super(_QueueTransistion.ClearQueue);
+
+  final bool askUser;
+
+  @override
+  String toString() => 'ClearQueue(askUser:${this.askUser})';
+  @override
+  List get props => [askUser];
 }

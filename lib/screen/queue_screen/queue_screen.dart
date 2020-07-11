@@ -55,11 +55,13 @@ class QueueScreen extends StatelessWidget {
             innerScrollPositionKeyBuilder: () {
               return Key('List');
             },
-            body: _buildList(
-              context,
-              audioPlayerBloc,
-              snapshot.data?.audioTracks ?? [],
-            ),
+            body: !snapshot.hasData
+                ? Container()
+                : _buildList(
+                    context,
+                    audioPlayerBloc,
+                    snapshot.data,
+                  ),
           );
         },
       ),
@@ -69,7 +71,7 @@ class QueueScreen extends StatelessWidget {
   Widget _buildList(
     BuildContext context,
     AudioPlayerBloc audioPlayerBloc,
-    List<AudioTrack> tracks,
+    Queue queue,
   ) {
     Widget buildReorderable(
       AudioTrack audioTrack,
@@ -80,6 +82,7 @@ class QueueScreen extends StatelessWidget {
           builder: (context, dragAnimation, inDrag) {
             final item = QueueListItem(
               dragAnimation: dragAnimation,
+              nowPlayingPosition: queue.nowPlaying.position,
               audioTrack: audioTrack,
             );
             return dragAnimation.value > 0.0 ? item : transitionBuilder(item);
@@ -87,7 +90,7 @@ class QueueScreen extends StatelessWidget {
         );
 
     return ImplicitlyAnimatedReorderableList<AudioTrack>(
-      items: tracks,
+      items: queue.audioTracks,
       shrinkWrap: true,
       areItemsTheSame: (a, b) => a.episode.id == b.episode.id,
       onReorderFinished: (item, from, to, newItems) {

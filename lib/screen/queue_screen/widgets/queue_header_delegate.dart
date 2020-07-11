@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
+import 'package:phenopod/bloc/audio_player_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class QueueHeaderDelegate implements SliverPersistentHeaderDelegate {
@@ -23,6 +25,8 @@ class QueueHeaderDelegate implements SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
+    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+
     return Container(
       height: maxExtent,
       padding: EdgeInsets.only(left: 14, right: 18),
@@ -67,6 +71,12 @@ class QueueHeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
             ),
           ),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () => audioPlayerBloc.transistionQueue(
+              QueueTransistion.clearQueue(askUser: false),
+            ),
+          )
         ],
       ),
     );

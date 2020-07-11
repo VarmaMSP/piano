@@ -40,6 +40,11 @@ class _audioServiceImpl implements AudioService {
   }
 
   @override
+  Future<void> stop() async {
+    await audioservice.AudioService.stop();
+  }
+
+  @override
   Future<void> syncQueue({bool startTask = true}) async {
     if (audioservice.AudioService.running) {
       await audioservice.AudioService.customAction('syncQueue');

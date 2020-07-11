@@ -32,7 +32,9 @@ enum _QueueTransistion {
   @Data(fields: [DataField<int>('position')])
   RemoveTrack,
   @Data(fields: [DataField<int>('position')])
-  PlayTrack
+  PlayTrack,
+  @Data(fields: [DataField<bool>('askUser')])
+  ClearQueue,
 }
 
 class AudioPlayerBloc {
@@ -109,7 +111,7 @@ class AudioPlayerBloc {
         .listen(_playbackPositionSubject.add);
 
     // handle queue transistions
-    _queueTransistion.stream.distinct().listen((t) async {
+    _queueTransistion.stream.listen((t) async {
       final prevQueue = await _queueSubject.first;
       await t.when(
         playAudioTrack: (data) async {
@@ -138,6 +140,10 @@ class AudioPlayerBloc {
         playTrack: (data) async {
           await store.audioPlayer.saveQueue(prevQueue.play(data.position));
           await audioService.syncQueue(startTask: false);
+        },
+        clearQueue: (data) async {
+          await store.audioPlayer.saveQueue(Queue.empty());
+          await audioService.stop();
         },
       );
     });
