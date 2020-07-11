@@ -58,49 +58,70 @@ class Queue extends Equatable {
     );
   }
 
+  /// Returns a new queue with updated now playing position
+  Queue play(int position) {
+    return Queue(position: position, audioTracks: audioTracks);
+  }
+
   /// Returns a new queue with track in next play position
   Queue addToTop(AudioTrack audioTrack) {
-    final trackPos = position + 1;
+    final trackCount = audioTracks.length;
+
+    var newPosition = position;
+    if (position == -1) {
+      newPosition = 0;
+    }
+
     return Queue(
-      position: trackPos == 0 ? 0 : position,
+      position: newPosition,
       audioTracks: [
-        ...audioTracks.sublist(0, trackPos),
-        audioTrack.copyWith(position: trackPos),
-        ...audioTracks
-            .sublist(trackPos)
-            .map((a) => a.copyWith(position: a.position + 1)),
+        if (position >= 0) ...audioTracks.sublist(0, position + 1),
+        audioTrack.copyWith(position: position + 1),
+        if (position + 1 < trackCount)
+          ...audioTracks
+              .sublist(position + 1)
+              .map((a) => a.copyWith(position: a.position + 1)),
       ],
     );
   }
 
   /// Returns a new queue with track in last play position
   Queue addToBottom(AudioTrack audioTrack) {
-    final trackPos = audioTracks.length;
+    final trackCount = audioTracks.length;
+
+    var newPosition = position;
+    if (position == -1) {
+      newPosition = 0;
+    }
+
     return Queue(
-      position: trackPos == 0 ? 0 : position,
+      position: newPosition,
       audioTracks: [
         ...audioTracks,
-        audioTrack.copyWith(position: trackPos),
+        audioTrack.copyWith(position: trackCount),
       ],
     );
   }
 
   /// Returns a new queue with track at given position remove
-  Queue remove(int position) {
+  Queue remove(int trackPosition) {
+    final trackCount = audioTracks.length;
+
+    var newPosition = position;
+    if (position == trackCount - 1) {
+      newPosition = position - 1;
+    }
+
     return Queue(
-      position: position != this.position
-          ? this.position
-          : position == audioTracks.length - 1 ? position - 1 : position + 1,
+      position: newPosition,
       audioTracks: [
-        ...audioTracks.sublist(0, position),
-        ...audioTracks.sublist(position + 1),
+        if (trackPosition > 0) ...audioTracks.sublist(0, trackPosition),
+        if (trackPosition + 1 < trackCount)
+          ...audioTracks
+              .sublist(trackPosition + 1)
+              .map((t) => t.copyWith(position: t.position - 1)),
       ],
     );
-  }
-
-  /// Returns a new queue with updated now playing position
-  Queue play(int position) {
-    return Queue(position: position, audioTracks: audioTracks);
   }
 
   /// Returns a new queue with updated positions
@@ -110,8 +131,10 @@ class Queue extends Equatable {
     var newPosition = position;
     if (position == from) {
       newPosition = to;
-    } else if (position == to) {
-      newPosition = to < from ? to + 1 : to - 1;
+    } else if (position >= to && position < from) {
+      newPosition = position + 1;
+    } else if (position > from && position <= to) {
+      newPosition = position - 1;
     }
 
     return Queue(
@@ -138,8 +161,15 @@ class Queue extends Equatable {
 
   /// Returns a new queue with next track in active position
   Queue skipToNext() {
+    final trackCount = audioTracks.length;
+
+    var newPosition = position + 1;
+    if (position + 1 >= trackCount) {
+      newPosition = position;
+    }
+
     return Queue(
-      position: position + 1,
+      position: newPosition,
       audioTracks: audioTracks,
     );
   }
