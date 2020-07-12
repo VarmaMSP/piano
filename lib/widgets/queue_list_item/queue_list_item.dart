@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:phenopod/model/main.dart';
@@ -44,40 +43,25 @@ class QueueListItem extends StatelessWidget {
         : Color.lerp(Colors.white, Colors.grey.shade100, t);
     final elevation = lerpDouble(0, 8, t);
 
-    return Slidable(
+    return Dismissible(
       key: Key(episode.id),
-      actionPane: const SlidableBehindActionPane(),
-      actionExtentRatio: 0.0,
-      actions: [
-        SlideAction(
-          closeOnTap: true,
-          color: TWColors.red.shade600,
-          child: Container(
-            constraints: BoxConstraints.expand(),
-            padding: EdgeInsets.only(left: 20),
-            alignment: Alignment.centerLeft,
-            child: Icon(Icons.delete, color: Colors.white),
-          ),
-        ),
-      ],
-      secondaryActions: [
-        SlideAction(
-          closeOnTap: true,
-          color: TWColors.red.shade600,
-          child: Container(
-            constraints: BoxConstraints.expand(),
-            padding: EdgeInsets.only(right: 20),
-            alignment: Alignment.centerRight,
-            child: Icon(Icons.delete, color: Colors.white),
-          ),
-        ),
-      ],
-      dismissal: SlidableDismissal(
-        child: SlidableDrawerDismissal(),
-        onDismissed: (actionType) {
-          removeFromQueue();
-        },
+      background: Container(
+        constraints: BoxConstraints.expand(),
+        padding: EdgeInsets.only(left: 10),
+        alignment: Alignment.centerLeft,
+        color: TWColors.red.shade600,
+        child: Icon(Icons.delete, color: Colors.white),
       ),
+      secondaryBackground: Container(
+        constraints: BoxConstraints.expand(),
+        padding: EdgeInsets.only(right: 10),
+        alignment: Alignment.centerRight,
+        color: TWColors.red.shade600,
+        child: Icon(Icons.delete, color: Colors.white),
+      ),
+      onDismissed: (direction) {
+        removeFromQueue();
+      },
       child: Box(
         color: color,
         elevation: elevation,
