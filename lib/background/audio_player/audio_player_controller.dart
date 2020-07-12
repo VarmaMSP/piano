@@ -142,7 +142,6 @@ class AudioPlayerController {
       await _store.playbackPosition.upsert(PlaybackPosition(
         episodeId: nowPlaying.episode.id,
         position: playbackState.currentPosition,
-        duration: Duration.zero,
       ));
     }
   }

@@ -85,7 +85,7 @@ class Thumbnail extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          border: Border.all(color: Colors.grey.shade400, width: 0.5),
+          border: Border.all(color: Colors.grey.shade400, width: 0.25),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
@@ -158,12 +158,12 @@ class Thumbnail extends StatelessWidget {
       child: Container(
         height: 5,
         width: thumbnailSize,
-        color: const Color.fromRGBO(0, 0, 0, 0.6),
-        alignment: Alignment.centerLeft,
+        color: const Color.fromRGBO(255, 255, 255, 0.8),
+        alignment: Alignment.bottomLeft,
         child: FractionallySizedBox(
-          heightFactor: 1.0,
+          heightFactor: 0.9,
           widthFactor: playback.percentage,
-          child: Container(color: Color(0xffffbe0b)),
+          child: Container(color: TWColors.purple.shade600),
         ),
       ),
     );

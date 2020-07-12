@@ -40,10 +40,11 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
             onTap: scrollToTop,
             child: Text(
               'Phenopod',
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  .copyWith(color: TWColors.gray.shade800),
+              style: Theme.of(context).textTheme.headline4.copyWith(
+                    color: TWColors.purple.shade700,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
+                  ),
               textAlign: TextAlign.left,
             ),
           ),
