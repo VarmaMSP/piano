@@ -3,10 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/model/queue.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/box.dart';
+import 'package:phenopod/widgets/queue_list_item/menu.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 import 'thumbnail.dart';
@@ -14,77 +16,74 @@ import 'thumbnail.dart';
 class QueueListItem extends StatelessWidget {
   QueueListItem({
     Key key,
-    @required this.dragAnimation,
-    @required this.play,
+    @required this.trackCount,
     @required this.nowPlayingPosition,
-    @required this.removeFromQueue,
-    @required AudioTrack audioTrack,
-  })  : position = audioTrack.position,
-        episode = audioTrack.episode,
-        podcast = audioTrack.podcast,
-        super(key: key);
+    @required this.audioTrack,
+    @required this.dragAnimation,
+    @required this.transitionQueue,
+  });
 
   static final double itemHeight = 80;
 
-  final Animation<double> dragAnimation;
+  final int trackCount;
   final int nowPlayingPosition;
-  final Function play;
-  final Function removeFromQueue;
-  final int position;
-  final Episode episode;
-  final Podcast podcast;
+  final AudioTrack audioTrack;
+  final Animation<double> dragAnimation;
+  final void Function(QueueTransistion) transitionQueue;
 
   @override
   Widget build(BuildContext context) {
     final t = dragAnimation.value;
 
-    final color = nowPlayingPosition == position
+    final color = nowPlayingPosition == audioTrack.position
         ? Colors.grey.shade200
         : Color.lerp(Colors.white, Colors.grey.shade100, t);
     final elevation = lerpDouble(0, 8, t);
 
+    final lighten = audioTrack.position < nowPlayingPosition;
+    final background = ({bool alignRight}) => Container(
+          constraints: BoxConstraints.expand(),
+          padding: alignRight
+              ? EdgeInsets.only(right: 10)
+              : EdgeInsets.only(left: 10),
+          alignment: alignRight ? Alignment.centerRight : Alignment.centerLeft,
+          color: TWColors.red.shade600,
+          child: Icon(Icons.delete, color: Colors.white),
+        );
+
     return Dismissible(
-      key: Key(episode.id),
-      background: Container(
-        constraints: BoxConstraints.expand(),
-        padding: EdgeInsets.only(left: 10),
-        alignment: Alignment.centerLeft,
-        color: TWColors.red.shade600,
-        child: Icon(Icons.delete, color: Colors.white),
+      key: Key(audioTrack.episode.id),
+      background: background(alignRight: false),
+      secondaryBackground: background(alignRight: true),
+      onDismissed: (direction) => transitionQueue(
+        QueueTransistion.removeTrack(position: audioTrack.position),
       ),
-      secondaryBackground: Container(
-        constraints: BoxConstraints.expand(),
-        padding: EdgeInsets.only(right: 10),
-        alignment: Alignment.centerRight,
-        color: TWColors.red.shade600,
-        child: Icon(Icons.delete, color: Colors.white),
-      ),
-      onDismissed: (direction) {
-        removeFromQueue();
-      },
       child: Box(
         color: color,
         elevation: elevation,
         alignment: Alignment.center,
         height: itemHeight,
         child: GestureDetector(
-          onTap: play,
+          onTap: () => transitionQueue(
+            QueueTransistion.playTrack(position: audioTrack.position),
+          ),
           child: Container(
             constraints: BoxConstraints.expand(height: itemHeight),
             padding: EdgeInsets.symmetric(vertical: 7.5),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildHandler(),
-                _buildPosition(context),
-                Thumbnail(podcast: podcast),
-                Expanded(child: _buildDetails(context)),
-                Icon(
-                  Icons.more_vert,
-                  color: TWColors.gray.shade600,
-                  size: 22,
+                _buildHandler(lighten: lighten),
+                _buildPosition(context, lighten: lighten),
+                Thumbnail(podcast: audioTrack.podcast, lighten: lighten),
+                Expanded(child: _buildDetails(context, lighten: lighten)),
+                Menu(
+                  trackCount: trackCount,
+                  nowPlayingPosition: nowPlayingPosition,
+                  audioTrack: audioTrack,
+                  lighten: lighten,
+                  transitionQueue: transitionQueue,
                 ),
-                Container(width: 8),
               ],
             ),
           ),
@@ -93,21 +92,21 @@ class QueueListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildHandler() {
+  Widget _buildHandler({bool lighten}) {
     return Handle(
       child: Container(
         padding: EdgeInsets.only(left: 6),
         child: Icon(
           MdiIcons.dragVertical,
-          color: TWColors.gray.shade700,
+          color: lighten ? TWColors.gray.shade600 : TWColors.gray.shade900,
           size: 24,
         ),
       ),
     );
   }
 
-  Widget _buildPosition(BuildContext context) {
-    return nowPlayingPosition == position
+  Widget _buildPosition(BuildContext context, {bool lighten}) {
+    return nowPlayingPosition == audioTrack.position
         ? Container(
             width: 26,
             padding: EdgeInsets.only(right: 8),
@@ -121,17 +120,19 @@ class QueueListItem extends StatelessWidget {
             width: 26,
             padding: EdgeInsets.only(right: 8),
             child: Text(
-              '${position - nowPlayingPosition}',
+              '${audioTrack.position - nowPlayingPosition}',
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle2
-                  .copyWith(color: TWColors.gray.shade800),
+              style: Theme.of(context).textTheme.subtitle2.copyWith(
+                  color: lighten
+                      ? TWColors.gray.shade600
+                      : TWColors.gray.shade900),
             ),
           );
   }
 
-  Widget _buildDetails(BuildContext context) {
+  Widget _buildDetails(BuildContext context, {bool lighten}) {
+    final textColor = lighten ? TWColors.gray.shade600 : TWColors.gray.shade900;
+
     return Container(
       padding: EdgeInsets.only(left: 10, right: 10),
       child: Column(
@@ -139,29 +140,30 @@ class QueueListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            episode.title,
+            audioTrack.episode.title,
             style: Theme.of(context).textTheme.headline6.copyWith(
-                  color: TWColors.gray.shade900,
+                  color: textColor,
+                  fontSize: 13,
                   fontWeight: FontWeight.w400,
                 ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           Text(
-            podcast.title,
+            audioTrack.podcast.title,
             style: Theme.of(context)
                 .textTheme
                 .subtitle1
-                .copyWith(color: TWColors.gray.shade900),
+                .copyWith(color: textColor),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           Text(
-            '${formatDuration(seconds: episode.duration)}',
+            '${formatDuration(seconds: audioTrack.episode.duration)}',
             style: Theme.of(context)
                 .textTheme
                 .subtitle2
-                .copyWith(color: TWColors.gray.shade900),
+                .copyWith(color: textColor),
           ),
         ],
       ),

@@ -81,15 +81,11 @@ class QueueScreen extends StatelessWidget {
           key: ValueKey('${audioTrack.position} ${audioTrack.episode.id}'),
           builder: (context, dragAnimation, inDrag) {
             final item = QueueListItem(
-              dragAnimation: dragAnimation,
+              trackCount: queue.audioTracks.length,
               nowPlayingPosition: queue.nowPlaying.position,
-              play: () => audioPlayerBloc.transistionQueue(
-                QueueTransistion.playTrack(position: audioTrack.position),
-              ),
-              removeFromQueue: () => audioPlayerBloc.transistionQueue(
-                QueueTransistion.removeTrack(position: audioTrack.position),
-              ),
               audioTrack: audioTrack,
+              dragAnimation: dragAnimation,
+              transitionQueue: audioPlayerBloc.transistionQueue,
             );
             return dragAnimation.value > 0.0 ? item : transitionBuilder(item);
           },

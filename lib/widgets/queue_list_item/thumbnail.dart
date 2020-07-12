@@ -8,12 +8,14 @@ class Thumbnail extends StatelessWidget {
   const Thumbnail({
     Key key,
     @required this.podcast,
+    this.lighten,
   }) : super(key: key);
 
   static const double thumbnailSize = 60;
   static const double borderRadius = 5;
 
   final Podcast podcast;
+  final bool lighten;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,15 @@ class Thumbnail extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade400, width: 0.4),
       ),
       child: Stack(
-        children: [image],
+        children: [
+          image,
+          if (lighten)
+            Container(
+              height: thumbnailSize,
+              width: thumbnailSize,
+              color: const Color.fromRGBO(255, 255, 255, 0.45),
+            )
+        ],
       ),
     );
   }
