@@ -46,11 +46,11 @@ class BottomAppBarAnimation {
           ),
         );
 
-  factory BottomAppBarAnimation.New(
-    double screenHeight,
-    TabController tabController,
-    AnimationController controller,
-  ) {
+  factory BottomAppBarAnimation.New({
+    @required double screenHeight,
+    @required TabController tabController,
+    @required AnimationController animationController,
+  }) {
     final controllerBeginWhenShow = mapRange(
       bottomNavigationBarHeight,
       screenHeight,
@@ -60,14 +60,14 @@ class BottomAppBarAnimation {
     );
 
     return BottomAppBarAnimation(
-      controller: controller,
+      controller: animationController,
       tabController: tabController,
       screenHeight: screenHeight,
       controllerBeginWhenShow: controllerBeginWhenShow,
     );
   }
 
-  static const double audioPlayerPreviewHeight = 46.0;
+  static const double audioPlayerPreviewHeight = 50.0;
   static const double bottomNavigationBarHeight = 56.0;
   static const double bottomAppBarHeight =
       audioPlayerPreviewHeight + bottomNavigationBarHeight;
