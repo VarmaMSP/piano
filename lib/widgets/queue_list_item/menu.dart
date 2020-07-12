@@ -46,7 +46,7 @@ class Menu extends StatelessWidget {
             .map(
               (option) => PopupMenuItem<QueueOptions>(
                 value: option,
-                height: 42,
+                height: 48,
                 textStyle: Theme.of(context)
                     .textTheme
                     .headline5
@@ -81,10 +81,10 @@ class Menu extends StatelessWidget {
             break;
 
           case QueueOptions.goToPodcast:
-            Navigator.of(context, rootNavigator: true).pop();
             Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
               Screen.podcast(urlParam: audioTrack.podcast.urlParam),
             );
+            Navigator.of(context, rootNavigator: true).pop();
             break;
 
           case QueueOptions.goToEpisode:

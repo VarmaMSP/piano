@@ -78,8 +78,15 @@ class EpisodeListItem extends StatelessWidget {
         children: <TextSpan>[
           if (type == EpisodeListItemType.podcastItem) ..._episodeNumber(),
           ..._episodePubDate(),
-          if (type == EpisodeListItemType.podcastItem)
+          if (type == EpisodeListItemType.subscriptionsItem) ...[
+            TextSpan(
+              text: '  ·  ',
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+              ),
+            ),
             TextSpan(text: podcast.title),
+          ]
         ],
       ),
       overflow: TextOverflow.ellipsis,
@@ -105,7 +112,7 @@ class EpisodeListItem extends StatelessWidget {
           ),
         ),
         Transform.translate(
-          offset: const Offset(6, -8),
+          offset: const Offset(6, -14),
           child: Menu(
             episode: episode,
             podcast: podcast,

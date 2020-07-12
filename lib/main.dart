@@ -84,7 +84,9 @@ class _RootState extends State<Root>
       case AppLifecycleState.paused:
         widget.audioService.disconnect();
         break;
-      default:
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.detached:
         break;
     }
   }
@@ -142,13 +144,10 @@ class _RootState extends State<Root>
             switch (settings.name) {
               case '/app':
                 return ParallaxRoute(builder: (_) => App());
-
               case '/queue':
                 return SlideUpPageRoute(builder: (_) => QueueScreen());
-
               case '/search':
                 return ZoomPageRoute(builder: (_) => SearchScreen());
-
               default:
                 return null;
             }

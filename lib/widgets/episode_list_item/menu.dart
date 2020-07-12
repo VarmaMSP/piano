@@ -43,7 +43,7 @@ class Menu extends StatelessWidget {
             .map(
               (option) => PopupMenuItem<EpisodeOption>(
                 value: option,
-                height: 42,
+                height: 48,
                 textStyle: Theme.of(context)
                     .textTheme
                     .headline5
@@ -91,13 +91,10 @@ class Menu extends StatelessWidget {
     switch (option) {
       case EpisodeOption.playNext:
         return 'Play next';
-
       case EpisodeOption.addToQueue:
         return 'Add to queue';
-
       case EpisodeOption.goToPodcast:
         return 'Go to podcast';
-        break;
     }
   }
 }
