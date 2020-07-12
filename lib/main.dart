@@ -6,7 +6,7 @@ import 'package:phenopod/screen/search_screen/search_screen.dart';
 import 'package:phenopod/service/api/api.dart';
 // import 'package:phenopod/task_runner/task_runner.dart';
 import 'package:phenopod/theme/theme.dart';
-import 'package:phenopod/utils/page_transistion.dart';
+import 'package:phenopod/utils/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';

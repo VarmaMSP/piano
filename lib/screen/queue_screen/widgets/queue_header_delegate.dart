@@ -73,8 +73,8 @@ class QueueHeaderDelegate implements SliverPersistentHeaderDelegate {
           ),
           IconButton(
             icon: Icon(Icons.delete),
-            onPressed: () => audioPlayerBloc.transistionQueue(
-              QueueTransistion.clearQueue(askUser: false),
+            onPressed: () => audioPlayerBloc.transitionQueue(
+              QueueTransition.clearQueue(askUser: false),
             ),
           )
         ],

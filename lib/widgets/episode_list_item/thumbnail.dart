@@ -75,7 +75,7 @@ class Thumbnail extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        audioPlayerBloc.transistionQueue(QueueTransistion.playAudioTrack(
+        audioPlayerBloc.transitionQueue(QueueTransition.playAudioTrack(
           audioTrack: AudioTrack(
             position: 0,
             episode: episode,

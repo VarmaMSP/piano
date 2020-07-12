@@ -9,28 +9,28 @@ part of 'audio_player_bloc.dart';
 // **************************************************************************
 
 @immutable
-abstract class QueueTransistion extends Equatable {
-  const QueueTransistion(this._type);
+abstract class QueueTransition extends Equatable {
+  const QueueTransition(this._type);
 
-  factory QueueTransistion.playAudioTrack({@required AudioTrack audioTrack}) =
+  factory QueueTransition.playAudioTrack({@required AudioTrack audioTrack}) =
       PlayAudioTrack;
 
-  factory QueueTransistion.addToQueueTop({@required AudioTrack audioTrack}) =
+  factory QueueTransition.addToQueueTop({@required AudioTrack audioTrack}) =
       AddToQueueTop;
 
-  factory QueueTransistion.addToQueueBottom({@required AudioTrack audioTrack}) =
+  factory QueueTransition.addToQueueBottom({@required AudioTrack audioTrack}) =
       AddToQueueBottom;
 
-  factory QueueTransistion.changeTrackPosition(
+  factory QueueTransition.changeTrackPosition(
       {@required int from, @required int to}) = ChangeTrackPosition;
 
-  factory QueueTransistion.removeTrack({@required int position}) = RemoveTrack;
+  factory QueueTransition.removeTrack({@required int position}) = RemoveTrack;
 
-  factory QueueTransistion.playTrack({@required int position}) = PlayTrack;
+  factory QueueTransition.playTrack({@required int position}) = PlayTrack;
 
-  factory QueueTransistion.clearQueue({@required bool askUser}) = ClearQueue;
+  factory QueueTransition.clearQueue({@required bool askUser}) = ClearQueue;
 
-  final _QueueTransistion _type;
+  final _QueueTransition _type;
 
 //ignore: missing_return
   R when<R>(
@@ -54,19 +54,19 @@ abstract class QueueTransistion extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _QueueTransistion.PlayAudioTrack:
+      case _QueueTransition.PlayAudioTrack:
         return playAudioTrack(this as PlayAudioTrack);
-      case _QueueTransistion.AddToQueueTop:
+      case _QueueTransition.AddToQueueTop:
         return addToQueueTop(this as AddToQueueTop);
-      case _QueueTransistion.AddToQueueBottom:
+      case _QueueTransition.AddToQueueBottom:
         return addToQueueBottom(this as AddToQueueBottom);
-      case _QueueTransistion.ChangeTrackPosition:
+      case _QueueTransition.ChangeTrackPosition:
         return changeTrackPosition(this as ChangeTrackPosition);
-      case _QueueTransistion.RemoveTrack:
+      case _QueueTransition.RemoveTrack:
         return removeTrack(this as RemoveTrack);
-      case _QueueTransistion.PlayTrack:
+      case _QueueTransition.PlayTrack:
         return playTrack(this as PlayTrack);
-      case _QueueTransistion.ClearQueue:
+      case _QueueTransition.ClearQueue:
         return clearQueue(this as ClearQueue);
     }
   }
@@ -93,19 +93,19 @@ abstract class QueueTransistion extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _QueueTransistion.PlayAudioTrack:
+      case _QueueTransition.PlayAudioTrack:
         return playAudioTrack(this as PlayAudioTrack);
-      case _QueueTransistion.AddToQueueTop:
+      case _QueueTransition.AddToQueueTop:
         return addToQueueTop(this as AddToQueueTop);
-      case _QueueTransistion.AddToQueueBottom:
+      case _QueueTransition.AddToQueueBottom:
         return addToQueueBottom(this as AddToQueueBottom);
-      case _QueueTransistion.ChangeTrackPosition:
+      case _QueueTransition.ChangeTrackPosition:
         return changeTrackPosition(this as ChangeTrackPosition);
-      case _QueueTransistion.RemoveTrack:
+      case _QueueTransition.RemoveTrack:
         return removeTrack(this as RemoveTrack);
-      case _QueueTransistion.PlayTrack:
+      case _QueueTransition.PlayTrack:
         return playTrack(this as PlayTrack);
-      case _QueueTransistion.ClearQueue:
+      case _QueueTransition.ClearQueue:
         return clearQueue(this as ClearQueue);
     }
   }
@@ -118,7 +118,7 @@ abstract class QueueTransistion extends Equatable {
       R Function(RemoveTrack) removeTrack,
       R Function(PlayTrack) playTrack,
       R Function(ClearQueue) clearQueue,
-      @required R Function(QueueTransistion) orElse}) {
+      @required R Function(QueueTransition) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -126,25 +126,25 @@ abstract class QueueTransistion extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _QueueTransistion.PlayAudioTrack:
+      case _QueueTransition.PlayAudioTrack:
         if (playAudioTrack == null) break;
         return playAudioTrack(this as PlayAudioTrack);
-      case _QueueTransistion.AddToQueueTop:
+      case _QueueTransition.AddToQueueTop:
         if (addToQueueTop == null) break;
         return addToQueueTop(this as AddToQueueTop);
-      case _QueueTransistion.AddToQueueBottom:
+      case _QueueTransition.AddToQueueBottom:
         if (addToQueueBottom == null) break;
         return addToQueueBottom(this as AddToQueueBottom);
-      case _QueueTransistion.ChangeTrackPosition:
+      case _QueueTransition.ChangeTrackPosition:
         if (changeTrackPosition == null) break;
         return changeTrackPosition(this as ChangeTrackPosition);
-      case _QueueTransistion.RemoveTrack:
+      case _QueueTransition.RemoveTrack:
         if (removeTrack == null) break;
         return removeTrack(this as RemoveTrack);
-      case _QueueTransistion.PlayTrack:
+      case _QueueTransition.PlayTrack:
         if (playTrack == null) break;
         return playTrack(this as PlayTrack);
-      case _QueueTransistion.ClearQueue:
+      case _QueueTransition.ClearQueue:
         if (clearQueue == null) break;
         return clearQueue(this as ClearQueue);
     }
@@ -159,7 +159,7 @@ abstract class QueueTransistion extends Equatable {
       FutureOr<R> Function(RemoveTrack) removeTrack,
       FutureOr<R> Function(PlayTrack) playTrack,
       FutureOr<R> Function(ClearQueue) clearQueue,
-      @required FutureOr<R> Function(QueueTransistion) orElse}) {
+      @required FutureOr<R> Function(QueueTransition) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -167,25 +167,25 @@ abstract class QueueTransistion extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _QueueTransistion.PlayAudioTrack:
+      case _QueueTransition.PlayAudioTrack:
         if (playAudioTrack == null) break;
         return playAudioTrack(this as PlayAudioTrack);
-      case _QueueTransistion.AddToQueueTop:
+      case _QueueTransition.AddToQueueTop:
         if (addToQueueTop == null) break;
         return addToQueueTop(this as AddToQueueTop);
-      case _QueueTransistion.AddToQueueBottom:
+      case _QueueTransition.AddToQueueBottom:
         if (addToQueueBottom == null) break;
         return addToQueueBottom(this as AddToQueueBottom);
-      case _QueueTransistion.ChangeTrackPosition:
+      case _QueueTransition.ChangeTrackPosition:
         if (changeTrackPosition == null) break;
         return changeTrackPosition(this as ChangeTrackPosition);
-      case _QueueTransistion.RemoveTrack:
+      case _QueueTransition.RemoveTrack:
         if (removeTrack == null) break;
         return removeTrack(this as RemoveTrack);
-      case _QueueTransistion.PlayTrack:
+      case _QueueTransition.PlayTrack:
         if (playTrack == null) break;
         return playTrack(this as PlayTrack);
-      case _QueueTransistion.ClearQueue:
+      case _QueueTransition.ClearQueue:
         if (clearQueue == null) break;
         return clearQueue(this as ClearQueue);
     }
@@ -214,25 +214,25 @@ abstract class QueueTransistion extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _QueueTransistion.PlayAudioTrack:
+      case _QueueTransition.PlayAudioTrack:
         if (playAudioTrack == null) break;
         return playAudioTrack(this as PlayAudioTrack);
-      case _QueueTransistion.AddToQueueTop:
+      case _QueueTransition.AddToQueueTop:
         if (addToQueueTop == null) break;
         return addToQueueTop(this as AddToQueueTop);
-      case _QueueTransistion.AddToQueueBottom:
+      case _QueueTransition.AddToQueueBottom:
         if (addToQueueBottom == null) break;
         return addToQueueBottom(this as AddToQueueBottom);
-      case _QueueTransistion.ChangeTrackPosition:
+      case _QueueTransition.ChangeTrackPosition:
         if (changeTrackPosition == null) break;
         return changeTrackPosition(this as ChangeTrackPosition);
-      case _QueueTransistion.RemoveTrack:
+      case _QueueTransition.RemoveTrack:
         if (removeTrack == null) break;
         return removeTrack(this as RemoveTrack);
-      case _QueueTransistion.PlayTrack:
+      case _QueueTransition.PlayTrack:
         if (playTrack == null) break;
         return playTrack(this as PlayTrack);
-      case _QueueTransistion.ClearQueue:
+      case _QueueTransition.ClearQueue:
         if (clearQueue == null) break;
         return clearQueue(this as ClearQueue);
     }
@@ -243,9 +243,9 @@ abstract class QueueTransistion extends Equatable {
 }
 
 @immutable
-class PlayAudioTrack extends QueueTransistion {
+class PlayAudioTrack extends QueueTransition {
   const PlayAudioTrack({@required this.audioTrack})
-      : super(_QueueTransistion.PlayAudioTrack);
+      : super(_QueueTransition.PlayAudioTrack);
 
   final AudioTrack audioTrack;
 
@@ -256,9 +256,9 @@ class PlayAudioTrack extends QueueTransistion {
 }
 
 @immutable
-class AddToQueueTop extends QueueTransistion {
+class AddToQueueTop extends QueueTransition {
   const AddToQueueTop({@required this.audioTrack})
-      : super(_QueueTransistion.AddToQueueTop);
+      : super(_QueueTransition.AddToQueueTop);
 
   final AudioTrack audioTrack;
 
@@ -269,9 +269,9 @@ class AddToQueueTop extends QueueTransistion {
 }
 
 @immutable
-class AddToQueueBottom extends QueueTransistion {
+class AddToQueueBottom extends QueueTransition {
   const AddToQueueBottom({@required this.audioTrack})
-      : super(_QueueTransistion.AddToQueueBottom);
+      : super(_QueueTransition.AddToQueueBottom);
 
   final AudioTrack audioTrack;
 
@@ -282,9 +282,9 @@ class AddToQueueBottom extends QueueTransistion {
 }
 
 @immutable
-class ChangeTrackPosition extends QueueTransistion {
+class ChangeTrackPosition extends QueueTransition {
   const ChangeTrackPosition({@required this.from, @required this.to})
-      : super(_QueueTransistion.ChangeTrackPosition);
+      : super(_QueueTransition.ChangeTrackPosition);
 
   final int from;
 
@@ -297,9 +297,9 @@ class ChangeTrackPosition extends QueueTransistion {
 }
 
 @immutable
-class RemoveTrack extends QueueTransistion {
+class RemoveTrack extends QueueTransition {
   const RemoveTrack({@required this.position})
-      : super(_QueueTransistion.RemoveTrack);
+      : super(_QueueTransition.RemoveTrack);
 
   final int position;
 
@@ -310,9 +310,9 @@ class RemoveTrack extends QueueTransistion {
 }
 
 @immutable
-class PlayTrack extends QueueTransistion {
+class PlayTrack extends QueueTransition {
   const PlayTrack({@required this.position})
-      : super(_QueueTransistion.PlayTrack);
+      : super(_QueueTransition.PlayTrack);
 
   final int position;
 
@@ -323,9 +323,9 @@ class PlayTrack extends QueueTransistion {
 }
 
 @immutable
-class ClearQueue extends QueueTransistion {
+class ClearQueue extends QueueTransition {
   const ClearQueue({@required this.askUser})
-      : super(_QueueTransistion.ClearQueue);
+      : super(_QueueTransition.ClearQueue);
 
   final bool askUser;
 

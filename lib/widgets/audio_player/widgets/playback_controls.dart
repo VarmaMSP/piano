@@ -11,14 +11,13 @@ class PlaybackControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
-    final onPlay =
-        () => audioPlayerBloc.transistionState(StateTransistion.play);
+    final onPlay = () => audioPlayerBloc.transitionState(StateTransition.play);
     final onPause =
-        () => audioPlayerBloc.transistionState(StateTransistion.pause);
+        () => audioPlayerBloc.transitionState(StateTransition.pause);
     final onFastForward =
-        () => audioPlayerBloc.transistionState(StateTransistion.fastforward);
+        () => audioPlayerBloc.transitionState(StateTransition.fastforward);
     final onRewind =
-        () => audioPlayerBloc.transistionState(StateTransistion.rewind);
+        () => audioPlayerBloc.transitionState(StateTransition.rewind);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

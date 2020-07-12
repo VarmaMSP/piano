@@ -27,7 +27,7 @@ class Menu extends StatelessWidget {
   final int nowPlayingPosition;
   final AudioTrack audioTrack;
   final bool lighten;
-  final void Function(QueueTransistion) transitionQueue;
+  final void Function(QueueTransition) transitionQueue;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class Menu extends StatelessWidget {
         switch (option) {
           case QueueOptions.playNext:
             if (audioTrack.position != nowPlayingPosition) {
-              transitionQueue(QueueTransistion.changeTrackPosition(
+              transitionQueue(QueueTransition.changeTrackPosition(
                 from: audioTrack.position,
                 to: 0,
               ));
@@ -68,14 +68,14 @@ class Menu extends StatelessWidget {
             break;
 
           case QueueOptions.moveToBottom:
-            transitionQueue(QueueTransistion.changeTrackPosition(
+            transitionQueue(QueueTransition.changeTrackPosition(
               from: audioTrack.position,
               to: trackCount - 1,
             ));
             break;
 
           case QueueOptions.removeFromQueue:
-            transitionQueue(QueueTransistion.removeTrack(
+            transitionQueue(QueueTransition.removeTrack(
               position: audioTrack.position,
             ));
             break;

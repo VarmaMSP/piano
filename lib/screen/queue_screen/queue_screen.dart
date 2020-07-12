@@ -85,7 +85,7 @@ class QueueScreen extends StatelessWidget {
               nowPlayingPosition: queue.nowPlaying.position,
               audioTrack: audioTrack,
               dragAnimation: dragAnimation,
-              transitionQueue: audioPlayerBloc.transistionQueue,
+              transitionQueue: audioPlayerBloc.transitionQueue,
             );
             return dragAnimation.value > 0.0 ? item : transitionBuilder(item);
           },
@@ -96,8 +96,8 @@ class QueueScreen extends StatelessWidget {
       shrinkWrap: true,
       areItemsTheSame: (a, b) => a.episode.id == b.episode.id,
       onReorderFinished: (item, from, to, newItems) {
-        audioPlayerBloc.transistionQueue(
-          QueueTransistion.changeTrackPosition(from: from, to: to),
+        audioPlayerBloc.transitionQueue(
+          QueueTransition.changeTrackPosition(from: from, to: to),
         );
       },
       itemBuilder: (context, itemAnimation, item, index) {

@@ -29,7 +29,7 @@ class QueueListItem extends StatelessWidget {
   final int nowPlayingPosition;
   final AudioTrack audioTrack;
   final Animation<double> dragAnimation;
-  final void Function(QueueTransistion) transitionQueue;
+  final void Function(QueueTransition) transitionQueue;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class QueueListItem extends StatelessWidget {
       background: background(alignRight: false),
       secondaryBackground: background(alignRight: true),
       onDismissed: (direction) => transitionQueue(
-        QueueTransistion.removeTrack(position: audioTrack.position),
+        QueueTransition.removeTrack(position: audioTrack.position),
       ),
       child: Box(
         color: color,
@@ -65,7 +65,7 @@ class QueueListItem extends StatelessWidget {
         height: itemHeight,
         child: GestureDetector(
           onTap: () => transitionQueue(
-            QueueTransistion.playTrack(position: audioTrack.position),
+            QueueTransition.playTrack(position: audioTrack.position),
           ),
           child: Container(
             constraints: BoxConstraints.expand(height: itemHeight),

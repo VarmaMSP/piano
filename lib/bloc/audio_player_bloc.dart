@@ -11,7 +11,7 @@ export 'package:phenopod/service/audio_service/audio_service.dart'
 
 part 'audio_player_bloc.g.dart';
 
-enum StateTransistion {
+enum StateTransition {
   play,
   pause,
   stop,
@@ -20,7 +20,7 @@ enum StateTransistion {
 }
 
 @superEnum
-enum _QueueTransistion {
+enum _QueueTransition {
   @Data(fields: [DataField<AudioTrack>('audioTrack')])
   PlayAudioTrack,
   @Data(fields: [DataField<AudioTrack>('audioTrack')])
@@ -49,52 +49,52 @@ class AudioPlayerBloc {
   final BehaviorSubject<PlaybackPosition> _playbackPositionSubject =
       BehaviorSubject<PlaybackPosition>();
 
-  /// Sink for snapshot transistions
-  final PublishSubject<QueueTransistion> _queueTransistion =
-      PublishSubject<QueueTransistion>();
+  /// Sink for snapshot transitions
+  final PublishSubject<QueueTransition> _queueTransition =
+      PublishSubject<QueueTransition>();
 
-  /// Sink for state transistions
-  final PublishSubject<StateTransistion> _stateTransistion =
-      PublishSubject<StateTransistion>();
+  /// Sink for state transitions
+  final PublishSubject<StateTransition> _stateTransition =
+      PublishSubject<StateTransition>();
 
   /// Sink for position updates
-  final PublishSubject<Duration> _posistionTransistion =
+  final PublishSubject<Duration> _posistionTransition =
       PublishSubject<Duration>();
 
   AudioPlayerBloc(this.store, this.audioService) {
-    /// Handle playback transistion events
-    _handleStateTransistions();
+    /// Handle playback transition events
+    _handleStateTransitions();
 
-    /// Handle snapshot transistion events
-    _handleQueueTransistions();
+    /// Handle snapshot transition events
+    _handleQueueTransitions();
 
     /// handle changes to position
-    _handlePosistionTransistions();
+    _handlePosistionTransitions();
   }
 
-  void _handleStateTransistions() {
-    _stateTransistion.stream.listen((audioState) async {
-      logger.w('stateTransistion: $audioState');
+  void _handleStateTransitions() {
+    _stateTransition.stream.listen((audioState) async {
+      logger.w('stateTransition: $audioState');
       switch (audioState) {
-        case StateTransistion.play:
+        case StateTransition.play:
           await audioService.play();
           break;
-        case StateTransistion.pause:
+        case StateTransition.pause:
           await audioService.pause();
           break;
-        case StateTransistion.stop:
+        case StateTransition.stop:
           break;
-        case StateTransistion.fastforward:
+        case StateTransition.fastforward:
           await audioService.fastForward();
           break;
-        case StateTransistion.rewind:
+        case StateTransition.rewind:
           await audioService.rewind();
           break;
       }
     });
   }
 
-  void _handleQueueTransistions() {
+  void _handleQueueTransitions() {
     // Load audioplayer snapshot from db
     store.audioPlayer.watchQueue().listen(_queueSubject.add);
 
@@ -110,8 +110,8 @@ class AudioPlayerBloc {
         .where((pos) => pos != null)
         .listen(_playbackPositionSubject.add);
 
-    // handle queue transistions
-    _queueTransistion.stream.listen((t) async {
+    // handle queue transitions
+    _queueTransition.stream.listen((t) async {
       final prevQueue = await _queueSubject.first;
       await t.when(
         playAudioTrack: (data) async {
@@ -149,24 +149,24 @@ class AudioPlayerBloc {
     });
   }
 
-  void _handlePosistionTransistions() {
+  void _handlePosistionTransitions() {
     audioService.playbackPosition
         .listen((d) => _playbackPositionSubject.add(d));
 
-    _posistionTransistion.stream.listen((position) async {
-      logger.i('Position transistion: $position');
+    _posistionTransition.stream.listen((position) async {
+      logger.i('Position transition: $position');
       await audioService.seekTo(position);
     });
   }
 
-  // Transistion state
-  void Function(StateTransistion) get transistionState => _stateTransistion.add;
+  // Transition state
+  void Function(StateTransition) get transitionState => _stateTransition.add;
 
   // Transisition snapshot
-  void Function(QueueTransistion) get transistionQueue => _queueTransistion.add;
+  void Function(QueueTransition) get transitionQueue => _queueTransition.add;
 
-  // Transistion position
-  void Function(Duration) get transistionPosition => _posistionTransistion.add;
+  // Transition position
+  void Function(Duration) get transitionPosition => _posistionTransition.add;
 
   // Get now playing track
   Stream<AudioTrack> get nowPlaying =>
@@ -185,9 +185,9 @@ class AudioPlayerBloc {
   Future<void> dispose() async {
     await _queueSubject.close();
     await _playbackPositionSubject.close();
-    await _queueTransistion.close();
-    await _stateTransistion.close();
-    await _posistionTransistion.close();
+    await _queueTransition.close();
+    await _stateTransition.close();
+    await _posistionTransition.close();
     await audioService.dispose();
   }
 }

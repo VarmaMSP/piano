@@ -89,7 +89,7 @@ class _SeekBarState extends State<SeekBar> {
                     ));
                   },
                   onStopTrackingTouch: () {
-                    audioPlayerBloc.transistionPosition(currentTime);
+                    audioPlayerBloc.transitionPosition(currentTime);
                     _seekPlaybackPosition.add(null);
                   },
                 ),

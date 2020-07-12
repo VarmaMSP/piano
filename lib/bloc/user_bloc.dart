@@ -18,14 +18,14 @@ class UserBloc {
   final BehaviorSubject<bool> _userSigningIn = BehaviorSubject<bool>();
 
   UserBloc(this.store) {
-    // handle sign in / out transistions
-    _handleSignInTransistions();
+    // handle sign in / out transitions
+    _handleSignInTransitions();
 
     // load user when bloc is initialized
     _loadUser();
   }
 
-  void _handleSignInTransistions() {
+  void _handleSignInTransitions() {
     _user.stream.listen((user) {
       print('user: $user');
       _userSignedIn.add(user != null);
