@@ -65,6 +65,7 @@ class EpisodesTab extends StatelessWidget {
         child: EpisodeListItem(
           episode: episode,
           podcast: podcast,
+          type: EpisodeListItemType.podcastItem,
         ),
       ),
     );
@@ -82,6 +83,7 @@ class EpisodesTab extends StatelessWidget {
             return EpisodeListItem(
               episode: episodes[index],
               podcast: podcast,
+              type: EpisodeListItemType.podcastItem,
             );
           }
           loadMoreEpisodes();

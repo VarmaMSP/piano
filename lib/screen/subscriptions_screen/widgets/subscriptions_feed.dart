@@ -56,6 +56,7 @@ class SubscriptionsFeed extends StatelessWidget {
         child: EpisodeListItem(
           episode: episode,
           podcast: podcastById[episode.podcastId],
+          type: EpisodeListItemType.subscriptionsItem,
         ),
       ),
     );
@@ -73,6 +74,7 @@ class SubscriptionsFeed extends StatelessWidget {
             return EpisodeListItem(
               episode: episodes[index],
               podcast: podcastById[episodes[index].podcastId],
+              type: EpisodeListItemType.subscriptionsItem,
             );
           }
           loadMoreEpisodes();

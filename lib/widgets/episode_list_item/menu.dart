@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:phenopod/bloc/app_navigation_bloc.dart' hide Podcast;
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 enum EpisodeOption {
   playNext,
   addToQueue,
+  goToPodcast,
 }
 
 class Menu extends StatelessWidget {
@@ -15,10 +17,12 @@ class Menu extends StatelessWidget {
     Key key,
     @required this.episode,
     @required this.podcast,
+    @required this.options,
   }) : super(key: key);
 
   final Episode episode;
   final Podcast podcast;
+  final List<EpisodeOption> options;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,7 @@ class Menu extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ),
       itemBuilder: (BuildContext context) {
-        return EpisodeOption.values
+        return options
             .map(
               (option) => PopupMenuItem<EpisodeOption>(
                 value: option,
@@ -71,6 +75,12 @@ class Menu extends StatelessWidget {
               ),
             );
             break;
+
+          case EpisodeOption.goToPodcast:
+            Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
+              Screen.podcast(urlParam: podcast.urlParam),
+            );
+            break;
         }
       },
     );
@@ -81,8 +91,13 @@ class Menu extends StatelessWidget {
     switch (option) {
       case EpisodeOption.playNext:
         return 'Play next';
+
       case EpisodeOption.addToQueue:
         return 'Add to queue';
+
+      case EpisodeOption.goToPodcast:
+        return 'Go to podcast';
+        break;
     }
   }
 }
