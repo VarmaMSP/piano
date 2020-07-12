@@ -31,74 +31,66 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: PopupMenuButton<QueueOptions>(
-        icon: Icon(
-          Icons.more_vert,
-          color: lighten ? TWColors.gray.shade500 : TWColors.gray.shade700,
-          size: 22,
-        ),
-        elevation: 8,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        ),
-        itemBuilder: (context) {
-          return QueueOptions.values
-              .map(
-                (option) => PopupMenuItem<QueueOptions>(
-                  value: option,
-                  height: 42,
-                  textStyle: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      .copyWith(color: TWColors.gray.shade700),
-                  child: Text(_queueOptionsToString(option)),
-                ),
-              )
-              .toList();
-        },
-        onSelected: (option) async {
-          switch (option) {
-            case QueueOptions.playNext:
-              if (audioTrack.position != nowPlayingPosition) {
-                transitionQueue(QueueTransistion.changeTrackPosition(
-                  from: audioTrack.position,
-                  to: 0,
-                ));
-              }
-              break;
-
-            case QueueOptions.moveToBottom:
+    return PopupMenuButton<QueueOptions>(
+      icon: Icon(
+        Icons.more_vert,
+        color: lighten ? TWColors.gray.shade500 : TWColors.gray.shade700,
+        size: 22,
+      ),
+      elevation: 8,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      ),
+      itemBuilder: (context) {
+        return QueueOptions.values
+            .map(
+              (option) => PopupMenuItem<QueueOptions>(
+                value: option,
+                height: 42,
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    .copyWith(color: TWColors.gray.shade700),
+                child: Text(_queueOptionsToString(option)),
+              ),
+            )
+            .toList();
+      },
+      onSelected: (option) {
+        switch (option) {
+          case QueueOptions.playNext:
+            if (audioTrack.position != nowPlayingPosition) {
               transitionQueue(QueueTransistion.changeTrackPosition(
                 from: audioTrack.position,
-                to: trackCount - 1,
+                to: 0,
               ));
-              break;
+            }
+            break;
 
-            case QueueOptions.removeFromQueue:
-              transitionQueue(QueueTransistion.removeTrack(
-                position: audioTrack.position,
-              ));
-              break;
+          case QueueOptions.moveToBottom:
+            transitionQueue(QueueTransistion.changeTrackPosition(
+              from: audioTrack.position,
+              to: trackCount - 1,
+            ));
+            break;
 
-            case QueueOptions.goToPodcast:
-              // Close queue screen
-              Navigator.of(context, rootNavigator: true).pop();
-              // Open podcast screen
-              Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
-                Screen.podcast(urlParam: audioTrack.podcast.urlParam),
-              );
+          case QueueOptions.removeFromQueue:
+            transitionQueue(QueueTransistion.removeTrack(
+              position: audioTrack.position,
+            ));
+            break;
 
-              break;
+          case QueueOptions.goToPodcast:
+            Navigator.of(context, rootNavigator: true).pop();
+            Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
+              Screen.podcast(urlParam: audioTrack.podcast.urlParam),
+            );
+            break;
 
-            case QueueOptions.goToEpisode:
-              Navigator.of(context, rootNavigator: true).pop();
-              Navigator.of(context).pop();
-
-              break;
-          }
-        },
-      ),
+          case QueueOptions.goToEpisode:
+            break;
+        }
+      },
     );
   }
 
