@@ -22,7 +22,7 @@ enum StateTransition {
 @superEnum
 enum _QueueTransition {
   @Data(fields: [DataField<AudioTrack>('audioTrack')])
-  PlayAudioTrack,
+  Play,
   @Data(fields: [DataField<AudioTrack>('audioTrack')])
   AddToQueueTop,
   @Data(fields: [DataField<AudioTrack>('audioTrack')])
@@ -30,9 +30,9 @@ enum _QueueTransition {
   @Data(fields: [DataField<int>('from'), DataField<int>('to')])
   ChangeTrackPosition,
   @Data(fields: [DataField<int>('position')])
-  RemoveTrack,
-  @Data(fields: [DataField<int>('position')])
   PlayTrack,
+  @Data(fields: [DataField<int>('position')])
+  RemoveTrack,
   @Data(fields: [DataField<bool>('askUser')])
   ClearQueue,
 }
@@ -114,8 +114,8 @@ class AudioPlayerBloc {
     _queueTransition.stream.listen((t) async {
       final prevQueue = await _queueSubject.first;
       await t.when(
-        playAudioTrack: (data) async {
-          await store.audioPlayer.saveQueue(prevQueue.add(data.audioTrack));
+        play: (data) async {
+          await store.audioPlayer.saveQueue(prevQueue.play(data.audioTrack));
           await audioService.syncNowPlaying();
         },
         addToQueueTop: (data) async {
@@ -130,15 +130,16 @@ class AudioPlayerBloc {
         },
         changeTrackPosition: (data) async {
           await store.audioPlayer
-              .saveQueue(prevQueue.changePosition(data.from, data.to));
-          await audioService.syncQueue(startTask: false);
-        },
-        removeTrack: (data) async {
-          await store.audioPlayer.saveQueue(prevQueue.remove(data.position));
+              .saveQueue(prevQueue.changeTrackPosition(data.from, data.to));
           await audioService.syncQueue(startTask: false);
         },
         playTrack: (data) async {
-          await store.audioPlayer.saveQueue(prevQueue.play(data.position));
+          await store.audioPlayer.saveQueue(prevQueue.playTrack(data.position));
+          await audioService.syncQueue(startTask: false);
+        },
+        removeTrack: (data) async {
+          await store.audioPlayer
+              .saveQueue(prevQueue.removeTrack(data.position));
           await audioService.syncQueue(startTask: false);
         },
         clearQueue: (data) async {

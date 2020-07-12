@@ -51,16 +51,11 @@ class Queue extends Equatable {
     );
   }
 
-  Queue add(AudioTrack audioTrack) {
+  Queue play(AudioTrack audioTrack) {
     return Queue(
       position: 0,
       audioTracks: [audioTrack.copyWith(position: 0)],
     );
-  }
-
-  /// Returns a new queue with updated now playing position
-  Queue play(int position) {
-    return Queue(position: position, audioTracks: audioTracks);
   }
 
   /// Returns a new queue with track in next play position
@@ -103,29 +98,8 @@ class Queue extends Equatable {
     );
   }
 
-  /// Returns a new queue with track at given position remove
-  Queue remove(int trackPosition) {
-    final trackCount = audioTracks.length;
-
-    var newPosition = position;
-    if (position == trackCount - 1) {
-      newPosition = position - 1;
-    }
-
-    return Queue(
-      position: newPosition,
-      audioTracks: [
-        if (trackPosition > 0) ...audioTracks.sublist(0, trackPosition),
-        if (trackPosition + 1 < trackCount)
-          ...audioTracks
-              .sublist(trackPosition + 1)
-              .map((t) => t.copyWith(position: t.position - 1)),
-      ],
-    );
-  }
-
   /// Returns a new queue with updated positions
-  Queue changePosition(int from, int to) {
+  Queue changeTrackPosition(int from, int to) {
     final trackCount = audioTracks.length;
 
     var newPosition = position;
@@ -156,6 +130,32 @@ class Queue extends Equatable {
               audioTracks[from].copyWith(position: to),
               if (to + 1 < trackCount) ...audioTracks.sublist(to + 1),
             ],
+    );
+  }
+
+  /// Returns a new queue with updated now playing position
+  Queue playTrack(int position) {
+    return Queue(position: position, audioTracks: audioTracks);
+  }
+
+  /// Returns a new queue with track at given position remove
+  Queue removeTrack(int position) {
+    final trackCount = audioTracks.length;
+
+    var newPosition = this.position;
+    if (this.position == trackCount - 1) {
+      newPosition = this.position - 1;
+    }
+
+    return Queue(
+      position: newPosition,
+      audioTracks: [
+        if (position > 0) ...audioTracks.sublist(0, position),
+        if (position + 1 < trackCount)
+          ...audioTracks
+              .sublist(position + 1)
+              .map((t) => t.copyWith(position: t.position - 1)),
+      ],
     );
   }
 
