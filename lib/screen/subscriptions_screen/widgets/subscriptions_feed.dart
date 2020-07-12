@@ -128,7 +128,7 @@ class SubscriptionsFeed extends StatelessWidget {
               return GestureDetector(
                 onTap: () =>
                     Provider.of<AppNavigationBloc>(context, listen: false)
-                        .navigateTo(Screen.podcast(urlParam: podcast.urlParam)),
+                        .pushScreen(Screen.podcast(urlParam: podcast.urlParam)),
                 child: Container(
                   margin: EdgeInsets.only(right: 8),
                   child: Container(
