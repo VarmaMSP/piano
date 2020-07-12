@@ -147,7 +147,9 @@ class AudioPlayerController {
   }
 
   void _handleStateChanges() {
-    _nowPlayingSubject.stream.distinct().listen((audioTrack) async {
+    _nowPlayingSubject.stream
+        .distinct((prev, next) => prev.episode.id == next.episode.id)
+        .listen((audioTrack) async {
       if (audioTrack != null) {
         final playbackPos = await _store.playbackPosition
             .watchByEpisode(audioTrack.episode.id)

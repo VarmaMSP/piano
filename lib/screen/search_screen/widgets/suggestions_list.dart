@@ -43,7 +43,7 @@ class SuggestionsList extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        Provider.of<AppNavigationBloc>(context, listen: false).navigateTo(
+        Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
           Screen.podcast(urlParam: suggestion.i),
         );
         Navigator.of(context, rootNavigator: true).pop();

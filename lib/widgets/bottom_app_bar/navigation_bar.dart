@@ -38,9 +38,9 @@ class NavigationBar extends StatelessWidget {
           })(),
           onTap: (value) {
             if (value == 0) {
-              appNavigationBloc.switchTab(n.Tab.home);
+              appNavigationBloc.pushTab(n.Tab.home);
             } else if (value == 1) {
-              appNavigationBloc.switchTab(n.Tab.subscriptions);
+              appNavigationBloc.pushTab(n.Tab.subscriptions);
             }
           },
           type: BottomNavigationBarType.fixed,

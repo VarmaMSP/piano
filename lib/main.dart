@@ -52,16 +52,24 @@ class Root extends StatefulWidget {
   _RootState createState() => _RootState();
 }
 
-class _RootState extends State<Root> with WidgetsBindingObserver {
+class _RootState extends State<Root>
+    with WidgetsBindingObserver, TickerProviderStateMixin {
+  TabController _tabController;
+  AnimationController _animationController;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     widget.audioService.connect();
+    _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
+    _animationController = AnimationController(vsync: this);
   }
 
   @override
   void dispose() {
+    _animationController.dispose();
+    _tabController.dispose();
     widget.audioService.disconnect();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -99,7 +107,10 @@ class _RootState extends State<Root> with WidgetsBindingObserver {
           create: (_) => widget.store,
         ),
         Provider<AppNavigationBloc>(
-          create: (_) => AppNavigationBloc(),
+          create: (_) => AppNavigationBloc(
+            playerTabController: _tabController,
+            playerAnimationController: _animationController,
+          ),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<AudioPlayerBloc>(
