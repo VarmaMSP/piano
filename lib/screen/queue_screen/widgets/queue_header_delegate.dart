@@ -64,8 +64,6 @@ class QueueHeaderDelegate implements SliverPersistentHeaderDelegate {
                       .textTheme
                       .headline4
                       .copyWith(color: TWColors.gray.shade800),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.left,
                 ),
               ),

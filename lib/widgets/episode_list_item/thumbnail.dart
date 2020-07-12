@@ -77,36 +77,37 @@ class Thumbnail extends StatelessWidget {
       onTap: () {
         audioPlayerBloc.transitionQueue(QueueTransition.play(
           audioTrack: AudioTrack(
-            position: 0,
             episode: episode,
             podcast: podcast,
           ),
         ));
       },
-      child: StreamBuilder<PlaybackPosition>(
-        stream: store.playbackPosition.watchByEpisode(episode.id),
-        builder: (context, snapshot) {
-          return Container(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          border: Border.all(color: Colors.grey.shade400, width: 0.5),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          child: SizedBox(
             height: thumbnailSize,
             width: thumbnailSize,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
-              border: Border.all(color: Colors.grey.shade400, width: 0.5),
-            ),
             child: Stack(
               children: <Widget>[
                 image,
                 playIconBg,
                 playIcon,
                 duration,
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: _buildProgressbar(snapshot.data),
+                StreamBuilder<PlaybackPosition>(
+                  stream: store.playbackPosition.watchByEpisode(episode.id),
+                  builder: (context, snapshot) {
+                    return _buildProgressbar(snapshot.data);
+                  },
                 ),
               ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
@@ -152,11 +153,8 @@ class Thumbnail extends StatelessWidget {
       return Container(height: 0);
     }
 
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(4),
-        bottomRight: Radius.circular(4),
-      ),
+    return Align(
+      alignment: Alignment.bottomCenter,
       child: Container(
         height: 5,
         width: thumbnailSize,
