@@ -2,6 +2,14 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 
+T Function(I) cache1<T, I>(T Function(I) f) {
+  T result;
+  return (I input) {
+    result ??= f(input);
+    return result;
+  };
+}
+
 // Format given duration to 00:00 format
 String formatDuration({
   int minutes = 0,
@@ -43,10 +51,12 @@ String formatRelativeTime(String dateTimeStr) {
 }
 
 /// getScreenHeight returns height of safe area
-double getScreenHeight(BuildContext context) {
-  final padding = MediaQuery.of(context).padding;
-  return MediaQuery.of(context).size.height - padding.top - padding.bottom;
-}
+final getScreenHeight = cache1<double, BuildContext>(
+  (context) {
+    final padding = MediaQuery.of(context).padding;
+    return MediaQuery.of(context).size.height - padding.top - padding.bottom;
+  },
+);
 
 /// getScreenWidth returns width of screen
 double getScreenWidth(BuildContext context) {

@@ -42,7 +42,7 @@ class BottomAppBarAnimation {
         ).animate(
           CurvedAnimation(
             parent: controller,
-            curve: const Interval(0.9, 1.0, curve: Curves.linear),
+            curve: const Interval(0.95, 1.0, curve: Curves.easeInCirc),
           ),
         );
 
@@ -67,7 +67,7 @@ class BottomAppBarAnimation {
     );
   }
 
-  static const double audioPlayerPreviewHeight = 50.0;
+  static const double audioPlayerPreviewHeight = 46.0;
   static const double bottomNavigationBarHeight = 56.0;
   static const double bottomAppBarHeight =
       audioPlayerPreviewHeight + bottomNavigationBarHeight;
