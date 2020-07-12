@@ -42,7 +42,7 @@ class BottomAppBarAnimation {
         ).animate(
           CurvedAnimation(
             parent: controller,
-            curve: const Interval(0.95, 1.0, curve: Curves.easeInCirc),
+            curve: const Interval(0.95, 1.0, curve: Curves.easeIn),
           ),
         );
 
