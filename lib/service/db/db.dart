@@ -31,12 +31,6 @@ part 'dao/audio_track_dao.dart';
 part 'dao/subscription_dao.dart';
 part 'dao/task_dao.dart';
 
-Future<SqlDb> newSqlDb() async {
-  final moorIsolate = await getMoorIsolate();
-  final databaseConnection = await moorIsolate.connect();
-  return SqlDb.connect(databaseConnection);
-}
-
 Future<Db> newDb() async {
   final moorIsolate = await getMoorIsolate();
   final databaseConnection = await moorIsolate.connect();
