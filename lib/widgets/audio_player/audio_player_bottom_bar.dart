@@ -16,7 +16,7 @@ class AudioPlayerBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: getScreenHeight(context) < 850 ? 80 : 120,
+      height: getScreenHeight() < 850 ? 80 : 120,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,

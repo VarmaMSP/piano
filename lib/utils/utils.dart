@@ -2,14 +2,6 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 
-T Function(I) cache1<T, I>(T Function(I) f) {
-  T result;
-  return (I input) {
-    result ??= f(input);
-    return result;
-  };
-}
-
 // Format given duration to 00:00 format
 String formatDuration({
   int minutes = 0,
@@ -50,18 +42,39 @@ String formatRelativeTime(String dateTimeStr) {
   return timeago.format(dateTime);
 }
 
-/// getScreenHeight returns height of safe area
-final getScreenHeight = cache1<double, BuildContext>(
-  (context) {
-    final padding = MediaQuery.of(context).padding;
-    return MediaQuery.of(context).size.height - padding.top - padding.bottom;
-  },
-);
+/// GetScreenHeight returns height of safe area
+/// If buildContext is not provided cached value is returned
+final getScreenHeight = () {
+  double screenHeight;
+  return ({BuildContext context}) {
+    if (screenHeight == null) {
+      assert(context != null);
+    }
 
-/// getScreenWidth returns width of screen
-double getScreenWidth(BuildContext context) {
-  return MediaQuery.of(context).size.width;
-}
+    if (context != null || screenHeight == null) {
+      final padding = MediaQuery.of(context).padding;
+      final height = MediaQuery.of(context).size.height;
+      screenHeight = height - padding.top - padding.bottom;
+    }
+    return screenHeight;
+  };
+}();
+
+/// GetScreenWidth returns height of safe area
+/// If buildContext is not provided cached value is returned
+final getScreenWidth = () {
+  double screenWidth;
+  return ({BuildContext context}) {
+    if (screenWidth == null) {
+      assert(context != null);
+    }
+
+    if (context != null || screenWidth == null) {
+      screenWidth = MediaQuery.of(context).size.width;
+    }
+    return screenWidth;
+  };
+}();
 
 /// mapRange maps a value from range [x1, x2] to [y1, y2]
 double mapRange(double x1, double x2, double y1, double y2, double value) {

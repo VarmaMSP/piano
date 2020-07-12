@@ -3,6 +3,7 @@ import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/audio_player/main.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -12,10 +13,7 @@ import 'navigation_bar.dart';
 class BottomAppBar extends StatefulWidget {
   BottomAppBar({
     Key key,
-    @required this.screenHeight,
   }) : super(key: key);
-
-  final double screenHeight;
 
   @override
   _BottomAppBarState createState() => _BottomAppBarState();
@@ -26,15 +24,13 @@ class _BottomAppBarState extends State<BottomAppBar> {
   void initState() {
     super.initState();
 
-    print('ScreenHeight BottomAppBar: ${widget.screenHeight}');
-
     final appNavigationBloc = Provider.of<AppNavigationBloc>(
       context,
       listen: false,
     );
 
     appNavigationBloc.bottomAppBarAnimation = BottomAppBarAnimation.New(
-      screenHeight: widget.screenHeight,
+      screenHeight: getScreenHeight(),
       tabController: appNavigationBloc.playerTabController,
       animationController: appNavigationBloc.playerAnimationController,
     );

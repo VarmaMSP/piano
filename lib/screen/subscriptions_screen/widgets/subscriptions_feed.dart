@@ -113,7 +113,7 @@ class SubscriptionsFeed extends StatelessWidget {
 
     return SliverToBoxAdapter(
       child: Container(
-        width: getScreenWidth(context),
+        width: getScreenWidth(),
         height: thumbnailSize,
         margin: EdgeInsets.only(top: 10, bottom: 20),
         child: ListView.builder(

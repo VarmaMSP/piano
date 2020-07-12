@@ -11,12 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:phenopod/widgets/bottom_app_bar/main.dart';
 
 class AppScreen extends StatelessWidget {
-  const AppScreen({
-    Key key,
-    @required this.screenHeight,
-  }) : super(key: key);
-
-  final double screenHeight;
+  const AppScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +59,7 @@ class AppScreen extends StatelessWidget {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    child: BottomAppBar(screenHeight: screenHeight),
+                    child: BottomAppBar(),
                   ),
                 ],
               ),

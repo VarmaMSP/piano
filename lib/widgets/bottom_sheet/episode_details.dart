@@ -44,7 +44,7 @@ class EpisodeDetailsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: getScreenHeight(context) * 0.6,
+      height: getScreenHeight() * 0.6,
       child: Stack(
         children: <Widget>[
           SingleChildScrollView(

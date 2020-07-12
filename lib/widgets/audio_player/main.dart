@@ -22,7 +22,7 @@ class AudioPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = getScreenHeight(context);
+    final screenHeight = getScreenHeight();
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
     return StreamBuilder<AudioTrack>(

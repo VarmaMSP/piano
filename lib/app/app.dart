@@ -12,9 +12,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ///! Get screen height as early as possible,
-    ///! for some reason top padding returns 0 if you do otherwise
-    final screenHeight = getScreenHeight(context);
+    ///! Calculate screen height as close to top of widget tree as possible,
+    ///! For some reason top padding returns 0 if you do otherwise
+    /// Cache screen height and screen width
+    getScreenHeight(context: context);
+    getScreenWidth(context: context);
 
     return StreamBuilder<bool>(
       stream: Provider.of<UserBloc>(context).userSignedIn,
@@ -22,9 +24,7 @@ class App extends StatelessWidget {
         if (!snapshot.hasData) {
           return SplashScreen();
         }
-        return snapshot.data
-            ? AppScreen(screenHeight: screenHeight)
-            : SignInScreen();
+        return snapshot.data ? AppScreen() : SignInScreen();
       },
     );
   }
