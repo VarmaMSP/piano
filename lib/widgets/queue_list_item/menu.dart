@@ -62,7 +62,9 @@ class Menu extends StatelessWidget {
             if (audioTrack.position != nowPlayingPosition) {
               transitionQueue(QueueTransition.changeTrackPosition(
                 from: audioTrack.position,
-                to: 0,
+                to: nowPlayingPosition + 1 < trackCount
+                    ? nowPlayingPosition + 1
+                    : trackCount - 1,
               ));
             }
             break;
@@ -88,6 +90,7 @@ class Menu extends StatelessWidget {
             break;
 
           case QueueOptions.goToEpisode:
+            Navigator.of(context, rootNavigator: true).pop();
             break;
         }
       },
