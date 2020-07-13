@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart' as audioservice;
+import 'package:audio_service/audio_service.dart';
 import 'package:phenopod/background/audio_player/audio_player_controller.dart';
 import 'package:phenopod/download_sync/download_sync.dart';
 import 'package:phenopod/service/api/api.dart';
@@ -98,7 +99,9 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
 
   @override
   Future<void> onTaskRemoved() async {
-    // await onStop();
+    if (!AudioServiceBackground.state.playing) {
+      await onStop();
+    }
   }
 
   @override
