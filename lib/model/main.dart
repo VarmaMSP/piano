@@ -12,3 +12,4 @@ export 'setting.dart';
 export 'subscription.dart';
 export 'task.dart';
 export 'screen.dart';
+export 'audio_file.dart';
