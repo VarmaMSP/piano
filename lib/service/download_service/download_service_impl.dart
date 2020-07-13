@@ -11,6 +11,16 @@ class _DownloadServiceImpl extends DownloadService {
   }
 
   @override
+  Future<void> downloadEpisode(Episode episode) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<DownloadProgress> watchProgressByEpisode(String episodeId) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<void> dispose() async {
     await downloadProgressUpdates.dispose();
   }
