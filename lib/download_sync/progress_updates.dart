@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 
 abstract class DownloadProgressUpdates {
   final ReceivePort _receivePort = ReceivePort();
+
   final BehaviorSubject<DownloadProgress> _progressUpdate =
       BehaviorSubject<DownloadProgress>();
 
@@ -17,7 +18,7 @@ abstract class DownloadProgressUpdates {
     );
   }
 
-  Stream<DownloadProgress> get progressUpdate => _progressUpdate.stream;
+  Stream<DownloadProgress> get progressUpdates => _progressUpdate.stream;
 
   @mustCallSuper
   Future<void> dispose() async {

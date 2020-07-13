@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:tuple/tuple.dart';
 
-//!! DO NOT CHANGE THE ORDER OF THIS ENUM VALUES
+// //!! DO NOT CHANGE THE ORDER OF THIS ENUM VALUES
 enum DownloadState {
   none,
   queued,
@@ -26,6 +26,7 @@ class AudioFile {
   final String url;
   final String directory;
   final String filename;
+  final String taskId;
   final DownloadState downloadState;
   final int downloadPercentage;
   final DateTime createdAt;
@@ -36,6 +37,7 @@ class AudioFile {
     @required this.url,
     @required this.directory,
     @required this.filename,
+    @required this.taskId,
     @required this.downloadState,
     @required this.downloadPercentage,
     @required this.createdAt,
@@ -44,12 +46,12 @@ class AudioFile {
 }
 
 class DownloadProgress {
-  final String episodeId;
+  final String taskId;
   final DownloadState downloadState;
   final int downloadPercentage;
 
   DownloadProgress({
-    @required this.episodeId,
+    @required this.taskId,
     @required this.downloadState,
     @required this.downloadPercentage,
   });
@@ -57,7 +59,7 @@ class DownloadProgress {
   factory DownloadProgress.fromDownloaderUpdate(
     Tuple3<String, DownloadTaskStatus, int> m,
   ) {
-    final id = m.item1;
+    final taskId = m.item1;
     final status = m.item2;
     final percentage = m.item3;
 
@@ -77,7 +79,7 @@ class DownloadProgress {
     }
 
     return DownloadProgress(
-      episodeId: id,
+      taskId: taskId,
       downloadState: state,
       downloadPercentage: percentage,
     );

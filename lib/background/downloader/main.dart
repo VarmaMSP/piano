@@ -1,23 +1,22 @@
 import 'dart:ui';
 
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:phenopod/download_sync/progress_updates.dart';
 import 'package:tuple/tuple.dart';
 
-import 'updates.dart';
-
-void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+void downloadCallback(String taskId, DownloadTaskStatus status, int progress) {
   final uiSendPort = IsolateNameServer.lookupPortByName(
     UIDownloadProgressUpdates.sendPortMapping,
   );
   if (uiSendPort != null) {
-    return uiSendPort.send(Tuple3(id, status, progress));
+    return uiSendPort.send(Tuple3(taskId, status, progress));
   }
 
   final playerSendPort = IsolateNameServer.lookupPortByName(
     PlayerDownloadProgressUpdates.sendPortMapping,
   );
   if (playerSendPort != null) {
-    return playerSendPort.send(Tuple3(id, status, progress));
+    return playerSendPort.send(Tuple3(taskId, status, progress));
   }
 }
 

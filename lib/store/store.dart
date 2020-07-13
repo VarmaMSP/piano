@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/store/audio_file_store.dart';
 
 import 'user_store.dart';
 import 'podcast_store.dart';
@@ -22,6 +23,7 @@ abstract class Store {
   AudioPlayerStore get audioPlayer;
   PlaybackPositionStore get playbackPosition;
   TaskStore get task;
+  AudioFileStore get audioFile;
 }
 
 class _StoreImpl extends Store {
@@ -32,6 +34,7 @@ class _StoreImpl extends Store {
   final AudioPlayerStore _audioPlayer;
   final PlaybackPositionStore _playbackPosition;
   final TaskStore _task;
+  final AudioFileStore _audioFile;
 
   _StoreImpl({
     @required Api api,
@@ -42,7 +45,8 @@ class _StoreImpl extends Store {
         _subscription = newSubscriptionStore(api, db),
         _audioPlayer = newAudioPlayerStore(api, db),
         _playbackPosition = newPlaybackPositionStore(api, db),
-        _task = newTaskStore(api, db);
+        _task = newTaskStore(api, db),
+        _audioFile = newAudioFileStore(api, db);
 
   @override
   AudioPlayerStore get audioPlayer => _audioPlayer;
@@ -64,4 +68,7 @@ class _StoreImpl extends Store {
 
   @override
   UserStore get user => _user;
+
+  @override
+  AudioFileStore get audioFile => _audioFile;
 }

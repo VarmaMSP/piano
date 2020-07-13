@@ -19,7 +19,7 @@ class AudioFileDao extends DatabaseAccessor<SqlDb> with _$AudioFileDaoMixin {
 
   Future<void> updateProgress(DownloadProgress progress) async {
     await (update(audioFiles)
-          ..where((tbl) => tbl.episodeId.equals(progress.episodeId)))
+          ..where((tbl) => tbl.taskId.equals(progress.taskId)))
         .write(
       AudioFilesCompanion(
         downloadState: Value(downloadStateToInt(progress.downloadState)),

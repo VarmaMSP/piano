@@ -2853,6 +2853,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
   final String url;
   final String directory;
   final String filename;
+  final String taskId;
   final int downloadState;
   final int downloadPercentage;
   final DateTime createdAt;
@@ -2862,6 +2863,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
       @required this.url,
       @required this.directory,
       @required this.filename,
+      @required this.taskId,
       @required this.downloadState,
       @required this.downloadPercentage,
       @required this.createdAt,
@@ -2880,6 +2882,8 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
           .mapFromDatabaseResponse(data['${effectivePrefix}directory']),
       filename: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}filename']),
+      taskId:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}task_id']),
       downloadState: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}download_state']),
       downloadPercentage: intType.mapFromDatabaseResponse(
@@ -2904,6 +2908,9 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
     }
     if (!nullToAbsent || filename != null) {
       map['filename'] = Variable<String>(filename);
+    }
+    if (!nullToAbsent || taskId != null) {
+      map['task_id'] = Variable<String>(taskId);
     }
     if (!nullToAbsent || downloadState != null) {
       map['download_state'] = Variable<int>(downloadState);
@@ -2932,6 +2939,8 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
       filename: filename == null && nullToAbsent
           ? const Value.absent()
           : Value(filename),
+      taskId:
+          taskId == null && nullToAbsent ? const Value.absent() : Value(taskId),
       downloadState: downloadState == null && nullToAbsent
           ? const Value.absent()
           : Value(downloadState),
@@ -2955,6 +2964,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
       url: serializer.fromJson<String>(json['url']),
       directory: serializer.fromJson<String>(json['directory']),
       filename: serializer.fromJson<String>(json['filename']),
+      taskId: serializer.fromJson<String>(json['taskId']),
       downloadState: serializer.fromJson<int>(json['downloadState']),
       downloadPercentage: serializer.fromJson<int>(json['downloadPercentage']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -2969,6 +2979,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
       'url': serializer.toJson<String>(url),
       'directory': serializer.toJson<String>(directory),
       'filename': serializer.toJson<String>(filename),
+      'taskId': serializer.toJson<String>(taskId),
       'downloadState': serializer.toJson<int>(downloadState),
       'downloadPercentage': serializer.toJson<int>(downloadPercentage),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -2981,6 +2992,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
           String url,
           String directory,
           String filename,
+          String taskId,
           int downloadState,
           int downloadPercentage,
           DateTime createdAt,
@@ -2990,6 +3002,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
         url: url ?? this.url,
         directory: directory ?? this.directory,
         filename: filename ?? this.filename,
+        taskId: taskId ?? this.taskId,
         downloadState: downloadState ?? this.downloadState,
         downloadPercentage: downloadPercentage ?? this.downloadPercentage,
         createdAt: createdAt ?? this.createdAt,
@@ -3002,6 +3015,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
           ..write('url: $url, ')
           ..write('directory: $directory, ')
           ..write('filename: $filename, ')
+          ..write('taskId: $taskId, ')
           ..write('downloadState: $downloadState, ')
           ..write('downloadPercentage: $downloadPercentage, ')
           ..write('createdAt: $createdAt, ')
@@ -3020,9 +3034,13 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
               $mrjc(
                   filename.hashCode,
                   $mrjc(
-                      downloadState.hashCode,
-                      $mrjc(downloadPercentage.hashCode,
-                          $mrjc(createdAt.hashCode, updatedAt.hashCode))))))));
+                      taskId.hashCode,
+                      $mrjc(
+                          downloadState.hashCode,
+                          $mrjc(
+                              downloadPercentage.hashCode,
+                              $mrjc(createdAt.hashCode,
+                                  updatedAt.hashCode)))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -3031,6 +3049,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
           other.url == this.url &&
           other.directory == this.directory &&
           other.filename == this.filename &&
+          other.taskId == this.taskId &&
           other.downloadState == this.downloadState &&
           other.downloadPercentage == this.downloadPercentage &&
           other.createdAt == this.createdAt &&
@@ -3042,6 +3061,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
   final Value<String> url;
   final Value<String> directory;
   final Value<String> filename;
+  final Value<String> taskId;
   final Value<int> downloadState;
   final Value<int> downloadPercentage;
   final Value<DateTime> createdAt;
@@ -3051,6 +3071,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
     this.url = const Value.absent(),
     this.directory = const Value.absent(),
     this.filename = const Value.absent(),
+    this.taskId = const Value.absent(),
     this.downloadState = const Value.absent(),
     this.downloadPercentage = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -3061,6 +3082,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
     @required String url,
     @required String directory,
     @required String filename,
+    @required String taskId,
     @required int downloadState,
     @required int downloadPercentage,
     @required DateTime createdAt,
@@ -3069,6 +3091,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
         url = Value(url),
         directory = Value(directory),
         filename = Value(filename),
+        taskId = Value(taskId),
         downloadState = Value(downloadState),
         downloadPercentage = Value(downloadPercentage),
         createdAt = Value(createdAt),
@@ -3078,6 +3101,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
     Expression<String> url,
     Expression<String> directory,
     Expression<String> filename,
+    Expression<String> taskId,
     Expression<int> downloadState,
     Expression<int> downloadPercentage,
     Expression<DateTime> createdAt,
@@ -3088,6 +3112,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
       if (url != null) 'url': url,
       if (directory != null) 'directory': directory,
       if (filename != null) 'filename': filename,
+      if (taskId != null) 'task_id': taskId,
       if (downloadState != null) 'download_state': downloadState,
       if (downloadPercentage != null) 'download_percentage': downloadPercentage,
       if (createdAt != null) 'created_at': createdAt,
@@ -3100,6 +3125,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
       Value<String> url,
       Value<String> directory,
       Value<String> filename,
+      Value<String> taskId,
       Value<int> downloadState,
       Value<int> downloadPercentage,
       Value<DateTime> createdAt,
@@ -3109,6 +3135,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
       url: url ?? this.url,
       directory: directory ?? this.directory,
       filename: filename ?? this.filename,
+      taskId: taskId ?? this.taskId,
       downloadState: downloadState ?? this.downloadState,
       downloadPercentage: downloadPercentage ?? this.downloadPercentage,
       createdAt: createdAt ?? this.createdAt,
@@ -3130,6 +3157,9 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
     }
     if (filename.present) {
       map['filename'] = Variable<String>(filename.value);
+    }
+    if (taskId.present) {
+      map['task_id'] = Variable<String>(taskId.value);
     }
     if (downloadState.present) {
       map['download_state'] = Variable<int>(downloadState.value);
@@ -3197,6 +3227,18 @@ class $AudioFilesTable extends AudioFiles
     );
   }
 
+  final VerificationMeta _taskIdMeta = const VerificationMeta('taskId');
+  GeneratedTextColumn _taskId;
+  @override
+  GeneratedTextColumn get taskId => _taskId ??= _constructTaskId();
+  GeneratedTextColumn _constructTaskId() {
+    return GeneratedTextColumn(
+      'task_id',
+      $tableName,
+      false,
+    );
+  }
+
   final VerificationMeta _downloadStateMeta =
       const VerificationMeta('downloadState');
   GeneratedIntColumn _downloadState;
@@ -3255,6 +3297,7 @@ class $AudioFilesTable extends AudioFiles
         url,
         directory,
         filename,
+        taskId,
         downloadState,
         downloadPercentage,
         createdAt,
@@ -3294,6 +3337,12 @@ class $AudioFilesTable extends AudioFiles
           filename.isAcceptableOrUnknown(data['filename'], _filenameMeta));
     } else if (isInserting) {
       context.missing(_filenameMeta);
+    }
+    if (data.containsKey('task_id')) {
+      context.handle(_taskIdMeta,
+          taskId.isAcceptableOrUnknown(data['task_id'], _taskIdMeta));
+    } else if (isInserting) {
+      context.missing(_taskIdMeta);
     }
     if (data.containsKey('download_state')) {
       context.handle(
