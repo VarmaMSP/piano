@@ -2848,6 +2848,498 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
   static TypeConverter<dynamic, String> $converter0 = TaskTypeConverter();
 }
 
+class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
+  final String episodeId;
+  final String url;
+  final String directory;
+  final String filename;
+  final int downloadState;
+  final int downloadPercentage;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  AudioFileRow(
+      {@required this.episodeId,
+      @required this.url,
+      @required this.directory,
+      @required this.filename,
+      @required this.downloadState,
+      @required this.downloadPercentage,
+      @required this.createdAt,
+      @required this.updatedAt});
+  factory AudioFileRow.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    final intType = db.typeSystem.forDartType<int>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return AudioFileRow(
+      episodeId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}episode_id']),
+      url: stringType.mapFromDatabaseResponse(data['${effectivePrefix}url']),
+      directory: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}directory']),
+      filename: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}filename']),
+      downloadState: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}download_state']),
+      downloadPercentage: intType.mapFromDatabaseResponse(
+          data['${effectivePrefix}download_percentage']),
+      createdAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || episodeId != null) {
+      map['episode_id'] = Variable<String>(episodeId);
+    }
+    if (!nullToAbsent || url != null) {
+      map['url'] = Variable<String>(url);
+    }
+    if (!nullToAbsent || directory != null) {
+      map['directory'] = Variable<String>(directory);
+    }
+    if (!nullToAbsent || filename != null) {
+      map['filename'] = Variable<String>(filename);
+    }
+    if (!nullToAbsent || downloadState != null) {
+      map['download_state'] = Variable<int>(downloadState);
+    }
+    if (!nullToAbsent || downloadPercentage != null) {
+      map['download_percentage'] = Variable<int>(downloadPercentage);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  AudioFilesCompanion toCompanion(bool nullToAbsent) {
+    return AudioFilesCompanion(
+      episodeId: episodeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(episodeId),
+      url: url == null && nullToAbsent ? const Value.absent() : Value(url),
+      directory: directory == null && nullToAbsent
+          ? const Value.absent()
+          : Value(directory),
+      filename: filename == null && nullToAbsent
+          ? const Value.absent()
+          : Value(filename),
+      downloadState: downloadState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(downloadState),
+      downloadPercentage: downloadPercentage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(downloadPercentage),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory AudioFileRow.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return AudioFileRow(
+      episodeId: serializer.fromJson<String>(json['episodeId']),
+      url: serializer.fromJson<String>(json['url']),
+      directory: serializer.fromJson<String>(json['directory']),
+      filename: serializer.fromJson<String>(json['filename']),
+      downloadState: serializer.fromJson<int>(json['downloadState']),
+      downloadPercentage: serializer.fromJson<int>(json['downloadPercentage']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'episodeId': serializer.toJson<String>(episodeId),
+      'url': serializer.toJson<String>(url),
+      'directory': serializer.toJson<String>(directory),
+      'filename': serializer.toJson<String>(filename),
+      'downloadState': serializer.toJson<int>(downloadState),
+      'downloadPercentage': serializer.toJson<int>(downloadPercentage),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  AudioFileRow copyWith(
+          {String episodeId,
+          String url,
+          String directory,
+          String filename,
+          int downloadState,
+          int downloadPercentage,
+          DateTime createdAt,
+          DateTime updatedAt}) =>
+      AudioFileRow(
+        episodeId: episodeId ?? this.episodeId,
+        url: url ?? this.url,
+        directory: directory ?? this.directory,
+        filename: filename ?? this.filename,
+        downloadState: downloadState ?? this.downloadState,
+        downloadPercentage: downloadPercentage ?? this.downloadPercentage,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('AudioFileRow(')
+          ..write('episodeId: $episodeId, ')
+          ..write('url: $url, ')
+          ..write('directory: $directory, ')
+          ..write('filename: $filename, ')
+          ..write('downloadState: $downloadState, ')
+          ..write('downloadPercentage: $downloadPercentage, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      episodeId.hashCode,
+      $mrjc(
+          url.hashCode,
+          $mrjc(
+              directory.hashCode,
+              $mrjc(
+                  filename.hashCode,
+                  $mrjc(
+                      downloadState.hashCode,
+                      $mrjc(downloadPercentage.hashCode,
+                          $mrjc(createdAt.hashCode, updatedAt.hashCode))))))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is AudioFileRow &&
+          other.episodeId == this.episodeId &&
+          other.url == this.url &&
+          other.directory == this.directory &&
+          other.filename == this.filename &&
+          other.downloadState == this.downloadState &&
+          other.downloadPercentage == this.downloadPercentage &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
+  final Value<String> episodeId;
+  final Value<String> url;
+  final Value<String> directory;
+  final Value<String> filename;
+  final Value<int> downloadState;
+  final Value<int> downloadPercentage;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  const AudioFilesCompanion({
+    this.episodeId = const Value.absent(),
+    this.url = const Value.absent(),
+    this.directory = const Value.absent(),
+    this.filename = const Value.absent(),
+    this.downloadState = const Value.absent(),
+    this.downloadPercentage = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  AudioFilesCompanion.insert({
+    @required String episodeId,
+    @required String url,
+    @required String directory,
+    @required String filename,
+    @required int downloadState,
+    @required int downloadPercentage,
+    @required DateTime createdAt,
+    @required DateTime updatedAt,
+  })  : episodeId = Value(episodeId),
+        url = Value(url),
+        directory = Value(directory),
+        filename = Value(filename),
+        downloadState = Value(downloadState),
+        downloadPercentage = Value(downloadPercentage),
+        createdAt = Value(createdAt),
+        updatedAt = Value(updatedAt);
+  static Insertable<AudioFileRow> custom({
+    Expression<String> episodeId,
+    Expression<String> url,
+    Expression<String> directory,
+    Expression<String> filename,
+    Expression<int> downloadState,
+    Expression<int> downloadPercentage,
+    Expression<DateTime> createdAt,
+    Expression<DateTime> updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (episodeId != null) 'episode_id': episodeId,
+      if (url != null) 'url': url,
+      if (directory != null) 'directory': directory,
+      if (filename != null) 'filename': filename,
+      if (downloadState != null) 'download_state': downloadState,
+      if (downloadPercentage != null) 'download_percentage': downloadPercentage,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  AudioFilesCompanion copyWith(
+      {Value<String> episodeId,
+      Value<String> url,
+      Value<String> directory,
+      Value<String> filename,
+      Value<int> downloadState,
+      Value<int> downloadPercentage,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt}) {
+    return AudioFilesCompanion(
+      episodeId: episodeId ?? this.episodeId,
+      url: url ?? this.url,
+      directory: directory ?? this.directory,
+      filename: filename ?? this.filename,
+      downloadState: downloadState ?? this.downloadState,
+      downloadPercentage: downloadPercentage ?? this.downloadPercentage,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (episodeId.present) {
+      map['episode_id'] = Variable<String>(episodeId.value);
+    }
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
+    }
+    if (directory.present) {
+      map['directory'] = Variable<String>(directory.value);
+    }
+    if (filename.present) {
+      map['filename'] = Variable<String>(filename.value);
+    }
+    if (downloadState.present) {
+      map['download_state'] = Variable<int>(downloadState.value);
+    }
+    if (downloadPercentage.present) {
+      map['download_percentage'] = Variable<int>(downloadPercentage.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+}
+
+class $AudioFilesTable extends AudioFiles
+    with TableInfo<$AudioFilesTable, AudioFileRow> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $AudioFilesTable(this._db, [this._alias]);
+  final VerificationMeta _episodeIdMeta = const VerificationMeta('episodeId');
+  GeneratedTextColumn _episodeId;
+  @override
+  GeneratedTextColumn get episodeId => _episodeId ??= _constructEpisodeId();
+  GeneratedTextColumn _constructEpisodeId() {
+    return GeneratedTextColumn('episode_id', $tableName, false,
+        $customConstraints: 'REFERENCES episodes(id)');
+  }
+
+  final VerificationMeta _urlMeta = const VerificationMeta('url');
+  GeneratedTextColumn _url;
+  @override
+  GeneratedTextColumn get url => _url ??= _constructUrl();
+  GeneratedTextColumn _constructUrl() {
+    return GeneratedTextColumn(
+      'url',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _directoryMeta = const VerificationMeta('directory');
+  GeneratedTextColumn _directory;
+  @override
+  GeneratedTextColumn get directory => _directory ??= _constructDirectory();
+  GeneratedTextColumn _constructDirectory() {
+    return GeneratedTextColumn(
+      'directory',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _filenameMeta = const VerificationMeta('filename');
+  GeneratedTextColumn _filename;
+  @override
+  GeneratedTextColumn get filename => _filename ??= _constructFilename();
+  GeneratedTextColumn _constructFilename() {
+    return GeneratedTextColumn(
+      'filename',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _downloadStateMeta =
+      const VerificationMeta('downloadState');
+  GeneratedIntColumn _downloadState;
+  @override
+  GeneratedIntColumn get downloadState =>
+      _downloadState ??= _constructDownloadState();
+  GeneratedIntColumn _constructDownloadState() {
+    return GeneratedIntColumn(
+      'download_state',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _downloadPercentageMeta =
+      const VerificationMeta('downloadPercentage');
+  GeneratedIntColumn _downloadPercentage;
+  @override
+  GeneratedIntColumn get downloadPercentage =>
+      _downloadPercentage ??= _constructDownloadPercentage();
+  GeneratedIntColumn _constructDownloadPercentage() {
+    return GeneratedIntColumn(
+      'download_percentage',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  GeneratedDateTimeColumn _createdAt;
+  @override
+  GeneratedDateTimeColumn get createdAt => _createdAt ??= _constructCreatedAt();
+  GeneratedDateTimeColumn _constructCreatedAt() {
+    return GeneratedDateTimeColumn(
+      'created_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
+  @override
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        episodeId,
+        url,
+        directory,
+        filename,
+        downloadState,
+        downloadPercentage,
+        createdAt,
+        updatedAt
+      ];
+  @override
+  $AudioFilesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'audio_files';
+  @override
+  final String actualTableName = 'audio_files';
+  @override
+  VerificationContext validateIntegrity(Insertable<AudioFileRow> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('episode_id')) {
+      context.handle(_episodeIdMeta,
+          episodeId.isAcceptableOrUnknown(data['episode_id'], _episodeIdMeta));
+    } else if (isInserting) {
+      context.missing(_episodeIdMeta);
+    }
+    if (data.containsKey('url')) {
+      context.handle(
+          _urlMeta, url.isAcceptableOrUnknown(data['url'], _urlMeta));
+    } else if (isInserting) {
+      context.missing(_urlMeta);
+    }
+    if (data.containsKey('directory')) {
+      context.handle(_directoryMeta,
+          directory.isAcceptableOrUnknown(data['directory'], _directoryMeta));
+    } else if (isInserting) {
+      context.missing(_directoryMeta);
+    }
+    if (data.containsKey('filename')) {
+      context.handle(_filenameMeta,
+          filename.isAcceptableOrUnknown(data['filename'], _filenameMeta));
+    } else if (isInserting) {
+      context.missing(_filenameMeta);
+    }
+    if (data.containsKey('download_state')) {
+      context.handle(
+          _downloadStateMeta,
+          downloadState.isAcceptableOrUnknown(
+              data['download_state'], _downloadStateMeta));
+    } else if (isInserting) {
+      context.missing(_downloadStateMeta);
+    }
+    if (data.containsKey('download_percentage')) {
+      context.handle(
+          _downloadPercentageMeta,
+          downloadPercentage.isAcceptableOrUnknown(
+              data['download_percentage'], _downloadPercentageMeta));
+    } else if (isInserting) {
+      context.missing(_downloadPercentageMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at'], _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {episodeId};
+  @override
+  AudioFileRow map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return AudioFileRow.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $AudioFilesTable createAlias(String alias) {
+    return $AudioFilesTable(_db, alias);
+  }
+}
+
 abstract class _$SqlDb extends GeneratedDatabase {
   _$SqlDb(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   _$SqlDb.connect(DatabaseConnection c) : super.connect(c);
@@ -2870,6 +3362,8 @@ abstract class _$SqlDb extends GeneratedDatabase {
       _subscriptionFilters ??= $SubscriptionFiltersTable(this);
   $TasksTable _tasks;
   $TasksTable get tasks => _tasks ??= $TasksTable(this);
+  $AudioFilesTable _audioFiles;
+  $AudioFilesTable get audioFiles => _audioFiles ??= $AudioFilesTable(this);
   PodcastDao _podcastDao;
   PodcastDao get podcastDao => _podcastDao ??= PodcastDao(this as SqlDb);
   EpisodeDao _episodeDao;
@@ -2888,6 +3382,9 @@ abstract class _$SqlDb extends GeneratedDatabase {
       _subscriptionDao ??= SubscriptionDao(this as SqlDb);
   TaskDao _taskDao;
   TaskDao get taskDao => _taskDao ??= TaskDao(this as SqlDb);
+  AudioFileDao _audioFileDao;
+  AudioFileDao get audioFileDao =>
+      _audioFileDao ??= AudioFileDao(this as SqlDb);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -2899,7 +3396,8 @@ abstract class _$SqlDb extends GeneratedDatabase {
         preferences,
         subscriptions,
         subscriptionFilters,
-        tasks
+        tasks,
+        audioFiles
       ];
 }
 
@@ -2937,4 +3435,7 @@ mixin _$SubscriptionDaoMixin on DatabaseAccessor<SqlDb> {
 }
 mixin _$TaskDaoMixin on DatabaseAccessor<SqlDb> {
   $TasksTable get tasks => attachedDatabase.tasks;
+}
+mixin _$AudioFileDaoMixin on DatabaseAccessor<SqlDb> {
+  $AudioFilesTable get audioFiles => attachedDatabase.audioFiles;
 }

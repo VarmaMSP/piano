@@ -21,6 +21,7 @@ part 'table/preferences.dart';
 part 'table/subscriptions.dart';
 part 'table/subscription_filters.dart';
 part 'table/tasks.dart';
+part 'table/audio_files.dart';
 
 /// Daos
 part 'dao/podcast_dao.dart';
@@ -30,6 +31,7 @@ part 'dao/preference_dao.dart';
 part 'dao/audio_track_dao.dart';
 part 'dao/subscription_dao.dart';
 part 'dao/task_dao.dart';
+part 'dao/audio_file_dao.dart';
 
 Future<Db> newDb() async {
   final moorIsolate = await getMoorIsolate();
@@ -71,6 +73,7 @@ class Db {
     Subscriptions,
     SubscriptionFilters,
     Tasks,
+    AudioFiles,
   ],
   daos: [
     PodcastDao,
@@ -79,7 +82,8 @@ class Db {
     PlaybackPositionDao,
     PreferenceDao,
     SubscriptionDao,
-    TaskDao
+    TaskDao,
+    AudioFileDao,
   ],
 )
 class SqlDb extends _$SqlDb {
