@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:tuple/tuple.dart';
@@ -21,14 +22,14 @@ DownloadState downloadStateFromInt(int i) {
   return DownloadState.values[i];
 }
 
-class AudioFile {
+class AudioFile extends Equatable {
   final String episodeId;
   final String url;
   final String directory;
   final String filename;
   final String taskId;
   final DownloadState downloadState;
-  final int downloadPercentage;
+  final double downloadPercentage;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -43,12 +44,15 @@ class AudioFile {
     @required this.createdAt,
     @required this.updatedAt,
   });
+
+  @override
+  List<Object> get props => [episodeId, downloadState, downloadPercentage];
 }
 
 class DownloadProgress {
   final String taskId;
   final DownloadState downloadState;
-  final int downloadPercentage;
+  final double downloadPercentage;
 
   DownloadProgress({
     @required this.taskId,
@@ -81,7 +85,7 @@ class DownloadProgress {
     return DownloadProgress(
       taskId: taskId,
       downloadState: state,
-      downloadPercentage: percentage,
+      downloadPercentage: percentage / 100,
     );
   }
 }

@@ -7,9 +7,9 @@ class AudioFiles extends Table {
   TextColumn get url => text()();
   TextColumn get directory => text()();
   TextColumn get filename => text()();
-  TextColumn get taskId => text()();
+  TextColumn get taskId => text().customConstraint('UNIQUE')();
   IntColumn get downloadState => integer()();
-  IntColumn get downloadPercentage => integer()();
+  RealColumn get downloadPercentage => real()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
 

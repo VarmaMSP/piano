@@ -2855,7 +2855,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
   final String filename;
   final String taskId;
   final int downloadState;
-  final int downloadPercentage;
+  final double downloadPercentage;
   final DateTime createdAt;
   final DateTime updatedAt;
   AudioFileRow(
@@ -2873,6 +2873,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
+    final doubleType = db.typeSystem.forDartType<double>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return AudioFileRow(
       episodeId: stringType
@@ -2886,7 +2887,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}task_id']),
       downloadState: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}download_state']),
-      downloadPercentage: intType.mapFromDatabaseResponse(
+      downloadPercentage: doubleType.mapFromDatabaseResponse(
           data['${effectivePrefix}download_percentage']),
       createdAt: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
@@ -2916,7 +2917,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
       map['download_state'] = Variable<int>(downloadState);
     }
     if (!nullToAbsent || downloadPercentage != null) {
-      map['download_percentage'] = Variable<int>(downloadPercentage);
+      map['download_percentage'] = Variable<double>(downloadPercentage);
     }
     if (!nullToAbsent || createdAt != null) {
       map['created_at'] = Variable<DateTime>(createdAt);
@@ -2966,7 +2967,8 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
       filename: serializer.fromJson<String>(json['filename']),
       taskId: serializer.fromJson<String>(json['taskId']),
       downloadState: serializer.fromJson<int>(json['downloadState']),
-      downloadPercentage: serializer.fromJson<int>(json['downloadPercentage']),
+      downloadPercentage:
+          serializer.fromJson<double>(json['downloadPercentage']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -2981,7 +2983,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
       'filename': serializer.toJson<String>(filename),
       'taskId': serializer.toJson<String>(taskId),
       'downloadState': serializer.toJson<int>(downloadState),
-      'downloadPercentage': serializer.toJson<int>(downloadPercentage),
+      'downloadPercentage': serializer.toJson<double>(downloadPercentage),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -2994,7 +2996,7 @@ class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
           String filename,
           String taskId,
           int downloadState,
-          int downloadPercentage,
+          double downloadPercentage,
           DateTime createdAt,
           DateTime updatedAt}) =>
       AudioFileRow(
@@ -3063,7 +3065,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
   final Value<String> filename;
   final Value<String> taskId;
   final Value<int> downloadState;
-  final Value<int> downloadPercentage;
+  final Value<double> downloadPercentage;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const AudioFilesCompanion({
@@ -3084,7 +3086,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
     @required String filename,
     @required String taskId,
     @required int downloadState,
-    @required int downloadPercentage,
+    @required double downloadPercentage,
     @required DateTime createdAt,
     @required DateTime updatedAt,
   })  : episodeId = Value(episodeId),
@@ -3103,7 +3105,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
     Expression<String> filename,
     Expression<String> taskId,
     Expression<int> downloadState,
-    Expression<int> downloadPercentage,
+    Expression<double> downloadPercentage,
     Expression<DateTime> createdAt,
     Expression<DateTime> updatedAt,
   }) {
@@ -3127,7 +3129,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
       Value<String> filename,
       Value<String> taskId,
       Value<int> downloadState,
-      Value<int> downloadPercentage,
+      Value<double> downloadPercentage,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt}) {
     return AudioFilesCompanion(
@@ -3165,7 +3167,7 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
       map['download_state'] = Variable<int>(downloadState.value);
     }
     if (downloadPercentage.present) {
-      map['download_percentage'] = Variable<int>(downloadPercentage.value);
+      map['download_percentage'] = Variable<double>(downloadPercentage.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -3232,11 +3234,8 @@ class $AudioFilesTable extends AudioFiles
   @override
   GeneratedTextColumn get taskId => _taskId ??= _constructTaskId();
   GeneratedTextColumn _constructTaskId() {
-    return GeneratedTextColumn(
-      'task_id',
-      $tableName,
-      false,
-    );
+    return GeneratedTextColumn('task_id', $tableName, false,
+        $customConstraints: 'UNIQUE');
   }
 
   final VerificationMeta _downloadStateMeta =
@@ -3255,12 +3254,12 @@ class $AudioFilesTable extends AudioFiles
 
   final VerificationMeta _downloadPercentageMeta =
       const VerificationMeta('downloadPercentage');
-  GeneratedIntColumn _downloadPercentage;
+  GeneratedRealColumn _downloadPercentage;
   @override
-  GeneratedIntColumn get downloadPercentage =>
+  GeneratedRealColumn get downloadPercentage =>
       _downloadPercentage ??= _constructDownloadPercentage();
-  GeneratedIntColumn _constructDownloadPercentage() {
-    return GeneratedIntColumn(
+  GeneratedRealColumn _constructDownloadPercentage() {
+    return GeneratedRealColumn(
       'download_percentage',
       $tableName,
       false,
