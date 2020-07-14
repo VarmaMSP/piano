@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phenopod/app/app.dart';
-import 'package:phenopod/background/downloader/main.dart';
 import 'package:phenopod/download_sync/download_sync.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/service/download_manager/download_manager.dart';
 import 'package:phenopod/theme/theme.dart';
 import 'package:phenopod/utils/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -20,12 +20,12 @@ import 'package:phenopod/store/store.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await initDownloader();
-
-  final api = await newApi();
   final db = await newDb();
-  final store = newStore(api, db);
+  final api = await newApi();
   final audioService = newAudioService();
+  final downloadManager = await newDownloadManager();
+
+  final store = newStore(api, db, downloadManager);
   final downloadSync = newDownloadSyncForUI(db);
 
   await SystemChrome.setPreferredOrientations([
@@ -155,7 +155,7 @@ class _RootState extends State<Root>
               case '/queue':
                 return SlideUpPageRoute(builder: (_) => QueueScreen());
               case '/search':
-                return ZoomPageRoute(builder: (_) => SearchScreen());
+                return SlideUpPageRoute(builder: (_) => SearchScreen());
               default:
                 return null;
             }
