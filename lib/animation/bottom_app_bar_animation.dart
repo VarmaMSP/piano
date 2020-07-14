@@ -13,7 +13,7 @@ class BottomAppBarAnimation {
         ).animate(
           CurvedAnimation(
             parent: controller,
-            curve: Interval(0.0, 1.0, curve: Curves.linear),
+            curve: Interval(0.0, 0.9, curve: Curves.linear),
           ),
         ),
         bottomNavigationBarSize = Tween<double>(
@@ -42,7 +42,7 @@ class BottomAppBarAnimation {
         ).animate(
           CurvedAnimation(
             parent: controller,
-            curve: const Interval(0.95, 1.0, curve: Curves.easeIn),
+            curve: const Interval(0.9, 1.0, curve: Curves.linear),
           ),
         );
 

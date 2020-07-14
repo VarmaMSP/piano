@@ -23,7 +23,6 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
 
   @override
   Future<void> onPlay() async {
-    await _downloadSync.dispose();
     await _audioPlayerController.play();
   }
 
@@ -121,6 +120,7 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
 
   @override
   Future<void> onStop() async {
+    await _downloadSync.dispose();
     await _audioPlayerController.stop();
     await super.onStop();
   }
