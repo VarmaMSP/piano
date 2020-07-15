@@ -45,11 +45,11 @@ class Menu extends StatelessWidget {
             .map(
               (option) => PopupMenuItem<EpisodeOption>(
                 value: option,
-                height: 48,
+                height: 46,
                 textStyle: Theme.of(context)
                     .textTheme
                     .headline5
-                    .copyWith(color: TWColors.gray.shade700),
+                    .copyWith(color: TWColors.gray.shade800),
                 child: Text(_episodeOptionsToString(option)),
               ),
             )

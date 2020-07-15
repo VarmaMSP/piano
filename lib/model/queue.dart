@@ -204,9 +204,9 @@ class AudioTrack extends Equatable {
 
   const AudioTrack({this.position, this.episode, this.podcast});
 
-  audioservice.MediaItem toMediaItem() {
+  audioservice.MediaItem toMediaItem({String filePath}) {
     return audioservice.MediaItem(
-      id: episode.mediaUrl,
+      id: filePath ?? episode.mediaUrl,
       artist: podcast.author,
       album: podcast.title,
       title: episode.title,

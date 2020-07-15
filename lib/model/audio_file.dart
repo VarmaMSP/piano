@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path/path.dart';
 import 'package:tuple/tuple.dart';
 
 import 'episode.dart';
@@ -71,6 +72,8 @@ class AudioFile extends Equatable {
   bool get isDownloading =>
       downloadState != DownloadState.failed &&
       downloadState != DownloadState.cancelled;
+
+  String get filepath => join(directory, filename);
 
   @override
   List<Object> get props => [episodeId, downloadState, downloadPercentage];

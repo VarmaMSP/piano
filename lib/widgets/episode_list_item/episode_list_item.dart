@@ -109,7 +109,7 @@ class EpisodeListItem extends StatelessWidget {
               Row(
                 children: <Widget>[
                   DownloadProgressIndicator(episodeId: episode.id),
-                  info
+                  Expanded(child: info)
                 ],
               ),
               Container(height: 6),

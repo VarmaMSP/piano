@@ -75,6 +75,7 @@ class AudioPlayer {
 
   Future<void> playMediaItem(
     audioservice.MediaItem mediaItem, {
+    bool isFile,
     Duration start,
   }) async {
     if (utils.canStop(_player.playbackState)) {
@@ -82,7 +83,10 @@ class AudioPlayer {
     }
 
     await audioservice.AudioServiceBackground.setMediaItem(mediaItem);
-    final duration = await _player.setUrl(mediaItem.id);
+    final duration = !isFile
+        ? await _player.setUrl(mediaItem.id)
+        : await _player.setFilePath(mediaItem.id);
+
     if (start != null) {
       await _player.seek(start);
     }

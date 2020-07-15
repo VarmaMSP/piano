@@ -167,10 +167,14 @@ class AudioPlayerController {
         final playbackPos = await _store.playbackPosition
             .watchByEpisode(audioTrack.episode.id)
             .first;
-        // ignore: unawaited_futures
-        _audioPlayer.playMediaItem(
-          audioTrack.toMediaItem(),
+
+        final audioFile =
+            await _store.audioFile.watchByEpisode(audioTrack.episode.id).first;
+
+        await _audioPlayer.playMediaItem(
+          audioTrack.toMediaItem(filePath: audioFile?.filepath),
           start: playbackPos?.position,
+          isFile: audioFile != null,
         );
       }
     });
