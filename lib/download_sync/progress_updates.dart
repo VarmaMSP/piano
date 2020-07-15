@@ -4,6 +4,11 @@ import 'dart:ui';
 import 'package:phenopod/model/main.dart';
 import 'package:rxdart/rxdart.dart';
 
+/// DownloadProgressUpdates provides a way to listen to download progress updates
+/// from background downloader isolate.
+///
+/// Background downloader isolate sends updates to one of the sendport registered by ui and
+/// audio isolates, which ever one it can find first in same order.
 abstract class DownloadProgressUpdates {
   final String portNameMapping;
   final ReceivePort _receivePort = ReceivePort();
@@ -18,9 +23,10 @@ abstract class DownloadProgressUpdates {
       _receivePort.sendPort,
       portNameMapping,
     );
-    _receivePort.listen(
-      (m) => _progressUpdate.add(DownloadProgress.fromDownloaderUpdate(m)),
-    );
+    _receivePort.listen((m) {
+      print('received ${m}');
+      _progressUpdate.add(DownloadProgress.fromDownloaderUpdate(m));
+    });
   }
 
   Stream<DownloadProgress> get progressUpdates => _progressUpdate.stream;

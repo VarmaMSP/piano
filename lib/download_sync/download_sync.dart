@@ -16,7 +16,11 @@ DownloadSync newDownloadSyncForPlayer(Db db) {
   );
 }
 
-// Syncs download progress updates from background service to the db
+/// Syncs download progress updates from background service to the db
+///
+/// This is supposed to be used in both audio and ui isolate so that
+/// audio player can play from disk the moment the download is complete
+/// even after the ui is closed.
 class DownloadSync {
   final Db db;
   final DownloadProgressUpdates downloadProgressUpdates;
@@ -28,6 +32,8 @@ class DownloadSync {
 
   void init() {
     downloadProgressUpdates.init();
+    downloadProgressUpdates.progressUpdates
+        .listen(db.audioFileDao.updateProgress);
   }
 
   Future<void> dispose() async {
