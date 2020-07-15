@@ -4,7 +4,6 @@ import 'package:flutter/material.dart'
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
 import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
-import 'package:phenopod/hook/use_tab_controller.dart';
 import 'package:phenopod/hook/use_value.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
@@ -30,7 +29,7 @@ class PodcastScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabController = useTabController(length: 2);
+    final tabController = useTabController(initialLength: 2);
 
     final podcastScreenAnimation = PodcastScreenAnimation(
       controller: useAnimationController(),
