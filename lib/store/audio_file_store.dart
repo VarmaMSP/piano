@@ -3,6 +3,7 @@ import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/service/download_manager/download_manager.dart';
+import 'package:phenopod/utils/file.dart';
 
 AudioFileStore newAudioFileStore(
   Api api,
@@ -19,9 +20,8 @@ AudioFileStore newAudioFileStore(
 abstract class AudioFileStore {
   Future<void> startDownload(Episode episode);
   Future<void> cancelDownload(String episodeId);
-  Future<void> syncAllDownloaded(String episodeId);
   Stream<AudioFile> watchByEpisode(String episodeId);
-  Future<void> delete(String episodeId);
+  Future<void> syncAllDownloaded();
 }
 
 class _AudioFileStoreImpl extends AudioFileStore {
@@ -36,33 +36,55 @@ class _AudioFileStoreImpl extends AudioFileStore {
   });
 
   @override
-  Future<void> startDownload(Episode episode) {
+  Future<void> startDownload(Episode episode) async {
     assert(downloadManager != null);
 
-    throw UnimplementedError();
+    final audioFile = await watchByEpisode(episode.id).first;
+    if (!await downloadManager.hasStoragePermission() &&
+        audioFile != null &&
+        audioFile.isDownloaded &&
+        audioFile.isDownloading) {
+      return;
+    }
+
+    // Purge file, in future give user ability to resume tasks
+    if (audioFile != null) {
+      await downloadManager.removeTaskWithFile(audioFile.taskId);
+    }
+
+    final dir = await downloadManager.getStorageDirectory();
+    final filename = newStorageFileName(episode.mediaUrl);
+    final taskId = await downloadManager.newTask(
+      url: episode.mediaUrl,
+      dir: dir,
+      filename: filename,
+    );
+    await db.audioFileDao.save(AudioFile.init(
+      episode: episode,
+      directory: dir,
+      filename: filename,
+      taskId: taskId,
+    ));
   }
 
   @override
-  Future<void> cancelDownload(String episodeId) {
+  Future<void> cancelDownload(String episodeId) async {
     assert(downloadManager != null);
 
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> syncAllDownloaded(String episodeId) {
-    assert(downloadManager != null);
-
-    throw UnimplementedError();
+    final audioFile = await watchByEpisode(episodeId).first;
+    if (audioFile != null) {
+      await downloadManager.removeTaskWithFile(audioFile.taskId);
+      await db.audioFileDao.deleteByEpisode(episodeId);
+    }
   }
 
   @override
   Stream<AudioFile> watchByEpisode(String episodeId) {
-    throw UnimplementedError();
+    return db.audioFileDao.watchByEpisode(episodeId);
   }
 
   @override
-  Future<void> delete(String episodeId) {
+  Future<void> syncAllDownloaded() {
     assert(downloadManager != null);
 
     throw UnimplementedError();

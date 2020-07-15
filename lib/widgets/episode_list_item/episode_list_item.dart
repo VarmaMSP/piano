@@ -121,6 +121,7 @@ class EpisodeListItem extends StatelessWidget {
               EpisodeOption.addToQueue,
               if (type == EpisodeListItemType.subscriptionsItem)
                 EpisodeOption.goToPodcast,
+              EpisodeOption.download,
             ],
           ),
         ),

@@ -36,8 +36,8 @@ class _DownloadManagerImpl extends DownloadManager {
       url: url,
       savedDir: dir,
       fileName: filename,
-      showNotification: false,
-      openFileFromNotification: false,
+      showNotification: kDebugMode,
+      openFileFromNotification: kDebugMode,
     );
     return taskId;
   }

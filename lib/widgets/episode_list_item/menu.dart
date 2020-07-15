@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:phenopod/bloc/app_navigation_bloc.dart' hide Podcast;
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -10,6 +11,7 @@ enum EpisodeOption {
   playNext,
   addToQueue,
   goToPodcast,
+  download,
 }
 
 class Menu extends StatelessWidget {
@@ -65,6 +67,7 @@ class Menu extends StatelessWidget {
               ),
             );
             break;
+
           case EpisodeOption.addToQueue:
             audioPlayerBloc.transitionQueue(
               QueueTransition.addToQueueBottom(
@@ -81,6 +84,12 @@ class Menu extends StatelessWidget {
               Screen.podcast(urlParam: podcast.urlParam),
             );
             break;
+
+          case EpisodeOption.download:
+            Provider.of<Store>(context, listen: false)
+                .audioFile
+                .startDownload(episode);
+            break;
         }
       },
     );
@@ -95,6 +104,8 @@ class Menu extends StatelessWidget {
         return 'Add to queue';
       case EpisodeOption.goToPodcast:
         return 'Go to podcast';
+      case EpisodeOption.download:
+        return 'Download';
     }
   }
 }

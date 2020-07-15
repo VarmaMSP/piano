@@ -3,7 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:tuple/tuple.dart';
 
-// //!! DO NOT CHANGE THE ORDER OF THIS ENUM VALUES
+import 'episode.dart';
+
+//!! DO NOT CHANGE THE ORDER OF THIS ENUM VALUES
 enum DownloadState {
   none,
   queued,
@@ -44,6 +46,31 @@ class AudioFile extends Equatable {
     @required this.createdAt,
     @required this.updatedAt,
   });
+
+  factory AudioFile.init({
+    @required Episode episode,
+    @required String directory,
+    @required String filename,
+    @required String taskId,
+  }) {
+    return AudioFile(
+      episodeId: episode.id,
+      url: episode.mediaUrl,
+      directory: directory,
+      filename: filename,
+      taskId: taskId,
+      downloadState: DownloadState.queued,
+      downloadPercentage: 0.0,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  bool get isDownloaded => downloadState != DownloadState.downloaded;
+
+  bool get isDownloading =>
+      downloadState != DownloadState.failed &&
+      downloadState != DownloadState.cancelled;
 
   @override
   List<Object> get props => [episodeId, downloadState, downloadPercentage];
