@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/widgets/download_progress_indicator.dart';
 import 'package:phenopod/widgets/episode_list_item/menu.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'thumbnail.dart';
@@ -104,9 +105,11 @@ class EpisodeListItem extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 6),
                 child: title,
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: info,
+              Row(
+                children: <Widget>[
+                  DownloadProgressIndicator(episodeId: episode.id),
+                  info
+                ],
               ),
             ],
           ),

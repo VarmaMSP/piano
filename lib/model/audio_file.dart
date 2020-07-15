@@ -66,7 +66,7 @@ class AudioFile extends Equatable {
     );
   }
 
-  bool get isDownloaded => downloadState != DownloadState.downloaded;
+  bool get isDownloaded => downloadState == DownloadState.downloaded;
 
   bool get isDownloading =>
       downloadState != DownloadState.failed &&
