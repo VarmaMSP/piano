@@ -17,6 +17,19 @@ class AudioFileDao extends DatabaseAccessor<SqlDb> with _$AudioFileDaoMixin {
         .map((row) => row?.toModel());
   }
 
+  Future<void> setAsDownloaded(List<String> taskIds) async {
+    if (taskIds.isNotEmpty) {
+      await (update(audioFiles)..where((tbl) => tbl.taskId.isIn(taskIds)))
+          .write(
+        AudioFilesCompanion(
+          downloadState: Value(downloadStateToInt(DownloadState.downloaded)),
+          downloadPercentage: Value(1.0),
+          updatedAt: Value(DateTime.now()),
+        ),
+      );
+    }
+  }
+
   Future<void> updateProgress(DownloadProgress progress) async {
     await (update(audioFiles)
           ..where((tbl) => tbl.taskId.equals(progress.taskId)))

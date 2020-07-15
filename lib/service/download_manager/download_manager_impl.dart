@@ -43,6 +43,14 @@ class _DownloadManagerImpl extends DownloadManager {
   }
 
   @override
+  Future<List<String>> getAllDownloaded() async {
+    final tasks = await FlutterDownloader.loadTasksWithRawQuery(
+      query: 'SELECT * FROM task WHERE status = 3',
+    );
+    return tasks.map((x) => x.taskId).toList();
+  }
+
+  @override
   Future<void> removeTaskWithFile(String taskId) async {
     await FlutterDownloader.remove(taskId: taskId, shouldDeleteContent: true);
   }

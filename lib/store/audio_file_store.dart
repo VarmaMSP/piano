@@ -46,7 +46,6 @@ class _AudioFileStoreImpl extends AudioFileStore {
         audioFile.isDownloading) {
       return;
     }
-
     // Purge file, in future give user ability to resume tasks
     if (audioFile != null) {
       await downloadManager.removeTaskWithFile(audioFile.taskId);
@@ -84,9 +83,8 @@ class _AudioFileStoreImpl extends AudioFileStore {
   }
 
   @override
-  Future<void> syncAllDownloaded() {
-    assert(downloadManager != null);
-
-    throw UnimplementedError();
+  Future<void> syncAllDownloaded() async {
+    final taskIds = await downloadManager.getAllDownloaded();
+    await db.audioFileDao.setAsDownloaded(taskIds);
   }
 }

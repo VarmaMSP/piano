@@ -28,6 +28,9 @@ void main() async {
   final store = newStore(api, db, downloadManager);
   final downloadSync = newDownloadSyncForUI(db);
 
+  // ignore: unawaited_futures
+  store.audioFile.syncAllDownloaded();
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

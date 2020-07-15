@@ -25,6 +25,9 @@ abstract class DownloadManager {
   // Create new download task and return taskId
   Future<String> newTask({String url, String dir, String filename});
 
+  // Get all downloaded task ids
+  Future<List<String>> getAllDownloaded();
+
   // Cancel task wih given task id
   Future<void> removeTaskWithFile(String taskId);
 }
