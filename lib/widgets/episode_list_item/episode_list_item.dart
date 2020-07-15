@@ -42,7 +42,8 @@ class EpisodeListItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     _buildDetails(context),
-                    Padding(
+                    Container(
+                      transform: Matrix4.translationValues(0, -2, 0),
                       padding: const EdgeInsets.only(right: 16.0),
                       child: Text(
                         episode.summary
@@ -111,6 +112,7 @@ class EpisodeListItem extends StatelessWidget {
                   info
                 ],
               ),
+              Container(height: 6),
             ],
           ),
         ),
