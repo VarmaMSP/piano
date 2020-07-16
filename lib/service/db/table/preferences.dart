@@ -18,7 +18,7 @@ class PreferenceValueTypeConverter
   PreferenceValue mapToDart(String fromDb) {
     return fromDb != null
         ? PreferenceValue.fromJson(json.decode(fromDb) as Map<String, dynamic>)
-        : PreferenceValue.fromNull();
+        : null;
   }
 
   @override

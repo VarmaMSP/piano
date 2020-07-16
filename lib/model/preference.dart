@@ -24,17 +24,6 @@ class PreferenceValue {
     this.taskTableLock,
   });
 
-  // A convience method to return default values where ever
-  // appropriate for ui (Usually when app is first started
-  // when all fields are null).
-  factory PreferenceValue.fromNull() {
-    return PreferenceValue(
-      queueDetails: QueueDetails.fromQueue(Queue.empty()),
-      audioPlayerSetting: AudioPlayerSetting.standard(),
-      taskTableLock: null,
-    );
-  }
-
   factory PreferenceValue.fromJson(Map<String, dynamic> json) {
     return _$PreferenceValueFromJson(json);
   }
