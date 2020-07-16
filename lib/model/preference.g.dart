@@ -33,9 +33,6 @@ PreferenceValue _$PreferenceValueFromJson(Map<String, dynamic> json) {
         ? null
         : AudioPlayerSetting.fromJson(
             json['audio_player_setting'] as Map<String, dynamic>),
-    taskTableLock: json['task_table_lock'] == null
-        ? null
-        : TableLock.fromJson(json['task_table_lock'] as Map<String, dynamic>),
   );
 }
 
@@ -43,21 +40,6 @@ Map<String, dynamic> _$PreferenceValueToJson(PreferenceValue instance) =>
     <String, dynamic>{
       'queue_details': instance.queueDetails,
       'audio_player_setting': instance.audioPlayerSetting,
-      'task_table_lock': instance.taskTableLock,
-    };
-
-TableLock _$TableLockFromJson(Map<String, dynamic> json) {
-  return TableLock(
-    pid: json['pid'] as String,
-    createdAt: json['created_at'] == null
-        ? null
-        : DateTime.parse(json['created_at'] as String),
-  );
-}
-
-Map<String, dynamic> _$TableLockToJson(TableLock instance) => <String, dynamic>{
-      'pid': instance.pid,
-      'created_at': instance.createdAt?.toIso8601String(),
     };
 
 QueueDetails _$QueueDetailsFromJson(Map<String, dynamic> json) {

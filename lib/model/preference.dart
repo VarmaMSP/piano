@@ -16,13 +16,9 @@ class PreferenceValue {
   @JsonKey(nullable: true)
   final AudioPlayerSetting audioPlayerSetting;
 
-  @JsonKey(nullable: true)
-  final TableLock taskTableLock;
-
   const PreferenceValue({
     this.queueDetails,
     this.audioPlayerSetting,
-    this.taskTableLock,
   });
 
   factory PreferenceValue.fromJson(Map<String, dynamic> json) {
@@ -31,30 +27,6 @@ class PreferenceValue {
 
   Map<String, dynamic> toJson() {
     return _$PreferenceValueToJson(this);
-  }
-}
-
-@JsonSerializable(fieldRename: FieldRename.snake)
-class TableLock {
-  static const String taskTableKey = 'TASK_TABLE_LOCK';
-
-  // Id of isolate that created the lock
-  final String pid;
-
-  // Time at which the lock is created
-  final DateTime createdAt;
-
-  TableLock({
-    @required this.pid,
-    @required this.createdAt,
-  });
-
-  factory TableLock.fromJson(Map<String, dynamic> json) {
-    return _$TableLockFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$TableLockToJson(this);
   }
 }
 

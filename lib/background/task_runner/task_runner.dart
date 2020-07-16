@@ -1,18 +1,24 @@
+import 'package:phenopod/background/task_runner/worker/download_episode_worker.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:uuid/uuid.dart';
 
-void startTaskRunner() async {
-  final store = newStore(await newApi(), await newDb());
-  final taskRunner = TaskRunner(store: store);
+Store store;
+bool _isRunning = false;
 
-  try {
-    await taskRunner.start();
-  } catch (err) {
-    print(err);
-  } finally {
-    await taskRunner.stop();
+void startTaskRunner() async {
+  store ??= newStore(await newApi(), await newDb());
+
+  if (!_isRunning) {
+    final taskRunner = TaskRunner(store: store);
+    try {
+      await taskRunner.start();
+    } catch (err) {
+      print(err);
+    } finally {
+      _isRunning = false;
+    }
   }
 }
 
@@ -23,16 +29,23 @@ class TaskRunner {
   TaskRunner({this.store});
 
   Future<void> start() async {
-    if (!await store.task.isLocked()) {
-      await store.task.aquireLock(pid);
+    await for (var task in store.task.watchFirst()) {
+      if (task == null) {
+        return;
+      }
+
+      final worker = task.taskType.when(
+        cachePodcast: (data) => null,
+        downloadEpisode: (data) => DownloadEpisodeWorker(
+          taskId: task.id,
+          store: store,
+          episodeId: data.episodeId,
+          url: data.url,
+          filepath: data.filepath,
+        ),
+      );
+
+      await worker.run();
     }
-
-    print('Iam running');
-
-    return;
-  }
-
-  Future<void> stop() async {
-    await store.task.releaseLock(pid);
   }
 }
