@@ -29,15 +29,17 @@ class Task {
   final int id;
   final TaskType taskType;
   final TaskStatus taskStatus;
+  final bool canRetry;
   final DateTime createdAt;
   final DateTime updatedAt;
 
   Task({
-    this.id,
-    this.taskType,
-    this.taskStatus,
-    this.createdAt,
-    this.updatedAt,
+    @required this.id,
+    @required this.taskType,
+    @required this.taskStatus,
+    @required this.canRetry,
+    @required this.createdAt,
+    @required this.updatedAt,
   });
 }
 

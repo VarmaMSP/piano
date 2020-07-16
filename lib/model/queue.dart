@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:audio_service/audio_service.dart' as audioservice;
+import 'package:flutter/foundation.dart';
 import 'package:phenopod/utils/request.dart';
 
 import 'episode.dart';
@@ -16,8 +17,8 @@ class Queue extends Equatable {
   final List<AudioTrack> audioTracks;
 
   const Queue({
-    this.position,
-    this.audioTracks,
+    @required this.position,
+    @required this.audioTracks,
   });
 
   factory Queue.empty() {

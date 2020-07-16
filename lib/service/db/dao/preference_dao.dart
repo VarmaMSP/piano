@@ -17,9 +17,7 @@ class PreferenceDao extends DatabaseAccessor<SqlDb> with _$PreferenceDaoMixin {
         .map((x) => x?.value);
   }
 
-  Future<PreferenceValue> getPreference(String key) async {
-    final row = await (select(preferences)..where((tbl) => tbl.key.equals(key)))
-        .getSingle();
-    return row?.value;
+  Future<void> deletePreference(String key) async {
+    await (delete(preferences)..where((tbl) => tbl.key.equals(key))).go();
   }
 }

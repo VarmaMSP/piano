@@ -1,4 +1,5 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:phenopod/model/queue.dart';
@@ -40,7 +41,9 @@ class TableLock {
   // Time at which the lock is created
   final DateTime createdAt;
 
-  TableLock({this.createdAt});
+  TableLock({
+    @required this.createdAt,
+  });
 
   factory TableLock.fromJson(Map<String, dynamic> json) {
     return _$TableLockFromJson(json);
@@ -59,7 +62,9 @@ class QueueDetails extends Equatable {
   // Position of current active audio track
   final int position;
 
-  const QueueDetails({this.position});
+  const QueueDetails({
+    @required this.position,
+  });
 
   factory QueueDetails.fromQueue(Queue queue) {
     return QueueDetails(position: queue.position);
@@ -89,7 +94,10 @@ class AudioPlayerSetting extends Equatable {
   // Seconds to move when rewinded
   final int seekBackwardTime;
 
-  AudioPlayerSetting({this.seekForwardTime, this.seekBackwardTime});
+  AudioPlayerSetting({
+    @required this.seekForwardTime,
+    @required this.seekBackwardTime,
+  });
 
   factory AudioPlayerSetting.standard() {
     return AudioPlayerSetting(seekForwardTime: 30, seekBackwardTime: 30);
