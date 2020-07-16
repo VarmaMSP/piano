@@ -9,18 +9,17 @@ part of 'task.dart';
 // **************************************************************************
 
 @immutable
-abstract class Task extends Equatable {
-  const Task(this._type);
+abstract class TaskType extends Equatable {
+  const TaskType(this._type);
 
-  factory Task.cachePodcast({@required String urlParam}) = CachePodcast;
+  factory TaskType.cachePodcast({@required String urlParam}) = CachePodcast;
 
-  factory Task.downloadEpisode(
+  factory TaskType.downloadEpisode(
       {@required String episodeId,
       @required String url,
-      @required String directory,
-      @required String filename}) = DownloadEpisode;
+      @required String filepath}) = DownloadEpisode;
 
-  final _Task _type;
+  final _TaskType _type;
 
 //ignore: missing_return
   R when<R>(
@@ -33,9 +32,9 @@ abstract class Task extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _Task.CachePodcast:
+      case _TaskType.CachePodcast:
         return cachePodcast(this as CachePodcast);
-      case _Task.DownloadEpisode:
+      case _TaskType.DownloadEpisode:
         return downloadEpisode(this as DownloadEpisode);
     }
   }
@@ -51,9 +50,9 @@ abstract class Task extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _Task.CachePodcast:
+      case _TaskType.CachePodcast:
         return cachePodcast(this as CachePodcast);
-      case _Task.DownloadEpisode:
+      case _TaskType.DownloadEpisode:
         return downloadEpisode(this as DownloadEpisode);
     }
   }
@@ -61,7 +60,7 @@ abstract class Task extends Equatable {
   R whenOrElse<R>(
       {R Function(CachePodcast) cachePodcast,
       R Function(DownloadEpisode) downloadEpisode,
-      @required R Function(Task) orElse}) {
+      @required R Function(TaskType) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -69,10 +68,10 @@ abstract class Task extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _Task.CachePodcast:
+      case _TaskType.CachePodcast:
         if (cachePodcast == null) break;
         return cachePodcast(this as CachePodcast);
-      case _Task.DownloadEpisode:
+      case _TaskType.DownloadEpisode:
         if (downloadEpisode == null) break;
         return downloadEpisode(this as DownloadEpisode);
     }
@@ -82,7 +81,7 @@ abstract class Task extends Equatable {
   Future<R> asyncWhenOrElse<R>(
       {FutureOr<R> Function(CachePodcast) cachePodcast,
       FutureOr<R> Function(DownloadEpisode) downloadEpisode,
-      @required FutureOr<R> Function(Task) orElse}) {
+      @required FutureOr<R> Function(TaskType) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -90,10 +89,10 @@ abstract class Task extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _Task.CachePodcast:
+      case _TaskType.CachePodcast:
         if (cachePodcast == null) break;
         return cachePodcast(this as CachePodcast);
-      case _Task.DownloadEpisode:
+      case _TaskType.DownloadEpisode:
         if (downloadEpisode == null) break;
         return downloadEpisode(this as DownloadEpisode);
     }
@@ -111,10 +110,10 @@ abstract class Task extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _Task.CachePodcast:
+      case _TaskType.CachePodcast:
         if (cachePodcast == null) break;
         return cachePodcast(this as CachePodcast);
-      case _Task.DownloadEpisode:
+      case _TaskType.DownloadEpisode:
         if (downloadEpisode == null) break;
         return downloadEpisode(this as DownloadEpisode);
     }
@@ -125,8 +124,8 @@ abstract class Task extends Equatable {
 }
 
 @immutable
-class CachePodcast extends Task {
-  const CachePodcast({@required this.urlParam}) : super(_Task.CachePodcast);
+class CachePodcast extends TaskType {
+  const CachePodcast({@required this.urlParam}) : super(_TaskType.CachePodcast);
 
   final String urlParam;
 
@@ -137,25 +136,20 @@ class CachePodcast extends Task {
 }
 
 @immutable
-class DownloadEpisode extends Task {
+class DownloadEpisode extends TaskType {
   const DownloadEpisode(
-      {@required this.episodeId,
-      @required this.url,
-      @required this.directory,
-      @required this.filename})
-      : super(_Task.DownloadEpisode);
+      {@required this.episodeId, @required this.url, @required this.filepath})
+      : super(_TaskType.DownloadEpisode);
 
   final String episodeId;
 
   final String url;
 
-  final String directory;
-
-  final String filename;
+  final String filepath;
 
   @override
   String toString() =>
-      'DownloadEpisode(episodeId:${this.episodeId},url:${this.url},directory:${this.directory},filename:${this.filename})';
+      'DownloadEpisode(episodeId:${this.episodeId},url:${this.url},filepath:${this.filepath})';
   @override
-  List get props => [episodeId, url, directory, filename];
+  List get props => [episodeId, url, filepath];
 }

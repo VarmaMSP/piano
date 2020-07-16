@@ -2674,17 +2674,32 @@ class $SubscriptionFiltersTable extends SubscriptionFilters
 
 class TaskRow extends DataClass implements Insertable<TaskRow> {
   final int id;
-  final dynamic task;
-  TaskRow({@required this.id, @required this.task});
+  final dynamic taskType;
+  final TaskStatus taskStatus;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  TaskRow(
+      {@required this.id,
+      @required this.taskType,
+      @required this.taskStatus,
+      @required this.createdAt,
+      @required this.updatedAt});
   factory TaskRow.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return TaskRow(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      task: $TasksTable.$converter0.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}task'])),
+      taskType: $TasksTable.$converter0.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}task_type'])),
+      taskStatus: $TasksTable.$converter1.mapToDart(intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}task_status'])),
+      createdAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
   @override
@@ -2693,9 +2708,19 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     if (!nullToAbsent || id != null) {
       map['id'] = Variable<int>(id);
     }
-    if (!nullToAbsent || task != null) {
+    if (!nullToAbsent || taskType != null) {
       final converter = $TasksTable.$converter0;
-      map['task'] = Variable<String>(converter.mapToSql(task));
+      map['task_type'] = Variable<String>(converter.mapToSql(taskType));
+    }
+    if (!nullToAbsent || taskStatus != null) {
+      final converter = $TasksTable.$converter1;
+      map['task_status'] = Variable<int>(converter.mapToSql(taskStatus));
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
     }
     return map;
   }
@@ -2703,7 +2728,18 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
   TasksCompanion toCompanion(bool nullToAbsent) {
     return TasksCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      task: task == null && nullToAbsent ? const Value.absent() : Value(task),
+      taskType: taskType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taskType),
+      taskStatus: taskStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taskStatus),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
     );
   }
 
@@ -2712,7 +2748,10 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return TaskRow(
       id: serializer.fromJson<int>(json['id']),
-      task: serializer.fromJson<dynamic>(json['task']),
+      taskType: serializer.fromJson<dynamic>(json['taskType']),
+      taskStatus: serializer.fromJson<TaskStatus>(json['taskStatus']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
   @override
@@ -2720,56 +2759,107 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'task': serializer.toJson<dynamic>(task),
+      'taskType': serializer.toJson<dynamic>(taskType),
+      'taskStatus': serializer.toJson<TaskStatus>(taskStatus),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
 
-  TaskRow copyWith({int id, dynamic task}) => TaskRow(
+  TaskRow copyWith(
+          {int id,
+          dynamic taskType,
+          TaskStatus taskStatus,
+          DateTime createdAt,
+          DateTime updatedAt}) =>
+      TaskRow(
         id: id ?? this.id,
-        task: task ?? this.task,
+        taskType: taskType ?? this.taskType,
+        taskStatus: taskStatus ?? this.taskStatus,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
   @override
   String toString() {
     return (StringBuffer('TaskRow(')
           ..write('id: $id, ')
-          ..write('task: $task')
+          ..write('taskType: $taskType, ')
+          ..write('taskStatus: $taskStatus, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode, task.hashCode));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          taskType.hashCode,
+          $mrjc(taskStatus.hashCode,
+              $mrjc(createdAt.hashCode, updatedAt.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is TaskRow && other.id == this.id && other.task == this.task);
+      (other is TaskRow &&
+          other.id == this.id &&
+          other.taskType == this.taskType &&
+          other.taskStatus == this.taskStatus &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
 }
 
 class TasksCompanion extends UpdateCompanion<TaskRow> {
   final Value<int> id;
-  final Value<dynamic> task;
+  final Value<dynamic> taskType;
+  final Value<TaskStatus> taskStatus;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
   const TasksCompanion({
     this.id = const Value.absent(),
-    this.task = const Value.absent(),
+    this.taskType = const Value.absent(),
+    this.taskStatus = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   TasksCompanion.insert({
     this.id = const Value.absent(),
-    @required dynamic task,
-  }) : task = Value(task);
+    @required dynamic taskType,
+    @required TaskStatus taskStatus,
+    @required DateTime createdAt,
+    @required DateTime updatedAt,
+  })  : taskType = Value(taskType),
+        taskStatus = Value(taskStatus),
+        createdAt = Value(createdAt),
+        updatedAt = Value(updatedAt);
   static Insertable<TaskRow> custom({
     Expression<int> id,
-    Expression<String> task,
+    Expression<String> taskType,
+    Expression<int> taskStatus,
+    Expression<DateTime> createdAt,
+    Expression<DateTime> updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (task != null) 'task': task,
+      if (taskType != null) 'task_type': taskType,
+      if (taskStatus != null) 'task_status': taskStatus,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
-  TasksCompanion copyWith({Value<int> id, Value<dynamic> task}) {
+  TasksCompanion copyWith(
+      {Value<int> id,
+      Value<dynamic> taskType,
+      Value<TaskStatus> taskStatus,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt}) {
     return TasksCompanion(
       id: id ?? this.id,
-      task: task ?? this.task,
+      taskType: taskType ?? this.taskType,
+      taskStatus: taskStatus ?? this.taskStatus,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -2779,9 +2869,19 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (task.present) {
+    if (taskType.present) {
       final converter = $TasksTable.$converter0;
-      map['task'] = Variable<String>(converter.mapToSql(task.value));
+      map['task_type'] = Variable<String>(converter.mapToSql(taskType.value));
+    }
+    if (taskStatus.present) {
+      final converter = $TasksTable.$converter1;
+      map['task_status'] = Variable<int>(converter.mapToSql(taskStatus.value));
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
   }
@@ -2800,20 +2900,57 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
-  final VerificationMeta _taskMeta = const VerificationMeta('task');
-  GeneratedTextColumn _task;
+  final VerificationMeta _taskTypeMeta = const VerificationMeta('taskType');
+  GeneratedTextColumn _taskType;
   @override
-  GeneratedTextColumn get task => _task ??= _constructTask();
-  GeneratedTextColumn _constructTask() {
+  GeneratedTextColumn get taskType => _taskType ??= _constructTaskType();
+  GeneratedTextColumn _constructTaskType() {
     return GeneratedTextColumn(
-      'task',
+      'task_type',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _taskStatusMeta = const VerificationMeta('taskStatus');
+  GeneratedIntColumn _taskStatus;
+  @override
+  GeneratedIntColumn get taskStatus => _taskStatus ??= _constructTaskStatus();
+  GeneratedIntColumn _constructTaskStatus() {
+    return GeneratedIntColumn(
+      'task_status',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  GeneratedDateTimeColumn _createdAt;
+  @override
+  GeneratedDateTimeColumn get createdAt => _createdAt ??= _constructCreatedAt();
+  GeneratedDateTimeColumn _constructCreatedAt() {
+    return GeneratedDateTimeColumn(
+      'created_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
+  @override
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
       $tableName,
       false,
     );
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, task];
+  List<GeneratedColumn> get $columns =>
+      [id, taskType, taskStatus, createdAt, updatedAt];
   @override
   $TasksTable get asDslTable => this;
   @override
@@ -2828,7 +2965,20 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    context.handle(_taskMeta, const VerificationResult.success());
+    context.handle(_taskTypeMeta, const VerificationResult.success());
+    context.handle(_taskStatusMeta, const VerificationResult.success());
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at'], _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
     return context;
   }
 
@@ -2846,6 +2996,7 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
   }
 
   static TypeConverter<dynamic, String> $converter0 = TaskTypeConverter();
+  static TypeConverter<TaskStatus, int> $converter1 = TaskStatusConverter();
 }
 
 class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {

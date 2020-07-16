@@ -23,7 +23,7 @@ class _TaskStoreImpl extends TaskStore {
 
   @override
   Stream<Task> watchFirst() {
-    return db.taskDao.watchOldestTask().map((row) => row?.task);
+    return db.taskDao.watchOldestTask().map((row) => row?.toModel());
   }
 
   @override

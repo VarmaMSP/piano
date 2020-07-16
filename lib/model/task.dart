@@ -1,11 +1,11 @@
 import 'package:super_enum/super_enum.dart';
+import 'package:equatable/equatable.dart';
 
 part 'task.g.dart';
 
-///! DO NOT CHANGE THE ORDER
-/// Every task should be idempotent
+//! DO NOT CHANGE THE ORDER
 @superEnum
-enum _Task {
+enum _TaskType {
   @Data(fields: [
     DataField<String>('urlParam'),
   ])
@@ -13,48 +13,72 @@ enum _Task {
   @Data(fields: [
     DataField<String>('episodeId'),
     DataField<String>('url'),
-    DataField<String>('directory'),
-    DataField<String>('filename'),
+    DataField<String>('filepath'),
   ])
   DownloadEpisode,
 }
 
-extension TaskExtension on Task {
+enum TaskStatus {
+  pending,
+  completed,
+  failed,
+}
+
+class Task extends Equatable {
+  final int id;
+  final TaskType taskType;
+  final TaskStatus taskStatus;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  Task({
+    this.id,
+    this.taskType,
+    this.taskStatus,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  @override
+  List<Object> get props => [];
+}
+
+//ignore: missing_return
+TaskType taskTypeFromJson(Map<String, dynamic> json) {
+  final key = _TaskType.values[json['key']];
+
+  switch (key) {
+    case _TaskType.CachePodcast:
+      return TaskType.cachePodcast(
+        urlParam: json['url_param'],
+      );
+
+    case _TaskType.DownloadEpisode:
+      return TaskType.downloadEpisode(
+        episodeId: json['episode_id'],
+        url: json['url'],
+        filepath: json['filepath'],
+      );
+  }
+}
+
+extension TaskTypeExtension on TaskType {
   Map<String, dynamic> toJson() {
     return when(
       cachePodcast: (data) {
         return {
-          'key': _Task.CachePodcast.index,
+          'key': _TaskType.CachePodcast.index,
           'url_param': data.urlParam,
         };
       },
       downloadEpisode: (data) {
         return {
-          'key': _Task.DownloadEpisode.index,
+          'key': _TaskType.DownloadEpisode.index,
           'episode_id': data.episodeId,
           'url': data.url,
-          'directory': data.directory,
-          'filename': data.filename,
+          'filepath': data.filepath,
         };
       },
     );
-  }
-}
-
-//ignore: missing_return
-Task taskFromJson(Map<String, dynamic> json) {
-  switch (_Task.values[json['key']]) {
-    case _Task.CachePodcast:
-      return Task.cachePodcast(
-        urlParam: json['url_param'],
-      );
-
-    case _Task.DownloadEpisode:
-      return Task.downloadEpisode(
-        episodeId: json['episode_id'],
-        url: json['url'],
-        directory: json['directory'],
-        filename: json['filename'],
-      );
   }
 }
