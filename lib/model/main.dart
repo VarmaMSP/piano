@@ -8,7 +8,7 @@ export 'search_suggestion.dart';
 export 'user.dart';
 export 'playback_position.dart';
 export 'queue.dart';
-export 'setting.dart';
+export 'preference.dart';
 export 'subscription.dart';
 export 'task.dart';
 export 'screen.dart';

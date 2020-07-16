@@ -10,22 +10,6 @@ class Preferences extends Table {
   Set<Column> get primaryKey => {key};
 }
 
-@j.JsonSerializable(fieldRename: j.FieldRename.snake)
-class PreferenceValue {
-  final QueuePreference queuePreference;
-  final AudioPlayerSetting audioPlayerSetting;
-
-  const PreferenceValue({this.queuePreference, this.audioPlayerSetting});
-
-  factory PreferenceValue.fromJson(Map<String, dynamic> json) {
-    return _$PreferenceValueFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$PreferenceValueToJson(this);
-  }
-}
-
 class PreferenceValueTypeConverter
     extends TypeConverter<PreferenceValue, String> {
   const PreferenceValueTypeConverter();
@@ -34,10 +18,7 @@ class PreferenceValueTypeConverter
   PreferenceValue mapToDart(String fromDb) {
     return fromDb != null
         ? PreferenceValue.fromJson(json.decode(fromDb) as Map<String, dynamic>)
-        : PreferenceValue(
-            queuePreference: Queue.empty().preference,
-            audioPlayerSetting: AudioPlayerSetting.standard(),
-          );
+        : PreferenceValue.fromNull();
   }
 
   @override

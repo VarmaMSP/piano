@@ -8,16 +8,6 @@ part of 'queue.dart';
 // CopyWithGenerator
 // **************************************************************************
 
-extension QueuePreferenceCopyWithExtension on QueuePreference {
-  QueuePreference copyWith({
-    int position,
-  }) {
-    return QueuePreference(
-      position: position ?? this.position,
-    );
-  }
-}
-
 extension QueueCopyWithExtension on Queue {
   Queue copyWith({
     List<AudioTrack> audioTracks,
@@ -43,18 +33,3 @@ extension AudioTrackCopyWithExtension on AudioTrack {
     );
   }
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-QueuePreference _$QueuePreferenceFromJson(Map<String, dynamic> json) {
-  return QueuePreference(
-    position: json['position'] as int,
-  );
-}
-
-Map<String, dynamic> _$QueuePreferenceToJson(QueuePreference instance) =>
-    <String, dynamic>{
-      'position': instance.position,
-    };

@@ -18,13 +18,14 @@ enum _TaskType {
   DownloadEpisode,
 }
 
+//! DO NOT CHANGE THE ORDER
 enum TaskStatus {
   pending,
   completed,
   failed,
 }
 
-class Task extends Equatable {
+class Task {
   final int id;
   final TaskType taskType;
   final TaskStatus taskStatus;
@@ -38,9 +39,6 @@ class Task extends Equatable {
     this.createdAt,
     this.updatedAt,
   });
-
-  @override
-  List<Object> get props => [];
 }
 
 //ignore: missing_return

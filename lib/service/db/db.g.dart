@@ -5,29 +5,6 @@
 part of 'db.dart';
 
 // **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-PreferenceValue _$PreferenceValueFromJson(Map<String, dynamic> json) {
-  return PreferenceValue(
-    queuePreference: json['queue_preference'] == null
-        ? null
-        : QueuePreference.fromJson(
-            json['queue_preference'] as Map<String, dynamic>),
-    audioPlayerSetting: json['audio_player_setting'] == null
-        ? null
-        : AudioPlayerSetting.fromJson(
-            json['audio_player_setting'] as Map<String, dynamic>),
-  );
-}
-
-Map<String, dynamic> _$PreferenceValueToJson(PreferenceValue instance) =>
-    <String, dynamic>{
-      'queue_preference': instance.queuePreference,
-      'audio_player_setting': instance.audioPlayerSetting,
-    };
-
-// **************************************************************************
 // MoorGenerator
 // **************************************************************************
 
