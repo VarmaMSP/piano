@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phenopod/app/app.dart';
+import 'package:phenopod/bloc/episode_actions_bloc.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
 import 'package:phenopod/service/alarm_service/alarm_service.dart';
@@ -129,6 +130,10 @@ class _RootState extends State<Root>
         ),
         Provider<PodcastActionsBloc>(
           create: (_) => PodcastActionsBloc(widget.store),
+          dispose: (_, value) => value.dispose(),
+        ),
+        Provider<EpisodeActionsBloc>(
+          create: (_) => EpisodeActionsBloc(widget.store, widget.alarmService),
           dispose: (_, value) => value.dispose(),
         ),
       ],

@@ -9,8 +9,10 @@ TaskStore newTaskStore(Api api, Db db) {
 }
 
 abstract class TaskStore {
+  Future<void> saveTask(Task task);
   Stream<Task> watchFirst();
   Future<void> deleteFirst();
+
   Future<bool> isLocked();
   Future<void> aquireLock(String pid);
   Future<void> releaseLock(String pid);
@@ -24,6 +26,9 @@ class _TaskStoreImpl extends TaskStore {
     @required this.api,
     @required this.db,
   });
+
+  @override
+  Future<void> saveTask(Task task) async {}
 
   @override
   Stream<Task> watchFirst() {

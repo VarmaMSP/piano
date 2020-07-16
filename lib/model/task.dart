@@ -41,6 +41,17 @@ class Task {
     @required this.createdAt,
     @required this.updatedAt,
   });
+
+  factory Task.init({TaskType taskType}) {
+    return Task(
+      id: null,
+      taskType: taskType,
+      taskStatus: TaskStatus.pending,
+      canRetry: false,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
 }
 
 //ignore: missing_return

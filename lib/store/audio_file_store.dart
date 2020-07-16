@@ -8,10 +8,9 @@ AudioFileStore newAudioFileStore(Api api, Db db) {
 }
 
 abstract class AudioFileStore {
-  Future<void> startDownload(Episode episode);
-  Future<void> cancelDownload(String episodeId);
+  Future<void> save(AudioFile audioFile);
+  Future<void> deleteByEpisode(String episodeId);
   Stream<AudioFile> watchByEpisode(String episodeId);
-  Future<void> syncAllDownloaded();
 }
 
 class _AudioFileStoreImpl extends AudioFileStore {
@@ -24,7 +23,7 @@ class _AudioFileStoreImpl extends AudioFileStore {
   });
 
   @override
-  Future<void> startDownload(Episode episode) async {
+  Future<void> save(AudioFile audioFile) async {
     // final audioFile = await watchByEpisode(episode.id).first;
     // if (!await downloadManager.hasStoragePermission() &&
     //     audioFile != null &&
@@ -53,7 +52,7 @@ class _AudioFileStoreImpl extends AudioFileStore {
   }
 
   @override
-  Future<void> cancelDownload(String episodeId) async {
+  Future<void> deleteByEpisode(String episodeId) async {
     final audioFile = await watchByEpisode(episodeId).first;
     if (audioFile != null) {
       // await downloadManager.removeTaskWithFile(audioFile.taskId);
@@ -64,11 +63,5 @@ class _AudioFileStoreImpl extends AudioFileStore {
   @override
   Stream<AudioFile> watchByEpisode(String episodeId) {
     return db.audioFileDao.watchByEpisode(episodeId);
-  }
-
-  @override
-  Future<void> syncAllDownloaded() async {
-    // final taskIds = await downloadManager.getAllDownloaded();
-    // await db.audioFileDao.setAsDownloaded(taskIds);
   }
 }

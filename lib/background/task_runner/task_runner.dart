@@ -26,6 +26,10 @@ class TaskRunner {
     if (!await store.task.isLocked()) {
       await store.task.aquireLock(pid);
     }
+
+    print('Iam running');
+
+    return;
   }
 
   Future<void> stop() async {

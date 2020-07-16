@@ -9,7 +9,9 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tuple/tuple.dart';
 
-// Startt moorIsolate and sendback the result
+const String moorSendPortMapping = 'moor_isolate';
+
+// Start moorIsolate and sendback the result
 void _moor(Tuple2<SendPort, String> request) {
   final database = VmDatabase(File(request.item2), logStatements: false);
   final moorIsolate = MoorIsolate.inCurrent(
@@ -32,14 +34,14 @@ Future<MoorIsolate> _startIsolate() async {
   // Register MoorIsolates sendport
   IsolateNameServer.registerPortWithName(
     moorIsolate.connectPort,
-    'MOOR_ISOLATE',
+    moorSendPortMapping,
   );
 
   return moorIsolate;
 }
 
 Future<MoorIsolate> getMoorIsolate() {
-  final sendPort = IsolateNameServer.lookupPortByName('MOOR_ISOLATE');
+  final sendPort = IsolateNameServer.lookupPortByName(moorSendPortMapping);
   return sendPort != null
       ? Future.value(MoorIsolate.fromConnectPort(sendPort))
       : _startIsolate();

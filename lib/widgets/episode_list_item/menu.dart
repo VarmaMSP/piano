@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:phenopod/bloc/app_navigation_bloc.dart' hide Podcast;
 import 'package:phenopod/bloc/audio_player_bloc.dart';
+import 'package:phenopod/bloc/episode_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/store/store.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -86,9 +86,8 @@ class Menu extends StatelessWidget {
             break;
 
           case EpisodeOption.download:
-            Provider.of<Store>(context, listen: false)
-                .audioFile
-                .startDownload(episode);
+            Provider.of<EpisodeActionsBloc>(context, listen: false)
+                .addAction(EpisodeAction.startDownload(episode: episode));
             break;
         }
       },
