@@ -117,8 +117,6 @@ class _audioServiceImpl implements AudioService {
   }
 
   Future<void> _startBackgroundPlayerTask() async {
-    final appDocDirPath = (await getApplicationDocumentsDirectory()).path;
-
     await audioservice.AudioService.start(
       backgroundTaskEntrypoint: backgroundPlayerTaskEntrypoint,
       androidNotificationChannelName: 'Phenopod',
@@ -126,9 +124,7 @@ class _audioServiceImpl implements AudioService {
       androidStopForegroundOnPause: true,
       androidNotificationIcon: 'mipmap/ic_launcher',
       androidEnableQueue: true,
-      params: <String, String>{
-        'appDocDirPath': appDocDirPath,
-      },
+      params: <String, dynamic>{},
     );
   }
 
