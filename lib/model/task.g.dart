@@ -14,12 +14,20 @@ abstract class Task extends Equatable {
 
   factory Task.cachePodcast({@required String urlParam}) = CachePodcast;
 
+  factory Task.downloadEpisode(
+      {@required String episodeId,
+      @required String url,
+      @required String filename,
+      @required String directory}) = DownloadEpisode;
+
   final _Task _type;
 
 //ignore: missing_return
-  R when<R>({@required R Function(CachePodcast) cachePodcast}) {
+  R when<R>(
+      {@required R Function(CachePodcast) cachePodcast,
+      @required R Function(DownloadEpisode) downloadEpisode}) {
     assert(() {
-      if (cachePodcast == null) {
+      if (cachePodcast == null || downloadEpisode == null) {
         throw 'check for all possible cases';
       }
       return true;
@@ -27,14 +35,17 @@ abstract class Task extends Equatable {
     switch (this._type) {
       case _Task.CachePodcast:
         return cachePodcast(this as CachePodcast);
+      case _Task.DownloadEpisode:
+        return downloadEpisode(this as DownloadEpisode);
     }
   }
 
 //ignore: missing_return
   Future<R> asyncWhen<R>(
-      {@required FutureOr<R> Function(CachePodcast) cachePodcast}) {
+      {@required FutureOr<R> Function(CachePodcast) cachePodcast,
+      @required FutureOr<R> Function(DownloadEpisode) downloadEpisode}) {
     assert(() {
-      if (cachePodcast == null) {
+      if (cachePodcast == null || downloadEpisode == null) {
         throw 'check for all possible cases';
       }
       return true;
@@ -42,11 +53,14 @@ abstract class Task extends Equatable {
     switch (this._type) {
       case _Task.CachePodcast:
         return cachePodcast(this as CachePodcast);
+      case _Task.DownloadEpisode:
+        return downloadEpisode(this as DownloadEpisode);
     }
   }
 
   R whenOrElse<R>(
       {R Function(CachePodcast) cachePodcast,
+      R Function(DownloadEpisode) downloadEpisode,
       @required R Function(Task) orElse}) {
     assert(() {
       if (orElse == null) {
@@ -58,12 +72,16 @@ abstract class Task extends Equatable {
       case _Task.CachePodcast:
         if (cachePodcast == null) break;
         return cachePodcast(this as CachePodcast);
+      case _Task.DownloadEpisode:
+        if (downloadEpisode == null) break;
+        return downloadEpisode(this as DownloadEpisode);
     }
     return orElse(this);
   }
 
   Future<R> asyncWhenOrElse<R>(
       {FutureOr<R> Function(CachePodcast) cachePodcast,
+      FutureOr<R> Function(DownloadEpisode) downloadEpisode,
       @required FutureOr<R> Function(Task) orElse}) {
     assert(() {
       if (orElse == null) {
@@ -75,15 +93,19 @@ abstract class Task extends Equatable {
       case _Task.CachePodcast:
         if (cachePodcast == null) break;
         return cachePodcast(this as CachePodcast);
+      case _Task.DownloadEpisode:
+        if (downloadEpisode == null) break;
+        return downloadEpisode(this as DownloadEpisode);
     }
     return orElse(this);
   }
 
 //ignore: missing_return
   Future<void> whenPartial(
-      {FutureOr<void> Function(CachePodcast) cachePodcast}) {
+      {FutureOr<void> Function(CachePodcast) cachePodcast,
+      FutureOr<void> Function(DownloadEpisode) downloadEpisode}) {
     assert(() {
-      if (cachePodcast == null) {
+      if (cachePodcast == null && downloadEpisode == null) {
         throw 'provide at least one branch';
       }
       return true;
@@ -92,6 +114,9 @@ abstract class Task extends Equatable {
       case _Task.CachePodcast:
         if (cachePodcast == null) break;
         return cachePodcast(this as CachePodcast);
+      case _Task.DownloadEpisode:
+        if (downloadEpisode == null) break;
+        return downloadEpisode(this as DownloadEpisode);
     }
   }
 
@@ -109,4 +134,28 @@ class CachePodcast extends Task {
   String toString() => 'CachePodcast(urlParam:${this.urlParam})';
   @override
   List get props => [urlParam];
+}
+
+@immutable
+class DownloadEpisode extends Task {
+  const DownloadEpisode(
+      {@required this.episodeId,
+      @required this.url,
+      @required this.filename,
+      @required this.directory})
+      : super(_Task.DownloadEpisode);
+
+  final String episodeId;
+
+  final String url;
+
+  final String filename;
+
+  final String directory;
+
+  @override
+  String toString() =>
+      'DownloadEpisode(episodeId:${this.episodeId},url:${this.url},filename:${this.filename},directory:${this.directory})';
+  @override
+  List get props => [episodeId, url, filename, directory];
 }

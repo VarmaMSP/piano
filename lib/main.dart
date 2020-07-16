@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phenopod/app/app.dart';
-import 'package:phenopod/download_sync/download_sync.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/service/db/db.dart';
-import 'package:phenopod/service/download_manager/download_manager.dart';
 import 'package:phenopod/theme/theme.dart';
 import 'package:phenopod/utils/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -23,10 +21,8 @@ void main() async {
   final db = await newDb();
   final api = await newApi();
   final audioService = newAudioService();
-  final downloadManager = await newDownloadManager();
 
-  final store = newStore(api, db, downloadManager);
-  final downloadSync = newDownloadSyncForUI(db);
+  final store = newStore(api, db);
 
   // ignore: unawaited_futures
   store.audioFile.syncAllDownloaded();
@@ -40,7 +36,6 @@ void main() async {
     sqlDb: db.sqlDb,
     store: store,
     audioService: audioService,
-    downloadSync: downloadSync,
   ));
 }
 
@@ -49,13 +44,11 @@ class Root extends StatefulWidget {
     @required this.store,
     @required this.sqlDb,
     @required this.audioService,
-    @required this.downloadSync,
   });
 
   final Store store;
   final SqlDb sqlDb;
   final AudioService audioService;
-  final DownloadSync downloadSync;
 
   @override
   _RootState createState() => _RootState();
@@ -71,7 +64,6 @@ class _RootState extends State<Root>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     widget.audioService.connect();
-    widget.downloadSync.init();
     _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
     _animationController = AnimationController(vsync: this);
   }
@@ -80,7 +72,6 @@ class _RootState extends State<Root>
   void dispose() {
     _animationController.dispose();
     _tabController.dispose();
-    widget.downloadSync.dispose();
     widget.audioService.disconnect();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
