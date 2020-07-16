@@ -17,8 +17,8 @@ abstract class Task extends Equatable {
   factory Task.downloadEpisode(
       {@required String episodeId,
       @required String url,
-      @required String filename,
-      @required String directory}) = DownloadEpisode;
+      @required String directory,
+      @required String filename}) = DownloadEpisode;
 
   final _Task _type;
 
@@ -141,21 +141,21 @@ class DownloadEpisode extends Task {
   const DownloadEpisode(
       {@required this.episodeId,
       @required this.url,
-      @required this.filename,
-      @required this.directory})
+      @required this.directory,
+      @required this.filename})
       : super(_Task.DownloadEpisode);
 
   final String episodeId;
 
   final String url;
 
-  final String filename;
-
   final String directory;
+
+  final String filename;
 
   @override
   String toString() =>
-      'DownloadEpisode(episodeId:${this.episodeId},url:${this.url},filename:${this.filename},directory:${this.directory})';
+      'DownloadEpisode(episodeId:${this.episodeId},url:${this.url},directory:${this.directory},filename:${this.filename})';
   @override
-  List get props => [episodeId, url, filename, directory];
+  List get props => [episodeId, url, directory, filename];
 }
