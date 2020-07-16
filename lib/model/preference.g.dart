@@ -48,6 +48,7 @@ Map<String, dynamic> _$PreferenceValueToJson(PreferenceValue instance) =>
 
 TableLock _$TableLockFromJson(Map<String, dynamic> json) {
   return TableLock(
+    pid: json['pid'] as String,
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
@@ -55,6 +56,7 @@ TableLock _$TableLockFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$TableLockToJson(TableLock instance) => <String, dynamic>{
+      'pid': instance.pid,
       'created_at': instance.createdAt?.toIso8601String(),
     };
 

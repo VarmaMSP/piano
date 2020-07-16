@@ -38,10 +38,14 @@ class PreferenceValue {
 class TableLock {
   static const String taskTableKey = 'TASK_TABLE_LOCK';
 
+  // Id of isolate that created the lock
+  final String pid;
+
   // Time at which the lock is created
   final DateTime createdAt;
 
   TableLock({
+    @required this.pid,
     @required this.createdAt,
   });
 

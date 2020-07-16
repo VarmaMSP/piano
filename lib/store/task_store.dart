@@ -11,9 +11,9 @@ TaskStore newTaskStore(Api api, Db db) {
 abstract class TaskStore {
   Stream<Task> watchFirst();
   Future<void> deleteFirst();
-  Future<void> lock();
-  Future<void> unlock();
   Future<bool> isLocked();
+  Future<void> aquireLock(String pid);
+  Future<void> releaseLock(String pid);
 }
 
 class _TaskStoreImpl extends TaskStore {
@@ -39,23 +39,33 @@ class _TaskStoreImpl extends TaskStore {
   }
 
   @override
-  Future<void> lock() async {
+  Future<bool> isLocked() async {
+    final key = TableLock.taskTableKey;
+    final val = await db.preferenceDao.watchPreference(key).first;
+    return val?.taskTableLock != null;
+  }
+
+  @override
+  Future<void> aquireLock(String pid) async {
     await db.preferenceDao.savePreference(
       key: TableLock.taskTableKey,
       value: PreferenceValue(
-        taskTableLock: TableLock(createdAt: DateTime.now()),
+        taskTableLock: TableLock(
+          pid: pid,
+          createdAt: DateTime.now(),
+        ),
       ),
     );
   }
 
   @override
-  Future<void> unlock() async {
-    await db.preferenceDao.deletePreference(TableLock.taskTableKey);
-  }
-
-  @override
-  Future<bool> isLocked() async {
+  Future<void> releaseLock(String pid) async {
     final key = TableLock.taskTableKey;
-    return await db.preferenceDao.watchPreference(key).first != null;
+    final val = await db.preferenceDao.watchPreference(key).first;
+    final lock = val?.taskTableLock;
+
+    if (lock != null && lock.pid == pid) {
+      await db.preferenceDao.deletePreference(key);
+    }
   }
 }
