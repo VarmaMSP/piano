@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:audio_service/audio_service.dart' as audioservice;
 import 'package:phenopod/model/main.dart';
@@ -68,5 +67,6 @@ abstract class AudioService {
   // Rewind the current episode by preset number of seconds
   Future<void> rewind();
 
+  // Dispose resources
   Future<void> dispose();
 }

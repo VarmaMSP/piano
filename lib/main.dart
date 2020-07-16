@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:phenopod/app/app.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/service/db/db.dart';
@@ -21,11 +22,9 @@ void main() async {
   final db = await newDb();
   final api = await newApi();
   final audioService = newAudioService();
+  final alarmService = await newAlarmService();
 
   final store = newStore(api, db);
-
-  // ignore: unawaited_futures
-  store.audioFile.syncAllDownloaded();
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -36,6 +35,7 @@ void main() async {
     sqlDb: db.sqlDb,
     store: store,
     audioService: audioService,
+    alarmService: alarmService,
   ));
 }
 
@@ -44,11 +44,13 @@ class Root extends StatefulWidget {
     @required this.store,
     @required this.sqlDb,
     @required this.audioService,
+    @required this.alarmService,
   });
 
   final Store store;
   final SqlDb sqlDb;
   final AudioService audioService;
+  final AlarmService alarmService;
 
   @override
   _RootState createState() => _RootState();
@@ -134,12 +136,10 @@ class _RootState extends State<Root>
         return MaterialApp(
           title: 'Phenopod',
           debugShowCheckedModeBanner: false,
-          builder: (context, child) {
-            return ScrollConfiguration(
-              behavior: CustomScrollBehavior(),
-              child: child,
-            );
-          },
+          builder: (context, child) => ScrollConfiguration(
+            behavior: CustomScrollBehavior(),
+            child: child,
+          ),
           theme: appTheme,
           initialRoute: '/app',
           onGenerateRoute: (settings) {
