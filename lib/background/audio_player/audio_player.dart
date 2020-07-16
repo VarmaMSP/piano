@@ -34,8 +34,10 @@ class AudioPlayer {
         switch (event.state) {
           case justaudio.AudioPlaybackState.none:
             return;
+
           case justaudio.AudioPlaybackState.stopped:
             return;
+
           case justaudio.AudioPlaybackState.paused:
             await onPaused();
             return utils.setState(

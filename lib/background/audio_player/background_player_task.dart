@@ -1,12 +1,10 @@
 import 'package:audio_service/audio_service.dart' as audioservice;
 import 'package:audio_service/audio_service.dart';
 import 'package:phenopod/background/audio_player/audio_player_controller.dart';
-import 'package:phenopod/download_sync/download_sync.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 
 class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
-  DownloadSync _downloadSync;
   AudioPlayerController _audioPlayerController;
 
   @override
@@ -14,10 +12,7 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
     final db = await newDb();
     final api = await newApi(appDocDirPath: params['appDocDirPath'] as String);
 
-    _downloadSync = newDownloadSyncForPlayer(db);
     _audioPlayerController = AudioPlayerController(db: db, api: api);
-
-    _downloadSync.init();
     await _audioPlayerController.start();
   }
 
@@ -120,7 +115,6 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
 
   @override
   Future<void> onStop() async {
-    await _downloadSync.dispose();
     await _audioPlayerController.stop();
     await super.onStop();
   }
