@@ -19,7 +19,7 @@ class _AlarmServiceImpl extends AlarmService {
   @override
   Future<bool> scheduleTaskRunnerPeriodic() {
     return AndroidAlarmManager.periodic(
-      Duration(minutes: 5),
+      Duration(minutes: 1),
       taskRunnerPeriodicAlarmId,
       startTaskRunner,
       exact: false,

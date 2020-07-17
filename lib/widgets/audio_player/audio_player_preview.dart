@@ -49,7 +49,7 @@ class AudioPlayerPreview extends StatelessWidget {
           child: GestureDetector(
             onTap: animations.expandBottomAppBar,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(horizontal: 18),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,

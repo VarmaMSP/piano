@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/widgets/download_progress_indicator.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:phenopod/widgets/episode_list_item/menu.dart';
+import 'package:provider/provider.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'thumbnail.dart';
 
@@ -67,33 +70,7 @@ class EpisodeListItem extends StatelessWidget {
   }
 
   Widget _buildDetails(BuildContext context) {
-    final Widget title = Text(
-      episode.title,
-      style: Theme.of(context).textTheme.headline6,
-      overflow: TextOverflow.ellipsis,
-      maxLines: 2,
-    );
-
-    final Widget info = RichText(
-      text: TextSpan(
-        style: Theme.of(context).textTheme.subtitle1,
-        children: <TextSpan>[
-          if (type == EpisodeListItemType.podcastItem) ..._episodeNumber(),
-          ..._episodePubDate(),
-          if (type == EpisodeListItemType.subscriptionsItem) ...[
-            TextSpan(
-              text: '  ·  ',
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            TextSpan(text: podcast.title),
-          ]
-        ],
-      ),
-      overflow: TextOverflow.ellipsis,
-      maxLines: 1,
-    );
+    final store = Provider.of<Store>(context);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,21 +80,45 @@ class EpisodeListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(bottom: 6),
-                child: title,
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  episode.title,
+                  style: Theme.of(context).textTheme.headline6,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
               ),
-              Row(
-                children: <Widget>[
-                  DownloadProgressIndicator(episodeId: episode.id),
-                  Expanded(child: info)
-                ],
+              StreamBuilder<AudioFile>(
+                stream: store.audioFile.watchByEpisode(episode.id),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return _episodeInfo(context);
+                  }
+                  if (snapshot.data.isComplete) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          MdiIcons.checkUnderlineCircle,
+                          size: 14,
+                          color: TWColors.blue.shade700,
+                        ),
+                        Container(width: 10),
+                        Expanded(child: _episodeInfo(context)),
+                      ],
+                    );
+                  }
+                  return _episodeDownloadInfo(context, snapshot.data);
+                },
               ),
               Container(height: 6),
             ],
           ),
         ),
         Transform.translate(
-          offset: const Offset(6, -14),
+          offset: const Offset(6, -13),
           child: Menu(
             episode: episode,
             podcast: podcast,
@@ -134,18 +135,11 @@ class EpisodeListItem extends StatelessWidget {
     );
   }
 
-  List<TextSpan> _episodePubDate() {
-    final dateTime = DateTime.parse('${episode.pubDate} +00:00');
-    return <TextSpan>[TextSpan(text: timeago.format(dateTime))];
-  }
-
-  List<TextSpan> _episodeNumber() {
-    if (episode.type == 'FULL' && episode.episode == 0) {
-      return <TextSpan>[];
-    }
-
+  Widget _episodeInfo(BuildContext context) {
     String text;
-    if (episode.type == 'BONUS') {
+    if (episode.type == 'FULL' && episode.episode == 0) {
+      text = null;
+    } else if (episode.type == 'BONUS') {
       text = 'BONUS';
     } else if (episode.type == 'TRAILER') {
       text = 'TRAILER';
@@ -155,19 +149,52 @@ class EpisodeListItem extends StatelessWidget {
       text = 'E${episode.episode}';
     }
 
-    return <TextSpan>[
-      TextSpan(
-        text: text,
-        style: TextStyle(
-          fontSize: 11.5,
-        ),
+    return RichText(
+      text: TextSpan(
+        style: Theme.of(context)
+            .textTheme
+            .subtitle2
+            .copyWith(color: Colors.grey.shade900),
+        children: <TextSpan>[
+          // Episode number and type
+          if (type == EpisodeListItemType.podcastItem && text != null) ...[
+            TextSpan(text: text),
+            TextSpan(text: '  ·  '),
+          ],
+          // Episode pub date
+          TextSpan(
+            text: timeago
+                .format(episode.pubDate)
+                .replaceAll(RegExp('about '), ''),
+          ),
+          // Podcas tytle
+          if (type == EpisodeListItemType.subscriptionsItem) ...[
+            TextSpan(text: '  ·  '),
+            TextSpan(text: podcast.title),
+          ]
+        ],
       ),
-      TextSpan(
-        text: '  ·  ',
-        style: TextStyle(
-          fontWeight: FontWeight.w900,
-        ),
-      ),
-    ];
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+    );
+  }
+
+  Widget _episodeDownloadInfo(BuildContext context, AudioFile audioFile) {
+    String text;
+    if (audioFile.isDownloading) {
+      text = 'Downloading...  ${(audioFile.downloadPercentage * 100).round()}%';
+    } else if (audioFile.isDownloading) {
+      text = 'Download complete.';
+    } else {
+      text = 'Waiting to download...';
+    }
+
+    return Text(
+      text,
+      style: Theme.of(context)
+          .textTheme
+          .subtitle2
+          .copyWith(color: TWColors.blue.shade700),
+    );
   }
 }

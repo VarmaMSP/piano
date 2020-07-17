@@ -37,34 +37,25 @@ class DownloadProgressIndicator extends StatelessWidget {
 
   Widget _buildDownloaded() {
     return Container(
-      height: 16,
-      width: 16,
-      margin: EdgeInsets.only(right: 14),
+      margin: EdgeInsets.only(right: 10),
       child: Icon(
-        MdiIcons.checkUnderline,
-        size: 16,
-        color: TWColors.purple.shade600,
+        MdiIcons.checkUnderlineCircle,
+        size: 14,
+        color: TWColors.blue.shade700,
       ),
     );
   }
 
   Widget _buildDownloading(AudioFile audioFile) {
     return Container(
-      height: 16,
-      width: 16,
-      padding: EdgeInsets.all(7.8),
-      margin: EdgeInsets.only(right: 14),
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(255, 255, 255, 0.45),
-        borderRadius: BorderRadius.circular(100),
-      ),
+      height: 10,
+      width: 10,
+      margin: EdgeInsets.only(right: 12, bottom: 2),
       child: CircularProgressIndicator(
         value: audioFile.downloadPercentage,
-        valueColor: AlwaysStoppedAnimation<Color>(
-          TWColors.purple.shade600,
-        ),
-        backgroundColor: TWColors.gray.shade300,
-        strokeWidth: 14,
+        valueColor: AlwaysStoppedAnimation<Color>(TWColors.blue.shade700),
+        backgroundColor: TWColors.gray.shade400,
+        strokeWidth: 2.5,
       ),
     );
   }
