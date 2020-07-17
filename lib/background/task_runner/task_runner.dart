@@ -11,9 +11,10 @@ void startTaskRunner() async {
   store ??= newStore(await newApi(), await newDb());
 
   if (!_isRunning) {
-    final taskRunner = TaskRunner(store: store);
+    _isRunning = true;
+
     try {
-      await taskRunner.start();
+      await TaskRunner(store: store).start();
     } catch (err) {
       print(err);
     } finally {

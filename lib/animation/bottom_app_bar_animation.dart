@@ -33,7 +33,7 @@ class BottomAppBarAnimation {
         ).animate(
           CurvedAnimation(
             parent: controller,
-            curve: const Interval(0.0, 1.0, curve: Curves.linear),
+            curve: const Interval(0.0, 0.9, curve: Curves.linear),
           ),
         ),
         audioPlayerPreviewSizeFactor = Tween<double>(

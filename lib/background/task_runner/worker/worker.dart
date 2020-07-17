@@ -11,7 +11,6 @@ abstract class Worker {
     if (await shouldExecute()) {
       await execute();
     }
-    // TODO: Change progress and set retry
     // Delete task after completed for now
     await store.task.delete(taskId);
   }
