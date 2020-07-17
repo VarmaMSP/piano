@@ -1,9 +1,12 @@
+// Package imports:
 import 'package:device_info/device_info.dart';
+import 'package:rxdart/rxdart.dart';
+
+// Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/keychain.dart';
 import 'package:phenopod/service/social_sign_in.dart';
 import 'package:phenopod/store/store.dart';
-import 'package:rxdart/rxdart.dart';
 
 class UserBloc {
   final Store store;

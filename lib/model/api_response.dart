@@ -1,12 +1,14 @@
+// Package imports:
 import 'package:json_annotation/json_annotation.dart';
 
+// Project imports:
 import 'category.dart';
+import 'curation.dart';
 import 'episode.dart';
 import 'playlist.dart';
 import 'podcast.dart';
-import 'user.dart';
 import 'search_suggestion.dart';
-import 'curation.dart';
+import 'user.dart';
 
 part 'api_response.g.dart';
 

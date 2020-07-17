@@ -1,16 +1,20 @@
+// Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
-import 'package:flutter/material.dart'
-    hide NestedScrollView, NestedScrollViewState;
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/hook/use_value.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/screen/subscriptions_screen/widgets/subscriptions_feed.dart';
 import 'package:phenopod/screen/subscriptions_screen/widgets/subscriptions_header_delegate.dart';
 import 'package:phenopod/store/store.dart';
-import 'package:provider/provider.dart';
-
 import 'subscriptions_screen_bloc.dart';
+
+import 'package:flutter/material.dart'
+    hide NestedScrollView, NestedScrollViewState;
+
 
 class SubscriptionsScreen extends HookWidget {
   @override

@@ -1,9 +1,13 @@
-import 'package:equatable/equatable.dart';
-import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:audio_service/audio_service.dart' as audioservice;
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:phenopod/utils/request.dart';
 
+// Package imports:
+import 'package:audio_service/audio_service.dart' as audioservice;
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:equatable/equatable.dart';
+
+// Project imports:
+import 'package:phenopod/utils/request.dart';
 import 'episode.dart';
 import 'podcast.dart';
 

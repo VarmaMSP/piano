@@ -1,8 +1,11 @@
+// Package imports:
+import 'package:uuid/uuid.dart';
+
+// Project imports:
 import 'package:phenopod/background/task_runner/worker/download_episode_worker.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/store/store.dart';
-import 'package:uuid/uuid.dart';
 
 Store store;
 bool _isRunning = false;

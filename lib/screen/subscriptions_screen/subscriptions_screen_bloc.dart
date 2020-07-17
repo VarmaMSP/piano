@@ -1,11 +1,16 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/subjects.dart';
+import 'package:super_enum/super_enum.dart';
+
+// Project imports:
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/stream.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:rxdart/subjects.dart';
-import 'package:super_enum/super_enum.dart';
 
 class SubscriptionsScreenBloc {
   final Store store;

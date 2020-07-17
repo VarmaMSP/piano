@@ -1,6 +1,8 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:phenopod/model/episode.dart';
 
+// Project imports:
+import 'package:phenopod/model/episode.dart';
 import 'http_client.dart';
 
 EpisodeApi newEpisodeApi(HttpClient httpClient) {

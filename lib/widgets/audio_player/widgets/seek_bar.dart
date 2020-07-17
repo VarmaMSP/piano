@@ -1,13 +1,18 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:phenopod/model/main.dart';
-import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/utils/utils.dart';
+
+// Package imports:
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:seekbar/seekbar.dart' as flutter_seek_bar;
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tuple/tuple.dart';
+
+// Project imports:
+import 'package:phenopod/bloc/audio_player_bloc.dart';
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/utils/utils.dart';
 
 class SeekBar extends StatefulWidget {
   SeekBar({Key key}) : super(key: key);

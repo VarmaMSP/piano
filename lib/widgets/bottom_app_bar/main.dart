@@ -1,13 +1,17 @@
+// Flutter imports:
 import 'package:flutter/material.dart' hide Tab;
-import 'package:phenopod/animation/bottom_app_bar_animation.dart';
-import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart';
-import 'package:phenopod/model/main.dart';
-import 'package:phenopod/utils/utils.dart';
-import 'package:phenopod/widgets/audio_player/main.dart';
+
+// Package imports:
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
+// Project imports:
+import 'package:phenopod/animation/bottom_app_bar_animation.dart';
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
+import 'package:phenopod/bloc/audio_player_bloc.dart';
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/utils/utils.dart';
+import 'package:phenopod/widgets/audio_player/main.dart';
 import 'navigation_bar.dart';
 
 class BottomAppBar extends StatefulWidget {

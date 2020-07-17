@@ -1,10 +1,13 @@
+// Package imports:
 import 'package:logger/logger.dart';
+import 'package:rxdart/subjects.dart';
+import 'package:super_enum/super_enum.dart';
+
+// Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/logger.dart';
-import 'package:rxdart/subjects.dart';
-import 'package:super_enum/super_enum.dart';
 
 export 'package:phenopod/service/audio_service/audio_service.dart'
     show AudioState;

@@ -1,5 +1,6 @@
-import 'package:google_sign_in/google_sign_in.dart';
+// Package imports:
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SocialSignIn {
   Future<String> getGoogleIdToken() async {

@@ -1,8 +1,14 @@
+// Dart imports:
 import 'dart:async';
 
-import 'package:audio_service/audio_service.dart' as audioservice;
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:audio_service/audio_service.dart' as audioservice;
 import 'package:just_audio/just_audio.dart' as justaudio;
+
+// Project imports:
 import 'package:phenopod/utils/audio_player.dart' as utils;
 
 class AudioPlayer {

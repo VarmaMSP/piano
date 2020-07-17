@@ -1,21 +1,26 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:phenopod/app/app.dart';
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
+import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/episode_actions_bloc.dart';
+import 'package:phenopod/bloc/podcast_actions_bloc.dart';
+import 'package:phenopod/bloc/user_bloc.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
 import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:phenopod/theme/theme.dart';
 import 'package:phenopod/utils/page_transition.dart';
-import 'package:provider/provider.dart';
-import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/bloc/podcast_actions_bloc.dart';
-import 'package:phenopod/bloc/user_bloc.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart';
-import 'package:phenopod/store/store.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

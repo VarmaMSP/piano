@@ -1,14 +1,19 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:provider/provider.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
 import 'package:phenopod/bloc/app_navigation_bloc.dart' hide Podcast;
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/episode_list_item/episode_list_item.dart';
-import 'package:provider/provider.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 class SubscriptionsFeed extends StatelessWidget {
   const SubscriptionsFeed({

@@ -1,7 +1,11 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:phenopod/model/main.dart';
+
+// Package imports:
 import 'package:tuple/tuple.dart';
 
+// Project imports:
+import 'package:phenopod/model/main.dart';
 import 'http_client.dart';
 
 PodcastApi newPodcastApi(HttpClient httpClient) {

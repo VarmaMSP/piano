@@ -1,6 +1,9 @@
-import 'package:timeago/timeago.dart' as timeago;
-import 'package:intl/intl.dart' as intl;
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:intl/intl.dart' as intl;
+import 'package:timeago/timeago.dart' as timeago;
 
 // Format given duration to 00:00 format
 String formatDuration({

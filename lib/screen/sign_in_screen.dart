@@ -1,8 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:phenopod/bloc/user_bloc.dart';
-import 'package:provider/provider.dart';
+
+// Package imports:
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:phenopod/bloc/user_bloc.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({Key key}) : super(key: key);

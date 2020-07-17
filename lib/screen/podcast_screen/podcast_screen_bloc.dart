@@ -1,12 +1,18 @@
+// Dart imports:
 import 'dart:async';
 
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:rxdart/rxdart.dart';
+
+// Project imports:
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/stream.dart';
 import 'package:phenopod/utils/utils.dart';
-import 'package:rxdart/rxdart.dart';
 
 /// This bloc is used to represent local state of podcast screen
 class PodcastScreenBloc {

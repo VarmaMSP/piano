@@ -1,12 +1,16 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:phenopod/model/main.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
-import 'widgets/trending.dart';
+
+// Package imports:
 import 'package:rxdart/rxdart.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tuple/tuple.dart';
 
-import 'widgets/categories.dart';
+// Project imports:
+import 'package:phenopod/model/main.dart';
 import 'home_screen_bloc.dart';
+import 'widgets/categories.dart';
+import 'widgets/trending.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({

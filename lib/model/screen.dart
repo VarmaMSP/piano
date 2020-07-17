@@ -1,9 +1,13 @@
-import 'package:equatable/equatable.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 
+// Package imports:
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:equatable/equatable.dart';
+
+// Project imports:
 import 'episode.dart';
 import 'podcast.dart';
-import 'package:copy_with_extension/copy_with_extension.dart';
 
 part 'screen.g.dart';
 

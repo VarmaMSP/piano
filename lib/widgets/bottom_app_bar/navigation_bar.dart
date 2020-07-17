@@ -1,8 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:phenopod/animation/bottom_app_bar_animation.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart' as n;
+
+// Package imports:
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
+import 'package:phenopod/animation/bottom_app_bar_animation.dart';
+import 'package:phenopod/bloc/app_navigation_bloc.dart' as n;
 
 class NavigationBar extends StatelessWidget {
   const NavigationBar({

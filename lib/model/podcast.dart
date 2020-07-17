@@ -1,7 +1,10 @@
-import 'package:equatable/equatable.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart' show required;
-import 'package:json_annotation/json_annotation.dart';
+
+// Package imports:
 import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'podcast.g.dart';
 

@@ -1,6 +1,8 @@
+// Package imports:
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// Project imports:
 import 'podcast.dart';
 
 part 'curation.g.dart';

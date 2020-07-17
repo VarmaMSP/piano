@@ -1,8 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:phenopod/animation/bottom_app_bar_animation.dart';
-import 'package:phenopod/utils/utils.dart';
+
+// Package imports:
 import 'package:rxdart/subjects.dart';
 import 'package:super_enum/super_enum.dart';
+
+// Project imports:
+import 'package:phenopod/animation/bottom_app_bar_animation.dart';
+import 'package:phenopod/utils/utils.dart';
 
 part 'app_navigation_bloc.g.dart';
 

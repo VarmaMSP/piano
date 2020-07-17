@@ -1,5 +1,6 @@
-import 'package:super_enum/super_enum.dart';
+// Package imports:
 import 'package:equatable/equatable.dart';
+import 'package:super_enum/super_enum.dart';
 
 part 'task.g.dart';
 
