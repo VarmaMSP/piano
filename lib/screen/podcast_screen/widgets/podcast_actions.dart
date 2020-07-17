@@ -1,8 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:phenopod/model/main.dart';
+
+// Package imports:
 import 'package:share/share.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
+import 'package:phenopod/model/main.dart';
 
 class PodcastActions extends StatelessWidget {
   const PodcastActions({

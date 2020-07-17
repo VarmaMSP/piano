@@ -1,6 +1,9 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:phenopod/service/api/api.dart';
+
+// Project imports:
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 
 PodcastStore newPodcastStore(Api api, Db db) {

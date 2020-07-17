@@ -1,7 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 import 'package:phenopod/utils/utils.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 class AudioPlayerBottomBar extends StatelessWidget {
   const AudioPlayerBottomBar({

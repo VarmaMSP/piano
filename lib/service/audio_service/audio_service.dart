@@ -1,9 +1,13 @@
+// Dart imports:
 import 'dart:async';
 
-import 'package:rxdart/subjects.dart';
+// Package imports:
 import 'package:audio_service/audio_service.dart' as audioservice;
-import 'package:phenopod/model/main.dart';
+import 'package:rxdart/subjects.dart';
+
+// Project imports:
 import 'package:phenopod/background/audio_player/background_player_task.dart';
+import 'package:phenopod/model/main.dart';
 
 part 'audio_service_impl.dart';
 

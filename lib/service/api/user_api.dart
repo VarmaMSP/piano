@@ -1,6 +1,8 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:phenopod/model/user.dart';
 
+// Project imports:
+import 'package:phenopod/model/user.dart';
 import 'http_client.dart';
 
 UserApi newUserApi(HttpClient httpClient) {

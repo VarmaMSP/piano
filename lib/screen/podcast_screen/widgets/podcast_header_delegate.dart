@@ -1,13 +1,18 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+// Package imports:
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
 import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/request.dart';
-import 'package:provider/provider.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
-import 'package:flutter/foundation.dart';
 
 class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   PodcastHeaderDelegate({

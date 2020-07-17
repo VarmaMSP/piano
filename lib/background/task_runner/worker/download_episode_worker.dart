@@ -1,10 +1,14 @@
-import 'package:dio/dio.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:phenopod/model/main.dart';
-import 'package:phenopod/store/store.dart';
+
+// Package imports:
+import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
+// Project imports:
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'worker.dart';
 
 class DownloadEpisodeWorker extends Worker {

@@ -1,11 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:phenopod/model/main.dart';
-import 'package:phenopod/widgets/screen/layout.dart';
 import 'package:flutter/services.dart';
 
+// Project imports:
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/widgets/screen/layout.dart';
+import 'search_screen_bloc.dart';
 import 'widgets/search_header_delegate.dart';
 import 'widgets/suggestions_list.dart';
-import 'search_screen_bloc.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key key}) : super(key: key);

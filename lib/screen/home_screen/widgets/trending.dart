@@ -1,8 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/link.dart';
 import 'package:phenopod/widgets/podcast_thumbnail.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 class Trending extends StatelessWidget {
   const Trending({Key key, @required this.trending}) : super(key: key);

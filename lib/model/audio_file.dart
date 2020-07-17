@@ -1,7 +1,11 @@
-import 'package:equatable/equatable.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:equatable/equatable.dart';
 import 'package:path/path.dart';
 
+// Project imports:
 import 'episode.dart';
 
 //!! DO NOT CHANGE THE ORDER OF THIS ENUM VALUES

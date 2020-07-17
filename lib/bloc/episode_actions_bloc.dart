@@ -1,9 +1,12 @@
+// Package imports:
+import 'package:rxdart/subjects.dart';
+import 'package:super_enum/super_enum.dart';
+
+// Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
-import 'package:rxdart/subjects.dart';
-import 'package:super_enum/super_enum.dart';
 
 part 'episode_actions_bloc.g.dart';
 

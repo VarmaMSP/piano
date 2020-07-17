@@ -1,7 +1,12 @@
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
+
+// Package imports:
 import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
 import 'constants.dart';
 
 class NormalScreenHeaderDelegate implements SliverPersistentHeaderDelegate {

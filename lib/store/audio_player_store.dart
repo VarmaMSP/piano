@@ -1,8 +1,13 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:phenopod/service/api/api.dart';
-import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/db/db.dart';
+
+// Package imports:
 import 'package:rxdart/rxdart.dart';
+
+// Project imports:
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/api/api.dart';
+import 'package:phenopod/service/db/db.dart';
 
 AudioPlayerStore newAudioPlayerStore(Api api, Db db) {
   return _AudioPlayerStoreImpl(api: api, db: db);

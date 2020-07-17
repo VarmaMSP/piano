@@ -1,6 +1,9 @@
+// Package imports:
+import 'package:rxdart/rxdart.dart';
+
+// Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/request.dart';
-import 'package:rxdart/rxdart.dart';
 
 // This Bloc represents local state of search screen
 class SearchScreenBloc {

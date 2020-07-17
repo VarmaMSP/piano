@@ -1,7 +1,12 @@
-import 'package:copy_with_extension/copy_with_extension.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:json_annotation/json_annotation.dart';
+
+// Package imports:
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+// Project imports:
 import 'package:phenopod/model/queue.dart';
 
 part 'preference.g.dart';

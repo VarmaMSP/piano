@@ -1,9 +1,14 @@
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:phenopod/model/main.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+// Project imports:
+import 'package:phenopod/model/main.dart';
 
 class AboutTab extends StatelessWidget {
   const AboutTab({

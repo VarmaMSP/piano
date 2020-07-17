@@ -1,10 +1,15 @@
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/episode_list_item/episode_list_item.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 class EpisodesTab extends StatelessWidget {
   const EpisodesTab({

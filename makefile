@@ -38,3 +38,6 @@ upgrade-dependencies:
 
 outdated-dependencies:
 	flutter pub outdated
+
+sort-imports:
+	flutter pub run import_sorter:main

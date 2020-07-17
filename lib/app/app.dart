@@ -1,10 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:phenopod/bloc/user_bloc.dart';
 import 'package:phenopod/screen/sign_in_screen.dart';
 import 'package:phenopod/screen/splash_screen.dart';
 import 'package:phenopod/utils/utils.dart';
-import 'package:provider/provider.dart';
-
 import 'app_screen.dart';
 
 class App extends StatelessWidget {

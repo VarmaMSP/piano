@@ -1,10 +1,14 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Tab;
+
+// Package imports:
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart';
-import 'package:phenopod/hook/use_snack_bar.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
+import 'package:phenopod/hook/use_snack_bar.dart';
 import 'app_router.dart';
 
 class AppScreenContent extends HookWidget {

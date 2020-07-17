@@ -1,7 +1,10 @@
-import 'package:phenopod/model/main.dart';
-import 'package:phenopod/store/store.dart';
+// Package imports:
 import 'package:rxdart/subjects.dart';
 import 'package:super_enum/super_enum.dart';
+
+// Project imports:
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store.dart';
 
 part 'podcast_actions_bloc.g.dart';
 

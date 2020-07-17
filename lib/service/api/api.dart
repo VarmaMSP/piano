@@ -1,10 +1,12 @@
+// Package imports:
 import 'package:path_provider/path_provider.dart';
 
+// Project imports:
 import 'episode_api.dart';
-import 'user_api.dart';
-import 'podcast_api.dart';
 import 'http_client.dart';
+import 'podcast_api.dart';
 import 'subscription_api.dart';
+import 'user_api.dart';
 
 /// Because you cannot use platform channels in an isolate you need to
 /// pass appDocDirPath if this method is being called from a an isolate

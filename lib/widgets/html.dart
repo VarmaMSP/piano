@@ -1,8 +1,11 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final Map<String, Style> htmlStyle = {
   '*': Style(

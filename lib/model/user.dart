@@ -1,8 +1,11 @@
-import 'package:equatable/equatable.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:uuid/uuid.dart';
+
+// Package imports:
 import 'package:device_info/device_info.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'user.g.dart';
 

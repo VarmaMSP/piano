@@ -1,17 +1,24 @@
+// Dart imports:
 import 'dart:ui';
 
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
-import 'package:flutter/material.dart'
-    hide NestedScrollView, NestedScrollViewState;
-import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
-import 'package:implicitly_animated_reorderable_list/transitions.dart';
-import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/widgets/queue_list_item/queue_list_item.dart';
-import 'package:provider/provider.dart';
-import 'package:phenopod/model/main.dart';
+// Flutter imports:
 import 'package:flutter/services.dart';
 
+// Package imports:
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
+import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:phenopod/bloc/audio_player_bloc.dart';
+import 'package:phenopod/model/main.dart';
+import 'package:phenopod/widgets/queue_list_item/queue_list_item.dart';
 import 'widgets/queue_header_delegate.dart';
+
+import 'package:flutter/material.dart'
+    hide NestedScrollView, NestedScrollViewState;
+
 
 class QueueScreen extends StatelessWidget {
   const QueueScreen({Key key}) : super(key: key);
