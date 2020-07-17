@@ -5,6 +5,7 @@ class Tasks extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get taskType => text().map(TaskTypeConverter())();
   IntColumn get taskStatus => integer().map(TaskStatusConverter())();
+  IntColumn get taskPriority => integer().map(TaskPriorityConverter())();
   BoolColumn get canRetry => boolean()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
@@ -41,11 +42,26 @@ class TaskStatusConverter extends TypeConverter<TaskStatus, int> {
   }
 }
 
+class TaskPriorityConverter extends TypeConverter<TaskPriority, int> {
+  const TaskPriorityConverter();
+
+  @override
+  TaskPriority mapToDart(int fromDb) {
+    return TaskPriority.values[fromDb];
+  }
+
+  @override
+  int mapToSql(TaskPriority value) {
+    return value.index;
+  }
+}
+
 TaskRow taskRowFromModel(Task model) {
   return TaskRow(
     id: model.id,
     taskType: model.taskType,
     taskStatus: model.taskStatus,
+    taskPriority: model.taskPriority,
     canRetry: model.canRetry,
     createdAt: model.createdAt,
     updatedAt: model.updatedAt,
@@ -58,6 +74,7 @@ extension TaskRowExtension on TaskRow {
       id: id,
       taskType: taskType,
       taskStatus: taskStatus,
+      taskPriority: taskPriority,
       canRetry: canRetry,
       createdAt: createdAt,
       updatedAt: updatedAt,

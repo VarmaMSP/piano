@@ -25,10 +25,30 @@ enum TaskStatus {
   failed,
 }
 
+//! DO NOT CHANGE THE ORDER
+enum TaskPriority {
+  /// Reserved for interrupts that need to be run right
+  /// away as they effect execution of other task
+  ///   Ex: canceling / pausing file download
+  highest,
+
+  /// Reserved for tasks that are initiated by user to
+  /// run in the background
+  ///   Ex: downloading a file
+  high,
+
+  /// Reserved for tasks that are initiated by the application
+  medium,
+
+  /// Yet to be decided
+  low,
+}
+
 class Task {
   final int id;
   final TaskType taskType;
   final TaskStatus taskStatus;
+  final TaskPriority taskPriority;
   final bool canRetry;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -37,6 +57,7 @@ class Task {
     @required this.id,
     @required this.taskType,
     @required this.taskStatus,
+    @required this.taskPriority,
     @required this.canRetry,
     @required this.createdAt,
     @required this.updatedAt,
@@ -47,6 +68,7 @@ class Task {
       id: null,
       taskType: taskType,
       taskStatus: TaskStatus.pending,
+      taskPriority: TaskPriority.high,
       canRetry: false,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),

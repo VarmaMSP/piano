@@ -2653,6 +2653,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
   final int id;
   final dynamic taskType;
   final TaskStatus taskStatus;
+  final TaskPriority taskPriority;
   final bool canRetry;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -2660,6 +2661,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       {@required this.id,
       @required this.taskType,
       @required this.taskStatus,
+      @required this.taskPriority,
       @required this.canRetry,
       @required this.createdAt,
       @required this.updatedAt});
@@ -2676,6 +2678,8 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           .mapFromDatabaseResponse(data['${effectivePrefix}task_type'])),
       taskStatus: $TasksTable.$converter1.mapToDart(intType
           .mapFromDatabaseResponse(data['${effectivePrefix}task_status'])),
+      taskPriority: $TasksTable.$converter2.mapToDart(intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}task_priority'])),
       canRetry:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}can_retry']),
       createdAt: dateTimeType
@@ -2698,6 +2702,10 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       final converter = $TasksTable.$converter1;
       map['task_status'] = Variable<int>(converter.mapToSql(taskStatus));
     }
+    if (!nullToAbsent || taskPriority != null) {
+      final converter = $TasksTable.$converter2;
+      map['task_priority'] = Variable<int>(converter.mapToSql(taskPriority));
+    }
     if (!nullToAbsent || canRetry != null) {
       map['can_retry'] = Variable<bool>(canRetry);
     }
@@ -2719,6 +2727,9 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       taskStatus: taskStatus == null && nullToAbsent
           ? const Value.absent()
           : Value(taskStatus),
+      taskPriority: taskPriority == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taskPriority),
       canRetry: canRetry == null && nullToAbsent
           ? const Value.absent()
           : Value(canRetry),
@@ -2738,6 +2749,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       id: serializer.fromJson<int>(json['id']),
       taskType: serializer.fromJson<dynamic>(json['taskType']),
       taskStatus: serializer.fromJson<TaskStatus>(json['taskStatus']),
+      taskPriority: serializer.fromJson<TaskPriority>(json['taskPriority']),
       canRetry: serializer.fromJson<bool>(json['canRetry']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
@@ -2750,6 +2762,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       'id': serializer.toJson<int>(id),
       'taskType': serializer.toJson<dynamic>(taskType),
       'taskStatus': serializer.toJson<TaskStatus>(taskStatus),
+      'taskPriority': serializer.toJson<TaskPriority>(taskPriority),
       'canRetry': serializer.toJson<bool>(canRetry),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
@@ -2760,6 +2773,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           {int id,
           dynamic taskType,
           TaskStatus taskStatus,
+          TaskPriority taskPriority,
           bool canRetry,
           DateTime createdAt,
           DateTime updatedAt}) =>
@@ -2767,6 +2781,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
         id: id ?? this.id,
         taskType: taskType ?? this.taskType,
         taskStatus: taskStatus ?? this.taskStatus,
+        taskPriority: taskPriority ?? this.taskPriority,
         canRetry: canRetry ?? this.canRetry,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
@@ -2777,6 +2792,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           ..write('id: $id, ')
           ..write('taskType: $taskType, ')
           ..write('taskStatus: $taskStatus, ')
+          ..write('taskPriority: $taskPriority, ')
           ..write('canRetry: $canRetry, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -2791,8 +2807,10 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           taskType.hashCode,
           $mrjc(
               taskStatus.hashCode,
-              $mrjc(canRetry.hashCode,
-                  $mrjc(createdAt.hashCode, updatedAt.hashCode))))));
+              $mrjc(
+                  taskPriority.hashCode,
+                  $mrjc(canRetry.hashCode,
+                      $mrjc(createdAt.hashCode, updatedAt.hashCode)))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -2800,6 +2818,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           other.id == this.id &&
           other.taskType == this.taskType &&
           other.taskStatus == this.taskStatus &&
+          other.taskPriority == this.taskPriority &&
           other.canRetry == this.canRetry &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
@@ -2809,6 +2828,7 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
   final Value<int> id;
   final Value<dynamic> taskType;
   final Value<TaskStatus> taskStatus;
+  final Value<TaskPriority> taskPriority;
   final Value<bool> canRetry;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
@@ -2816,6 +2836,7 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     this.id = const Value.absent(),
     this.taskType = const Value.absent(),
     this.taskStatus = const Value.absent(),
+    this.taskPriority = const Value.absent(),
     this.canRetry = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -2824,11 +2845,13 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     this.id = const Value.absent(),
     @required dynamic taskType,
     @required TaskStatus taskStatus,
+    @required TaskPriority taskPriority,
     @required bool canRetry,
     @required DateTime createdAt,
     @required DateTime updatedAt,
   })  : taskType = Value(taskType),
         taskStatus = Value(taskStatus),
+        taskPriority = Value(taskPriority),
         canRetry = Value(canRetry),
         createdAt = Value(createdAt),
         updatedAt = Value(updatedAt);
@@ -2836,6 +2859,7 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     Expression<int> id,
     Expression<String> taskType,
     Expression<int> taskStatus,
+    Expression<int> taskPriority,
     Expression<bool> canRetry,
     Expression<DateTime> createdAt,
     Expression<DateTime> updatedAt,
@@ -2844,6 +2868,7 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
       if (id != null) 'id': id,
       if (taskType != null) 'task_type': taskType,
       if (taskStatus != null) 'task_status': taskStatus,
+      if (taskPriority != null) 'task_priority': taskPriority,
       if (canRetry != null) 'can_retry': canRetry,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -2854,6 +2879,7 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
       {Value<int> id,
       Value<dynamic> taskType,
       Value<TaskStatus> taskStatus,
+      Value<TaskPriority> taskPriority,
       Value<bool> canRetry,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt}) {
@@ -2861,6 +2887,7 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
       id: id ?? this.id,
       taskType: taskType ?? this.taskType,
       taskStatus: taskStatus ?? this.taskStatus,
+      taskPriority: taskPriority ?? this.taskPriority,
       canRetry: canRetry ?? this.canRetry,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -2880,6 +2907,11 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     if (taskStatus.present) {
       final converter = $TasksTable.$converter1;
       map['task_status'] = Variable<int>(converter.mapToSql(taskStatus.value));
+    }
+    if (taskPriority.present) {
+      final converter = $TasksTable.$converter2;
+      map['task_priority'] =
+          Variable<int>(converter.mapToSql(taskPriority.value));
     }
     if (canRetry.present) {
       map['can_retry'] = Variable<bool>(canRetry.value);
@@ -2931,6 +2963,20 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
     );
   }
 
+  final VerificationMeta _taskPriorityMeta =
+      const VerificationMeta('taskPriority');
+  GeneratedIntColumn _taskPriority;
+  @override
+  GeneratedIntColumn get taskPriority =>
+      _taskPriority ??= _constructTaskPriority();
+  GeneratedIntColumn _constructTaskPriority() {
+    return GeneratedIntColumn(
+      'task_priority',
+      $tableName,
+      false,
+    );
+  }
+
   final VerificationMeta _canRetryMeta = const VerificationMeta('canRetry');
   GeneratedBoolColumn _canRetry;
   @override
@@ -2969,7 +3015,7 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
 
   @override
   List<GeneratedColumn> get $columns =>
-      [id, taskType, taskStatus, canRetry, createdAt, updatedAt];
+      [id, taskType, taskStatus, taskPriority, canRetry, createdAt, updatedAt];
   @override
   $TasksTable get asDslTable => this;
   @override
@@ -2986,6 +3032,7 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
     }
     context.handle(_taskTypeMeta, const VerificationResult.success());
     context.handle(_taskStatusMeta, const VerificationResult.success());
+    context.handle(_taskPriorityMeta, const VerificationResult.success());
     if (data.containsKey('can_retry')) {
       context.handle(_canRetryMeta,
           canRetry.isAcceptableOrUnknown(data['can_retry'], _canRetryMeta));
@@ -3022,6 +3069,7 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
 
   static TypeConverter<dynamic, String> $converter0 = TaskTypeConverter();
   static TypeConverter<TaskStatus, int> $converter1 = TaskStatusConverter();
+  static TypeConverter<TaskPriority, int> $converter2 = TaskPriorityConverter();
 }
 
 class AudioFileRow extends DataClass implements Insertable<AudioFileRow> {
