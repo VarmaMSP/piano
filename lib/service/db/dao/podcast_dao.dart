@@ -4,19 +4,46 @@ part of '../db.dart';
 class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
   PodcastDao(SqlDb db) : super(db);
 
-  Future<void> savePodcasts(
-    List<Podcast> podcasts_, {
-    bool replace = true,
-  }) async {
-    if (podcasts_.isNotEmpty) {
-      await batch((b) => b.insertAll(
-            podcasts,
-            podcasts_.map((p) => podcastRowFromModel(p)).toList(),
-            mode: replace
-                ? InsertMode.insertOrReplace
-                : InsertMode.insertOrIgnore,
-          ));
+  Future<void> savePodcasts(List<Podcast> podcastList) async {
+    if (podcastList.isNotEmpty) {
+      await batch(
+        (b) => b.insertAll(
+          podcasts,
+          podcastList.map((p) => podcastRowFromModel(p)).toList(),
+          mode: InsertMode.insertOrIgnore,
+        ),
+      );
     }
+  }
+
+  Future<void> upsert(Podcast podcast) async {
+    final row = podcastRowFromModel(podcast);
+    await into(podcasts).insert(
+      row,
+      onConflict: DoUpdate(
+        (old) => row.toCompanion(true).copyWith(
+              cachedAllEpisodes:
+                  podcast.cachedAllEpisodes != null && podcast.cachedAllEpisodes
+                      ? Value(true)
+                      : Value.absent(),
+              cacheUpdatedAt: Value(DateTime.now()),
+            ),
+      ),
+    );
+  }
+
+  Future<void> updateCacheDetails(
+    String podcastId, {
+    bool cachedAllEpisodes,
+  }) async {
+    await (update(podcasts)..where((tbl) => tbl.id.equals(podcastId))).write(
+      PodcastsCompanion(
+        cachedAllEpisodes: cachedAllEpisodes != null && cachedAllEpisodes
+            ? Value(true)
+            : Value.absent(),
+        cacheUpdatedAt: Value(DateTime.now()),
+      ),
+    );
   }
 
   Future<Podcast> getPodcast({String id, String urlParam}) async {

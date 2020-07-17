@@ -12,6 +12,8 @@ extension PodcastCopyWithExtension on Podcast {
   Podcast copyWith({
     String author,
     String authorHighlighted,
+    DateTime cacheUpdatedAt,
+    bool cachedAllEpisodes,
     int complete,
     String copyright,
     String description,
@@ -30,12 +32,13 @@ extension PodcastCopyWithExtension on Podcast {
     int totalEpisodes,
     int totalSeasons,
     String type,
-    DateTime updatedAt,
     String urlParam,
   }) {
     return Podcast(
       author: author ?? this.author,
       authorHighlighted: authorHighlighted ?? this.authorHighlighted,
+      cacheUpdatedAt: cacheUpdatedAt ?? this.cacheUpdatedAt,
+      cachedAllEpisodes: cachedAllEpisodes ?? this.cachedAllEpisodes,
       complete: complete ?? this.complete,
       copyright: copyright ?? this.copyright,
       description: description ?? this.description,
@@ -56,7 +59,6 @@ extension PodcastCopyWithExtension on Podcast {
       totalEpisodes: totalEpisodes ?? this.totalEpisodes,
       totalSeasons: totalSeasons ?? this.totalSeasons,
       type: type ?? this.type,
-      updatedAt: updatedAt ?? this.updatedAt,
       urlParam: urlParam ?? this.urlParam,
     );
   }

@@ -69,8 +69,13 @@ class Podcast extends Equatable {
   @JsonKey(defaultValue: false)
   final bool isSubscribed;
 
+  // If true, all episodes have been stored in the db
   @JsonKey(ignore: true)
-  final DateTime updatedAt;
+  final bool cachedAllEpisodes;
+
+  // Last time at which podcast is updated in db
+  @JsonKey(ignore: true)
+  final DateTime cacheUpdatedAt;
 
   Podcast({
     @required this.id,
@@ -94,7 +99,8 @@ class Podcast extends Equatable {
     @required this.feedUrl,
     @required this.feedLastRefreshAt,
     @required this.isSubscribed,
-    this.updatedAt,
+    this.cachedAllEpisodes,
+    this.cacheUpdatedAt,
   });
 
   factory Podcast.fromJson(Map<String, dynamic> json) {

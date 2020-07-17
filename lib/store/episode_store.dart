@@ -54,7 +54,17 @@ class _EpisodeStoreImpl extends EpisodeStore {
             offset: offset,
             limit: limit,
           )
-          .then(db.episodeDao.saveEpisodes);
+          .then(
+            (episodes) => db.transaction(() async {
+              await db.episodeDao.saveEpisodes(episodes);
+              if (episodes.length < 30) {
+                await db.podcastDao.updateCacheDetails(
+                  podcastId,
+                  cachedAllEpisodes: true,
+                );
+              }
+            }),
+          );
     }
 
     yield episodes;

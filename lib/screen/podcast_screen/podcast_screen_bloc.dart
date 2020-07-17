@@ -62,8 +62,8 @@ class PodcastScreenBloc {
         episodes: episodesPages.expand((x) => x).toList(),
         isSubscribed: subscription != null,
         receivedAllEpisodes: episodesPages.length == 1
-            ? episodesPages.first.length < 15
-            : episodesPages.last.length < 30,
+            ? podcast.cachedAllEpisodes && episodesPages.first.length < 15
+            : podcast.cachedAllEpisodes && episodesPages.last.length < 30,
       ),
     ).distinct().listen(_screenData.add);
 

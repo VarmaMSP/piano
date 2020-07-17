@@ -32,13 +32,21 @@ class _PodcastStoreImpl extends PodcastStore {
       final episodes = value.item2;
 
       await db.transaction(() async {
-        await db.podcastDao.savePodcasts([podcast]);
+        await db.podcastDao.upsert(podcast);
         await db.episodeDao.saveEpisodes(episodes);
+
         !podcast.isSubscribed
             ? await db.subscriptionDao.deleteSubscription(podcast.id)
             : await db.subscriptionDao.saveSubscription(
                 Subscription(podcastId: podcast.id),
               );
+
+        if (episodes.length < 15) {
+          await db.podcastDao.updateCacheDetails(
+            podcast.id,
+            cachedAllEpisodes: true,
+          );
+        }
       });
     });
 

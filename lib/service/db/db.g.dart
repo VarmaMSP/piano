@@ -24,7 +24,8 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
   final int totalEpisodes;
   final int totalSeasons;
   final String feedUrl;
-  final DateTime updatedAt;
+  final bool cachedAllEpisodes;
+  final DateTime cacheUpdatedAt;
   PodcastRow(
       {@required this.id,
       @required this.urlParam,
@@ -40,12 +41,14 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
       @required this.totalEpisodes,
       @required this.totalSeasons,
       @required this.feedUrl,
-      @required this.updatedAt});
+      this.cachedAllEpisodes,
+      @required this.cacheUpdatedAt});
   factory PodcastRow.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
+    final boolType = db.typeSystem.forDartType<bool>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return PodcastRow(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
@@ -73,8 +76,10 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
           .mapFromDatabaseResponse(data['${effectivePrefix}total_seasons']),
       feedUrl: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}feed_url']),
-      updatedAt: dateTimeType
-          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
+      cachedAllEpisodes: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}cached_all_episodes']),
+      cacheUpdatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}cache_updated_at']),
     );
   }
   @override
@@ -122,8 +127,11 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
     if (!nullToAbsent || feedUrl != null) {
       map['feed_url'] = Variable<String>(feedUrl);
     }
-    if (!nullToAbsent || updatedAt != null) {
-      map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || cachedAllEpisodes != null) {
+      map['cached_all_episodes'] = Variable<bool>(cachedAllEpisodes);
+    }
+    if (!nullToAbsent || cacheUpdatedAt != null) {
+      map['cache_updated_at'] = Variable<DateTime>(cacheUpdatedAt);
     }
     return map;
   }
@@ -164,9 +172,12 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
       feedUrl: feedUrl == null && nullToAbsent
           ? const Value.absent()
           : Value(feedUrl),
-      updatedAt: updatedAt == null && nullToAbsent
+      cachedAllEpisodes: cachedAllEpisodes == null && nullToAbsent
           ? const Value.absent()
-          : Value(updatedAt),
+          : Value(cachedAllEpisodes),
+      cacheUpdatedAt: cacheUpdatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cacheUpdatedAt),
     );
   }
 
@@ -188,7 +199,8 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
       totalEpisodes: serializer.fromJson<int>(json['totalEpisodes']),
       totalSeasons: serializer.fromJson<int>(json['totalSeasons']),
       feedUrl: serializer.fromJson<String>(json['feedUrl']),
-      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      cachedAllEpisodes: serializer.fromJson<bool>(json['cachedAllEpisodes']),
+      cacheUpdatedAt: serializer.fromJson<DateTime>(json['cacheUpdatedAt']),
     );
   }
   @override
@@ -209,7 +221,8 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
       'totalEpisodes': serializer.toJson<int>(totalEpisodes),
       'totalSeasons': serializer.toJson<int>(totalSeasons),
       'feedUrl': serializer.toJson<String>(feedUrl),
-      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'cachedAllEpisodes': serializer.toJson<bool>(cachedAllEpisodes),
+      'cacheUpdatedAt': serializer.toJson<DateTime>(cacheUpdatedAt),
     };
   }
 
@@ -228,7 +241,8 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
           int totalEpisodes,
           int totalSeasons,
           String feedUrl,
-          DateTime updatedAt}) =>
+          bool cachedAllEpisodes,
+          DateTime cacheUpdatedAt}) =>
       PodcastRow(
         id: id ?? this.id,
         urlParam: urlParam ?? this.urlParam,
@@ -244,7 +258,8 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
         totalEpisodes: totalEpisodes ?? this.totalEpisodes,
         totalSeasons: totalSeasons ?? this.totalSeasons,
         feedUrl: feedUrl ?? this.feedUrl,
-        updatedAt: updatedAt ?? this.updatedAt,
+        cachedAllEpisodes: cachedAllEpisodes ?? this.cachedAllEpisodes,
+        cacheUpdatedAt: cacheUpdatedAt ?? this.cacheUpdatedAt,
       );
   @override
   String toString() {
@@ -263,7 +278,8 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
           ..write('totalEpisodes: $totalEpisodes, ')
           ..write('totalSeasons: $totalSeasons, ')
           ..write('feedUrl: $feedUrl, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('cachedAllEpisodes: $cachedAllEpisodes, ')
+          ..write('cacheUpdatedAt: $cacheUpdatedAt')
           ..write(')'))
         .toString();
   }
@@ -297,8 +313,11 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
                                                       totalSeasons.hashCode,
                                                       $mrjc(
                                                           feedUrl.hashCode,
-                                                          updatedAt
-                                                              .hashCode)))))))))))))));
+                                                          $mrjc(
+                                                              cachedAllEpisodes
+                                                                  .hashCode,
+                                                              cacheUpdatedAt
+                                                                  .hashCode))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -317,7 +336,8 @@ class PodcastRow extends DataClass implements Insertable<PodcastRow> {
           other.totalEpisodes == this.totalEpisodes &&
           other.totalSeasons == this.totalSeasons &&
           other.feedUrl == this.feedUrl &&
-          other.updatedAt == this.updatedAt);
+          other.cachedAllEpisodes == this.cachedAllEpisodes &&
+          other.cacheUpdatedAt == this.cacheUpdatedAt);
 }
 
 class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
@@ -335,7 +355,8 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
   final Value<int> totalEpisodes;
   final Value<int> totalSeasons;
   final Value<String> feedUrl;
-  final Value<DateTime> updatedAt;
+  final Value<bool> cachedAllEpisodes;
+  final Value<DateTime> cacheUpdatedAt;
   const PodcastsCompanion({
     this.id = const Value.absent(),
     this.urlParam = const Value.absent(),
@@ -351,7 +372,8 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
     this.totalEpisodes = const Value.absent(),
     this.totalSeasons = const Value.absent(),
     this.feedUrl = const Value.absent(),
-    this.updatedAt = const Value.absent(),
+    this.cachedAllEpisodes = const Value.absent(),
+    this.cacheUpdatedAt = const Value.absent(),
   });
   PodcastsCompanion.insert({
     @required String id,
@@ -368,7 +390,8 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
     @required int totalEpisodes,
     @required int totalSeasons,
     @required String feedUrl,
-    @required DateTime updatedAt,
+    this.cachedAllEpisodes = const Value.absent(),
+    @required DateTime cacheUpdatedAt,
   })  : id = Value(id),
         urlParam = Value(urlParam),
         title = Value(title),
@@ -383,7 +406,7 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
         totalEpisodes = Value(totalEpisodes),
         totalSeasons = Value(totalSeasons),
         feedUrl = Value(feedUrl),
-        updatedAt = Value(updatedAt);
+        cacheUpdatedAt = Value(cacheUpdatedAt);
   static Insertable<PodcastRow> custom({
     Expression<String> id,
     Expression<String> urlParam,
@@ -399,7 +422,8 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
     Expression<int> totalEpisodes,
     Expression<int> totalSeasons,
     Expression<String> feedUrl,
-    Expression<DateTime> updatedAt,
+    Expression<bool> cachedAllEpisodes,
+    Expression<DateTime> cacheUpdatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -416,7 +440,8 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
       if (totalEpisodes != null) 'total_episodes': totalEpisodes,
       if (totalSeasons != null) 'total_seasons': totalSeasons,
       if (feedUrl != null) 'feed_url': feedUrl,
-      if (updatedAt != null) 'updated_at': updatedAt,
+      if (cachedAllEpisodes != null) 'cached_all_episodes': cachedAllEpisodes,
+      if (cacheUpdatedAt != null) 'cache_updated_at': cacheUpdatedAt,
     });
   }
 
@@ -435,7 +460,8 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
       Value<int> totalEpisodes,
       Value<int> totalSeasons,
       Value<String> feedUrl,
-      Value<DateTime> updatedAt}) {
+      Value<bool> cachedAllEpisodes,
+      Value<DateTime> cacheUpdatedAt}) {
     return PodcastsCompanion(
       id: id ?? this.id,
       urlParam: urlParam ?? this.urlParam,
@@ -451,7 +477,8 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
       totalEpisodes: totalEpisodes ?? this.totalEpisodes,
       totalSeasons: totalSeasons ?? this.totalSeasons,
       feedUrl: feedUrl ?? this.feedUrl,
-      updatedAt: updatedAt ?? this.updatedAt,
+      cachedAllEpisodes: cachedAllEpisodes ?? this.cachedAllEpisodes,
+      cacheUpdatedAt: cacheUpdatedAt ?? this.cacheUpdatedAt,
     );
   }
 
@@ -500,8 +527,11 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
     if (feedUrl.present) {
       map['feed_url'] = Variable<String>(feedUrl.value);
     }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    if (cachedAllEpisodes.present) {
+      map['cached_all_episodes'] = Variable<bool>(cachedAllEpisodes.value);
+    }
+    if (cacheUpdatedAt.present) {
+      map['cache_updated_at'] = Variable<DateTime>(cacheUpdatedAt.value);
     }
     return map;
   }
@@ -683,13 +713,29 @@ class $PodcastsTable extends Podcasts
     );
   }
 
-  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
-  GeneratedDateTimeColumn _updatedAt;
+  final VerificationMeta _cachedAllEpisodesMeta =
+      const VerificationMeta('cachedAllEpisodes');
+  GeneratedBoolColumn _cachedAllEpisodes;
   @override
-  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
-  GeneratedDateTimeColumn _constructUpdatedAt() {
+  GeneratedBoolColumn get cachedAllEpisodes =>
+      _cachedAllEpisodes ??= _constructCachedAllEpisodes();
+  GeneratedBoolColumn _constructCachedAllEpisodes() {
+    return GeneratedBoolColumn(
+      'cached_all_episodes',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _cacheUpdatedAtMeta =
+      const VerificationMeta('cacheUpdatedAt');
+  GeneratedDateTimeColumn _cacheUpdatedAt;
+  @override
+  GeneratedDateTimeColumn get cacheUpdatedAt =>
+      _cacheUpdatedAt ??= _constructCacheUpdatedAt();
+  GeneratedDateTimeColumn _constructCacheUpdatedAt() {
     return GeneratedDateTimeColumn(
-      'updated_at',
+      'cache_updated_at',
       $tableName,
       false,
     );
@@ -711,7 +757,8 @@ class $PodcastsTable extends Podcasts
         totalEpisodes,
         totalSeasons,
         feedUrl,
-        updatedAt
+        cachedAllEpisodes,
+        cacheUpdatedAt
       ];
   @override
   $PodcastsTable get asDslTable => this;
@@ -813,11 +860,19 @@ class $PodcastsTable extends Podcasts
     } else if (isInserting) {
       context.missing(_feedUrlMeta);
     }
-    if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
+    if (data.containsKey('cached_all_episodes')) {
+      context.handle(
+          _cachedAllEpisodesMeta,
+          cachedAllEpisodes.isAcceptableOrUnknown(
+              data['cached_all_episodes'], _cachedAllEpisodesMeta));
+    }
+    if (data.containsKey('cache_updated_at')) {
+      context.handle(
+          _cacheUpdatedAtMeta,
+          cacheUpdatedAt.isAcceptableOrUnknown(
+              data['cache_updated_at'], _cacheUpdatedAtMeta));
     } else if (isInserting) {
-      context.missing(_updatedAtMeta);
+      context.missing(_cacheUpdatedAtMeta);
     }
     return context;
   }
