@@ -1,18 +1,16 @@
 part of 'alarm_service.dart';
 
 class _AlarmServiceImpl extends AlarmService {
-  static const int taskRunnerOneShotAlarmId = 1;
   static const int taskRunnerPeriodicAlarmId = 0;
 
   @override
   Future<bool> scheduleTaskRunnerOnce() {
     return AndroidAlarmManager.oneShot(
-      Duration.zero,
-      taskRunnerOneShotAlarmId,
+      const Duration(seconds: 1),
+      Random().nextInt(pow(2, 31)),
       startTaskRunner,
       exact: true,
       wakeup: true,
-      rescheduleOnReboot: true,
     );
   }
 
