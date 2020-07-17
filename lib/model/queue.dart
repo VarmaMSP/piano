@@ -1,36 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:audio_service/audio_service.dart' as audioservice;
-import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:phenopod/utils/request.dart';
 
 import 'episode.dart';
 import 'podcast.dart';
 
 part 'queue.g.dart';
-
-/// Used to store queue preference in preferences table
-@CopyWith()
-@JsonSerializable(fieldRename: FieldRename.snake)
-class QueuePreference extends Equatable {
-  static const key = 'QUEUE_PREFERENCE';
-  final int position;
-
-  const QueuePreference({
-    this.position,
-  });
-
-  factory QueuePreference.fromJson(Map<String, dynamic> json) {
-    return _$QueuePreferenceFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$QueuePreferenceToJson(this);
-  }
-
-  @override
-  List<Object> get props => [position];
-}
 
 @CopyWith()
 class Queue extends Equatable {
@@ -40,8 +17,8 @@ class Queue extends Equatable {
   final List<AudioTrack> audioTracks;
 
   const Queue({
-    this.position,
-    this.audioTracks,
+    @required this.position,
+    @required this.audioTracks,
   });
 
   factory Queue.empty() {
@@ -185,9 +162,6 @@ class Queue extends Equatable {
 
   /// Returns active audio track
   AudioTrack get nowPlaying => position != -1 ? audioTracks[position] : null;
-
-  /// Returns preference
-  QueuePreference get preference => QueuePreference(position: position);
 
   @override
   List<Object> get props => [position, audioTracks];

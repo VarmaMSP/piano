@@ -2,79 +2,30 @@ import 'package:flutter/foundation.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
-import 'package:phenopod/service/download_manager/download_manager.dart';
-import 'package:phenopod/utils/file.dart';
 
-AudioFileStore newAudioFileStore(
-  Api api,
-  Db db,
-  DownloadManager downloadManager,
-) {
-  return _AudioFileStoreImpl(
-    api: api,
-    db: db,
-    downloadManager: downloadManager,
-  );
+AudioFileStore newAudioFileStore(Api api, Db db) {
+  return _AudioFileStoreImpl(api: api, db: db);
 }
 
 abstract class AudioFileStore {
-  Future<void> startDownload(Episode episode);
-  Future<void> cancelDownload(String episodeId);
+  Future<void> save(AudioFile audioFile);
   Stream<AudioFile> watchByEpisode(String episodeId);
-  Future<void> syncAllDownloaded();
+  Future<void> updateDownloadProgress(DownloadProgress progress);
+  Future<void> deleteByEpisode(String episodeId);
 }
 
 class _AudioFileStoreImpl extends AudioFileStore {
   final Api api;
   final Db db;
-  final DownloadManager downloadManager;
 
   _AudioFileStoreImpl({
     @required this.api,
     @required this.db,
-    @required this.downloadManager,
   });
 
   @override
-  Future<void> startDownload(Episode episode) async {
-    assert(downloadManager != null);
-
-    final audioFile = await watchByEpisode(episode.id).first;
-    if (!await downloadManager.hasStoragePermission() &&
-        audioFile != null &&
-        audioFile.isDownloaded &&
-        audioFile.isDownloading) {
-      return;
-    }
-    // Purge file, in future give user ability to resume tasks
-    if (audioFile != null) {
-      await downloadManager.removeTaskWithFile(audioFile.taskId);
-    }
-
-    final dir = await downloadManager.getStorageDirectory();
-    final filename = newStorageFileName(episode.mediaUrl);
-    final taskId = await downloadManager.newTask(
-      url: episode.mediaUrl,
-      dir: dir,
-      filename: filename,
-    );
-    await db.audioFileDao.save(AudioFile.init(
-      episode: episode,
-      directory: dir,
-      filename: filename,
-      taskId: taskId,
-    ));
-  }
-
-  @override
-  Future<void> cancelDownload(String episodeId) async {
-    assert(downloadManager != null);
-
-    final audioFile = await watchByEpisode(episodeId).first;
-    if (audioFile != null) {
-      await downloadManager.removeTaskWithFile(audioFile.taskId);
-      await db.audioFileDao.deleteByEpisode(episodeId);
-    }
+  Future<void> save(AudioFile audioFile) async {
+    await db.audioFileDao.save(audioFile);
   }
 
   @override
@@ -83,8 +34,12 @@ class _AudioFileStoreImpl extends AudioFileStore {
   }
 
   @override
-  Future<void> syncAllDownloaded() async {
-    final taskIds = await downloadManager.getAllDownloaded();
-    await db.audioFileDao.setAsDownloaded(taskIds);
+  Future<void> updateDownloadProgress(DownloadProgress progress) async {
+    await db.audioFileDao.updateProgress(progress);
+  }
+
+  @override
+  Future<void> deleteByEpisode(String episodeId) async {
+    await db.audioFileDao.deleteByEpisode(episodeId);
   }
 }

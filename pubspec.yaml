@@ -11,6 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  android_alarm_manager: ^0.4.5+11
   async: ^2.4.1
   audio_service: ^0.11.2
   cached_network_image: ^2.2.0+1
@@ -23,7 +24,6 @@ dependencies:
   equatable: ^1.2.0
   extended_nested_scroll_view: ^1.0.1
   flushbar: ^1.10.4
-  flutter_downloader: ^1.4.4
   flutter_facebook_login: ^3.0.0
   flutter_html: ^1.0.0
   flutter_hooks: ^0.12.0

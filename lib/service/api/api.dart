@@ -6,9 +6,8 @@ import 'podcast_api.dart';
 import 'http_client.dart';
 import 'subscription_api.dart';
 
-/// Because you cannot use platform channels in background isolate
-/// you need to pass appDocDirPath if this method is being called from
-/// a background isolate
+/// Because you cannot use platform channels in an isolate you need to
+/// pass appDocDirPath if this method is being called from a an isolate
 Future<Api> newApi({String appDocDirPath}) async {
   appDocDirPath ??= (await getApplicationDocumentsDirectory()).path;
   return _ApiImpl(HttpClient(appDocDirPath: appDocDirPath));

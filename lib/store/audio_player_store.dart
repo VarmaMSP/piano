@@ -31,8 +31,8 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
       await db.transaction(() async {
         await db.audioTrackDao.deleteAllTracks();
         await db.preferenceDao.savePreference(
-          key: QueuePreference.key,
-          value: PreferenceValue(queuePreference: queue.preference),
+          key: QueueDetails.key,
+          value: PreferenceValue(queueDetails: QueueDetails.fromQueue(queue)),
         );
       });
       return;
@@ -46,8 +46,8 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
       await db.audioTrackDao.saveTracks(queue.audioTracks);
       await db.audioTrackDao.deleteTracksNotInQueue(queue.audioTracks.length);
       await db.preferenceDao.savePreference(
-        key: QueuePreference.key,
-        value: PreferenceValue(queuePreference: queue.preference),
+        key: QueueDetails.key,
+        value: PreferenceValue(queueDetails: QueueDetails.fromQueue(queue)),
       );
     });
   }
@@ -62,25 +62,33 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
 
   @override
   Stream<Queue> watchQueue() {
-    return Rx.combineLatest2<QueuePreference, List<AudioTrack>, Queue>(
+    return Rx.combineLatest2<QueueDetails, List<AudioTrack>, Queue>(
       db.preferenceDao
-          .watchPreference(QueuePreference.key)
-          .map((value) => value?.queuePreference),
+          .watchPreference(QueueDetails.key)
+          .map((value) => value?.queueDetails),
       db.audioTrackDao.watchAllTracks(),
-      (prefs, tracks) =>
-          prefs == null || prefs.position < 0 || prefs.position >= tracks.length
-              ? Queue.empty()
-              : Queue(audioTracks: tracks, position: prefs.position),
+      (details, tracks) {
+        // Return default if you cannot find details
+        if (details == null) {
+          return Queue.empty();
+        }
+        // If this is the case something is seriously wrong with the queue logic
+        if (details.position < 0 || details.position >= tracks.length) {
+          return Queue.empty();
+        }
+
+        return Queue(audioTracks: tracks, position: details.position);
+      },
     );
   }
 
   @override
   Stream<AudioTrack> watchNowPlaying() {
-    return db.preferenceDao.watchPreference(QueuePreference.key).asyncMap(
+    return db.preferenceDao.watchPreference(QueueDetails.key).asyncMap(
       (pref) {
-        final queuePref = pref?.queuePreference;
-        return queuePref != null
-            ? db.audioTrackDao.getTrackByPosition(queuePref.position)
+        final details = pref?.queueDetails;
+        return details != null
+            ? db.audioTrackDao.getTrackByPosition(details.position)
             : Future.value(null);
       },
     );

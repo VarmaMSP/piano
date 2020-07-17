@@ -10,7 +10,7 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
   @override
   Future<void> onStart(Map<String, dynamic> params) async {
     final db = await newDb();
-    final api = await newApi(appDocDirPath: params['appDocDirPath'] as String);
+    final api = await newApi();
 
     _audioPlayerController = AudioPlayerController(db: db, api: api);
     await _audioPlayerController.start();

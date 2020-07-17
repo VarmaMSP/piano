@@ -60,12 +60,6 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       child: Stack(
         overflow: Overflow.visible,
         children: <Widget>[
-          Positioned(
-            top: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: _appBar(context),
-          ),
           if (!animation.ended && (screenData != null || title != null))
             Positioned(
               bottom: tabBarHeight,
@@ -73,6 +67,12 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               right: 0.0,
               child: _flexibleArea(context),
             ),
+          Positioned(
+            top: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: _appBar(context),
+          ),
           if (screenData != null)
             Positioned(
               bottom: 0.0,
@@ -89,63 +89,64 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     return Container(
       height: appBarHeight,
       padding: EdgeInsets.only(bottom: 5),
+      color: animation.appBarColor.value,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Transform.translate(
-            offset: const Offset(-14, 0),
-            child: Material(
-              color: Colors.white,
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  size: 22,
-                  color: TWColors.gray.shade700,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
+            offset: const Offset(-12, 0),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                size: 22,
+                color: TWColors.gray.shade700,
               ),
+              onPressed: () => Navigator.of(context).pop(),
             ),
           ),
           if (screenData != null && animation.started)
             Expanded(
               child: GestureDetector(
                 onTap: scrollToTop,
-                child: Transform.translate(
-                  offset: Offset(-10, 0),
-                  child: FadeTransition(
-                    opacity: animation.appBarTitleOpacity,
-                    child: Text(
-                      screenData.podcast.title,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5
-                          .copyWith(color: TWColors.gray.shade800),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                    ),
+                behavior: HitTestBehavior.translucent,
+                child: FadeTransition(
+                  opacity: animation.appBarTitleOpacity,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(right: 50, bottom: 2),
+                        transform: Matrix4.translationValues(-10, 0, 0),
+                        child: Text(
+                          screenData.podcast.title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5
+                              .copyWith(color: TWColors.gray.shade800),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           Transform.translate(
             offset: const Offset(12, 0),
-            child: Material(
-              color: Colors.white,
-              child: SizedBox(
-                width: 42,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.search,
-                    size: 22,
-                    color: TWColors.gray.shade700,
-                  ),
-                  onPressed: () => Navigator.of(context, rootNavigator: true)
-                      .pushNamed('/search'),
-                ),
+            child: IconButton(
+              icon: Icon(
+                Icons.search,
+                size: 22,
+                color: TWColors.gray.shade700,
               ),
+              onPressed: () => Navigator.of(context, rootNavigator: true)
+                  .pushNamed('/search'),
             ),
           ),
         ],
@@ -166,7 +167,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         labelColor: Colors.grey.shade900,
         labelStyle:
             Theme.of(context).textTheme.headline6.copyWith(fontSize: 13),
-        unselectedLabelColor: TWColors.gray.shade600,
+        unselectedLabelColor: TWColors.gray.shade500,
         unselectedLabelStyle:
             Theme.of(context).textTheme.headline6.copyWith(fontSize: 13),
         labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 4),

@@ -8,6 +8,7 @@ import 'package:phenopod/model/main.dart';
 import 'package:phenopod/model/queue.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/box.dart';
+import 'package:phenopod/widgets/download_progress_indicator.dart';
 import 'package:phenopod/widgets/queue_list_item/menu.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -73,8 +74,7 @@ class QueueListItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildHandler(lighten: lighten),
-                _buildPosition(context, lighten: lighten),
+                _buildHandle(context, lighten: lighten),
                 Thumbnail(podcast: audioTrack.podcast, lighten: lighten),
                 Expanded(child: _buildDetails(context, lighten: lighten)),
                 Menu(
@@ -92,42 +92,45 @@ class QueueListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildHandler({bool lighten}) {
-    return Handle(
-      child: Container(
-        padding: EdgeInsets.only(left: 6),
-        child: Icon(
-          MdiIcons.dragVertical,
-          color: lighten ? TWColors.gray.shade600 : TWColors.gray.shade900,
-          size: 24,
-        ),
+  Widget _buildHandle(BuildContext context, {bool lighten}) {
+    final dragIcon = Container(
+      padding: EdgeInsets.only(left: 6),
+      child: Icon(
+        MdiIcons.dragVertical,
+        color: lighten ? TWColors.gray.shade600 : TWColors.gray.shade900,
+        size: 24,
       ),
     );
-  }
 
-  Widget _buildPosition(BuildContext context, {bool lighten}) {
-    return nowPlayingPosition == audioTrack.position
-        ? Container(
-            width: 26,
-            padding: EdgeInsets.only(right: 8),
-            child: Icon(
+    final position = Container(
+      width: 26,
+      padding: EdgeInsets.only(right: 8),
+      child: nowPlayingPosition == audioTrack.position
+          ? Icon(
               MdiIcons.play,
               color: TWColors.gray.shade700,
               size: 18,
-            ),
-          )
-        : Container(
-            width: 26,
-            padding: EdgeInsets.only(right: 8),
-            child: Text(
+            )
+          : Text(
               '${audioTrack.position - nowPlayingPosition}',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.subtitle2.copyWith(
-                  color: lighten
-                      ? TWColors.gray.shade600
-                      : TWColors.gray.shade900),
+                    color: lighten
+                        ? TWColors.gray.shade600
+                        : TWColors.gray.shade900,
+                  ),
             ),
-          );
+    );
+
+    return Handle(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Row(children: [dragIcon, position])
+        ],
+      ),
+    );
   }
 
   Widget _buildDetails(BuildContext context, {bool lighten}) {
@@ -137,15 +140,14 @@ class QueueListItem extends StatelessWidget {
       padding: EdgeInsets.only(left: 10, right: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
             audioTrack.episode.title,
-            style: Theme.of(context).textTheme.headline6.copyWith(
-                  color: textColor,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                ),
+            style: Theme.of(context)
+                .textTheme
+                .subtitle1
+                .copyWith(color: textColor, fontSize: 13),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -153,17 +155,24 @@ class QueueListItem extends StatelessWidget {
             audioTrack.podcast.title,
             style: Theme.of(context)
                 .textTheme
-                .subtitle1
+                .subtitle2
                 .copyWith(color: textColor),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          Text(
-            '${formatDuration(seconds: audioTrack.episode.duration)}',
-            style: Theme.of(context)
-                .textTheme
-                .subtitle2
-                .copyWith(color: textColor),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              DownloadProgressIndicator(episodeId: audioTrack.episode.id),
+              Text(
+                '${formatDuration(seconds: audioTrack.episode.duration)}',
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2
+                    .copyWith(color: textColor),
+              ),
+            ],
           ),
         ],
       ),

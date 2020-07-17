@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/model/task.dart';
 import 'package:phenopod/service/db/db.dart';
@@ -8,8 +9,9 @@ TaskStore newTaskStore(Api api, Db db) {
 }
 
 abstract class TaskStore {
+  Future<void> saveTask(Task task);
   Stream<Task> watchFirst();
-  Future<void> deleteFirst();
+  Future<void> delete(int taskId);
 }
 
 class _TaskStoreImpl extends TaskStore {
@@ -22,15 +24,17 @@ class _TaskStoreImpl extends TaskStore {
   });
 
   @override
-  Stream<Task> watchFirst() {
-    return db.taskDao.watchOldestTask().map((row) => row?.task);
+  Future<void> saveTask(Task task) async {
+    await db.taskDao.saveTask(task);
   }
 
   @override
-  Future<void> deleteFirst() async {
-    final oldestTask = await db.taskDao.watchOldestTask().first;
-    if (oldestTask != null) {
-      await db.taskDao.deleteTask(oldestTask.id);
-    }
+  Stream<Task> watchFirst() {
+    return db.taskDao.watchOldestTask().map((row) => row?.toModel());
+  }
+
+  @override
+  Future<void> delete(int taskId) async {
+    await db.taskDao.deleteTask(taskId);
   }
 }
