@@ -51,7 +51,7 @@ class EpisodeActionsBloc {
 
           await store.audioFile.save(audioFile);
           await store.task.saveTask(downloadTask);
-          await alarmService.scheduleTaskRunner();
+          await alarmService.scheduleTaskRunnerOnce();
         },
         cancelDownload: (data) async {
           if (!await fileutils.hasStoragePermission()) {

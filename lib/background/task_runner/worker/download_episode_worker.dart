@@ -25,28 +25,10 @@ class DownloadEpisodeWorker extends Worker {
     _handleProgressUpdates();
   }
 
-  void _handleProgressUpdates() {
-    _progressUpdate.stream.sampleTime(Duration(seconds: 1)).listen((e) async {
-      final received = e.item1;
-      final total = e.item2;
-
-      if (total > 0) {
-        await store.audioFile.updateDownloadProgress(
-          DownloadProgress(
-            episodeId: episodeId,
-            downloadState: received == total
-                ? DownloadState.downloaded
-                : DownloadState.downloading,
-            downloadPercentage: received / total,
-          ),
-        );
-      }
-    });
-  }
-
   @override
   Future<bool> shouldExecute() async {
-    return true;
+    final audioFile = await store.audioFile.watchByEpisode(episodeId).first;
+    return !audioFile.isComplete;
   }
 
   @override
@@ -67,6 +49,27 @@ class DownloadEpisodeWorker extends Worker {
       if (CancelToken.isCancel(err)) {
         return;
       }
+    } finally {
+      await store.task.delete(taskId);
     }
+  }
+
+  void _handleProgressUpdates() {
+    _progressUpdate.stream.sampleTime(Duration(seconds: 1)).listen((e) async {
+      final received = e.item1;
+      final total = e.item2;
+
+      if (total > 0) {
+        await store.audioFile.updateDownloadProgress(
+          DownloadProgress(
+            episodeId: episodeId,
+            downloadState: received == total
+                ? DownloadState.downloaded
+                : DownloadState.downloading,
+            downloadPercentage: received / total,
+          ),
+        );
+      }
+    });
   }
 }

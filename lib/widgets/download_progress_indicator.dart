@@ -26,7 +26,8 @@ class DownloadProgressIndicator extends StatelessWidget {
 
         return AnimatedSwitcher(
           duration: Duration(milliseconds: 400),
-          child: snapshot.data.isDownloading
+          child: snapshot.data.isComplete &&
+                  snapshot.data.downloadPercentage == 1.0
               ? _buildDownloaded()
               : _buildDownloading(snapshot.data),
         );

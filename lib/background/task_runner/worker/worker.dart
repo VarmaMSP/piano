@@ -11,8 +11,6 @@ abstract class Worker {
     if (await shouldExecute()) {
       await execute();
     }
-    // Delete task after completed for now
-    await store.task.delete(taskId);
   }
 
   // Used to ensure idempotency

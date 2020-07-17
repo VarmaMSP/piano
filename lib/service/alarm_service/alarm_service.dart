@@ -11,6 +11,9 @@ Future<AlarmService> newAlarmService() async {
 /// AlarmService is used to schedule various background services
 /// and is backed by android alarm manager
 abstract class AlarmService {
-  /// Schedule Task runner
-  Future<void> scheduleTaskRunner();
+  /// Schedule Task runner to exactly once without any delay from now
+  Future<bool> scheduleTaskRunnerOnce();
+
+  /// Schedule Task runner periodically
+  Future<bool> scheduleTaskRunnerPeriodic();
 }

@@ -25,8 +25,6 @@ void main() async {
   final audioService = newAudioService();
   final alarmService = await newAlarmService();
 
-  final store = newStore(api, db);
-
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -34,10 +32,12 @@ void main() async {
 
   runApp(Root(
     sqlDb: db.sqlDb,
-    store: store,
+    store: newStore(api, db),
     audioService: audioService,
     alarmService: alarmService,
   ));
+
+  await alarmService.scheduleTaskRunnerPeriodic();
 }
 
 class Root extends StatefulWidget {

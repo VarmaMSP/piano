@@ -156,7 +156,12 @@ class EpisodeListItem extends StatelessWidget {
     }
 
     return <TextSpan>[
-      TextSpan(text: text),
+      TextSpan(
+        text: text,
+        style: TextStyle(
+          fontSize: 11.5,
+        ),
+      ),
       TextSpan(
         text: '  ·  ',
         style: TextStyle(
