@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/utils/utils.dart';
 
 PodcastStore newPodcastStore(Api api, Db db) {
   return _PodcastStoreImpl(api: api, db: db);
@@ -50,7 +51,7 @@ class _PodcastStoreImpl extends PodcastStore {
       });
     });
 
-    return db.podcastDao.watchPodcast(urlParam: urlParam);
+    return db.podcastDao.watchPodcast(getIdFromUrlParam(urlParam));
   }
 
   @override

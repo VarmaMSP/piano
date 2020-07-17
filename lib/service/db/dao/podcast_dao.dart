@@ -46,24 +46,8 @@ class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
     );
   }
 
-  Future<Podcast> getPodcast({String id, String urlParam}) async {
-    assert((id != null) != (urlParam != null));
-    final row = id != null
-        ? await (select(podcasts)..where((tbl) => tbl.id.equals(id)))
-            .getSingle()
-        : await (select(podcasts)
-              ..where((tbl) => tbl.urlParam.equals(urlParam)))
-            .getSingle();
-    return row?.toModel();
-  }
-
-  Stream<Podcast> watchPodcast({String id, String urlParam}) {
-    assert((id != null) != (urlParam != null));
-    return (select(podcasts)
-          ..where(
-            (tbl) =>
-                id != null ? tbl.id.equals(id) : tbl.urlParam.equals(urlParam),
-          ))
+  Stream<Podcast> watchPodcast(String podcastId) {
+    return (select(podcasts)..where((tbl) => tbl.id.equals(podcastId)))
         .watchSingle()
         .map((row) => row?.toModel());
   }

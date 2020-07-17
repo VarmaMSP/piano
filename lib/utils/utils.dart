@@ -34,15 +34,14 @@ DateTime parseDateTime(String dateTimeStr) {
       : DateTime.now();
 }
 
-// Fomats datetime to human readable date
+// Format datetime to human readable date
 String formatPubDate(DateTime dateTime) {
   return intl.DateFormat('MMM d, yyyy').format(dateTime);
 }
 
 // Format datetime to time from now
-String formatRelativeTime(String dateTimeStr) {
-  final dateTime = DateTime.parse('$dateTimeStr +00:00');
-  return timeago.format(dateTime);
+String formatRelativeTime(DateTime dateTime) {
+  return timeago.format(dateTime).replaceAll(RegExp('about '), '');
 }
 
 /// GetScreenHeight returns height of safe area

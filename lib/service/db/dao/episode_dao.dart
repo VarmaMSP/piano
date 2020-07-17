@@ -1,17 +1,17 @@
 part of '../db.dart';
 
-@UseDao(tables: [Episodes, AudioTracks, PlaybackPositions])
+@UseDao(tables: [Episodes, AudioTracks, AudioFiles, PlaybackPositions])
 class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
   EpisodeDao(SqlDb db) : super(db);
 
   Future<void> saveEpisodes(
-    List<Episode> episodes_, {
+    List<Episode> episodeList, {
     bool replace = true,
   }) async {
-    if (episodes_.isNotEmpty) {
+    if (episodeList.isNotEmpty) {
       return batch((b) => b.insertAll(
             episodes,
-            episodes_.map((e) => episodeRowFromModel(e)).toList(),
+            episodeList.map((e) => episodeRowFromModel(e)).toList(),
             mode: replace
                 ? InsertMode.insertOrReplace
                 : InsertMode.insertOrIgnore,
@@ -65,6 +65,15 @@ class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
               .get())
           .map((i) => i.episodeId);
       idSet.removeAll(fromAudioTracks);
+    }
+
+    // References from audio files
+    if (idSet.isNotEmpty) {
+      final fromAudioFiles = (await (select(audioFiles)
+                ..where((tbl) => tbl.episodeId.isIn(idSet.toList())))
+              .get())
+          .map((i) => i.episodeId);
+      idSet.removeAll(fromAudioFiles);
     }
 
     // References from playback positions table

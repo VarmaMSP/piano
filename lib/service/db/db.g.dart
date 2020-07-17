@@ -3693,6 +3693,7 @@ mixin _$PodcastDaoMixin on DatabaseAccessor<SqlDb> {
 mixin _$EpisodeDaoMixin on DatabaseAccessor<SqlDb> {
   $EpisodesTable get episodes => attachedDatabase.episodes;
   $AudioTracksTable get audioTracks => attachedDatabase.audioTracks;
+  $AudioFilesTable get audioFiles => attachedDatabase.audioFiles;
   $PlaybackPositionsTable get playbackPositions =>
       attachedDatabase.playbackPositions;
 }
