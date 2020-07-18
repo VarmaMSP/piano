@@ -19,7 +19,6 @@ import 'widgets/queue_header_delegate.dart';
 import 'package:flutter/material.dart'
     hide NestedScrollView, NestedScrollViewState;
 
-
 class QueueScreen extends StatelessWidget {
   const QueueScreen({Key key}) : super(key: key);
 
