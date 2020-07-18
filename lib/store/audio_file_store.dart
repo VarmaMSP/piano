@@ -13,6 +13,7 @@ AudioFileStore newAudioFileStore(Api api, Db db) {
 abstract class AudioFileStore {
   Future<void> save(AudioFile audioFile);
   Stream<AudioFile> watchByEpisode(String episodeId);
+  Stream<DownloadProgress> watchDownloadProgress(String episodeId);
   Future<void> updateDownloadProgress(DownloadProgress progress);
   Future<void> deleteByEpisode(String episodeId);
 }
@@ -33,7 +34,12 @@ class _AudioFileStoreImpl extends AudioFileStore {
 
   @override
   Stream<AudioFile> watchByEpisode(String episodeId) {
-    return db.audioFileDao.watchByEpisode(episodeId);
+    return db.audioFileDao.watchFileByEpisode(episodeId);
+  }
+
+  @override
+  Stream<DownloadProgress> watchDownloadProgress(String episodeId) {
+    return db.audioFileDao.watchProgressByEpisode(episodeId);
   }
 
   @override

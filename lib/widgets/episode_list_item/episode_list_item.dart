@@ -93,8 +93,8 @@ class EpisodeListItem extends StatelessWidget {
                   maxLines: 2,
                 ),
               ),
-              StreamBuilder<AudioFile>(
-                stream: store.audioFile.watchByEpisode(episode.id),
+              StreamBuilder<DownloadProgress>(
+                stream: store.audioFile.watchDownloadProgress(episode.id),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return _episodeInfo(context);
@@ -180,11 +180,15 @@ class EpisodeListItem extends StatelessWidget {
     );
   }
 
-  Widget _episodeDownloadInfo(BuildContext context, AudioFile audioFile) {
+  Widget _episodeDownloadInfo(
+    BuildContext context,
+    DownloadProgress downloadProgress,
+  ) {
     String text;
-    if (audioFile.isDownloading) {
-      text = 'Downloading...  ${(audioFile.downloadPercentage * 100).round()}%';
-    } else if (audioFile.isDownloading) {
+    if (downloadProgress.isDownloading) {
+      text =
+          'Downloading...  ${(downloadProgress.downloadPercentage * 100).round()}%';
+    } else if (downloadProgress.isDownloading) {
       text = 'Download complete.';
     } else {
       text = 'Waiting to download...';

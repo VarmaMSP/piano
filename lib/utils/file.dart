@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 
 Future<bool> hasStoragePermission() async {
   final permissionStatus = await Permission.storage.request();
-  return Future.value(permissionStatus.isGranted);
+  return permissionStatus.isGranted;
 }
 
 Future<String> getStorageDirectory() async {

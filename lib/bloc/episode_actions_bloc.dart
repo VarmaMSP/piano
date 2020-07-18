@@ -12,7 +12,10 @@ part 'episode_actions_bloc.g.dart';
 
 @superEnum
 enum _EpisodeAction {
-  @Data(fields: [DataField<Episode>('episode')])
+  @Data(fields: [
+    DataField<Episode>('episode'),
+    DataField<Podcast>('podcast'),
+  ])
   StartDownload,
   @Data(fields: [DataField<String>('episodeId')])
   CancelDownload,
@@ -41,6 +44,7 @@ class EpisodeActionsBloc {
           final episode = data.episode;
           final audioFile = AudioFile.init(
             episode: episode,
+            podcast: data.podcast,
             directory: await fileutils.getStorageDirectory(),
             filename: fileutils.newStorageFileName(episode.mediaUrl),
           );

@@ -12,8 +12,8 @@ part of 'episode_actions_bloc.dart';
 abstract class EpisodeAction extends Equatable {
   const EpisodeAction(this._type);
 
-  factory EpisodeAction.startDownload({@required Episode episode}) =
-      StartDownload;
+  factory EpisodeAction.startDownload(
+      {@required Episode episode, @required Podcast podcast}) = StartDownload;
 
   factory EpisodeAction.cancelDownload({@required String episodeId}) =
       CancelDownload;
@@ -124,15 +124,18 @@ abstract class EpisodeAction extends Equatable {
 
 @immutable
 class StartDownload extends EpisodeAction {
-  const StartDownload({@required this.episode})
+  const StartDownload({@required this.episode, @required this.podcast})
       : super(_EpisodeAction.StartDownload);
 
   final Episode episode;
 
+  final Podcast podcast;
+
   @override
-  String toString() => 'StartDownload(episode:${this.episode})';
+  String toString() =>
+      'StartDownload(episode:${this.episode},podcast:${this.podcast})';
   @override
-  List get props => [episode];
+  List get props => [episode, podcast];
 }
 
 @immutable

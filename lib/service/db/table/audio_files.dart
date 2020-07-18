@@ -32,8 +32,8 @@ class DownloadStateConverter extends TypeConverter<DownloadState, int> {
 
 AudioFileRow audioFileRowFromModel(AudioFile model) {
   return AudioFileRow(
-    episodeId: model.episodeId,
-    url: model.url,
+    episodeId: model.episode.id,
+    url: model.episode.mediaUrl,
     directory: model.directory,
     filename: model.filename,
     downloadState: model.downloadState,
@@ -44,10 +44,10 @@ AudioFileRow audioFileRowFromModel(AudioFile model) {
 }
 
 extension AudioFileRowExtension on AudioFileRow {
-  AudioFile toModel() {
+  AudioFile toModel(Episode episode, Podcast podcast) {
     return AudioFile(
-      episodeId: episodeId,
-      url: this.url,
+      episode: episode,
+      podcast: podcast,
       directory: directory,
       filename: filename,
       downloadState: downloadState,

@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 
 // Project imports:
 import 'episode.dart';
+import 'podcast.dart';
 
 //!! DO NOT CHANGE THE ORDER OF THIS ENUM VALUES
 enum DownloadState {
@@ -17,8 +18,8 @@ enum DownloadState {
 }
 
 class AudioFile extends Equatable {
-  final String episodeId;
-  final String url;
+  final Podcast podcast;
+  final Episode episode;
   final String directory;
   final String filename;
   final DownloadState downloadState;
@@ -27,8 +28,8 @@ class AudioFile extends Equatable {
   final DateTime updatedAt;
 
   AudioFile({
-    @required this.episodeId,
-    @required this.url,
+    @required this.episode,
+    @required this.podcast,
     @required this.directory,
     @required this.filename,
     @required this.downloadState,
@@ -38,13 +39,14 @@ class AudioFile extends Equatable {
   });
 
   factory AudioFile.init({
+    @required Podcast podcast,
     @required Episode episode,
     @required String directory,
     @required String filename,
   }) {
     return AudioFile(
-      episodeId: episode.id,
-      url: episode.mediaUrl,
+      podcast: podcast,
+      episode: episode,
       directory: directory,
       filename: filename,
       downloadState: DownloadState.queued,
@@ -63,7 +65,7 @@ class AudioFile extends Equatable {
   String get filepath => join(directory, filename);
 
   @override
-  List<Object> get props => [episodeId, url, downloadState, downloadPercentage];
+  List<Object> get props => [episode, downloadState, downloadPercentage];
 }
 
 class DownloadProgress {
@@ -72,8 +74,14 @@ class DownloadProgress {
   final double downloadPercentage;
 
   DownloadProgress({
-    this.episodeId,
-    this.downloadState,
-    this.downloadPercentage,
+    @required this.episodeId,
+    @required this.downloadState,
+    @required this.downloadPercentage,
   });
+
+  bool get isDownloading => downloadState == DownloadState.downloading;
+
+  bool get isComplete =>
+      downloadState == DownloadState.failed ||
+      downloadState == DownloadState.downloaded;
 }

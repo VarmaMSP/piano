@@ -22,8 +22,8 @@ class DownloadProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = Provider.of<Store>(context);
 
-    return StreamBuilder<AudioFile>(
-      stream: store.audioFile.watchByEpisode(episodeId),
+    return StreamBuilder<DownloadProgress>(
+      stream: store.audioFile.watchDownloadProgress(episodeId),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container();
@@ -51,13 +51,13 @@ class DownloadProgressIndicator extends StatelessWidget {
     );
   }
 
-  Widget _buildDownloading(AudioFile audioFile) {
+  Widget _buildDownloading(DownloadProgress downloadProgress) {
     return Container(
       height: 10,
       width: 10,
       margin: EdgeInsets.only(right: 12, bottom: 2),
       child: CircularProgressIndicator(
-        value: audioFile.downloadPercentage,
+        value: downloadProgress.downloadPercentage,
         valueColor: AlwaysStoppedAnimation<Color>(TWColors.blue.shade700),
         backgroundColor: TWColors.gray.shade400,
         strokeWidth: 2.5,

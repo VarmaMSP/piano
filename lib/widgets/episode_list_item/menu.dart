@@ -91,8 +91,12 @@ class Menu extends StatelessWidget {
             break;
 
           case EpisodeOption.download:
-            Provider.of<EpisodeActionsBloc>(context, listen: false)
-                .addAction(EpisodeAction.startDownload(episode: episode));
+            Provider.of<EpisodeActionsBloc>(context, listen: false).addAction(
+              EpisodeAction.startDownload(
+                episode: episode,
+                podcast: podcast,
+              ),
+            );
             break;
         }
       },

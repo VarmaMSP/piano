@@ -3719,4 +3719,6 @@ mixin _$TaskDaoMixin on DatabaseAccessor<SqlDb> {
 }
 mixin _$AudioFileDaoMixin on DatabaseAccessor<SqlDb> {
   $AudioFilesTable get audioFiles => attachedDatabase.audioFiles;
+  $EpisodesTable get episodes => attachedDatabase.episodes;
+  $PodcastsTable get podcasts => attachedDatabase.podcasts;
 }
