@@ -14,12 +14,16 @@ abstract class Screen extends Equatable {
 
   factory Screen.podcast({@required String urlParam}) = Podcast;
 
+  factory Screen.downloads() = Downloads;
+
   final _Screen _type;
 
 //ignore: missing_return
-  R when<R>({@required R Function(Podcast) podcast}) {
+  R when<R>(
+      {@required R Function(Podcast) podcast,
+      @required R Function(Downloads) downloads}) {
     assert(() {
-      if (podcast == null) {
+      if (podcast == null || downloads == null) {
         throw 'check for all possible cases';
       }
       return true;
@@ -27,13 +31,17 @@ abstract class Screen extends Equatable {
     switch (this._type) {
       case _Screen.Podcast:
         return podcast(this as Podcast);
+      case _Screen.Downloads:
+        return downloads(this as Downloads);
     }
   }
 
 //ignore: missing_return
-  Future<R> asyncWhen<R>({@required FutureOr<R> Function(Podcast) podcast}) {
+  Future<R> asyncWhen<R>(
+      {@required FutureOr<R> Function(Podcast) podcast,
+      @required FutureOr<R> Function(Downloads) downloads}) {
     assert(() {
-      if (podcast == null) {
+      if (podcast == null || downloads == null) {
         throw 'check for all possible cases';
       }
       return true;
@@ -41,11 +49,15 @@ abstract class Screen extends Equatable {
     switch (this._type) {
       case _Screen.Podcast:
         return podcast(this as Podcast);
+      case _Screen.Downloads:
+        return downloads(this as Downloads);
     }
   }
 
   R whenOrElse<R>(
-      {R Function(Podcast) podcast, @required R Function(Screen) orElse}) {
+      {R Function(Podcast) podcast,
+      R Function(Downloads) downloads,
+      @required R Function(Screen) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -56,12 +68,16 @@ abstract class Screen extends Equatable {
       case _Screen.Podcast:
         if (podcast == null) break;
         return podcast(this as Podcast);
+      case _Screen.Downloads:
+        if (downloads == null) break;
+        return downloads(this as Downloads);
     }
     return orElse(this);
   }
 
   Future<R> asyncWhenOrElse<R>(
       {FutureOr<R> Function(Podcast) podcast,
+      FutureOr<R> Function(Downloads) downloads,
       @required FutureOr<R> Function(Screen) orElse}) {
     assert(() {
       if (orElse == null) {
@@ -73,14 +89,19 @@ abstract class Screen extends Equatable {
       case _Screen.Podcast:
         if (podcast == null) break;
         return podcast(this as Podcast);
+      case _Screen.Downloads:
+        if (downloads == null) break;
+        return downloads(this as Downloads);
     }
     return orElse(this);
   }
 
 //ignore: missing_return
-  Future<void> whenPartial({FutureOr<void> Function(Podcast) podcast}) {
+  Future<void> whenPartial(
+      {FutureOr<void> Function(Podcast) podcast,
+      FutureOr<void> Function(Downloads) downloads}) {
     assert(() {
-      if (podcast == null) {
+      if (podcast == null && downloads == null) {
         throw 'provide at least one branch';
       }
       return true;
@@ -89,6 +110,9 @@ abstract class Screen extends Equatable {
       case _Screen.Podcast:
         if (podcast == null) break;
         return podcast(this as Podcast);
+      case _Screen.Downloads:
+        if (downloads == null) break;
+        return downloads(this as Downloads);
     }
   }
 
@@ -106,4 +130,16 @@ class Podcast extends Screen {
   String toString() => 'Podcast(urlParam:${this.urlParam})';
   @override
   List get props => [urlParam];
+}
+
+@immutable
+class Downloads extends Screen {
+  const Downloads._() : super(_Screen.Downloads);
+
+  factory Downloads() {
+    _instance ??= const Downloads._();
+    return _instance;
+  }
+
+  static Downloads _instance;
 }

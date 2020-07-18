@@ -39,6 +39,11 @@ class AppScreenContent extends HookWidget {
                 initialRoute: '/subscriptions',
                 offstage: snapshot.data.currentTab != Tab.subscriptions,
               ),
+              _buildTab(
+                key: tabNavigatorKeys[Tab.library],
+                initialRoute: '/library',
+                offstage: snapshot.data.currentTab != Tab.library,
+              )
             ],
           ),
         );

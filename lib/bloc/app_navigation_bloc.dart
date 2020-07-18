@@ -14,12 +14,15 @@ part 'app_navigation_bloc.g.dart';
 enum Tab {
   home,
   subscriptions,
+  library,
 }
 
 @superEnum
 enum _Screen {
   @Data(fields: [DataField<String>('urlParam')])
   Podcast,
+  @object
+  Downloads,
 }
 
 class AppNavigationBloc {
@@ -31,6 +34,7 @@ class AppNavigationBloc {
   final Map<Tab, GlobalKey<NavigatorState>> _tabNavigatorKeys = {
     Tab.home: GlobalKey<NavigatorState>(),
     Tab.subscriptions: GlobalKey<NavigatorState>(),
+    Tab.library: GlobalKey<NavigatorState>(),
   };
 
   /// Stream of history changes
@@ -81,6 +85,10 @@ class AppNavigationBloc {
       podcast: (data) => navigator.currentState.pushNamed(
         '/podcast',
         arguments: {'urlParam': data.urlParam},
+      ),
+      downloads: (data) => navigator.currentState.pushNamed(
+        '/downloads',
+        arguments: {},
       ),
     );
   }

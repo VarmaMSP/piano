@@ -1,5 +1,5 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Tab;
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -7,7 +7,7 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart' as n;
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
 
 class NavigationBar extends StatelessWidget {
   const NavigationBar({
@@ -16,12 +16,12 @@ class NavigationBar extends StatelessWidget {
     @required this.currentTab,
   }) : super(key: key);
 
-  final n.Tab currentTab;
+  final Tab currentTab;
   final BottomAppBarAnimation animations;
 
   @override
   Widget build(BuildContext context) {
-    final appNavigationBloc = Provider.of<n.AppNavigationBloc>(context);
+    final appNavigationBloc = Provider.of<AppNavigationBloc>(context);
 
     return SizeTransition(
       axis: Axis.vertical,
@@ -32,22 +32,10 @@ class NavigationBar extends StatelessWidget {
         padding: EdgeInsets.only(top: 2),
         color: Colors.white,
         child: BottomNavigationBar(
-          currentIndex: (() {
-            if (currentTab == n.Tab.home) {
-              return 0;
-            } else if (currentTab == n.Tab.subscriptions) {
-              return 1;
-            } else {
-              return 0;
-            }
-          })(),
-          onTap: (value) {
-            if (value == 0) {
-              appNavigationBloc.pushTab(n.Tab.home);
-            } else if (value == 1) {
-              appNavigationBloc.pushTab(n.Tab.subscriptions);
-            }
-          },
+          currentIndex: currentTab.index,
+          onTap: (tabIndex) => appNavigationBloc.pushTab(
+            Tab.values[tabIndex],
+          ),
           type: BottomNavigationBarType.fixed,
           elevation: 0,
           backgroundColor: Colors.white,
@@ -75,10 +63,10 @@ class NavigationBar extends StatelessWidget {
               icon: Icon(Icons.rss_feed, size: 23.0),
               title: const Text('Subscriptions'),
             ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.folder_open, size: 23.0),
-            //   title: const Text('Library'),
-            // ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.folder_open, size: 23.0),
+              title: const Text('Library'),
+            ),
           ],
         ),
       ),

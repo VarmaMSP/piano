@@ -15,7 +15,6 @@ import 'subscriptions_screen_bloc.dart';
 import 'package:flutter/material.dart'
     hide NestedScrollView, NestedScrollViewState;
 
-
 class SubscriptionsScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
