@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 
 // Package imports:
-import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-
-// Project imports:
-import 'package:phenopod/bloc/audio_player_bloc.dart';
 
 class DownloadsHeaderDelegate implements SliverPersistentHeaderDelegate {
   DownloadsHeaderDelegate({

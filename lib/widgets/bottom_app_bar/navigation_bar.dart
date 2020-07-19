@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart' hide Tab;
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -28,7 +29,7 @@ class NavigationBar extends StatelessWidget {
       axisAlignment: -1.0,
       sizeFactor: animations.bottomNavigationBarSize,
       child: Container(
-        height: 56.0,
+        height: 57.0,
         padding: EdgeInsets.only(top: 2),
         color: Colors.white,
         child: BottomNavigationBar(
@@ -50,21 +51,20 @@ class NavigationBar extends StatelessWidget {
           unselectedLabelStyle: TextStyle(
             height: 1.55,
             fontSize: 12,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
             letterSpacing: 0.5,
           ),
-          // showUnselectedLabels: false,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: 23.0),
+              icon: Icon(MdiIcons.homeOutline, size: 24.0),
               title: const Text('Home'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.rss_feed, size: 23.0),
+              icon: Icon(Icons.rss_feed, size: 24.0),
               title: const Text('Subscriptions'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.folder_open, size: 23.0),
+              icon: Icon(Icons.folder_open, size: 24.0),
               title: const Text('Library'),
             ),
           ],

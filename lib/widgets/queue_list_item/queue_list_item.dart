@@ -50,11 +50,11 @@ class QueueListItem extends StatelessWidget {
     final background = ({bool alignRight}) => Container(
           constraints: BoxConstraints.expand(),
           padding: alignRight
-              ? EdgeInsets.only(right: 10)
-              : EdgeInsets.only(left: 10),
+              ? EdgeInsets.only(right: 12)
+              : EdgeInsets.only(left: 12),
           alignment: alignRight ? Alignment.centerRight : Alignment.centerLeft,
           color: TWColors.red.shade600,
-          child: Icon(Icons.delete, color: Colors.white),
+          child: Icon(MdiIcons.deleteOutline, color: Colors.white, size: 28),
         );
 
     return Dismissible(

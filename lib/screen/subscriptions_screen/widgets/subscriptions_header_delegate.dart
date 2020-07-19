@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // Package imports:
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -54,15 +55,28 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
             ),
           ),
           Transform.translate(
-            offset: const Offset(15, 0),
-            child: IconButton(
-              icon: Icon(
-                Icons.search,
-                size: 22,
-                color: TWColors.gray.shade700,
-              ),
-              onPressed: () => Navigator.of(context, rootNavigator: true)
-                  .pushNamed('/search'),
+            offset: const Offset(14, 0),
+            child: Row(
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    size: 22,
+                    color: TWColors.gray.shade700,
+                  ),
+                  onPressed: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed('/search'),
+                ),
+                IconButton(
+                  icon: Icon(
+                    MdiIcons.accountCircleOutline,
+                    size: 22,
+                    color: TWColors.gray.shade700,
+                  ),
+                  onPressed: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed('/search'),
+                ),
+              ],
             ),
           ),
         ],

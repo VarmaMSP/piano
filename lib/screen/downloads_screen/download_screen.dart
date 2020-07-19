@@ -1,13 +1,11 @@
-import 'package:flutter/material.dart'
-    hide NestedScrollView, NestedScrollViewState;
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
-import 'package:phenopod/widgets/episode_list_item/episode_list_item.dart';
+import 'package:phenopod/widgets/download_list_item/download_list_item.dart';
 import 'package:provider/provider.dart';
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
 import 'widgets/dowloads_header_delegate.dart';
 
@@ -47,15 +45,14 @@ class DownloadsScreen extends StatelessWidget {
                 ),
               ];
             },
-            pinnedHeaderSliverHeightBuilder: () {
-              return 65.0;
-            },
-            innerScrollPositionKeyBuilder: () {
-              return Key('List');
-            },
-            body: !snapshot.hasData
-                ? Container()
-                : _buildList(context, snapshot.data),
+            body: CustomScrollView(
+              slivers: [
+                if (snapshot.hasData)
+                  _buildList(context, snapshot.data)
+                else
+                  SliverToBoxAdapter(child: Container()),
+              ],
+            ),
           );
         },
       ),
@@ -63,18 +60,14 @@ class DownloadsScreen extends StatelessWidget {
   }
 
   Widget _buildList(BuildContext context, List<AudioFile> audioFiles) {
-    return ImplicitlyAnimatedList<AudioFile>(
+    return SliverImplicitlyAnimatedList<AudioFile>(
       items: audioFiles,
       areItemsTheSame: (a, b) => a.episode.id == b.episode.id,
       itemBuilder: (context, animation, audioFile, index) => SizeFadeTransition(
         sizeFraction: 0.7,
         curve: Curves.easeInOut,
         animation: animation,
-        child: EpisodeListItem(
-          episode: audioFile.episode,
-          podcast: audioFile.podcast,
-          type: EpisodeListItemType.subscriptionsItem,
-        ),
+        child: DownloadListItem(audioFile: audioFile),
       ),
     );
   }

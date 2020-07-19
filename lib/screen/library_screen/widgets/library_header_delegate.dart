@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // Package imports:
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -39,16 +40,43 @@ class LibraryHeaderDelegate implements SliverPersistentHeaderDelegate {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          GestureDetector(
-            onTap: scrollToTop,
-            child: Text(
-              'Phenopod',
-              style: Theme.of(context).textTheme.headline4.copyWith(
-                    color: TWColors.purple.shade700,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.8,
+          Expanded(
+            child: GestureDetector(
+              onTap: scrollToTop,
+              child: Text(
+                'Phenopod',
+                style: TextStyle(
+                  fontSize: 19,
+                  color: Colors.purple.shade700,
+                  letterSpacing: 0.4,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+          Transform.translate(
+            offset: const Offset(14, 0),
+            child: Row(
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    size: 22,
+                    color: TWColors.gray.shade700,
                   ),
-              textAlign: TextAlign.left,
+                  onPressed: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed('/search'),
+                ),
+                IconButton(
+                  icon: Icon(
+                    MdiIcons.accountCircleOutline,
+                    size: 22,
+                    color: TWColors.gray.shade700,
+                  ),
+                  onPressed: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed('/search'),
+                ),
+              ],
             ),
           ),
         ],

@@ -40,9 +40,10 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   final bool forceElevated;
 
   @override
-  final double minExtent = appBarHeight + tabBarHeight;
+  double get minExtent => appBarHeight + tabBarHeight;
+
   @override
-  final double maxExtent = appBarHeight + tabBarHeight + flexibleAreaHeight;
+  double get maxExtent => appBarHeight + tabBarHeight + flexibleAreaHeight;
 
   @override
   Widget build(
@@ -104,7 +105,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                size: 24,
+                size: 22,
                 color: TWColors.gray.shade700,
               ),
               onPressed: () => Navigator.of(context).pop(),
@@ -123,14 +124,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Container(
-                        padding: EdgeInsets.only(top: 1, right: 40),
+                        padding: EdgeInsets.only(bottom: 2, right: 40),
                         transform: Matrix4.translationValues(-12, 0, 0),
                         child: Text(
                           screenData.podcast.title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5
-                              .copyWith(color: TWColors.gray.shade900),
+                          style: Theme.of(context).textTheme.headline5.copyWith(
+                                color: TWColors.gray.shade800,
+                                fontSize: 16,
+                              ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.left,
@@ -142,15 +143,30 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
             ),
           Transform.translate(
-            offset: const Offset(15, 0),
-            child: IconButton(
-              icon: Icon(
-                Icons.search,
-                size: 22,
-                color: TWColors.gray.shade700,
-              ),
-              onPressed: () => Navigator.of(context, rootNavigator: true)
-                  .pushNamed('/search'),
+            offset: const Offset(20, 0),
+            child: Row(
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    size: 22,
+                    color: TWColors.gray.shade700,
+                  ),
+                  visualDensity: VisualDensity.comfortable,
+                  onPressed: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed('/search'),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.more_vert,
+                    size: 22,
+                    color: TWColors.gray.shade700,
+                  ),
+                  visualDensity: VisualDensity.comfortable,
+                  onPressed: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed('/search'),
+                ),
+              ],
             ),
           ),
         ],

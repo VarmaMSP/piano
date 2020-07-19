@@ -46,8 +46,8 @@ class QueueHeaderDelegate implements SliverPersistentHeaderDelegate {
               child: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  size: 24,
-                  color: TWColors.gray.shade800,
+                  size: 22,
+                  color: TWColors.gray.shade700,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -80,7 +80,7 @@ class QueueHeaderDelegate implements SliverPersistentHeaderDelegate {
             ),
           ),
           Transform.translate(
-            offset: const Offset(15, 0),
+            offset: const Offset(18, 0),
             child: QueueScreenMenu(),
           ),
         ],

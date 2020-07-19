@@ -15,8 +15,8 @@ class QueueScreenMenu extends StatelessWidget {
     return PopupMenuButton<QueueScreenOptions>(
       icon: Icon(
         Icons.more_vert,
-        color: TWColors.gray.shade800,
-        size: 24,
+        color: TWColors.gray.shade700,
+        size: 22,
       ),
       elevation: 8,
       offset: const Offset(-10, 40),

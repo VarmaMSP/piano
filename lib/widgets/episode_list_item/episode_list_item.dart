@@ -108,10 +108,10 @@ class EpisodeListItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 0),
+                          padding: const EdgeInsets.only(bottom: 1),
                           child: Icon(
                             MdiIcons.checkUnderlineCircle,
-                            size: 15,
+                            size: 14,
                             color: TWColors.blue.shade700,
                           ),
                         ),
@@ -175,13 +175,19 @@ class EpisodeListItem extends StatelessWidget {
                   .subtitle2
                   .copyWith(fontSize: 12, color: Colors.grey.shade900),
             ),
-            TextSpan(text: '  ·  '),
+            TextSpan(
+              text: '  ·  ',
+              style: TextStyle(fontWeight: FontWeight.w900),
+            ),
           ],
           // Episode pub date
           TextSpan(text: formatRelativeTime(episode.pubDate)),
           // Podcas tytle
           if (type == EpisodeListItemType.subscriptionsItem) ...[
-            TextSpan(text: '  ·  '),
+            TextSpan(
+              text: '  ·  ',
+              style: TextStyle(fontWeight: FontWeight.w900),
+            ),
             TextSpan(text: podcast.title),
           ]
         ],
