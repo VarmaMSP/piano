@@ -15,10 +15,10 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
   final void Function() scrollToTop;
 
   @override
-  double get maxExtent => 55.0;
+  double get maxExtent => 60.0;
 
   @override
-  double get minExtent => 55.0;
+  double get minExtent => 60.0;
 
   @override
   Widget build(
@@ -44,13 +44,12 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
               onTap: scrollToTop,
               child: Text(
                 'Phenopod',
-                style: Theme.of(context).textTheme.headline4.copyWith(
-                      fontSize: 19,
-                      color: TWColors.purple.shade800,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.2,
-                    ),
-                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 19,
+                  color: Colors.purple.shade700,
+                  letterSpacing: 0.4,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
@@ -59,7 +58,7 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
             child: IconButton(
               icon: Icon(
                 Icons.search,
-                size: 24,
+                size: 22,
                 color: TWColors.gray.shade700,
               ),
               onPressed: () => Navigator.of(context, rootNavigator: true)

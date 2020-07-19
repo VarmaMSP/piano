@@ -151,8 +151,8 @@ class QueueListItem extends StatelessWidget {
             audioTrack.episode.title,
             style: Theme.of(context)
                 .textTheme
-                .subtitle1
-                .copyWith(color: textColor, fontSize: 13),
+                .headline6
+                .copyWith(color: textColor),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -160,7 +160,7 @@ class QueueListItem extends StatelessWidget {
             audioTrack.podcast.title,
             style: Theme.of(context)
                 .textTheme
-                .subtitle2
+                .subtitle1
                 .copyWith(color: textColor),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -169,14 +169,15 @@ class QueueListItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              DownloadProgressIndicator(episodeId: audioTrack.episode.id),
               Text(
                 '${formatDuration(seconds: audioTrack.episode.duration)}',
                 style: Theme.of(context)
                     .textTheme
                     .subtitle2
-                    .copyWith(color: textColor),
+                    .copyWith(color: textColor, fontSize: 11.75),
               ),
+              Container(width: 10),
+              DownloadProgressIndicator(episodeId: audioTrack.episode.id),
             ],
           ),
         ],

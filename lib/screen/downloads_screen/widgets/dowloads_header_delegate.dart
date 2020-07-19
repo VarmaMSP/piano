@@ -30,8 +30,6 @@ class DownloadsHeaderDelegate implements SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
-
     return Container(
       height: maxExtent,
       padding: EdgeInsets.only(left: 14, right: 18),
@@ -77,12 +75,6 @@ class DownloadsHeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () => audioPlayerBloc.transitionQueue(
-              QueueTransition.clearQueue(askUser: false),
-            ),
-          )
         ],
       ),
     );

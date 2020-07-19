@@ -26,7 +26,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.forceElevated,
   });
 
-  static const double appBarHeight = 55;
+  static const double appBarHeight = 60;
   static const double tabBarHeight = 35;
   static const double flexibleAreaHeight = 140;
 
@@ -146,8 +146,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             child: IconButton(
               icon: Icon(
                 Icons.search,
-                size: 24,
-                color: TWColors.gray.shade800,
+                size: 22,
+                color: TWColors.gray.shade700,
               ),
               onPressed: () => Navigator.of(context, rootNavigator: true)
                   .pushNamed('/search'),
