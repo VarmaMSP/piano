@@ -137,8 +137,8 @@ class Thumbnail extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(4.0),
       child: Container(
-        color: const Color.fromRGBO(0, 0, 0, 0.7),
-        padding: const EdgeInsets.only(left: 4, right: 4, top: 1.9),
+        color: const Color.fromRGBO(0, 0, 0, 0.67),
+        padding: const EdgeInsets.only(left: 4, right: 4, top: 2),
         child: Text(
           res ?? '00:00',
           style: TextStyle(

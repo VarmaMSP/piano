@@ -37,7 +37,10 @@ class DownloadsHeaderDelegate implements SliverPersistentHeaderDelegate {
       padding: EdgeInsets.only(left: 14, right: 18),
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)],
+        boxShadow: [
+          if (forceElevated)
+            BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
+        ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,

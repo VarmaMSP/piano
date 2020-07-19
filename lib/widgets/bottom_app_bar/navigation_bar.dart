@@ -40,18 +40,18 @@ class NavigationBar extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.white,
           selectedItemColor: TWColors.purple.shade600,
-          unselectedItemColor: TWColors.gray.shade600,
+          unselectedItemColor: TWColors.gray.shade500,
           selectedLabelStyle: TextStyle(
             height: 1.55,
             fontSize: 12,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.45,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.5,
           ),
           unselectedLabelStyle: TextStyle(
             height: 1.55,
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            letterSpacing: 0.45,
+            letterSpacing: 0.5,
           ),
           // showUnselectedLabels: false,
           items: <BottomNavigationBarItem>[

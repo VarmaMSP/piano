@@ -4,16 +4,7 @@ import 'package:flutter/material.dart';
 class PodcastScreenAnimation {
   PodcastScreenAnimation({
     @required this.controller,
-  })  : appBarColor = ColorTween(
-          begin: Color.fromRGBO(255, 255, 255, 0.0),
-          end: Color.fromRGBO(255, 255, 255, 1.0),
-        ).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Interval(0.0, 1.0, curve: Curves.easeIn),
-          ),
-        ),
-        appBarTitleOpacity = Tween<double>(
+  })  : appBarTitleOpacity = Tween<double>(
           begin: 0.0,
           end: 1.0,
         ).animate(
@@ -28,12 +19,11 @@ class PodcastScreenAnimation {
         ).animate(
           CurvedAnimation(
             parent: controller,
-            curve: Interval(0.0, 1.0, curve: Curves.easeOut),
+            curve: Interval(0.0, 0.95, curve: Curves.easeOutCubic),
           ),
         );
 
   final AnimationController controller;
-  final Animation<Color> appBarColor;
   final Animation<double> appBarTitleOpacity;
   final Animation<double> podcastDetailsOpacity;
 

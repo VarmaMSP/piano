@@ -45,7 +45,7 @@ class Menu extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ),
-      itemBuilder: (BuildContext context) {
+      itemBuilder: (context) {
         return options
             .map(
               (option) => PopupMenuItem<EpisodeOption>(

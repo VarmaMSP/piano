@@ -19,7 +19,7 @@ final ThemeData appTheme = ThemeData(
       fontWeight: FontWeight.w500,
     ),
     headline5: GoogleFonts.inter(
-      fontSize: 16,
+      fontSize: 17,
       color: Colors.black,
       letterSpacing: 0.2,
       fontWeight: FontWeight.w500,
@@ -39,8 +39,9 @@ final ThemeData appTheme = ThemeData(
     subtitle2: GoogleFonts.roboto(
       fontSize: 12,
       color: Colors.grey.shade600,
-      height: 1.35,
       letterSpacing: 0.25,
+      fontWeight: FontWeight.w400,
+      height: 1.35,
     ),
   ),
 );

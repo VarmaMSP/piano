@@ -26,9 +26,9 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.forceElevated,
   });
 
-  static const double appBarHeight = 65;
-  static const double tabBarHeight = 30;
-  static const double flexibleAreaHeight = 145;
+  static const double appBarHeight = 55;
+  static const double tabBarHeight = 35;
+  static const double flexibleAreaHeight = 140;
 
   final TabController tabController;
   final String urlParam;
@@ -94,18 +94,17 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     return Container(
       height: appBarHeight,
       padding: EdgeInsets.only(bottom: 5),
-      color: animation.appBarColor.value,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Transform.translate(
-            offset: const Offset(-12, 0),
+            offset: const Offset(-15, 0),
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                size: 22,
+                size: 24,
                 color: TWColors.gray.shade700,
               ),
               onPressed: () => Navigator.of(context).pop(),
@@ -124,14 +123,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Container(
-                        padding: EdgeInsets.only(right: 50, bottom: 2),
-                        transform: Matrix4.translationValues(-10, 0, 0),
+                        padding: EdgeInsets.only(top: 1, right: 40),
+                        transform: Matrix4.translationValues(-12, 0, 0),
                         child: Text(
                           screenData.podcast.title,
                           style: Theme.of(context)
                               .textTheme
                               .headline5
-                              .copyWith(color: TWColors.gray.shade800),
+                              .copyWith(color: TWColors.gray.shade900),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.left,
@@ -143,12 +142,12 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
             ),
           Transform.translate(
-            offset: const Offset(12, 0),
+            offset: const Offset(15, 0),
             child: IconButton(
               icon: Icon(
                 Icons.search,
-                size: 22,
-                color: TWColors.gray.shade700,
+                size: 24,
+                color: TWColors.gray.shade800,
               ),
               onPressed: () => Navigator.of(context, rootNavigator: true)
                   .pushNamed('/search'),
@@ -170,11 +169,15 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         indicatorSize: TabBarIndicatorSize.label,
         indicatorWeight: 3.5,
         labelColor: Colors.grey.shade900,
-        labelStyle:
-            Theme.of(context).textTheme.headline6.copyWith(fontSize: 13),
+        labelStyle: Theme.of(context)
+            .textTheme
+            .headline6
+            .copyWith(fontSize: 13, letterSpacing: 0.4),
         unselectedLabelColor: TWColors.gray.shade500,
-        unselectedLabelStyle:
-            Theme.of(context).textTheme.headline6.copyWith(fontSize: 13),
+        unselectedLabelStyle: Theme.of(context)
+            .textTheme
+            .headline6
+            .copyWith(fontSize: 13, letterSpacing: 0.4),
         labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 4),
         controller: tabController,
         tabs: const <Widget>[
@@ -220,10 +223,10 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         Container(height: 8),
         Text(
           screenData?.podcast?.author ?? author,
-          style: Theme.of(context)
-              .textTheme
-              .headline6
-              .copyWith(fontWeight: FontWeight.w400),
+          style: Theme.of(context).textTheme.headline6.copyWith(
+                fontWeight: FontWeight.w400,
+                color: TWColors.gray.shade900,
+              ),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
@@ -233,14 +236,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     final podcastActionsBloc = Provider.of<PodcastActionsBloc>(context);
 
     final Widget actions = Container(
-      height: 24,
+      height: 22,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Flexible(
             child: FractionallySizedBox(
               heightFactor: 1.0,
-              widthFactor: 0.7,
+              widthFactor: 0.65,
               child: FlatButton(
                 onPressed: () => screenData != null && screenData.isSubscribed
                     ? podcastActionsBloc.unsubscribe(screenData.podcast)
@@ -260,7 +263,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                             ? Colors.grey.shade900
                             : Colors.white,
                         fontSize: 12.5,
-                        letterSpacing: 0.5,
+                        letterSpacing: 0.6,
                       ),
                 ),
                 shape: RoundedRectangleBorder(

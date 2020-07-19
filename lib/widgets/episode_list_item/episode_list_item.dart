@@ -34,14 +34,14 @@ class EpisodeListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 13, bottom: 18, left: 18, right: 4),
+      padding: const EdgeInsets.only(top: 12, bottom: 12, left: 18, right: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Thumbnail(episode: episode, podcast: podcast),
           Expanded(
             child: Transform.translate(
-              offset: const Offset(0, -1),
+              offset: const Offset(0, -2),
               child: Container(
                 padding: const EdgeInsets.only(left: 12),
                 child: Column(
@@ -51,7 +51,7 @@ class EpisodeListItem extends StatelessWidget {
                   children: <Widget>[
                     _buildDetails(context),
                     Container(
-                      transform: Matrix4.translationValues(0, -2, 0),
+                      transform: Matrix4.translationValues(0, -1, 0),
                       padding: const EdgeInsets.only(right: 16.0),
                       child: Text(
                         episode.summary
@@ -85,7 +85,7 @@ class EpisodeListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(bottom: 4),
+                padding: const EdgeInsets.only(bottom: 6),
                 child: Text(
                   episode.title,
                   style: Theme.of(context).textTheme.headline6,
@@ -105,12 +105,15 @@ class EpisodeListItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Icon(
-                          MdiIcons.checkUnderlineCircle,
-                          size: 14,
-                          color: TWColors.blue.shade700,
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 0),
+                          child: Icon(
+                            MdiIcons.checkUnderlineCircle,
+                            size: 15,
+                            color: TWColors.blue.shade700,
+                          ),
                         ),
-                        Container(width: 10),
+                        Container(width: 12),
                         Expanded(child: _episodeInfo(context)),
                       ],
                     );
@@ -118,7 +121,7 @@ class EpisodeListItem extends StatelessWidget {
                   return _episodeDownloadInfo(context, snapshot.data);
                 },
               ),
-              Container(height: 6),
+              Container(height: 5),
             ],
           ),
         ),
@@ -159,11 +162,17 @@ class EpisodeListItem extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .subtitle2
-            .copyWith(color: Colors.grey.shade900),
+            .copyWith(fontSize: 12.5, color: Colors.grey.shade900),
         children: <TextSpan>[
           // Episode number and type
           if (type == EpisodeListItemType.podcastItem && text != null) ...[
-            TextSpan(text: text),
+            TextSpan(
+              text: text,
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle2
+                  .copyWith(fontSize: 12, color: Colors.grey.shade900),
+            ),
             TextSpan(text: '  ·  '),
           ],
           // Episode pub date
@@ -199,7 +208,7 @@ class EpisodeListItem extends StatelessWidget {
       style: Theme.of(context)
           .textTheme
           .subtitle2
-          .copyWith(color: TWColors.blue.shade700),
+          .copyWith(fontSize: 12.5, color: TWColors.blue.shade700),
     );
   }
 }

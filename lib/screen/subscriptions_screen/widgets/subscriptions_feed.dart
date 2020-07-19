@@ -115,14 +115,14 @@ class SubscriptionsFeed extends StatelessWidget {
     BuildContext context,
     SubscriptionsScreenData screenData,
   ) {
-    final thumbnailSize = 75.0;
-    final borderRadius = 8.0;
+    final thumbnailSize = getScreenHeight() < 850 ? 70.0 : 80.0;
+    final borderRadius = 6.0;
 
     return SliverToBoxAdapter(
       child: Container(
         width: getScreenWidth(),
         height: thumbnailSize,
-        margin: EdgeInsets.only(top: 10, bottom: 20),
+        margin: EdgeInsets.only(top: 10, bottom: 15),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
@@ -137,7 +137,7 @@ class SubscriptionsFeed extends StatelessWidget {
                     Provider.of<AppNavigationBloc>(context, listen: false)
                         .pushScreen(Screen.podcast(urlParam: podcast.urlParam)),
                 child: Container(
-                  margin: EdgeInsets.only(right: 8),
+                  margin: EdgeInsets.only(right: 10),
                   child: Container(
                     height: thumbnailSize,
                     width: thumbnailSize,

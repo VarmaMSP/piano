@@ -5,8 +5,8 @@ import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 // Package imports:
 import 'package:tailwind_colors/tailwind_colors.dart';
 
-class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
-  SubscriptionsHeaderDelegate({
+class LibraryHeaderDelegate implements SliverPersistentHeaderDelegate {
+  LibraryHeaderDelegate({
     @required this.forceElevated,
     this.scrollToTop,
   });
@@ -15,10 +15,10 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
   final void Function() scrollToTop;
 
   @override
-  double get maxExtent => 55.0;
+  double get maxExtent => 60.0;
 
   @override
-  double get minExtent => 55.0;
+  double get minExtent => 60.0;
 
   @override
   Widget build(
@@ -39,31 +39,16 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Expanded(
-            child: GestureDetector(
-              onTap: scrollToTop,
-              child: Text(
-                'Phenopod',
-                style: Theme.of(context).textTheme.headline4.copyWith(
-                      fontSize: 19,
-                      color: TWColors.purple.shade800,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.2,
-                    ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-          ),
-          Transform.translate(
-            offset: const Offset(15, 0),
-            child: IconButton(
-              icon: Icon(
-                Icons.search,
-                size: 24,
-                color: TWColors.gray.shade700,
-              ),
-              onPressed: () => Navigator.of(context, rootNavigator: true)
-                  .pushNamed('/search'),
+          GestureDetector(
+            onTap: scrollToTop,
+            child: Text(
+              'Phenopod',
+              style: Theme.of(context).textTheme.headline4.copyWith(
+                    color: TWColors.purple.shade700,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.8,
+                  ),
+              textAlign: TextAlign.left,
             ),
           ),
         ],
