@@ -1,9 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // Package imports:
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {

@@ -1,10 +1,12 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
-import 'package:phenopod/screen/queue_screen/widgets/queue_screen_menu.dart';
 
 // Package imports:
 import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
+import 'package:phenopod/screen/queue_screen/widgets/queue_screen_menu.dart';
 
 class QueueHeaderDelegate implements SliverPersistentHeaderDelegate {
   QueueHeaderDelegate({

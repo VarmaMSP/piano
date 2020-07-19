@@ -9,7 +9,6 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/queue_list_item/thumbnail.dart';
-
 import 'menu.dart';
 
 class DownloadListItem extends StatelessWidget {

@@ -1,7 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:phenopod/bloc/audio_player_bloc.dart';
+
+// Package imports:
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
+import 'package:phenopod/bloc/audio_player_bloc.dart';
 
 enum QueueScreenOptions {
   clearQueue,

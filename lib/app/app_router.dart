@@ -1,14 +1,14 @@
 // Flutter imports:
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:phenopod/screen/downloads_screen/download_screen.dart';
 
 // Project imports:
+import 'package:phenopod/animation/page_transition.dart';
+import 'package:phenopod/screen/downloads_screen/download_screen.dart';
 import 'package:phenopod/screen/home_screen/home_screen.dart';
 import 'package:phenopod/screen/library_screen/library_screen.dart';
 import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
 import 'package:phenopod/screen/subscriptions_screen/subscriptions_screen.dart';
-import 'package:phenopod/animation/page_transition.dart';
 
 Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
   return (RouteSettings settings) {

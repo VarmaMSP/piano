@@ -1,12 +1,16 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/widgets/download_list_item/download_list_item.dart';
-import 'package:provider/provider.dart';
-
 import 'widgets/dowloads_header_delegate.dart';
 
 class DownloadsScreen extends StatelessWidget {

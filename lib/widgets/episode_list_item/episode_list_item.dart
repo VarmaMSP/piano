@@ -4,13 +4,13 @@ import 'package:flutter/widgets.dart';
 
 // Package imports:
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:phenopod/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
+import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/episode_list_item/menu.dart';
 import 'thumbnail.dart';
 

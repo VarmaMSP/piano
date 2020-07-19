@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
+import 'package:phenopod/animation/page_transition.dart';
 import 'package:phenopod/app/app.dart';
 import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
@@ -20,7 +21,6 @@ import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/theme/theme.dart';
-import 'package:phenopod/animation/page_transition.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

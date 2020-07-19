@@ -1,8 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart' hide Tab;
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // Package imports:
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
