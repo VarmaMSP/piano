@@ -20,7 +20,7 @@ import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/theme/theme.dart';
-import 'package:phenopod/utils/page_transition.dart';
+import 'package:phenopod/animation/page_transition.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -155,7 +155,7 @@ class _RootState extends State<Root>
           onGenerateRoute: (settings) {
             switch (settings.name) {
               case '/app':
-                return ParallaxRoute(builder: (_) => App());
+                return SlideUpPageRoute(builder: (_) => App());
               case '/queue':
                 return SlideUpPageRoute(builder: (_) => QueueScreen());
               case '/search':
