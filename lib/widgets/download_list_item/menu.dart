@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:phenopod/store/store.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -29,8 +30,6 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
-
     return PopupMenuButton<AudioFileOption>(
       icon: Icon(
         Icons.more_vert,
@@ -67,7 +66,10 @@ class Menu extends StatelessWidget {
       onSelected: (option) {
         switch (option) {
           case AudioFileOption.playNext:
-            audioPlayerBloc.transitionQueue(
+            Provider.of<AudioPlayerBloc>(
+              context,
+              listen: false,
+            ).transitionQueue(
               QueueTransition.addToQueueTop(
                 audioTrack: AudioTrack(
                   episode: audioFile.episode,
@@ -78,7 +80,10 @@ class Menu extends StatelessWidget {
             break;
 
           case AudioFileOption.addToQueue:
-            audioPlayerBloc.transitionQueue(
+            Provider.of<AudioPlayerBloc>(
+              context,
+              listen: false,
+            ).transitionQueue(
               QueueTransition.addToQueueBottom(
                 audioTrack: AudioTrack(
                   episode: audioFile.episode,
@@ -89,15 +94,26 @@ class Menu extends StatelessWidget {
             break;
 
           case AudioFileOption.goToPodcast:
-            Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
+            Provider.of<AppNavigationBloc>(
+              context,
+              listen: false,
+            ).pushScreen(
               Screen.podcast(urlParam: audioFile.podcast.urlParam),
             );
             break;
 
           case AudioFileOption.cancelDownload:
+            Provider.of<Store>(
+              context,
+              listen: false,
+            ).audioFile.deleteByEpisode(audioFile.episode.id);
             break;
 
           case AudioFileOption.deleteFormDownloads:
+            Provider.of<Store>(
+              context,
+              listen: false,
+            ).audioFile.deleteByEpisode(audioFile.episode.id);
             break;
         }
       },

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/utils/file.dart';
 
 AudioFileStore newAudioFileStore(Api api, Db db) {
   return _AudioFileStoreImpl(api: api, db: db);
@@ -55,6 +56,12 @@ class _AudioFileStoreImpl extends AudioFileStore {
 
   @override
   Future<void> deleteByEpisode(String episodeId) async {
-    await db.audioFileDao.deleteByEpisode(episodeId);
+    final audioFile = await db.audioFileDao.watchFileByEpisode(episodeId).first;
+    if (audioFile != null) {
+      await Future.wait([
+        db.audioFileDao.deleteByEpisode(episodeId),
+        deleteFile(audioFile.filepath),
+      ]);
+    }
   }
 }

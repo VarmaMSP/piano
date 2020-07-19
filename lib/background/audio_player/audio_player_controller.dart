@@ -3,6 +3,7 @@ import 'dart:async';
 
 // Package imports:
 import 'package:audio_service/audio_service.dart' as audioservice;
+import 'package:phenopod/utils/file.dart';
 import 'package:rxdart/subjects.dart';
 
 // Project imports:
@@ -166,20 +167,31 @@ class AudioPlayerController {
     _nowPlayingSubject.stream
         .distinct((prev, next) => prev.episode.id == next.episode.id)
         .listen((audioTrack) async {
-      if (audioTrack != null) {
-        final playbackPos = await _store.playbackPosition
-            .watchByEpisode(audioTrack.episode.id)
-            .first;
-
-        final audioFile =
-            await _store.audioFile.watchByEpisode(audioTrack.episode.id).first;
-
-        await _audioPlayer.playMediaItem(
-          audioTrack.toMediaItem(filePath: audioFile?.filepath),
-          start: playbackPos?.position,
-          isFile: audioFile != null,
-        );
+      if (audioTrack == null) {
+        return;
       }
+
+      final episodeId = audioTrack.episode.id;
+      final audioFile = await _store.audioFile.watchByEpisode(episodeId).first;
+      final playbackPos =
+          await _store.playbackPosition.watchByEpisode(episodeId).first;
+
+      // Check if file is deleted on disk
+      if (audioFile != null && !await checkFileExists(audioFile.filepath)) {
+        await _store.audioFile.deleteByEpisode(episodeId);
+        await _audioPlayer.playMediaItem(
+          audioTrack.toMediaItem(),
+          start: playbackPos?.position,
+          isFile: false,
+        );
+        return;
+      }
+
+      await _audioPlayer.playMediaItem(
+        audioTrack.toMediaItem(filePath: audioFile?.filepath),
+        start: playbackPos?.position,
+        isFile: audioFile != null,
+      );
     });
   }
 }

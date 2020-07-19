@@ -81,3 +81,14 @@ String _getFileExtension(String url) {
   // Default to mp3
   return 'mp3';
 }
+
+Future<void> deleteFile(String filePath) async {
+  final file = File(filePath);
+  if (await file.exists()) {
+    await file.delete();
+  }
+}
+
+Future<bool> checkFileExists(String filePath) {
+  return File(filePath).exists();
+}
