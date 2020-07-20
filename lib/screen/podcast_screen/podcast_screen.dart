@@ -1,7 +1,7 @@
 // Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
-import 'package:phenopod/animation/page_transition.dart';
+import 'package:phenopod/page_route/route_transition_complete_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -55,9 +55,6 @@ class PodcastScreen extends HookWidget {
       dispose: (_, __) => null,
     );
 
-    final routeTransitionComplete =
-        Provider.of<RouteTransitionCompleteNotifier>(context).value;
-
     return StreamBuilder<PodcastScreenData>(
       stream: podcastScreenBloc.screenData,
       builder: (context, snapshot) {
@@ -75,7 +72,6 @@ class PodcastScreen extends HookWidget {
                   screenData: snapshot.data,
                   animation: podcastScreenAnimation,
                   forceElevated: innerBoxIsScrolled,
-                  showTabBar: routeTransitionComplete,
                   scrollToTop: () => nestedScrollViewKey
                       .currentState.outerController
                       .jumpTo(0.0),
@@ -89,18 +85,21 @@ class PodcastScreen extends HookWidget {
           innerScrollPositionKeyBuilder: () {
             return Key('Tab${tabController.index.toString()}');
           },
-          body: !routeTransitionComplete
-              ? Container(
-                  constraints: BoxConstraints.expand(),
-                  color: Colors.white,
-                )
-              : !snapshot.hasData
-                  ? _buildLoader()
-                  : _buildTabs(
-                      snapshot.data,
-                      podcastScreenBloc,
-                      tabController,
-                    ),
+          body: ValueListenableBuilder<bool>(
+            valueListenable:
+                Provider.of<RouteTransitionCompleteNotifier>(context),
+            child: !snapshot.hasData
+                ? _buildLoader()
+                : _buildTabs(snapshot.data, podcastScreenBloc, tabController),
+            builder: (context, routeTransitionComplete, child) {
+              return routeTransitionComplete
+                  ? child
+                  : Container(
+                      constraints: BoxConstraints.expand(),
+                      color: Colors.white,
+                    );
+            },
+          ),
         );
       },
     );

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:phenopod/animation/page_transition.dart';
+import 'package:phenopod/page_route/slide_left_page_route.dart';
 import 'package:phenopod/screen/downloads_screen/download_screen.dart';
 import 'package:phenopod/screen/home_screen/home_screen.dart';
 import 'package:phenopod/screen/library_screen/library_screen.dart';

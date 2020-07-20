@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 
 // Package imports:
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:phenopod/page_route/route_transition_complete_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -22,9 +23,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.author,
     @required this.screenData,
     @required this.animation,
-    @required this.scrollToTop,
     @required this.forceElevated,
-    @required this.showTabBar,
+    @required this.scrollToTop,
   });
 
   static const double appBarHeight = 60;
@@ -37,9 +37,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   final String author;
   final PodcastScreenData screenData;
   final PodcastScreenAnimation animation;
-  final Function scrollToTop;
-  final bool showTabBar;
   final bool forceElevated;
+  final Function scrollToTop;
 
   @override
   double get minExtent => appBarHeight + tabBarHeight;
@@ -81,13 +80,22 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             right: 0.0,
             child: _appBar(context),
           ),
-          if (showTabBar && screenData != null)
-            Positioned(
+          ValueListenableBuilder<bool>(
+            valueListenable: Provider.of<RouteTransitionCompleteNotifier>(
+              context,
+            ),
+            child: Positioned(
               bottom: 0.0,
               left: 0.0,
               right: 0.0,
               child: _tabBar(context),
             ),
+            builder: (context, routeTransitionComplete, child) {
+              return routeTransitionComplete && screenData != null
+                  ? child
+                  : Container();
+            },
+          ),
         ],
       ),
     );

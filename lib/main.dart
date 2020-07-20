@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:phenopod/animation/page_transition.dart';
+import 'package:phenopod/page_route/slide_up_page_route.dart';
 import 'package:phenopod/app/app.dart';
 import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
