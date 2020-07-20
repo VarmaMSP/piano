@@ -20,9 +20,9 @@ class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
   }
 
   Stream<List<Episode>> watchEpisodesByPodcastsPaginated({
-    List<String> podcastIds,
+    @required List<String> podcastIds,
     int offset = 0,
-    int limit,
+    @required int limit,
   }) {
     return (select(episodes)
           ..where((tbl) => tbl.podcastId.isIn(podcastIds))

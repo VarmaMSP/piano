@@ -12,7 +12,9 @@ part of 'task.dart';
 abstract class TaskType extends Equatable {
   const TaskType(this._type);
 
-  factory TaskType.cachePodcast({@required String urlParam}) = CachePodcast;
+  factory TaskType.cachePodcast(
+      {@required String podcastId,
+      @required String podcastUrlParam}) = CachePodcast;
 
   factory TaskType.downloadEpisode(
       {@required String episodeId,
@@ -125,14 +127,18 @@ abstract class TaskType extends Equatable {
 
 @immutable
 class CachePodcast extends TaskType {
-  const CachePodcast({@required this.urlParam}) : super(_TaskType.CachePodcast);
+  const CachePodcast({@required this.podcastId, @required this.podcastUrlParam})
+      : super(_TaskType.CachePodcast);
 
-  final String urlParam;
+  final String podcastId;
+
+  final String podcastUrlParam;
 
   @override
-  String toString() => 'CachePodcast(urlParam:${this.urlParam})';
+  String toString() =>
+      'CachePodcast(podcastId:${this.podcastId},podcastUrlParam:${this.podcastUrlParam})';
   @override
-  List get props => [urlParam];
+  List get props => [podcastId, podcastUrlParam];
 }
 
 @immutable

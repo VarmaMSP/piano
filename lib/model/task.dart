@@ -8,7 +8,8 @@ part 'task.g.dart';
 @superEnum
 enum _TaskType {
   @Data(fields: [
-    DataField<String>('urlParam'),
+    DataField<String>('podcastId'),
+    DataField<String>('podcastUrlParam'),
   ])
   CachePodcast,
   @Data(fields: [
@@ -84,7 +85,8 @@ TaskType taskTypeFromJson(Map<String, dynamic> json) {
   switch (key) {
     case _TaskType.CachePodcast:
       return TaskType.cachePodcast(
-        urlParam: json['url_param'],
+        podcastId: json['podcast_id'],
+        podcastUrlParam: json['podcast_url_param'],
       );
 
     case _TaskType.DownloadEpisode:
@@ -102,7 +104,8 @@ extension TaskTypeExtension on TaskType {
       cachePodcast: (data) {
         return {
           'key': _TaskType.CachePodcast.index,
-          'url_param': data.urlParam,
+          'podcast_id': data.podcastId,
+          'podcast_url_param': data.podcastUrlParam,
         };
       },
       downloadEpisode: (data) {

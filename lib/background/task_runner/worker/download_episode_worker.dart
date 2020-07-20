@@ -54,7 +54,7 @@ class DownloadEpisodeWorker extends Worker {
         return;
       }
     } finally {
-      await store.task.delete(taskId);
+      await markComplete();
     }
   }
 

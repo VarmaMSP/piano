@@ -19,4 +19,9 @@ abstract class Worker {
 
   // Execute the task
   Future<void> execute();
+
+  // For now just delete the task
+  Future<void> markComplete() async {
+    await store.task.delete(taskId);
+  }
 }

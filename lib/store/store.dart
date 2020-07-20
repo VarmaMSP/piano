@@ -18,6 +18,8 @@ Store newStore(Api api, Db db) {
 }
 
 abstract class Store {
+  Db get db;
+  Api get api;
   UserStore get user;
   PodcastStore get podcast;
   EpisodeStore get episode;
@@ -29,6 +31,8 @@ abstract class Store {
 }
 
 class _StoreImpl extends Store {
+  final Db _db;
+  final Api _api;
   final UserStore _user;
   final PodcastStore _podcast;
   final EpisodeStore _episode;
@@ -41,7 +45,9 @@ class _StoreImpl extends Store {
   _StoreImpl({
     @required Api api,
     @required Db db,
-  })  : _user = newUserStore(api, db),
+  })  : _db = db,
+        _api = api,
+        _user = newUserStore(api, db),
         _podcast = newPodcastStore(api, db),
         _episode = newEpisodeStore(api, db),
         _subscription = newSubscriptionStore(api, db),
@@ -49,6 +55,12 @@ class _StoreImpl extends Store {
         _playbackPosition = newPlaybackPositionStore(api, db),
         _task = newTaskStore(api, db),
         _audioFile = newAudioFileStore(api, db);
+
+  @override
+  Db get db => _db;
+
+  @override
+  Api get api => _api;
 
   @override
   AudioPlayerStore get audioPlayer => _audioPlayer;

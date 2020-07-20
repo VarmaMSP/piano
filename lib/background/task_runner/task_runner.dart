@@ -7,6 +7,8 @@ import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/store/store.dart';
 
+import 'worker/cache_podcast_worker.dart';
+
 Store store;
 bool _isRunning = false;
 
@@ -39,7 +41,12 @@ class TaskRunner {
       }
 
       final worker = task.taskType.when(
-        cachePodcast: (data) => null,
+        cachePodcast: (data) => CachePodcastWorker(
+          taskId: task.id,
+          store: store,
+          podcastId: data.podcastId,
+          podcastUrlParam: data.podcastUrlParam,
+        ),
         downloadEpisode: (data) => DownloadEpisodeWorker(
           taskId: task.id,
           store: store,
