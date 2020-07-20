@@ -1,6 +1,7 @@
 // Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
+import 'package:phenopod/animation/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -18,7 +19,6 @@ import 'widgets/podcast_header_delegate.dart';
 import 'package:flutter/material.dart'
     hide NestedScrollView, NestedScrollViewState;
 
-
 class PodcastScreen extends HookWidget {
   PodcastScreen({
     Key key,
@@ -33,10 +33,12 @@ class PodcastScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabController = useTabController(initialLength: 2);
-
     final podcastScreenAnimation = PodcastScreenAnimation(
       controller: useAnimationController(),
+    );
+
+    final tabController = useTabController(
+      initialLength: 2,
     );
 
     final podcastScreenBloc = useValue<PodcastScreenBloc>(
@@ -48,9 +50,13 @@ class PodcastScreen extends HookWidget {
       dispose: (_, value) => value.dispose(),
     );
 
-    final nestedScrollViewKey = useMemoized(
-      () => GlobalKey<NestedScrollViewState>(),
+    final nestedScrollViewKey = useValue(
+      create: (_) => GlobalKey<NestedScrollViewState>(),
+      dispose: (_, __) => null,
     );
+
+    final routeTransitionComplete =
+        Provider.of<RouteTransitionCompleteNotifier>(context).value;
 
     return StreamBuilder<PodcastScreenData>(
       stream: podcastScreenBloc.screenData,
@@ -69,6 +75,7 @@ class PodcastScreen extends HookWidget {
                   screenData: snapshot.data,
                   animation: podcastScreenAnimation,
                   forceElevated: innerBoxIsScrolled,
+                  showTabBar: routeTransitionComplete,
                   scrollToTop: () => nestedScrollViewKey
                       .currentState.outerController
                       .jumpTo(0.0),
@@ -82,46 +89,67 @@ class PodcastScreen extends HookWidget {
           innerScrollPositionKeyBuilder: () {
             return Key('Tab${tabController.index.toString()}');
           },
-          body: !snapshot.hasData
+          body: !routeTransitionComplete
               ? Container(
                   constraints: BoxConstraints.expand(),
-                  padding: EdgeInsets.only(bottom: 50),
                   color: Colors.white,
-                  child: Center(
-                    child: Container(
-                      height: 75,
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Center(
-                        child: Container(
-                          constraints: BoxConstraints.expand(
-                            width: 25,
-                            height: 25,
-                          ),
-                          child: CircularProgressIndicator(
-                            strokeWidth: 3,
-                            valueColor: AlwaysStoppedAnimation(
-                              TWColors.blue.shade600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 )
-              : TabBarView(
-                  controller: tabController,
-                  children: <Widget>[
-                    EpisodesTab(
-                      screenData: snapshot.data,
-                      loadMoreEpisodes: podcastScreenBloc.loadMoreEpisodes,
+              : !snapshot.hasData
+                  ? _buildLoader()
+                  : _buildTabs(
+                      snapshot.data,
+                      podcastScreenBloc,
+                      tabController,
                     ),
-                    AboutTab(
-                      screenData: snapshot.data,
-                    ),
-                  ],
-                ),
         );
       },
+    );
+  }
+
+  Widget _buildLoader() {
+    return Container(
+      constraints: BoxConstraints.expand(),
+      padding: EdgeInsets.only(bottom: 50),
+      color: Colors.white,
+      child: Center(
+        child: Container(
+          height: 75,
+          padding: EdgeInsets.only(bottom: 20),
+          child: Center(
+            child: Container(
+              constraints: BoxConstraints.expand(
+                width: 25,
+                height: 25,
+              ),
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+                valueColor: AlwaysStoppedAnimation(
+                  TWColors.blue.shade600,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabs(
+    PodcastScreenData screenData,
+    PodcastScreenBloc podcastScreenBloc,
+    TabController tabController,
+  ) {
+    return TabBarView(
+      controller: tabController,
+      children: <Widget>[
+        EpisodesTab(
+          screenData: screenData,
+          loadMoreEpisodes: podcastScreenBloc.loadMoreEpisodes,
+        ),
+        AboutTab(
+          screenData: screenData,
+        ),
+      ],
     );
   }
 }

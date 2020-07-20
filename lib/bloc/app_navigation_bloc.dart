@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
 
 // Package imports:
 import 'package:rxdart/subjects.dart';
@@ -19,7 +20,11 @@ enum Tab {
 
 @superEnum
 enum _Screen {
-  @Data(fields: [DataField<String>('urlParam')])
+  @Data(fields: [
+    DataField<String>('urlParam'),
+    DataField<String>('title'),
+    DataField<String>('author'),
+  ])
   Podcast,
   @object
   Downloads,
@@ -82,10 +87,20 @@ class AppNavigationBloc {
 
     // Push new route
     await screen.when(
-      podcast: (data) => navigator.currentState.pushNamed(
-        '/podcast',
-        arguments: {'urlParam': data.urlParam},
-      ),
+      podcast: (data) async {
+        final screen = await Future.microtask(
+          () => PodcastScreen(
+            urlParam: data.urlParam,
+            title: data.title,
+            author: data.author,
+          ),
+        );
+
+        await navigator.currentState.pushNamed(
+          '/podcast',
+          arguments: {'screen': screen},
+        );
+      },
       downloads: (data) => navigator.currentState.pushNamed(
         '/downloads',
         arguments: {},

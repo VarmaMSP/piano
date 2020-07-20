@@ -42,13 +42,14 @@ class EpisodesTab extends StatelessWidget {
                       : screenData.episodes.sublist(0, 15),
                 ),
               ),
-              _buildEpisodeList(
-                screenData.podcast,
-                screenData.episodes.length <= 15
-                    ? []
-                    : screenData.episodes.sublist(15),
-                screenData.receivedAllEpisodes,
-              ),
+              if (screenData.episodes.isNotEmpty)
+                _buildEpisodeList(
+                  screenData.podcast,
+                  screenData.episodes.length <= 15
+                      ? []
+                      : screenData.episodes.sublist(15),
+                  screenData.receivedAllEpisodes,
+                ),
             ],
           ),
         ),

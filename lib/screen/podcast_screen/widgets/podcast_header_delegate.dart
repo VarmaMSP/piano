@@ -24,6 +24,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.animation,
     @required this.scrollToTop,
     @required this.forceElevated,
+    @required this.showTabBar,
   });
 
   static const double appBarHeight = 60;
@@ -37,6 +38,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   final PodcastScreenData screenData;
   final PodcastScreenAnimation animation;
   final Function scrollToTop;
+  final bool showTabBar;
   final bool forceElevated;
 
   @override
@@ -79,7 +81,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             right: 0.0,
             child: _appBar(context),
           ),
-          if (screenData != null)
+          if (showTabBar && screenData != null)
             Positioned(
               bottom: 0.0,
               left: 0.0,

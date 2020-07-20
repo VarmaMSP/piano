@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SlideUpPageRoute extends MaterialPageRoute {
   SlideUpPageRoute({
@@ -16,26 +17,32 @@ class SlideUpPageRoute extends MaterialPageRoute {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    return SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(0, 1.0),
-        end: Offset.zero,
-      ).animate(
-        CurvedAnimation(
-          parent: animation,
-          curve: Interval(0.15, 1.0, curve: Curves.easeOut),
-        ),
+    final enter = Tween<Offset>(
+      begin: const Offset(0, 1.0),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: animation,
+        curve: Interval(0.15, 1.0, curve: Curves.easeOutExpo),
       ),
+    );
+
+    final enterSecondary = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(0, -0.05),
+    ).animate(
+      CurvedAnimation(
+        parent: secondaryAnimation,
+        curve: Interval(0.15, 1.0, curve: Curves.easeOut),
+      ),
+    );
+
+    return SlideTransition(
+      position: enter,
+      transformHitTests: false,
       child: SlideTransition(
-        position: Tween<Offset>(
-          begin: Offset.zero,
-          end: const Offset(0, -0.2),
-        ).animate(
-          CurvedAnimation(
-            parent: secondaryAnimation,
-            curve: Interval(0.15, 1.0, curve: Curves.linear),
-          ),
-        ),
+        position: enterSecondary,
+        transformHitTests: false,
         child: child,
       ),
     );
@@ -48,7 +55,10 @@ class SlideLeftPageRoute extends MaterialPageRoute {
   }) : super(builder: builder);
 
   @override
-  Duration get transitionDuration => Duration(milliseconds: 300);
+  Duration get transitionDuration => Duration(milliseconds: 260);
+
+  @override
+  Duration get reverseTransitionDuration => Duration(milliseconds: 260);
 
   @override
   Widget buildTransitions(
@@ -57,28 +67,51 @@ class SlideLeftPageRoute extends MaterialPageRoute {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    return SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(1.0, 0.0),
-        end: Offset.zero,
-      ).animate(
-        CurvedAnimation(
-          parent: animation,
-          curve: Interval(0.25, 1.0, curve: Curves.easeOut),
-        ),
-      ),
-      child: SlideTransition(
-        position: Tween<Offset>(
-          begin: Offset.zero,
-          end: const Offset(-0.15, 0.0),
-        ).animate(
-          CurvedAnimation(
-            parent: secondaryAnimation,
-            curve: Interval(0.25, 1.0, curve: Curves.linear),
-          ),
-        ),
-        child: child,
+    final enter = Tween<Offset>(
+      begin: const Offset(1.0, 0.0),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: animation,
+        curve: Interval(0.0, 1.0, curve: Curves.decelerate),
+        reverseCurve: Interval(0.0, 1.0, curve: Curves.decelerate.flipped),
       ),
     );
+
+    final enterSecondary = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(-0.25, 0.0),
+    ).animate(
+      CurvedAnimation(
+        parent: secondaryAnimation,
+        curve: Interval(0.0, 1.0, curve: Curves.easeOut),
+        reverseCurve: Interval(0.0, 1.0, curve: Curves.easeOut.flipped),
+      ),
+    );
+
+    return SlideTransition(
+      position: enter,
+      transformHitTests: false,
+      child: SlideTransition(
+        position: enterSecondary,
+        transformHitTests: false,
+        child: ChangeNotifierProvider(
+          create: (_) => RouteTransitionCompleteNotifier(animation),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
+class RouteTransitionCompleteNotifier extends ValueNotifier<bool> {
+  RouteTransitionCompleteNotifier(
+    Animation<double> pageAnimation,
+  ) : super(false) {
+    pageAnimation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        value = true;
+      }
+    });
   }
 }

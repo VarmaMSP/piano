@@ -35,8 +35,8 @@ class EpisodeListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: type == EpisodeListItemType.podcastItem
-          ? const EdgeInsets.only(top: 13, bottom: 13, left: 18, right: 4)
-          : const EdgeInsets.only(top: 17, bottom: 17, left: 18, right: 4),
+          ? const EdgeInsets.only(top: 14, bottom: 14, left: 18, right: 4)
+          : const EdgeInsets.only(top: 18, bottom: 18, left: 18, right: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

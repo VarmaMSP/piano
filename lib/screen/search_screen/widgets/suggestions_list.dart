@@ -49,7 +49,11 @@ class SuggestionsList extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () {
         Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
-          Screen.podcast(urlParam: suggestion.i),
+          Screen.podcast(
+            urlParam: suggestion.i,
+            title: suggestion.header,
+            author: suggestion.subHeader,
+          ),
         );
         Navigator.of(context, rootNavigator: true).pop();
       },

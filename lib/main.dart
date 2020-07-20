@@ -25,6 +25,8 @@ import 'package:phenopod/theme/theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  Provider.debugCheckInvalidValueType = null;
+
   final db = await newDb();
   final api = await newApi();
   final audioService = newAudioService();
@@ -112,11 +114,13 @@ class _RootState extends State<Root>
 
     return MultiProvider(
       providers: [
-        Provider<SqlDb>(
-          create: (_) => widget.sqlDb,
+        Provider.value(
+          value: widget.sqlDb,
+          updateShouldNotify: (_, __) => false,
         ),
-        Provider<Store>(
-          create: (_) => widget.store,
+        Provider.value(
+          value: widget.store,
+          updateShouldNotify: (_, __) => false,
         ),
         Provider<AppNavigationBloc>(
           create: (_) => AppNavigationBloc(

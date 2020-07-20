@@ -10,7 +10,6 @@ import 'widgets/library_header_delegate.dart';
 import 'package:flutter/material.dart'
     hide NestedScrollView, NestedScrollViewState;
 
-
 class LibraryScreen extends HookWidget {
   const LibraryScreen({Key key}) : super(key: key);
 
@@ -43,7 +42,12 @@ class LibraryScreen extends HookWidget {
               Provider.of<AppNavigationBloc>(context, listen: false)
                   .pushScreen(Screen.downloads());
             },
-            child: Container(child: Text('Downloads Page')),
+            behavior: HitTestBehavior.translucent,
+            child: Container(
+              height: 32,
+              color: Colors.grey.shade200,
+              child: Text('Downloads Page'),
+            ),
           )
         ],
       ),

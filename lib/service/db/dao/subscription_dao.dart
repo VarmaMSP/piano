@@ -8,7 +8,7 @@ class SubscriptionDao extends DatabaseAccessor<SqlDb>
   Future<void> saveSubscription(Subscription subscription) {
     return into(subscriptions).insert(
       subscriptionRowFromModel(subscription),
-      mode: InsertMode.insertOrReplace,
+      mode: InsertMode.insertOrIgnore,
     );
   }
 

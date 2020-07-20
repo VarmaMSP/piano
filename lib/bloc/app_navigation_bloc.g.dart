@@ -12,7 +12,10 @@ part of 'app_navigation_bloc.dart';
 abstract class Screen extends Equatable {
   const Screen(this._type);
 
-  factory Screen.podcast({@required String urlParam}) = Podcast;
+  factory Screen.podcast(
+      {@required String urlParam,
+      @required String title,
+      @required String author}) = Podcast;
 
   factory Screen.downloads() = Downloads;
 
@@ -122,14 +125,21 @@ abstract class Screen extends Equatable {
 
 @immutable
 class Podcast extends Screen {
-  const Podcast({@required this.urlParam}) : super(_Screen.Podcast);
+  const Podcast(
+      {@required this.urlParam, @required this.title, @required this.author})
+      : super(_Screen.Podcast);
 
   final String urlParam;
 
+  final String title;
+
+  final String author;
+
   @override
-  String toString() => 'Podcast(urlParam:${this.urlParam})';
+  String toString() =>
+      'Podcast(urlParam:${this.urlParam},title:${this.title},author:${this.author})';
   @override
-  List get props => [urlParam];
+  List get props => [urlParam, title, author];
 }
 
 @immutable

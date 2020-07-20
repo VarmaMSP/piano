@@ -94,11 +94,12 @@ class Menu extends StatelessWidget {
             break;
 
           case AudioFileOption.goToPodcast:
-            Provider.of<AppNavigationBloc>(
-              context,
-              listen: false,
-            ).pushScreen(
-              Screen.podcast(urlParam: audioFile.podcast.urlParam),
+            Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
+              Screen.podcast(
+                urlParam: audioFile.podcast.urlParam,
+                title: audioFile.podcast.title,
+                author: audioFile.podcast.author,
+              ),
             );
             break;
 

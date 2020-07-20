@@ -26,7 +26,10 @@ class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
                   podcast.cachedAllEpisodes != null && podcast.cachedAllEpisodes
                       ? Value(true)
                       : Value.absent(),
-              cacheUpdatedAt: Value(DateTime.now()),
+              cacheUpdatedAt:
+                  podcast.cachedAllEpisodes != null && podcast.cachedAllEpisodes
+                      ? Value(DateTime.now())
+                      : Value.absent(),
             ),
       ),
     );
@@ -36,12 +39,18 @@ class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
     String podcastId, {
     bool cachedAllEpisodes,
   }) async {
+    if (!cachedAllEpisodes) {
+      return;
+    }
+
     await (update(podcasts)..where((tbl) => tbl.id.equals(podcastId))).write(
       PodcastsCompanion(
         cachedAllEpisodes: cachedAllEpisodes != null && cachedAllEpisodes
             ? Value(true)
             : Value.absent(),
-        cacheUpdatedAt: Value(DateTime.now()),
+        cacheUpdatedAt: cachedAllEpisodes != null && cachedAllEpisodes
+            ? Value(DateTime.now())
+            : Value.absent(),
       ),
     );
   }
