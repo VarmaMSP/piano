@@ -122,7 +122,7 @@ class SubscriptionsFeed extends StatelessWidget {
       child: Container(
         width: getScreenWidth(),
         height: thumbnailSize,
-        margin: EdgeInsets.only(top: 10, bottom: 10),
+        margin: EdgeInsets.only(top: 20, bottom: 20),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {

@@ -19,7 +19,7 @@ class PodcastScreenAnimation {
         ).animate(
           CurvedAnimation(
             parent: controller,
-            curve: Interval(0.0, 0.95, curve: Curves.easeOutCubic),
+            curve: Interval(0.1, 0.95, curve: Curves.easeOutCubic),
           ),
         );
 

@@ -64,6 +64,7 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
                     size: 22,
                     color: TWColors.gray.shade700,
                   ),
+                  visualDensity: VisualDensity.comfortable,
                   onPressed: () => Navigator.of(context, rootNavigator: true)
                       .pushNamed('/search'),
                 ),
@@ -73,6 +74,7 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
                     size: 22,
                     color: TWColors.gray.shade700,
                   ),
+                  visualDensity: VisualDensity.comfortable,
                   onPressed: () => Navigator.of(context, rootNavigator: true)
                       .pushNamed('/search'),
                 ),

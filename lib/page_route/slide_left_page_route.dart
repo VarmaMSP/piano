@@ -28,8 +28,8 @@ class SlideLeftPageRoute extends MaterialPageRoute {
     ).animate(
       CurvedAnimation(
         parent: animation,
-        curve: Interval(0.0, 1.0, curve: Curves.decelerate),
-        reverseCurve: Interval(0.0, 1.0, curve: Curves.decelerate.flipped),
+        curve: Curves.decelerate,
+        reverseCurve: Curves.decelerate.flipped,
       ),
     );
 
@@ -39,8 +39,8 @@ class SlideLeftPageRoute extends MaterialPageRoute {
     ).animate(
       CurvedAnimation(
         parent: secondaryAnimation,
-        curve: Interval(0.0, 1.0, curve: Curves.easeOut),
-        reverseCurve: Interval(0.0, 1.0, curve: Curves.easeOut.flipped),
+        curve: Curves.easeOut,
+        reverseCurve: Curves.easeOut.flipped,
       ),
     );
 

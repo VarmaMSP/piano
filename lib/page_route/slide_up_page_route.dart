@@ -7,7 +7,7 @@ class SlideUpPageRoute extends MaterialPageRoute {
   }) : super(builder: builder);
 
   @override
-  Duration get transitionDuration => Duration(milliseconds: 300);
+  Duration get transitionDuration => Duration(milliseconds: 260);
 
   @override
   Widget buildTransitions(
@@ -20,20 +20,14 @@ class SlideUpPageRoute extends MaterialPageRoute {
       begin: const Offset(0, 1.0),
       end: Offset.zero,
     ).animate(
-      CurvedAnimation(
-        parent: animation,
-        curve: Interval(0.15, 1.0, curve: Curves.easeOutExpo),
-      ),
+      CurvedAnimation(parent: animation, curve: Curves.easeOutExpo),
     );
 
     final enterSecondary = Tween<Offset>(
       begin: Offset.zero,
       end: const Offset(0, -0.05),
     ).animate(
-      CurvedAnimation(
-        parent: secondaryAnimation,
-        curve: Interval(0.15, 1.0, curve: Curves.easeOut),
-      ),
+      CurvedAnimation(parent: secondaryAnimation, curve: Curves.easeOut),
     );
 
     return SlideTransition(

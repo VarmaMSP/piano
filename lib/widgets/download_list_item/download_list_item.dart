@@ -71,16 +71,16 @@ class DownloadListItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      '${formatDuration(seconds: audioFile.episode.duration)}',
-                      style: Theme.of(context).textTheme.subtitle2.copyWith(
-                          color: TWColors.gray.shade900, fontSize: 11.75),
-                    ),
-                    Container(width: 10),
                     Icon(
                       MdiIcons.checkUnderlineCircle,
                       size: 14,
                       color: TWColors.blue.shade700,
+                    ),
+                    Container(width: 10),
+                    Text(
+                      '${formatDuration(seconds: audioFile.episode.duration)}',
+                      style: Theme.of(context).textTheme.subtitle2.copyWith(
+                          color: TWColors.gray.shade900, fontSize: 11.75),
                     ),
                   ],
                 )
