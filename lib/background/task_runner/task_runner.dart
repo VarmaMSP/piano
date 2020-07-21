@@ -51,7 +51,8 @@ class TaskRunner {
           store: store,
           episodeId: data.episodeId,
           url: data.url,
-          filepath: data.filepath,
+          filename: data.filename,
+          storagePath: data.storagePath,
         ),
       );
 

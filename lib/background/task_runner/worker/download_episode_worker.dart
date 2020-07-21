@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 
 // Package imports:
 import 'package:dio/dio.dart';
+import 'package:path/path.dart';
+import 'package:phenopod/utils/file.dart' as fileutils;
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
@@ -14,7 +16,8 @@ import 'worker.dart';
 class DownloadEpisodeWorker extends Worker {
   final String episodeId;
   final String url;
-  final String filepath;
+  final String filename;
+  final String storagePath;
 
   final PublishSubject<Tuple2<int, int>> _progressUpdate =
       PublishSubject<Tuple2<int, int>>();
@@ -24,7 +27,8 @@ class DownloadEpisodeWorker extends Worker {
     @required Store store,
     @required this.episodeId,
     @required this.url,
-    @required this.filepath,
+    @required this.filename,
+    @required this.storagePath,
   }) : super(taskId: taskId, store: store) {
     _handleProgressUpdates();
   }
@@ -41,9 +45,10 @@ class DownloadEpisodeWorker extends Worker {
     final cancelToken = CancelToken();
 
     try {
+      await fileutils.createDirectory(storagePath);
       await dio.download(
         url,
-        filepath,
+        join(storagePath, filename),
         cancelToken: cancelToken,
         onReceiveProgress: (received, total) => _progressUpdate.add(
           Tuple2(received, total),
