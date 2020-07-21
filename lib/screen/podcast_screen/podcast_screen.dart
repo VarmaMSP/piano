@@ -1,7 +1,6 @@
 // Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
-import 'package:phenopod/page_route/route_transition_complete_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -10,6 +9,7 @@ import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/hook/use_value.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/page_route/route_transition_complete_notifier.dart';
 import 'package:phenopod/store/store.dart';
 import 'podcast_screen_bloc.dart';
 import 'widgets/about_tab.dart';

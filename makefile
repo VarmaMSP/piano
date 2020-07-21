@@ -29,6 +29,9 @@ get-release-key-hash:
 build-release-apk:
 	flutter build apk --target-platform=android-arm64
 
+flutter-clean: 
+	flutter clean
+
 repair-cache:
 	flutter pub cache repair
 	flutter clean

@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 
 // Package imports:
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:phenopod/page_route/route_transition_complete_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -13,6 +12,7 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/page_route/route_transition_complete_notifier.dart';
 import 'package:phenopod/utils/request.dart';
 
 class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
