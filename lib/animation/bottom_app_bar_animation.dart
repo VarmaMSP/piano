@@ -124,7 +124,7 @@ class BottomAppBarAnimation {
   void expandBottomAppBar() {
     controller.animateTo(
       1.0,
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 260),
       curve: Curves.linearToEaseOut,
     );
   }
@@ -132,7 +132,7 @@ class BottomAppBarAnimation {
   void collapseBottomAppBar() async {
     await controller.animateTo(
       controllerBeginValue,
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 260),
       curve: Curves.linearToEaseOut,
     );
 

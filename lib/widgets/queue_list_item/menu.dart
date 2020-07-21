@@ -88,8 +88,12 @@ class Menu extends StatelessWidget {
             break;
 
           case QueueOptions.goToPodcast:
+            final appNavigationBloc = Provider.of<AppNavigationBloc>(
+              context,
+              listen: false,
+            );
             Navigator.of(context, rootNavigator: true).pop();
-            Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
+            appNavigationBloc.pushScreen(
               Screen.podcast(
                 urlParam: audioTrack.podcast.urlParam,
                 title: audioTrack.podcast.title,

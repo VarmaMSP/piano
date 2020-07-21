@@ -6,13 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:phenopod/page_route/slide_up_page_route.dart';
 import 'package:phenopod/app/app.dart';
 import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/episode_actions_bloc.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/bloc/user_bloc.dart';
+import 'package:phenopod/page_route/slide_up_page_route.dart';
 import 'package:phenopod/screen/queue_screen/queue_screen.dart';
 import 'package:phenopod/screen/search_screen/search_screen.dart';
 import 'package:phenopod/service/alarm_service/alarm_service.dart';
@@ -24,8 +24,6 @@ import 'package:phenopod/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  Provider.debugCheckInvalidValueType = null;
 
   final db = await newDb();
   final api = await newApi();

@@ -48,14 +48,21 @@ class SuggestionsList extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
-          Screen.podcast(
-            urlParam: suggestion.i,
-            title: suggestion.header,
-            author: suggestion.subHeader,
-          ),
+        final appNavigationBloc = Provider.of<AppNavigationBloc>(
+          context,
+          listen: false,
         );
         Navigator.of(context, rootNavigator: true).pop();
+        Future.delayed(
+          Duration(milliseconds: 400),
+          () => appNavigationBloc.pushScreen(
+            Screen.podcast(
+              urlParam: suggestion.i,
+              title: suggestion.header,
+              author: suggestion.subHeader,
+            ),
+          ),
+        );
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),

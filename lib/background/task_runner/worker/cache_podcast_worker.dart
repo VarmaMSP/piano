@@ -1,6 +1,8 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:phenopod/store/store.dart';
 
+// Project imports:
+import 'package:phenopod/store/store.dart';
 import 'worker.dart';
 
 class CachePodcastWorker extends Worker {

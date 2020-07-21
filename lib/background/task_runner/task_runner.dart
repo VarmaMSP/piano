@@ -6,7 +6,6 @@ import 'package:phenopod/background/task_runner/worker/download_episode_worker.d
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/store/store.dart';
-
 import 'worker/cache_podcast_worker.dart';
 
 Store store;

@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
 
 // Package imports:
 import 'package:rxdart/subjects.dart';
@@ -8,6 +7,7 @@ import 'package:super_enum/super_enum.dart';
 
 // Project imports:
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
+import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
 import 'package:phenopod/utils/utils.dart';
 
 part 'app_navigation_bloc.g.dart';
@@ -79,10 +79,11 @@ class AppNavigationBloc {
     final currentTab = (await _tabHistorySubject.first).currentTab;
     final navigator = _tabNavigatorKeys[currentTab];
 
-    // Close audio player if open
+    // Close audio player if open and add small delay before proceeding
     if (_bottomAppBarAnimation != null &&
         _bottomAppBarAnimation.controller.value == 1.0) {
       _bottomAppBarAnimation.collapseBottomAppBar();
+      await Future.delayed(Duration(milliseconds: 400));
     }
 
     // Push new route
