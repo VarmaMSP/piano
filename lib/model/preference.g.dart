@@ -20,6 +20,16 @@ extension AudioPlayerSettingCopyWithExtension on AudioPlayerSetting {
   }
 }
 
+extension StorageSettingCopyWithExtension on StorageSetting {
+  StorageSetting copyWith({
+    Storage storage,
+  }) {
+    return StorageSetting(
+      storage: storage ?? this.storage,
+    );
+  }
+}
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -33,6 +43,10 @@ PreferenceValue _$PreferenceValueFromJson(Map<String, dynamic> json) {
         ? null
         : AudioPlayerSetting.fromJson(
             json['audio_player_setting'] as Map<String, dynamic>),
+    storageSetting: json['storage_setting'] == null
+        ? null
+        : StorageSetting.fromJson(
+            json['storage_setting'] as Map<String, dynamic>),
   );
 }
 
@@ -40,6 +54,7 @@ Map<String, dynamic> _$PreferenceValueToJson(PreferenceValue instance) =>
     <String, dynamic>{
       'queue_details': instance.queueDetails,
       'audio_player_setting': instance.audioPlayerSetting,
+      'storage_setting': instance.storageSetting,
     };
 
 QueueDetails _$QueueDetailsFromJson(Map<String, dynamic> json) {
@@ -65,3 +80,51 @@ Map<String, dynamic> _$AudioPlayerSettingToJson(AudioPlayerSetting instance) =>
       'seek_forward_time': instance.seekForwardTime,
       'seek_backward_time': instance.seekBackwardTime,
     };
+
+StorageSetting _$StorageSettingFromJson(Map<String, dynamic> json) {
+  return StorageSetting(
+    storage: _$enumDecodeNullable(_$StorageEnumMap, json['storage']),
+  );
+}
+
+Map<String, dynamic> _$StorageSettingToJson(StorageSetting instance) =>
+    <String, dynamic>{
+      'storage': _$StorageEnumMap[instance.storage],
+    };
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$StorageEnumMap = {
+  Storage.internalStorage: 'internalStorage',
+  Storage.externalStorage: 'externalStorage',
+};

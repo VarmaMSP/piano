@@ -21,9 +21,13 @@ class PreferenceValue {
   @JsonKey(nullable: true)
   final AudioPlayerSetting audioPlayerSetting;
 
+  @JsonKey(nullable: true)
+  final StorageSetting storageSetting;
+
   const PreferenceValue({
     this.queueDetails,
     this.audioPlayerSetting,
+    this.storageSetting,
   });
 
   factory PreferenceValue.fromJson(Map<String, dynamic> json) {
@@ -35,6 +39,7 @@ class PreferenceValue {
   }
 }
 
+//* QUEUE DETAILS *//
 /// Used to store queue preference in preferences table
 @JsonSerializable(fieldRename: FieldRename.snake)
 class QueueDetails extends Equatable {
@@ -63,7 +68,7 @@ class QueueDetails extends Equatable {
   List<Object> get props => [position];
 }
 
-// Value for audio player settings
+//* AUDIO PLAYER SETTING *//
 @CopyWith()
 @JsonSerializable(fieldRename: FieldRename.snake)
 class AudioPlayerSetting extends Equatable {
@@ -94,4 +99,36 @@ class AudioPlayerSetting extends Equatable {
 
   @override
   List<Object> get props => [seekForwardTime, seekBackwardTime];
+}
+
+enum Storage {
+  internalStorage,
+  externalStorage,
+}
+
+//* STORAGE SETTING *//
+@CopyWith()
+@JsonSerializable(fieldRename: FieldRename.snake)
+class StorageSetting extends Equatable {
+  static const String key = 'STORAGE_SETTING';
+
+  // Storage location for audio files
+  final Storage storage;
+
+  StorageSetting({this.storage});
+
+  factory StorageSetting.standard() {
+    return StorageSetting(storage: Storage.internalStorage);
+  }
+
+  factory StorageSetting.fromJson(Map<String, dynamic> json) {
+    return _$StorageSettingFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$StorageSettingToJson(this);
+  }
+
+  @override
+  List<Object> get props => [storage];
 }
