@@ -5,95 +5,60 @@
 part of 'preference.dart';
 
 // **************************************************************************
-// CopyWithGenerator
-// **************************************************************************
-
-extension AudioPlayerSettingCopyWithExtension on AudioPlayerSetting {
-  AudioPlayerSetting copyWith({
-    int seekBackwardTime,
-    int seekForwardTime,
-  }) {
-    return AudioPlayerSetting(
-      seekBackwardTime: seekBackwardTime ?? this.seekBackwardTime,
-      seekForwardTime: seekForwardTime ?? this.seekForwardTime,
-    );
-  }
-}
-
-extension StorageSettingCopyWithExtension on StorageSetting {
-  StorageSetting copyWith({
-    Storage storage,
-    String storagePath,
-  }) {
-    return StorageSetting(
-      storage: storage ?? this.storage,
-      storagePath: storagePath ?? this.storagePath,
-    );
-  }
-}
-
-// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PreferenceValue _$PreferenceValueFromJson(Map<String, dynamic> json) {
-  return PreferenceValue(
-    queueDetails: json['queue_details'] == null
-        ? null
-        : QueueDetails.fromJson(json['queue_details'] as Map<String, dynamic>),
-    audioPlayerSetting: json['audio_player_setting'] == null
-        ? null
-        : AudioPlayerSetting.fromJson(
-            json['audio_player_setting'] as Map<String, dynamic>),
-    storageSetting: json['storage_setting'] == null
-        ? null
-        : StorageSetting.fromJson(
-            json['storage_setting'] as Map<String, dynamic>),
-  );
-}
-
-Map<String, dynamic> _$PreferenceValueToJson(PreferenceValue instance) =>
-    <String, dynamic>{
-      'queue_details': instance.queueDetails,
-      'audio_player_setting': instance.audioPlayerSetting,
-      'storage_setting': instance.storageSetting,
-    };
-
-QueueDetails _$QueueDetailsFromJson(Map<String, dynamic> json) {
-  return QueueDetails(
+_$QueueDetails _$_$QueueDetailsFromJson(Map<String, dynamic> json) {
+  return _$QueueDetails(
     position: json['position'] as int,
   );
 }
 
-Map<String, dynamic> _$QueueDetailsToJson(QueueDetails instance) =>
+Map<String, dynamic> _$_$QueueDetailsToJson(_$QueueDetails instance) =>
     <String, dynamic>{
       'position': instance.position,
     };
 
-AudioPlayerSetting _$AudioPlayerSettingFromJson(Map<String, dynamic> json) {
-  return AudioPlayerSetting(
-    seekForwardTime: json['seek_forward_time'] as int,
-    seekBackwardTime: json['seek_backward_time'] as int,
+_$SubscriptionsRefreshDetails _$_$SubscriptionsRefreshDetailsFromJson(
+    Map<String, dynamic> json) {
+  return _$SubscriptionsRefreshDetails(
+    lastRefreshedAt: json['lastRefreshedAt'] == null
+        ? null
+        : DateTime.parse(json['lastRefreshedAt'] as String),
   );
 }
 
-Map<String, dynamic> _$AudioPlayerSettingToJson(AudioPlayerSetting instance) =>
+Map<String, dynamic> _$_$SubscriptionsRefreshDetailsToJson(
+        _$SubscriptionsRefreshDetails instance) =>
     <String, dynamic>{
-      'seek_forward_time': instance.seekForwardTime,
-      'seek_backward_time': instance.seekBackwardTime,
+      'lastRefreshedAt': instance.lastRefreshedAt?.toIso8601String(),
     };
 
-StorageSetting _$StorageSettingFromJson(Map<String, dynamic> json) {
-  return StorageSetting(
-    storage: _$enumDecodeNullable(_$StorageEnumMap, json['storage']),
-    storagePath: json['storage_path'] as String,
+_$AudioPlayerSetting _$_$AudioPlayerSettingFromJson(Map<String, dynamic> json) {
+  return _$AudioPlayerSetting(
+    seekForwardTime: json['seekForwardTime'] as int,
+    seekBackwardTime: json['seekBackwardTime'] as int,
   );
 }
 
-Map<String, dynamic> _$StorageSettingToJson(StorageSetting instance) =>
+Map<String, dynamic> _$_$AudioPlayerSettingToJson(
+        _$AudioPlayerSetting instance) =>
+    <String, dynamic>{
+      'seekForwardTime': instance.seekForwardTime,
+      'seekBackwardTime': instance.seekBackwardTime,
+    };
+
+_$StorageSetting _$_$StorageSettingFromJson(Map<String, dynamic> json) {
+  return _$StorageSetting(
+    storage: _$enumDecodeNullable(_$StorageEnumMap, json['storage']),
+    storagePath: json['storagePath'] as String,
+  );
+}
+
+Map<String, dynamic> _$_$StorageSettingToJson(_$StorageSetting instance) =>
     <String, dynamic>{
       'storage': _$StorageEnumMap[instance.storage],
-      'storage_path': instance.storagePath,
+      'storagePath': instance.storagePath,
     };
 
 T _$enumDecode<T>(

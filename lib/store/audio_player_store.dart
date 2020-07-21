@@ -15,7 +15,6 @@ AudioPlayerStore newAudioPlayerStore(Api api, Db db) {
 
 abstract class AudioPlayerStore {
   Future<void> saveQueue(Queue queue);
-  Future<void> saveSetting(AudioPlayerSetting setting);
   Stream<Queue> watchQueue();
   Stream<AudioTrack> watchNowPlaying();
 }
@@ -23,6 +22,8 @@ abstract class AudioPlayerStore {
 class _AudioPlayerStoreImpl extends AudioPlayerStore {
   final Api api;
   final Db db;
+
+  final String _queueDetailsKey = 'QUEUE_DETAILS';
 
   _AudioPlayerStoreImpl({
     @required this.api,
@@ -35,8 +36,10 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
       await db.transaction(() async {
         await db.audioTrackDao.deleteAllTracks();
         await db.preferenceDao.savePreference(
-          key: QueueDetails.key,
-          value: PreferenceValue(queueDetails: QueueDetails.fromQueue(queue)),
+          Preference(
+            key: _queueDetailsKey,
+            value: QueueDetails(position: queue.position),
+          ),
         );
       });
       return;
@@ -50,26 +53,20 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
       await db.audioTrackDao.saveTracks(queue.audioTracks);
       await db.audioTrackDao.deleteTracksNotInQueue(queue.audioTracks.length);
       await db.preferenceDao.savePreference(
-        key: QueueDetails.key,
-        value: PreferenceValue(queueDetails: QueueDetails.fromQueue(queue)),
+        Preference(
+          key: _queueDetailsKey,
+          value: QueueDetails(position: queue.position),
+        ),
       );
     });
-  }
-
-  @override
-  Future<void> saveSetting(AudioPlayerSetting setting) async {
-    await db.preferenceDao.savePreference(
-      key: AudioPlayerSetting.key,
-      value: PreferenceValue(audioPlayerSetting: setting),
-    );
   }
 
   @override
   Stream<Queue> watchQueue() {
     return Rx.combineLatest2<QueueDetails, List<AudioTrack>, Queue>(
       db.preferenceDao
-          .watchPreference(QueueDetails.key)
-          .map((value) => value?.queueDetails),
+          .watchPreferenceByKey(_queueDetailsKey)
+          .map((value) => value?.value),
       db.audioTrackDao.watchAllTracks(),
       (details, tracks) {
         // Return default if you cannot find details
@@ -80,7 +77,6 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
         if (details.position < 0 || details.position >= tracks.length) {
           return Queue.empty();
         }
-
         return Queue(audioTracks: tracks, position: details.position);
       },
     );
@@ -88,12 +84,12 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
 
   @override
   Stream<AudioTrack> watchNowPlaying() {
-    return db.preferenceDao.watchPreference(QueueDetails.key).asyncMap(
+    return db.preferenceDao.watchPreferenceByKey(_queueDetailsKey).asyncMap(
       (pref) {
-        final details = pref?.queueDetails;
-        return details != null
-            ? db.audioTrackDao.getTrackByPosition(details.position)
-            : Future.value(null);
+        final details = pref?.value as QueueDetails;
+        return details == null
+            ? null
+            : db.audioTrackDao.getTrackByPosition(details.position);
       },
     );
   }

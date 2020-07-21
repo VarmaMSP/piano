@@ -18,6 +18,19 @@ class _SettingStoreImpl extends SettingStore {
   final Api api;
   final Db db;
 
+  final String _storageSettingKey = 'STORAGE_SETTING';
+  final String _audioPlayerSettingKey = 'AUDIO_PLAYER_SETTING';
+
+  // Default Settings
+  final StorageSetting defaultStorageSetting = StorageSetting(
+    storage: Storage.none,
+    storagePath: '',
+  );
+  final AudioPlayerSetting defaultAudioPlayerSetting = AudioPlayerSetting(
+    seekBackwardTime: 30,
+    seekForwardTime: 30,
+  );
+
   _SettingStoreImpl({
     @required this.api,
     @required this.db,
@@ -26,8 +39,10 @@ class _SettingStoreImpl extends SettingStore {
   @override
   Future<void> saveStorageSetting(StorageSetting storageSetting) async {
     await db.preferenceDao.savePreference(
-      key: StorageSetting.key,
-      value: PreferenceValue(storageSetting: storageSetting),
+      Preference(
+        key: _storageSettingKey,
+        value: storageSetting,
+      ),
     );
   }
 
@@ -36,22 +51,24 @@ class _SettingStoreImpl extends SettingStore {
     AudioPlayerSetting audioPlayerSetting,
   ) async {
     await db.preferenceDao.savePreference(
-      key: AudioPlayerSetting.key,
-      value: PreferenceValue(audioPlayerSetting: audioPlayerSetting),
+      Preference(
+        key: _audioPlayerSettingKey,
+        value: audioPlayerSetting,
+      ),
     );
-  }
-
-  @override
-  Stream<AudioPlayerSetting> watchAudioPlayerSetting() {
-    return db.preferenceDao
-        .watchPreference(AudioPlayerSetting.key)
-        .map((x) => x?.audioPlayerSetting ?? AudioPlayerSetting.standard());
   }
 
   @override
   Stream<StorageSetting> watchStorageSetting() {
     return db.preferenceDao
-        .watchPreference(StorageSetting.key)
-        .map((x) => x?.storageSetting ?? StorageSetting.standard());
+        .watchPreferenceByKey(_audioPlayerSettingKey)
+        .map((x) => x?.value ?? defaultStorageSetting);
+  }
+
+  @override
+  Stream<AudioPlayerSetting> watchAudioPlayerSetting() {
+    return db.preferenceDao
+        .watchPreferenceByKey(_storageSettingKey)
+        .map((x) => x?.value ?? defaultAudioPlayerSetting);
   }
 }

@@ -4,17 +4,17 @@ part of '../db.dart';
 class PreferenceDao extends DatabaseAccessor<SqlDb> with _$PreferenceDaoMixin {
   PreferenceDao(SqlDb db) : super(db);
 
-  Future<void> savePreference({String key, PreferenceValue value}) async {
+  Future<void> savePreference(Preference preference) async {
     await into(preferences).insert(
-      PreferenceRow(key: key, value: value),
+      preferenceRowFromModel(preference),
       mode: InsertMode.insertOrReplace,
     );
   }
 
-  Stream<PreferenceValue> watchPreference(String key) {
+  Stream<Preference> watchPreferenceByKey(String key) {
     return (select(preferences)..where((tbl) => tbl.key.equals(key)))
         .watchSingle()
-        .map((x) => x?.value);
+        .map((x) => x?.toModel());
   }
 
   Future<void> deletePreference(String key) async {

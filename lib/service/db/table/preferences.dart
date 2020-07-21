@@ -16,13 +16,29 @@ class PreferenceValueTypeConverter
 
   @override
   PreferenceValue mapToDart(String fromDb) {
-    return fromDb != null
-        ? PreferenceValue.fromJson(json.decode(fromDb) as Map<String, dynamic>)
-        : null;
+    return PreferenceValue.fromJson(
+      json.decode(fromDb) as Map<String, dynamic>,
+    );
   }
 
   @override
   String mapToSql(PreferenceValue value) {
-    return value != null ? json.encode(value.toJson()) : null;
+    return json.encode(value.toJson());
+  }
+}
+
+PreferenceRow preferenceRowFromModel(Preference model) {
+  return PreferenceRow(
+    key: model.key,
+    value: model.value,
+  );
+}
+
+extension PreferenceRowExtension on PreferenceRow {
+  Preference toModel() {
+    return Preference(
+      key: key,
+      value: value,
+    );
   }
 }
