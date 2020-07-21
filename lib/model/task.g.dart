@@ -5,163 +5,35 @@
 part of 'task.dart';
 
 // **************************************************************************
-// SuperEnumGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-@immutable
-abstract class TaskType extends Equatable {
-  const TaskType(this._type);
-
-  factory TaskType.cachePodcast(
-      {@required String podcastId,
-      @required String podcastUrlParam}) = CachePodcast;
-
-  factory TaskType.downloadEpisode(
-      {@required String episodeId,
-      @required String url,
-      @required String filename,
-      @required String storagePath}) = DownloadEpisode;
-
-  final _TaskType _type;
-
-//ignore: missing_return
-  R when<R>(
-      {@required R Function(CachePodcast) cachePodcast,
-      @required R Function(DownloadEpisode) downloadEpisode}) {
-    assert(() {
-      if (cachePodcast == null || downloadEpisode == null) {
-        throw 'check for all possible cases';
-      }
-      return true;
-    }());
-    switch (this._type) {
-      case _TaskType.CachePodcast:
-        return cachePodcast(this as CachePodcast);
-      case _TaskType.DownloadEpisode:
-        return downloadEpisode(this as DownloadEpisode);
-    }
-  }
-
-//ignore: missing_return
-  Future<R> asyncWhen<R>(
-      {@required FutureOr<R> Function(CachePodcast) cachePodcast,
-      @required FutureOr<R> Function(DownloadEpisode) downloadEpisode}) {
-    assert(() {
-      if (cachePodcast == null || downloadEpisode == null) {
-        throw 'check for all possible cases';
-      }
-      return true;
-    }());
-    switch (this._type) {
-      case _TaskType.CachePodcast:
-        return cachePodcast(this as CachePodcast);
-      case _TaskType.DownloadEpisode:
-        return downloadEpisode(this as DownloadEpisode);
-    }
-  }
-
-  R whenOrElse<R>(
-      {R Function(CachePodcast) cachePodcast,
-      R Function(DownloadEpisode) downloadEpisode,
-      @required R Function(TaskType) orElse}) {
-    assert(() {
-      if (orElse == null) {
-        throw 'Missing orElse case';
-      }
-      return true;
-    }());
-    switch (this._type) {
-      case _TaskType.CachePodcast:
-        if (cachePodcast == null) break;
-        return cachePodcast(this as CachePodcast);
-      case _TaskType.DownloadEpisode:
-        if (downloadEpisode == null) break;
-        return downloadEpisode(this as DownloadEpisode);
-    }
-    return orElse(this);
-  }
-
-  Future<R> asyncWhenOrElse<R>(
-      {FutureOr<R> Function(CachePodcast) cachePodcast,
-      FutureOr<R> Function(DownloadEpisode) downloadEpisode,
-      @required FutureOr<R> Function(TaskType) orElse}) {
-    assert(() {
-      if (orElse == null) {
-        throw 'Missing orElse case';
-      }
-      return true;
-    }());
-    switch (this._type) {
-      case _TaskType.CachePodcast:
-        if (cachePodcast == null) break;
-        return cachePodcast(this as CachePodcast);
-      case _TaskType.DownloadEpisode:
-        if (downloadEpisode == null) break;
-        return downloadEpisode(this as DownloadEpisode);
-    }
-    return orElse(this);
-  }
-
-//ignore: missing_return
-  Future<void> whenPartial(
-      {FutureOr<void> Function(CachePodcast) cachePodcast,
-      FutureOr<void> Function(DownloadEpisode) downloadEpisode}) {
-    assert(() {
-      if (cachePodcast == null && downloadEpisode == null) {
-        throw 'provide at least one branch';
-      }
-      return true;
-    }());
-    switch (this._type) {
-      case _TaskType.CachePodcast:
-        if (cachePodcast == null) break;
-        return cachePodcast(this as CachePodcast);
-      case _TaskType.DownloadEpisode:
-        if (downloadEpisode == null) break;
-        return downloadEpisode(this as DownloadEpisode);
-    }
-  }
-
-  @override
-  List get props => const [];
+_$_CachePodcast _$_$_CachePodcastFromJson(Map<String, dynamic> json) {
+  return _$_CachePodcast(
+    podcastId: json['podcastId'] as String,
+    podcastUrlParam: json['podcastUrlParam'] as String,
+  );
 }
 
-@immutable
-class CachePodcast extends TaskType {
-  const CachePodcast({@required this.podcastId, @required this.podcastUrlParam})
-      : super(_TaskType.CachePodcast);
+Map<String, dynamic> _$_$_CachePodcastToJson(_$_CachePodcast instance) =>
+    <String, dynamic>{
+      'podcastId': instance.podcastId,
+      'podcastUrlParam': instance.podcastUrlParam,
+    };
 
-  final String podcastId;
-
-  final String podcastUrlParam;
-
-  @override
-  String toString() =>
-      'CachePodcast(podcastId:${this.podcastId},podcastUrlParam:${this.podcastUrlParam})';
-  @override
-  List get props => [podcastId, podcastUrlParam];
+_$_DownloadEpisode _$_$_DownloadEpisodeFromJson(Map<String, dynamic> json) {
+  return _$_DownloadEpisode(
+    episodeId: json['episodeId'] as String,
+    url: json['url'] as String,
+    filename: json['filename'] as String,
+    storagePath: json['storagePath'] as String,
+  );
 }
 
-@immutable
-class DownloadEpisode extends TaskType {
-  const DownloadEpisode(
-      {@required this.episodeId,
-      @required this.url,
-      @required this.filename,
-      @required this.storagePath})
-      : super(_TaskType.DownloadEpisode);
-
-  final String episodeId;
-
-  final String url;
-
-  final String filename;
-
-  final String storagePath;
-
-  @override
-  String toString() =>
-      'DownloadEpisode(episodeId:${this.episodeId},url:${this.url},filename:${this.filename},storagePath:${this.storagePath})';
-  @override
-  List get props => [episodeId, url, filename, storagePath];
-}
+Map<String, dynamic> _$_$_DownloadEpisodeToJson(_$_DownloadEpisode instance) =>
+    <String, dynamic>{
+      'episodeId': instance.episodeId,
+      'url': instance.url,
+      'filename': instance.filename,
+      'storagePath': instance.storagePath,
+    };

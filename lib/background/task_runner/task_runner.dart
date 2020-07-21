@@ -39,7 +39,7 @@ class TaskRunner {
         return;
       }
 
-      final worker = task.taskType.when(
+      final worker = task.taskType.map(
         cachePodcast: (data) => CachePodcastWorker(
           taskId: task.id,
           store: store,

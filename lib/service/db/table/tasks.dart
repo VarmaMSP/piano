@@ -19,7 +19,7 @@ class TaskTypeConverter extends TypeConverter<TaskType, String> {
 
   @override
   TaskType mapToDart(String fromDb) {
-    return taskTypeFromJson(json.decode(fromDb) as Map<String, dynamic>);
+    return TaskType.fromJson(json.decode(fromDb) as Map<String, dynamic>);
   }
 
   @override

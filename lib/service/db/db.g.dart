@@ -2706,7 +2706,7 @@ class $SubscriptionFiltersTable extends SubscriptionFilters
 
 class TaskRow extends DataClass implements Insertable<TaskRow> {
   final int id;
-  final dynamic taskType;
+  final TaskType taskType;
   final TaskStatus taskStatus;
   final TaskPriority taskPriority;
   final bool canRetry;
@@ -2802,7 +2802,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return TaskRow(
       id: serializer.fromJson<int>(json['id']),
-      taskType: serializer.fromJson<dynamic>(json['taskType']),
+      taskType: serializer.fromJson<TaskType>(json['taskType']),
       taskStatus: serializer.fromJson<TaskStatus>(json['taskStatus']),
       taskPriority: serializer.fromJson<TaskPriority>(json['taskPriority']),
       canRetry: serializer.fromJson<bool>(json['canRetry']),
@@ -2815,7 +2815,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'taskType': serializer.toJson<dynamic>(taskType),
+      'taskType': serializer.toJson<TaskType>(taskType),
       'taskStatus': serializer.toJson<TaskStatus>(taskStatus),
       'taskPriority': serializer.toJson<TaskPriority>(taskPriority),
       'canRetry': serializer.toJson<bool>(canRetry),
@@ -2826,7 +2826,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
 
   TaskRow copyWith(
           {int id,
-          dynamic taskType,
+          TaskType taskType,
           TaskStatus taskStatus,
           TaskPriority taskPriority,
           bool canRetry,
@@ -2881,7 +2881,7 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
 
 class TasksCompanion extends UpdateCompanion<TaskRow> {
   final Value<int> id;
-  final Value<dynamic> taskType;
+  final Value<TaskType> taskType;
   final Value<TaskStatus> taskStatus;
   final Value<TaskPriority> taskPriority;
   final Value<bool> canRetry;
@@ -2898,7 +2898,7 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
   });
   TasksCompanion.insert({
     this.id = const Value.absent(),
-    @required dynamic taskType,
+    @required TaskType taskType,
     @required TaskStatus taskStatus,
     @required TaskPriority taskPriority,
     @required bool canRetry,
@@ -2932,7 +2932,7 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
 
   TasksCompanion copyWith(
       {Value<int> id,
-      Value<dynamic> taskType,
+      Value<TaskType> taskType,
       Value<TaskStatus> taskStatus,
       Value<TaskPriority> taskPriority,
       Value<bool> canRetry,
@@ -3122,7 +3122,7 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
     return $TasksTable(_db, alias);
   }
 
-  static TypeConverter<dynamic, String> $converter0 = TaskTypeConverter();
+  static TypeConverter<TaskType, String> $converter0 = TaskTypeConverter();
   static TypeConverter<TaskStatus, int> $converter1 = TaskStatusConverter();
   static TypeConverter<TaskPriority, int> $converter2 = TaskPriorityConverter();
 }

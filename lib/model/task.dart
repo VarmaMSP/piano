@@ -1,25 +1,9 @@
-// Package imports:
-import 'package:equatable/equatable.dart';
-import 'package:super_enum/super_enum.dart';
+// main.dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
+part 'task.freezed.dart';
 part 'task.g.dart';
-
-//! DO NOT CHANGE THE ORDER
-@superEnum
-enum _TaskType {
-  @Data(fields: [
-    DataField<String>('podcastId'),
-    DataField<String>('podcastUrlParam'),
-  ])
-  CachePodcast,
-  @Data(fields: [
-    DataField<String>('episodeId'),
-    DataField<String>('url'),
-    DataField<String>('filename'),
-    DataField<String>('storagePath'),
-  ])
-  DownloadEpisode,
-}
 
 //! DO NOT CHANGE THE ORDER
 enum TaskStatus {
@@ -45,6 +29,24 @@ enum TaskPriority {
 
   /// Yet to be decided
   low,
+}
+
+@freezed
+abstract class TaskType with _$TaskType {
+  const factory TaskType.cachePodcast({
+    @required String podcastId,
+    @required String podcastUrlParam,
+  }) = _CachePodcast;
+
+  const factory TaskType.downloadEpisode({
+    @required String episodeId,
+    @required String url,
+    @required String filename,
+    @required String storagePath,
+  }) = _DownloadEpisode;
+
+  factory TaskType.fromJson(Map<String, dynamic> json) =>
+      _$TaskTypeFromJson(json);
 }
 
 class Task {
@@ -75,50 +77,6 @@ class Task {
       canRetry: false,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-    );
-  }
-}
-
-//ignore: missing_return
-TaskType taskTypeFromJson(Map<String, dynamic> json) {
-  final key = _TaskType.values[json['key']];
-
-  switch (key) {
-    case _TaskType.CachePodcast:
-      return TaskType.cachePodcast(
-        podcastId: json['podcast_id'],
-        podcastUrlParam: json['podcast_url_param'],
-      );
-
-    case _TaskType.DownloadEpisode:
-      return TaskType.downloadEpisode(
-        episodeId: json['episode_id'],
-        url: json['url'],
-        filename: json['filename'],
-        storagePath: json['storage_path'],
-      );
-  }
-}
-
-extension TaskTypeExtension on TaskType {
-  Map<String, dynamic> toJson() {
-    return when(
-      cachePodcast: (data) {
-        return {
-          'key': _TaskType.CachePodcast.index,
-          'podcast_id': data.podcastId,
-          'podcast_url_param': data.podcastUrlParam,
-        };
-      },
-      downloadEpisode: (data) {
-        return {
-          'key': _TaskType.DownloadEpisode.index,
-          'episode_id': data.episodeId,
-          'url': data.url,
-          'filename': data.filename,
-          'storage_path': data.storagePath,
-        };
-      },
     );
   }
 }
