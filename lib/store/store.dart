@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/store/audio_file_store.dart';
+import 'package:phenopod/store/setting_store.dart';
 import 'audio_player_store.dart';
 import 'episode_store.dart';
 import 'playback_position_store.dart';
@@ -28,6 +29,7 @@ abstract class Store {
   PlaybackPositionStore get playbackPosition;
   TaskStore get task;
   AudioFileStore get audioFile;
+  SettingStore get setting;
 }
 
 class _StoreImpl extends Store {
@@ -41,6 +43,7 @@ class _StoreImpl extends Store {
   final PlaybackPositionStore _playbackPosition;
   final TaskStore _task;
   final AudioFileStore _audioFile;
+  final SettingStore _setting;
 
   _StoreImpl({
     @required Api api,
@@ -54,7 +57,8 @@ class _StoreImpl extends Store {
         _audioPlayer = newAudioPlayerStore(api, db),
         _playbackPosition = newPlaybackPositionStore(api, db),
         _task = newTaskStore(api, db),
-        _audioFile = newAudioFileStore(api, db);
+        _audioFile = newAudioFileStore(api, db),
+        _setting = newSettingStore(api, db);
 
   @override
   Db get db => _db;
@@ -85,4 +89,7 @@ class _StoreImpl extends Store {
 
   @override
   AudioFileStore get audioFile => _audioFile;
+
+  @override
+  SettingStore get setting => _setting;
 }

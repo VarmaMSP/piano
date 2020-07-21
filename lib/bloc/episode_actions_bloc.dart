@@ -36,30 +36,7 @@ class EpisodeActionsBloc {
   void _handleActions() {
     _actions.distinct().listen((e) async {
       await e.when(
-        startDownload: (data) async {
-          if (!await fileutils.hasStoragePermission()) {
-            return;
-          }
-
-          final episode = data.episode;
-          final audioFile = AudioFile.init(
-            episode: episode,
-            podcast: data.podcast,
-            directory: await fileutils.getStorageDirectory(),
-            filename: fileutils.newStorageFileName(episode.mediaUrl),
-          );
-          final downloadTask = Task.init(
-            taskType: TaskType.downloadEpisode(
-              episodeId: episode.id,
-              url: episode.mediaUrl,
-              filepath: audioFile.filepath,
-            ),
-          );
-
-          await store.audioFile.save(audioFile);
-          await store.task.saveTask(downloadTask);
-          await alarmService.scheduleTaskRunnerOnce();
-        },
+        startDownload: (data) => _startDownload(data.episode, data.podcast),
         cancelDownload: (data) async {
           if (!await fileutils.hasStoragePermission()) {
             return;
@@ -67,6 +44,46 @@ class EpisodeActionsBloc {
         },
       );
     });
+  }
+
+  Future<void> _startDownload(Episode episode, Podcast podcast) async {
+    if (!await fileutils.hasStoragePermission()) {
+      return;
+    }
+
+    /// Initial Storage settings, for now we are only using internal storage
+    var storageSetting = await store.setting.watchStorageSetting().first;
+    if (storageSetting.storage == Storage.none) {
+      storageSetting = storageSetting.copyWith(
+        storage: Storage.internalStorage,
+        storagePath: await fileutils.getInternalStorageDirectory(),
+      );
+      await store.setting.saveStorageSetting(storageSetting);
+    }
+
+    /// Use a new random uuid as filename
+    final filename = fileutils.newStorageFileName(episode.mediaUrl);
+    final storagePath = storageSetting.storagePath;
+
+    await store.audioFile.save(
+      AudioFile.init(
+        episode: episode,
+        podcast: podcast,
+        filename: filename,
+        storagePath: storagePath,
+      ),
+    );
+    await store.task.saveTask(
+      Task.init(
+        taskType: TaskType.downloadEpisode(
+          episodeId: episode.id,
+          url: episode.mediaUrl,
+          filename: filename,
+          storagePath: storagePath,
+        ),
+      ),
+    );
+    await alarmService.scheduleTaskRunnerOnce();
   }
 
   // Sink to add actions to processed

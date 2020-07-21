@@ -99,7 +99,7 @@ class AudioPlayerController {
   }
 
   Future<void> syncSetting() async {
-    final setting = await _store.audioPlayer.watchSetting().first;
+    final setting = await _store.setting.watchAudioPlayerSetting().first;
     _settingSubject.add(setting);
   }
 

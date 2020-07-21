@@ -5,8 +5,8 @@ class AudioFiles extends Table {
   TextColumn get episodeId =>
       text().customConstraint('REFERENCES episodes(id)')();
   TextColumn get url => text()();
-  TextColumn get directory => text()();
   TextColumn get filename => text()();
+  TextColumn get storagePath => text()();
   IntColumn get downloadState => integer().map(DownloadStateConverter())();
   RealColumn get downloadPercentage => real()();
   DateTimeColumn get createdAt => dateTime()();
@@ -34,8 +34,8 @@ AudioFileRow audioFileRowFromModel(AudioFile model) {
   return AudioFileRow(
     episodeId: model.episode.id,
     url: model.episode.mediaUrl,
-    directory: model.directory,
     filename: model.filename,
+    storagePath: model.storagePath,
     downloadState: model.downloadState,
     downloadPercentage: model.downloadPercentage,
     createdAt: model.createdAt ?? DateTime.now(),
@@ -48,8 +48,8 @@ extension AudioFileRowExtension on AudioFileRow {
     return AudioFile(
       episode: episode,
       podcast: podcast,
-      directory: directory,
       filename: filename,
+      storagePath: storagePath,
       downloadState: downloadState,
       downloadPercentage: downloadPercentage,
       createdAt: createdAt,

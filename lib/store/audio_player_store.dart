@@ -18,7 +18,6 @@ abstract class AudioPlayerStore {
   Future<void> saveSetting(AudioPlayerSetting setting);
   Stream<Queue> watchQueue();
   Stream<AudioTrack> watchNowPlaying();
-  Stream<AudioPlayerSetting> watchSetting();
 }
 
 class _AudioPlayerStoreImpl extends AudioPlayerStore {
@@ -97,12 +96,5 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
             : Future.value(null);
       },
     );
-  }
-
-  @override
-  Stream<AudioPlayerSetting> watchSetting() {
-    return db.preferenceDao
-        .watchPreference(AudioPlayerSetting.key)
-        .map((x) => x?.audioPlayerSetting ?? AudioPlayerSetting.standard());
   }
 }

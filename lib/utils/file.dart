@@ -2,42 +2,71 @@
 import 'dart:io';
 
 // Package imports:
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
+// Check for storage permission, asks if not granted already
 Future<bool> hasStoragePermission() async {
   final permissionStatus = await Permission.storage.request();
   return permissionStatus.isGranted;
 }
 
-Future<String> getStorageDirectory() async {
-  final storageDir = await getExternalStorageDirectories(
-    type: StorageDirectory.podcasts,
-  );
-
-  String dir;
-  for (var d in storageDir) {
-    if (d.path.contains('emulated')) {
-      dir = d.path;
-    } else {
-      // In Future give user an option to choose external storage
-      // return join(d.absolute.path, 'phenopod');
-    }
+// Give path to internal storage directory in device
+Future<String> getInternalStorageDirectory() async {
+  if (Platform.isIOS) {
+    final dir = await path_provider.getApplicationDocumentsDirectory();
+    return join(dir.path, 'audio');
   }
-  dir ??= join(storageDir[storageDir.length - 1].path, 'phenopod');
-
-  // Ensure the directory exists
-  Directory(dir).createSync();
-
-  return dir;
+  if (Platform.isAndroid) {
+    final dirs = await path_provider.getExternalStorageDirectories();
+    return dirs
+        .where((dir) => dir.path.contains('emulated'))
+        .map((dir) => join(dir.path, 'audio'))
+        .first;
+  }
+  throw PlatformException(code: '0o0o0', message: 'Uunsupported platform');
 }
 
+// Returns a list of paths to external storage directories (Ex SD card).
+Future<List<String>> getExternalStorageDirectories() async {
+  if (Platform.isIOS) {
+    return <String>[];
+  }
+  if (Platform.isAndroid) {
+    final dirs = await path_provider.getExternalStorageDirectories();
+    return dirs
+        .where((dir) => !dir.path.contains('emulated'))
+        .map((dir) => join(dir.path, 'audio'));
+  }
+  throw PlatformException(code: '0o0o0', message: 'Uunsupported platform');
+}
+
+// Returns a new uuid file name for given audioFile url.
 String newStorageFileName(String url) {
   final name = Uuid().v4().replaceAll(RegExp(r'[^\w\s\.]+'), '');
   final ext = _getFileExtension(url);
   return '${name}.${ext}';
+}
+
+// Deletes given file if exists
+Future<void> deleteFile(String filePath) async {
+  final file = File(filePath);
+  if (await file.exists()) {
+    await file.delete();
+  }
+}
+
+// Create a directory recursively if not exists
+Future<void> createDirectory(String dirPath) async {
+  await Directory(dirPath).create();
+}
+
+// Check if given file exists
+Future<bool> checkFileExists(String filePath) {
+  return File(filePath).exists();
 }
 
 String _getFileExtension(String url) {
@@ -80,15 +109,4 @@ String _getFileExtension(String url) {
 
   // Default to mp3
   return 'mp3';
-}
-
-Future<void> deleteFile(String filePath) async {
-  final file = File(filePath);
-  if (await file.exists()) {
-    await file.delete();
-  }
-}
-
-Future<bool> checkFileExists(String filePath) {
-  return File(filePath).exists();
 }
