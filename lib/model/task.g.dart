@@ -19,7 +19,8 @@ abstract class TaskType extends Equatable {
   factory TaskType.downloadEpisode(
       {@required String episodeId,
       @required String url,
-      @required String filepath}) = DownloadEpisode;
+      @required String filename,
+      @required String storagePath}) = DownloadEpisode;
 
   final _TaskType _type;
 
@@ -144,18 +145,23 @@ class CachePodcast extends TaskType {
 @immutable
 class DownloadEpisode extends TaskType {
   const DownloadEpisode(
-      {@required this.episodeId, @required this.url, @required this.filepath})
+      {@required this.episodeId,
+      @required this.url,
+      @required this.filename,
+      @required this.storagePath})
       : super(_TaskType.DownloadEpisode);
 
   final String episodeId;
 
   final String url;
 
-  final String filepath;
+  final String filename;
+
+  final String storagePath;
 
   @override
   String toString() =>
-      'DownloadEpisode(episodeId:${this.episodeId},url:${this.url},filepath:${this.filepath})';
+      'DownloadEpisode(episodeId:${this.episodeId},url:${this.url},filename:${this.filename},storagePath:${this.storagePath})';
   @override
-  List get props => [episodeId, url, filepath];
+  List get props => [episodeId, url, filename, storagePath];
 }

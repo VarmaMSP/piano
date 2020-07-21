@@ -102,6 +102,7 @@ class AudioPlayerSetting extends Equatable {
 }
 
 enum Storage {
+  none,
   internalStorage,
   externalStorage,
 }
@@ -112,13 +113,19 @@ enum Storage {
 class StorageSetting extends Equatable {
   static const String key = 'STORAGE_SETTING';
 
-  // Storage location for audio files
+  // Storage type that user opted for
   final Storage storage;
 
-  StorageSetting({this.storage});
+  // Storage path
+  final String storagePath;
+
+  StorageSetting({
+    @required this.storage,
+    @required this.storagePath,
+  });
 
   factory StorageSetting.standard() {
-    return StorageSetting(storage: Storage.internalStorage);
+    return StorageSetting(storage: Storage.none, storagePath: '');
   }
 
   factory StorageSetting.fromJson(Map<String, dynamic> json) {

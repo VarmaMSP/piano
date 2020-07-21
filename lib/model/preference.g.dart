@@ -23,9 +23,11 @@ extension AudioPlayerSettingCopyWithExtension on AudioPlayerSetting {
 extension StorageSettingCopyWithExtension on StorageSetting {
   StorageSetting copyWith({
     Storage storage,
+    String storagePath,
   }) {
     return StorageSetting(
       storage: storage ?? this.storage,
+      storagePath: storagePath ?? this.storagePath,
     );
   }
 }
@@ -84,12 +86,14 @@ Map<String, dynamic> _$AudioPlayerSettingToJson(AudioPlayerSetting instance) =>
 StorageSetting _$StorageSettingFromJson(Map<String, dynamic> json) {
   return StorageSetting(
     storage: _$enumDecodeNullable(_$StorageEnumMap, json['storage']),
+    storagePath: json['storage_path'] as String,
   );
 }
 
 Map<String, dynamic> _$StorageSettingToJson(StorageSetting instance) =>
     <String, dynamic>{
       'storage': _$StorageEnumMap[instance.storage],
+      'storage_path': instance.storagePath,
     };
 
 T _$enumDecode<T>(
@@ -125,6 +129,7 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$StorageEnumMap = {
+  Storage.none: 'none',
   Storage.internalStorage: 'internalStorage',
   Storage.externalStorage: 'externalStorage',
 };

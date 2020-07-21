@@ -15,7 +15,8 @@ enum _TaskType {
   @Data(fields: [
     DataField<String>('episodeId'),
     DataField<String>('url'),
-    DataField<String>('filepath'),
+    DataField<String>('filename'),
+    DataField<String>('storagePath'),
   ])
   DownloadEpisode,
 }
@@ -93,7 +94,8 @@ TaskType taskTypeFromJson(Map<String, dynamic> json) {
       return TaskType.downloadEpisode(
         episodeId: json['episode_id'],
         url: json['url'],
-        filepath: json['filepath'],
+        filename: json['filename'],
+        storagePath: json['storage_path'],
       );
   }
 }
@@ -113,7 +115,8 @@ extension TaskTypeExtension on TaskType {
           'key': _TaskType.DownloadEpisode.index,
           'episode_id': data.episodeId,
           'url': data.url,
-          'filepath': data.filepath,
+          'filename': data.filename,
+          'storage_path': data.storagePath,
         };
       },
     );

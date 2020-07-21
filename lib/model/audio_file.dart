@@ -20,8 +20,8 @@ enum DownloadState {
 class AudioFile extends Equatable {
   final Podcast podcast;
   final Episode episode;
-  final String directory;
   final String filename;
+  final String storagePath;
   final DownloadState downloadState;
   final double downloadPercentage;
   final DateTime createdAt;
@@ -30,8 +30,8 @@ class AudioFile extends Equatable {
   AudioFile({
     @required this.episode,
     @required this.podcast,
-    @required this.directory,
     @required this.filename,
+    @required this.storagePath,
     @required this.downloadState,
     @required this.downloadPercentage,
     @required this.createdAt,
@@ -41,14 +41,14 @@ class AudioFile extends Equatable {
   factory AudioFile.init({
     @required Podcast podcast,
     @required Episode episode,
-    @required String directory,
     @required String filename,
+    @required String storagePath,
   }) {
     return AudioFile(
       podcast: podcast,
       episode: episode,
-      directory: directory,
       filename: filename,
+      storagePath: storagePath,
       downloadState: DownloadState.queued,
       downloadPercentage: 0.0,
       createdAt: DateTime.now(),
@@ -62,7 +62,7 @@ class AudioFile extends Equatable {
       downloadState == DownloadState.failed ||
       downloadState == DownloadState.downloaded;
 
-  String get filepath => join(directory, filename);
+  String get filepath => join(storagePath, filename);
 
   @override
   List<Object> get props => [episode, downloadState, downloadPercentage];
