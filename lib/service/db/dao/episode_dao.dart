@@ -4,18 +4,15 @@ part of '../db.dart';
 class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
   EpisodeDao(SqlDb db) : super(db);
 
-  Future<void> saveEpisodes(
-    List<Episode> episodeList, {
-    bool replace = true,
-  }) async {
+  Future<void> saveEpisodes(List<Episode> episodeList) async {
     if (episodeList.isNotEmpty) {
-      return batch((b) => b.insertAll(
-            episodes,
-            episodeList.map((e) => episodeRowFromModel(e)).toList(),
-            mode: replace
-                ? InsertMode.insertOrReplace
-                : InsertMode.insertOrIgnore,
-          ));
+      return batch(
+        (b) => b.insertAll(
+          episodes,
+          episodeList.map((e) => episodeRowFromModel(e)).toList(),
+          mode: InsertMode.insertOrReplace,
+        ),
+      );
     }
   }
 
@@ -52,7 +49,7 @@ class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
     await deleteEpisodes(episodeIds ?? []);
   }
 
-  /// Filters episodes ids that have any references to other tables
+  /// Filters episodes ids that have any references in tables
   Future<List<String>> _filterEpisodesWithReferences(
     List<String> episodeIds,
   ) async {

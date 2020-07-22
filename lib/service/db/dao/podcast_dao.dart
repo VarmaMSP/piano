@@ -86,7 +86,9 @@ class PodcastDao extends DatabaseAccessor<SqlDb> with _$PodcastDaoMixin {
 
   Future<void> deletePodcasts(List<String> podcastIds) async {
     final toDelete = await _filterPodcastsWithReferences(podcastIds);
-    await (delete(podcasts)..where((tbl) => tbl.id.isIn(toDelete))).go();
+    if (toDelete.isNotEmpty) {
+      await (delete(podcasts)..where((tbl) => tbl.id.isIn(toDelete))).go();
+    }
   }
 
   Future<List<String>> _filterPodcastsWithReferences(

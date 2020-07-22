@@ -118,7 +118,11 @@ class AudioPlayerBloc {
       final prevQueue = await _queueSubject.first;
       await t.when(
         play: (data) async {
-          await store.audioPlayer.saveQueue(prevQueue.play(data.audioTrack));
+          await store.audioPlayer.saveQueue(
+            prevQueue
+                .addToTop(data.audioTrack)
+                .playTrack(prevQueue.position + 1),
+          );
           await audioService.syncNowPlaying();
         },
         addToQueueTop: (data) async {

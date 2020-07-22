@@ -32,13 +32,6 @@ class Queue extends Equatable {
     );
   }
 
-  Queue play(AudioTrack audioTrack) {
-    return Queue(
-      position: 0,
-      audioTracks: [audioTrack.copyWith(position: 0)],
-    );
-  }
-
   /// Returns a new queue with track in next play position
   Queue addToTop(AudioTrack audioTrack) {
     final trackCount = audioTracks.length;
@@ -116,7 +109,11 @@ class Queue extends Equatable {
 
   /// Returns a new queue with updated now playing position
   Queue playTrack(int position) {
-    return Queue(position: position, audioTracks: audioTracks);
+    return position != this.position &&
+            position >= 0 &&
+            position < audioTracks.length
+        ? Queue(position: position, audioTracks: audioTracks)
+        : this;
   }
 
   /// Returns a new queue with track at given position remove

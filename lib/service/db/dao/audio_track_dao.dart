@@ -30,14 +30,14 @@ class AudioTrackDao extends DatabaseAccessor<SqlDb> with _$AudioTrackDaoMixin {
         .watch()
         .map(
           (rows) => rows.map((row) {
-            final audioTrack = row.readTable(audioTracks);
-            final episode = row.readTable(episodes);
-            final podcast = row.readTable(podcasts);
+            final audioTrackRow = row.readTable(audioTracks);
+            final episodeRow = row.readTable(episodes);
+            final podcastRow = row.readTable(podcasts);
 
             return AudioTrack(
-              episode: episode.toModel(),
-              podcast: podcast.toModel(),
-              position: audioTrack.position,
+              episode: episodeRow.toModel(),
+              podcast: podcastRow.toModel(),
+              position: audioTrackRow.position,
             );
           }).toList(),
         );
@@ -51,13 +51,13 @@ class AudioTrackDao extends DatabaseAccessor<SqlDb> with _$AudioTrackDaoMixin {
       innerJoin(podcasts, podcasts.id.equalsExp(episodes.podcastId)),
     ]).getSingle();
 
-    final audioTrack = row.readTable(audioTracks);
-    final episode = row.readTable(episodes);
-    final podcast = row.readTable(podcasts);
+    final audioTrackRow = row.readTable(audioTracks);
+    final episodeRow = row.readTable(episodes);
+    final podcastRow = row.readTable(podcasts);
     return AudioTrack(
-      episode: episode.toModel(),
-      podcast: podcast.toModel(),
-      position: audioTrack.position,
+      episode: episodeRow.toModel(),
+      podcast: podcastRow.toModel(),
+      position: audioTrackRow.position,
     );
   }
 

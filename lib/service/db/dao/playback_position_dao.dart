@@ -9,7 +9,7 @@ class PlaybackPositionDao extends DatabaseAccessor<SqlDb>
     await into(playbackPositions).insert(
       playbackPositionRowFromModel(pos),
       onConflict: DoUpdate(
-        (old) => PlaybackPositionsCompanion(
+        (_) => PlaybackPositionsCompanion(
           position: Value(pos.position.inSeconds),
           duration: pos.duration != null
               ? Value(pos.duration.inSeconds)
