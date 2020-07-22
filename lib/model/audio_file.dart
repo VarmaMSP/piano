@@ -70,6 +70,12 @@ class AudioFile extends Equatable {
 
   String get filepath => join(storagePath, filename);
 
+  DownloadProgress get downloadProgress => DownloadProgress(
+        episodeId: episode.id,
+        downloadState: downloadState,
+        downloadPercentage: downloadPercentage,
+      );
+
   @override
   List<Object> get props => [episode, downloadState, downloadPercentage];
 }

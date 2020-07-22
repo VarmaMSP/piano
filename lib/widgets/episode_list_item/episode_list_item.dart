@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 
 // Package imports:
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:phenopod/widgets/episode_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -11,7 +12,6 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/utils.dart';
-import 'package:phenopod/widgets/episode_list_item/menu.dart';
 import 'thumbnail.dart';
 
 enum EpisodeListItemType {
@@ -79,30 +79,29 @@ class EpisodeListItem extends StatelessWidget {
   Widget _buildDetails(BuildContext context) {
     final store = Provider.of<Store>(context);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 6),
-                child: Text(
-                  episode.title,
-                  style: Theme.of(context).textTheme.headline6,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-              ),
-              StreamBuilder<DownloadProgress>(
-                stream: store.audioFile.watchDownloadProgress(episode.id),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return _episodeInfo(context);
-                  }
-                  if (snapshot.data.isComplete) {
-                    return Row(
+    return StreamBuilder<DownloadProgress>(
+      stream: store.audioFile.watchDownloadProgress(episode.id),
+      builder: (context, snapshot) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Text(
+                      episode.title,
+                      style: Theme.of(context).textTheme.headline6,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
+                  if (!snapshot.hasData)
+                    _episodeInfo(context)
+                  else if (snapshot.data.isComplete)
+                    Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -118,30 +117,30 @@ class EpisodeListItem extends StatelessWidget {
                         Container(width: 12),
                         Expanded(child: _episodeInfo(context)),
                       ],
-                    );
-                  }
-                  return _episodeDownloadInfo(context, snapshot.data);
-                },
+                    )
+                  else
+                    _episodeDownloadInfo(context, snapshot.data),
+                  Container(height: 5),
+                ],
               ),
-              Container(height: 5),
-            ],
-          ),
-        ),
-        Transform.translate(
-          offset: const Offset(6, -13),
-          child: Menu(
-            episode: episode,
-            podcast: podcast,
-            options: [
-              EpisodeOption.playNext,
-              EpisodeOption.addToQueue,
-              if (type == EpisodeListItemType.subscriptionsItem)
-                EpisodeOption.goToPodcast,
-              EpisodeOption.download,
-            ],
-          ),
-        ),
-      ],
+            ),
+            Transform.translate(
+              offset: const Offset(6, -13),
+              child: type == EpisodeListItemType.podcastItem
+                  ? EpisodeMenu.episodeListItem(
+                      episode: episode,
+                      podcast: podcast,
+                      downloadProgress: snapshot.data,
+                    )
+                  : EpisodeMenu.subscriptionListItem(
+                      episode: episode,
+                      podcast: podcast,
+                      downloadProgress: snapshot.data,
+                    ),
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:phenopod/store/store.dart';
+import 'package:phenopod/widgets/episode_menu.dart';
+import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
@@ -15,8 +18,6 @@ import 'package:phenopod/model/main.dart';
 import 'package:phenopod/model/queue.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/box.dart';
-import 'package:phenopod/widgets/download_progress_indicator.dart';
-import 'package:phenopod/widgets/queue_list_item/menu.dart';
 import 'thumbnail.dart';
 
 class QueueListItem extends StatelessWidget {
@@ -57,6 +58,8 @@ class QueueListItem extends StatelessWidget {
           child: Icon(MdiIcons.deleteOutline, color: Colors.white, size: 28),
         );
 
+    final store = Provider.of<Store>(context);
+
     return Dismissible(
       key: Key(audioTrack.episode.id),
       background: background(alignRight: false),
@@ -73,24 +76,36 @@ class QueueListItem extends StatelessWidget {
           onTap: () => transitionQueue(
             QueueTransition.playTrack(position: audioTrack.position),
           ),
-          child: Container(
-            constraints: BoxConstraints.expand(height: itemHeight),
-            padding: EdgeInsets.symmetric(vertical: 7.5),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildHandle(context, lighten: lighten),
-                Thumbnail(podcast: audioTrack.podcast, lighten: lighten),
-                Expanded(child: _buildDetails(context, lighten: lighten)),
-                Menu(
-                  trackCount: trackCount,
-                  nowPlayingPosition: nowPlayingPosition,
-                  audioTrack: audioTrack,
-                  lighten: lighten,
-                  transitionQueue: transitionQueue,
+          child: StreamBuilder<DownloadProgress>(
+            stream:
+                store.audioFile.watchDownloadProgress(audioTrack.episode.id),
+            builder: (context, snapshot) {
+              return Container(
+                constraints: BoxConstraints.expand(height: itemHeight),
+                padding: EdgeInsets.symmetric(vertical: 7.5),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildHandle(context, lighten: lighten),
+                    Thumbnail(podcast: audioTrack.podcast, lighten: lighten),
+                    Expanded(
+                      child: _buildDetails(
+                        context,
+                        snapshot.data,
+                        lighten: lighten,
+                      ),
+                    ),
+                    EpisodeMenu.QueueListItem(
+                      audioTrack: audioTrack,
+                      trackCount: trackCount,
+                      lighten: lighten,
+                      nowPlayingPosition: nowPlayingPosition,
+                      downloadProgress: snapshot.data,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
@@ -138,7 +153,11 @@ class QueueListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildDetails(BuildContext context, {bool lighten}) {
+  Widget _buildDetails(
+    BuildContext context,
+    DownloadProgress downloadProgress, {
+    bool lighten,
+  }) {
     final textColor = lighten ? TWColors.gray.shade600 : TWColors.gray.shade900;
 
     return Container(
@@ -169,6 +188,34 @@ class QueueListItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 400),
+                child: downloadProgress == null
+                    ? Container()
+                    : downloadProgress.isComplete &&
+                            downloadProgress.downloadPercentage == 1.0
+                        ? Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: Icon(
+                              MdiIcons.checkUnderlineCircle,
+                              size: 14,
+                              color: TWColors.blue.shade700,
+                            ),
+                          )
+                        : Container(
+                            height: 10,
+                            width: 10,
+                            margin: EdgeInsets.only(right: 12, bottom: 2),
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.downloadPercentage,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                TWColors.blue.shade700,
+                              ),
+                              backgroundColor: TWColors.gray.shade400,
+                              strokeWidth: 2.5,
+                            ),
+                          ),
+              ),
               Text(
                 '${formatDuration(seconds: audioTrack.episode.duration)}',
                 style: Theme.of(context)
@@ -176,8 +223,6 @@ class QueueListItem extends StatelessWidget {
                     .subtitle2
                     .copyWith(color: textColor, fontSize: 11.75),
               ),
-              Container(width: 10),
-              DownloadProgressIndicator(episodeId: audioTrack.episode.id),
             ],
           ),
         ],
