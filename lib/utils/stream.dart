@@ -6,8 +6,8 @@ import 'package:async/async.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
-/// StreamGroup extends async StreamGroup to provide a
-/// map like interface to add streams to group by key
+/// StreamMap extends async StreamGroup to provide a
+/// map like interface to add streams by key
 class StreamMap<K, T> {
   final Set<K> _keys = {};
   final StreamGroup<Tuple2<K, T>> _streamGroup = StreamGroup<Tuple2<K, T>>();
@@ -27,8 +27,8 @@ class StreamMap<K, T> {
   Stream<List<T>> get streamValues => stream.map((val) => val.values.toList());
 }
 
-/// StreamDelayTill tries to delays stream till predicate returns true
-/// and times out after duration of [delayDuration]
+/// StreamDelayTill tries to delays stream till [delayDuration] is exhausted
+/// or predicate returns true
 class StreamDelayTill<T> {
   final Stream<T> inputStream;
   final Duration delayDuration;
@@ -46,8 +46,6 @@ class StreamDelayTill<T> {
       Stream.periodic(Duration(milliseconds: 100), (x) => x).take(t),
       inputStream,
       (a, b) => Tuple2(a, b),
-    )
-        .where((e) => e.item1 < t - 1 ? predicate(e.item2) : true)
-        .map((e) => e.item2);
+    ).where((e) => e.item1 == t || predicate(e.item2)).map((e) => e.item2);
   }
 }

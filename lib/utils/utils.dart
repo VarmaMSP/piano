@@ -93,9 +93,6 @@ String getIdFromUrlParam(String urlParam) {
   return urlParam.split('-').last;
 }
 
-/// use this to silent pedantic linting rules
-void unawaited(Future<void> future) {}
-
 bool listExists<T>(List<T> list, T val) {
   return list.firstWhere((x) => x == val, orElse: () => null) != null;
 }

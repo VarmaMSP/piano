@@ -29,7 +29,7 @@ Future<String> getInternalStorageDirectory() async {
         .map((dir) => join(dir.path, 'audio'))
         .first;
   }
-  throw PlatformException(code: '0o0o0', message: 'Uunsupported platform');
+  throw PlatformException(code: '0o0o0', message: 'Unsupported platform');
 }
 
 // Returns a list of paths to external storage directories (Ex SD card).
@@ -43,7 +43,7 @@ Future<List<String>> getExternalStorageDirectories() async {
         .where((dir) => !dir.path.contains('emulated'))
         .map((dir) => join(dir.path, 'audio'));
   }
-  throw PlatformException(code: '0o0o0', message: 'Uunsupported platform');
+  throw PlatformException(code: '0o0o0', message: 'Unsupported platform');
 }
 
 // Returns a new uuid file name for given audioFile url.
