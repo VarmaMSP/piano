@@ -40,14 +40,11 @@ class EpisodeActionsBloc {
           if (!await fileutils.hasStoragePermission()) {
             return;
           }
-
-          final storageSetting =
-              await store.setting.watchStorageSetting().first;
-
           await store.audioFile.download(
             episode: data.episode,
             podcast: data.podcast,
-            storagePath: storageSetting.storagePath,
+            storagePath:
+                (await store.setting.watchStorageSetting().first).storagePath,
           );
           await alarmService.scheduleTaskRunner();
         },

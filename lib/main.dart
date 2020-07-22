@@ -37,7 +37,8 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  await alarmService.scheduleTaskRunner();
+  // FIX ME: calling this error
+  // await alarmService.scheduleTaskRunner();
 
   runApp(Root(
     store: newStore(api, db),

@@ -41,8 +41,6 @@ class TaskRunner {
     ).stream;
 
     await for (var task in queuedTasks) {
-      print('task begun ${task.taskType}');
-
       await task.taskType
           .map(
             cachePodcast: (data) => CachePodcastWorker(
@@ -61,8 +59,6 @@ class TaskRunner {
             ),
           )
           .run();
-
-      print('task complete ${task.taskType}');
     }
 
     print('task runner is closing');

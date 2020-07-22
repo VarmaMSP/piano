@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 // Project imports:
@@ -6,6 +8,7 @@ import 'package:phenopod/model/preference.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
+import 'package:when_expression/when_expression.dart';
 
 SettingStore newSettingStore(Api api, Db db) {
   return _SettingStoreImpl(api: api, db: db);
@@ -53,40 +56,40 @@ class _SettingStoreImpl extends SettingStore {
   }
 
   @override
-  Stream<StorageSetting> watchStorageSetting() async* {
-    final settingStream = db.preferenceDao
+  Stream<StorageSetting> watchStorageSetting() {
+    return db.preferenceDao
         .watchPreferenceByKey(_audioPlayerSettingKey)
-        .map((x) => x?.value);
-
-    var setting = await settingStream.first;
-    if (setting == null) {
-      // Assign defaults
-      setting = StorageSetting(
-        storage: Storage.internalStorage,
-        storagePath: await fileutils.getInternalStorageDirectory(),
-      );
-      await saveStorageSetting(setting);
-    }
-
-    yield* settingStream.distinct();
+        .map((x) => x?.value as StorageSetting)
+        .asyncMap(when<StorageSetting, FutureOr<StorageSetting>>({
+          (s) => s != null: (s) => s,
+          (_) => true: (_) async {
+            final setting = StorageSetting(
+              storage: Storage.internalStorage,
+              storagePath: await fileutils.getInternalStorageDirectory(),
+            );
+            await saveStorageSetting(setting);
+            return setting;
+          }
+        }))
+        .distinct();
   }
 
   @override
-  Stream<AudioPlayerSetting> watchAudioPlayerSetting() async* {
-    final settingStream = db.preferenceDao
+  Stream<AudioPlayerSetting> watchAudioPlayerSetting() {
+    return db.preferenceDao
         .watchPreferenceByKey(_storageSettingKey)
-        .map((x) => x?.value);
-
-    var setting = await settingStream.first;
-    if (setting = null) {
-      // Assign defaults
-      setting = AudioPlayerSetting(
-        seekBackwardTime: 30,
-        seekForwardTime: 30,
-      );
-      await saveAudioPlayerSetting(setting);
-    }
-
-    yield* settingStream.distinct();
+        .map((x) => x?.value as AudioPlayerSetting)
+        .asyncMap(when<AudioPlayerSetting, FutureOr<AudioPlayerSetting>>({
+          (s) => s != null: (s) => s,
+          (_) => true: (_) async {
+            final setting = AudioPlayerSetting(
+              seekBackwardTime: 30,
+              seekForwardTime: 30,
+            );
+            await saveAudioPlayerSetting(setting);
+            return setting;
+          }
+        }))
+        .distinct();
   }
 }
