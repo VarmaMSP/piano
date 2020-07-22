@@ -1,37 +1,33 @@
 // Package imports:
-import 'package:uuid/uuid.dart';
+import 'package:flutter/foundation.dart';
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 
 // Project imports:
-import 'package:phenopod/background/task_runner/worker/download_episode_worker.dart';
-import 'package:phenopod/service/api/api.dart';
-import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/store/store.dart';
 import 'worker/cache_podcast_worker.dart';
+import 'worker/download_episode_worker.dart';
 
-Store store;
-bool _isRunning = false;
-
-void startTaskRunner() async {
-  store ??= newStore(await newApi(), await newDb());
-
-  if (!_isRunning) {
-    _isRunning = true;
-
-    try {
-      await TaskRunner(store: store).start();
-    } catch (err) {
-      print(err);
-    } finally {
-      _isRunning = false;
-    }
-  }
+//! DO NOT CHANGE ORDER
+enum TaskRunnerMode {
+  // In foreground mode task runner will long poll for new tasks
+  // to process. Taskrunner is intended to be invoked in this mode
+  // when the app is active.
+  foreground,
+  // In foreground mode task runner will stop once all task in
+  // the queue are processed.
+  background,
 }
 
 class TaskRunner {
   final Store store;
-  final String pid = Uuid().v4();
+  final AlarmService alarmService;
+  final TaskRunnerMode mode;
 
-  TaskRunner({this.store});
+  TaskRunner({
+    @required this.store,
+    @required this.alarmService,
+    @required this.mode,
+  });
 
   Future<void> start() async {
     await for (var task in store.task.watchFirst()) {

@@ -25,6 +25,8 @@ import 'package:phenopod/theme/theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  Provider.debugCheckInvalidValueType = null;
+
   final db = await newDb();
   final api = await newApi();
   final audioService = newAudioService();
@@ -35,26 +37,23 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  await alarmService.scheduleTaskRunner();
+
   runApp(Root(
-    sqlDb: db.sqlDb,
     store: newStore(api, db),
     audioService: audioService,
     alarmService: alarmService,
   ));
-
-  await alarmService.scheduleTaskRunnerPeriodic();
 }
 
 class Root extends StatefulWidget {
   Root({
     @required this.store,
-    @required this.sqlDb,
     @required this.audioService,
     @required this.alarmService,
   });
 
   final Store store;
-  final SqlDb sqlDb;
   final AudioService audioService;
   final AlarmService alarmService;
 
@@ -112,10 +111,6 @@ class _RootState extends State<Root>
 
     return MultiProvider(
       providers: [
-        Provider.value(
-          value: widget.sqlDb,
-          updateShouldNotify: (_, __) => false,
-        ),
         Provider.value(
           value: widget.store,
           updateShouldNotify: (_, __) => false,

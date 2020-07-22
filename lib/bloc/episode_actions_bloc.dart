@@ -83,7 +83,6 @@ class EpisodeActionsBloc {
         ),
       ),
     );
-    await alarmService.scheduleTaskRunnerOnce();
   }
 
   // Sink to add actions to processed
