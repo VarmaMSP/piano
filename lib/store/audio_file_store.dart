@@ -6,13 +6,18 @@ import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/utils/file.dart';
+import 'package:phenopod/utils/file.dart' as fileutils;
 
 AudioFileStore newAudioFileStore(Api api, Db db) {
   return _AudioFileStoreImpl(api: api, db: db);
 }
 
 abstract class AudioFileStore {
-  Future<void> save(AudioFile audioFile);
+  Future<void> download({
+    @required Episode episode,
+    @required Podcast podcast,
+    @required String storagePath,
+  });
   Stream<List<AudioFile>> watchAll();
   Stream<AudioFile> watchByEpisode(String episodeId);
   Stream<DownloadProgress> watchDownloadProgress(String episodeId);
@@ -30,8 +35,37 @@ class _AudioFileStoreImpl extends AudioFileStore {
   });
 
   @override
-  Future<void> save(AudioFile audioFile) async {
-    await db.audioFileDao.save(audioFile);
+  Future<void> download({
+    @required Episode episode,
+    @required Podcast podcast,
+    @required String storagePath,
+  }) async {
+    final filename = fileutils.newStorageFileName(episode.mediaUrl);
+
+    await db.transaction(
+      () async {
+        final taskId = await db.taskDao.saveTask(
+          Task.init(
+            taskType: TaskType.downloadEpisode(
+              episodeId: episode.id,
+              url: episode.mediaUrl,
+              filename: filename,
+              storagePath: storagePath,
+            ),
+          ),
+        );
+
+        await db.audioFileDao.save(
+          AudioFile.init(
+            episode: episode,
+            podcast: podcast,
+            filename: filename,
+            storagePath: storagePath,
+            downloadTaskId: taskId,
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -58,10 +92,11 @@ class _AudioFileStoreImpl extends AudioFileStore {
   Future<void> deleteByEpisode(String episodeId) async {
     final audioFile = await db.audioFileDao.watchFileByEpisode(episodeId).first;
     if (audioFile != null) {
-      await Future.wait([
-        db.audioFileDao.deleteByEpisode(episodeId),
-        deleteFile(audioFile.filepath),
-      ]);
+      await db.transaction(() async {
+        await db.audioFileDao.deleteByEpisode(episodeId);
+        await db.taskDao.deleteTask(audioFile.downloadTaskId);
+      });
+      await deleteFile(audioFile.filepath);
     }
   }
 }

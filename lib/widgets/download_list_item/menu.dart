@@ -45,7 +45,7 @@ class Menu extends StatelessWidget {
           AudioFileOption.playNext,
           AudioFileOption.addToQueue,
           AudioFileOption.goToPodcast,
-          if (audioFile.isDownloading)
+          if (audioFile.isDownloading || audioFile.isQueued)
             AudioFileOption.cancelDownload
           else
             AudioFileOption.deleteFormDownloads,

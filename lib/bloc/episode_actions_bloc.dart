@@ -36,54 +36,29 @@ class EpisodeActionsBloc {
   void _handleActions() {
     _actions.distinct().listen((e) async {
       await e.when(
-        startDownload: (data) => _startDownload(data.episode, data.podcast),
+        startDownload: (data) async {
+          if (!await fileutils.hasStoragePermission()) {
+            return;
+          }
+
+          final storageSetting =
+              await store.setting.watchStorageSetting().first;
+
+          await store.audioFile.download(
+            episode: data.episode,
+            podcast: data.podcast,
+            storagePath: storageSetting.storagePath,
+          );
+          await alarmService.scheduleTaskRunner();
+        },
         cancelDownload: (data) async {
           if (!await fileutils.hasStoragePermission()) {
             return;
           }
+          await store.audioFile.deleteByEpisode(data.episodeId);
         },
       );
     });
-  }
-
-  Future<void> _startDownload(Episode episode, Podcast podcast) async {
-    if (!await fileutils.hasStoragePermission()) {
-      return;
-    }
-
-    /// Initial Storage settings, for now we are only using internal storage
-    var storageSetting = await store.setting.watchStorageSetting().first;
-    if (storageSetting.storage == Storage.none) {
-      storageSetting = storageSetting.copyWith(
-        storage: Storage.internalStorage,
-        storagePath: await fileutils.getInternalStorageDirectory(),
-      );
-      await store.setting.saveStorageSetting(storageSetting);
-    }
-
-    /// Use a new random uuid as filename
-    final filename = fileutils.newStorageFileName(episode.mediaUrl);
-    final storagePath = storageSetting.storagePath;
-
-    await store.audioFile.save(
-      AudioFile.init(
-        episode: episode,
-        podcast: podcast,
-        filename: filename,
-        storagePath: storagePath,
-      ),
-    );
-    await store.task.saveTask(
-      Task.init(
-        taskType: TaskType.downloadEpisode(
-          episodeId: episode.id,
-          url: episode.mediaUrl,
-          filename: filename,
-          storagePath: storagePath,
-        ),
-      ),
-    );
-    await alarmService.scheduleTaskRunner();
   }
 
   // Sink to add actions to processed

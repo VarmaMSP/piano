@@ -69,7 +69,7 @@ class DownloadEpisodeWorker extends Worker {
       await deleteTask();
     } on DioError catch (err) {
       if (CancelToken.isCancel(err)) {
-        await fileutils.deleteFile(join(storagePath, filename));
+        print('download cancelled');
       }
     }
   }

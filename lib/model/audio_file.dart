@@ -24,6 +24,7 @@ class AudioFile extends Equatable {
   final String storagePath;
   final DownloadState downloadState;
   final double downloadPercentage;
+  final int downloadTaskId;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -34,6 +35,7 @@ class AudioFile extends Equatable {
     @required this.storagePath,
     @required this.downloadState,
     @required this.downloadPercentage,
+    @required this.downloadTaskId,
     @required this.createdAt,
     @required this.updatedAt,
   });
@@ -43,6 +45,7 @@ class AudioFile extends Equatable {
     @required Episode episode,
     @required String filename,
     @required String storagePath,
+    @required int downloadTaskId,
   }) {
     return AudioFile(
       podcast: podcast,
@@ -53,8 +56,11 @@ class AudioFile extends Equatable {
       downloadPercentage: 0.0,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
+      downloadTaskId: downloadTaskId,
     );
   }
+
+  bool get isQueued => downloadState == DownloadState.queued;
 
   bool get isDownloading => downloadState == DownloadState.downloading;
 

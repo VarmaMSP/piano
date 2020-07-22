@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:phenopod/model/preference.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/utils/file.dart' as fileutils;
 
 SettingStore newSettingStore(Api api, Db db) {
   return _SettingStoreImpl(api: api, db: db);
@@ -23,16 +24,6 @@ class _SettingStoreImpl extends SettingStore {
 
   final String _storageSettingKey = 'STORAGE_SETTING';
   final String _audioPlayerSettingKey = 'AUDIO_PLAYER_SETTING';
-
-  // Default Settings
-  final StorageSetting defaultStorageSetting = StorageSetting(
-    storage: Storage.none,
-    storagePath: '',
-  );
-  final AudioPlayerSetting defaultAudioPlayerSetting = AudioPlayerSetting(
-    seekBackwardTime: 30,
-    seekForwardTime: 30,
-  );
 
   _SettingStoreImpl({
     @required this.api,
@@ -62,16 +53,40 @@ class _SettingStoreImpl extends SettingStore {
   }
 
   @override
-  Stream<StorageSetting> watchStorageSetting() {
-    return db.preferenceDao
+  Stream<StorageSetting> watchStorageSetting() async* {
+    final settingStream = db.preferenceDao
         .watchPreferenceByKey(_audioPlayerSettingKey)
-        .map((x) => x?.value ?? defaultStorageSetting);
+        .map((x) => x?.value);
+
+    var setting = await settingStream.first;
+    if (setting == null) {
+      // Assign defaults
+      setting = StorageSetting(
+        storage: Storage.internalStorage,
+        storagePath: await fileutils.getInternalStorageDirectory(),
+      );
+      await saveStorageSetting(setting);
+    }
+
+    yield* settingStream.distinct();
   }
 
   @override
-  Stream<AudioPlayerSetting> watchAudioPlayerSetting() {
-    return db.preferenceDao
+  Stream<AudioPlayerSetting> watchAudioPlayerSetting() async* {
+    final settingStream = db.preferenceDao
         .watchPreferenceByKey(_storageSettingKey)
-        .map((x) => x?.value ?? defaultAudioPlayerSetting);
+        .map((x) => x?.value);
+
+    var setting = await settingStream.first;
+    if (setting = null) {
+      // Assign defaults
+      setting = AudioPlayerSetting(
+        seekBackwardTime: 30,
+        seekForwardTime: 30,
+      );
+      await saveAudioPlayerSetting(setting);
+    }
+
+    yield* settingStream.distinct();
   }
 }

@@ -9,6 +9,7 @@ class AudioFiles extends Table {
   TextColumn get storagePath => text()();
   IntColumn get downloadState => integer().map(DownloadStateConverter())();
   RealColumn get downloadPercentage => real()();
+  IntColumn get downloadTaskId => integer()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
 
@@ -38,6 +39,7 @@ AudioFileRow audioFileRowFromModel(AudioFile model) {
     storagePath: model.storagePath,
     downloadState: model.downloadState,
     downloadPercentage: model.downloadPercentage,
+    downloadTaskId: model.downloadTaskId,
     createdAt: model.createdAt ?? DateTime.now(),
     updatedAt: model.updatedAt ?? DateTime.now(),
   );
@@ -52,6 +54,7 @@ extension AudioFileRowExtension on AudioFileRow {
       storagePath: storagePath,
       downloadState: downloadState,
       downloadPercentage: downloadPercentage,
+      downloadTaskId: downloadTaskId,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
