@@ -58,7 +58,7 @@ class _SettingStoreImpl extends SettingStore {
   @override
   Stream<StorageSetting> watchStorageSetting() {
     return db.preferenceDao
-        .watchPreferenceByKey(_audioPlayerSettingKey)
+        .watchPreferenceByKey(_storageSettingKey)
         .map((x) => x?.value as StorageSetting)
         .asyncMap(when<StorageSetting, FutureOr<StorageSetting>>({
           (s) => s != null: (s) => s,
@@ -77,7 +77,7 @@ class _SettingStoreImpl extends SettingStore {
   @override
   Stream<AudioPlayerSetting> watchAudioPlayerSetting() {
     return db.preferenceDao
-        .watchPreferenceByKey(_storageSettingKey)
+        .watchPreferenceByKey(_audioPlayerSettingKey)
         .map((x) => x?.value as AudioPlayerSetting)
         .asyncMap(when<AudioPlayerSetting, FutureOr<AudioPlayerSetting>>({
           (s) => s != null: (s) => s,
