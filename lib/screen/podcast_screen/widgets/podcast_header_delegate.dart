@@ -262,7 +262,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     final podcastActionsBloc = Provider.of<PodcastActionsBloc>(context);
 
     final Widget actions = Container(
-      height: 22,
+      height: 24,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[

@@ -66,6 +66,7 @@ class DownloadEpisodeWorker extends Worker {
           Tuple2(received, total),
         ),
       );
+      await _cancellationSubscription.cancel();
       await deleteTask();
     } on DioError catch (err) {
       if (CancelToken.isCancel(err)) {
@@ -77,7 +78,7 @@ class DownloadEpisodeWorker extends Worker {
   @override
   Future<void> dispose() async {
     await _progressUpdates.close();
-    await _cancellationSubscription.cancel();
+    await _cancellationSubscription?.cancel();
     await _progressUpdatesSubscription.cancel();
   }
 

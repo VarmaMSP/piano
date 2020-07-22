@@ -226,25 +226,15 @@ class EpisodeMenu extends StatelessWidget {
       case EpisodeOption.goToPodcast:
         if (audioTrack != null) {
           Navigator.of(context, rootNavigator: true).pop();
-          Provider.of<AppNavigationBloc>(
-            context,
-            listen: false,
-          ).pushScreen(
-            Screen.podcast(
-              urlParam: audioTrack.podcast.urlParam,
-              title: audioTrack.podcast.title,
-              author: audioTrack.podcast.author,
-            ),
-          );
-        } else {
-          Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
-            Screen.podcast(
-              urlParam: podcast.urlParam,
-              title: podcast.title,
-              author: podcast.author,
-            ),
-          );
         }
+        Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
+          Screen.podcast(
+            urlParam: podcast.urlParam,
+            title: podcast.title,
+            author: podcast.author,
+          ),
+        );
+
         break;
 
       case EpisodeOption.goToEpisode:
@@ -279,10 +269,7 @@ class EpisodeMenu extends StatelessWidget {
       case EpisodeOption.cancelDownload:
       case EpisodeOption.deleteFromDownloads:
         Provider.of<EpisodeActionsBloc>(context, listen: false).addAction(
-          EpisodeAction.startDownload(
-            episode: episode,
-            podcast: podcast,
-          ),
+          EpisodeAction.cancelDownload(episodeId: episode.id),
         );
         break;
     }

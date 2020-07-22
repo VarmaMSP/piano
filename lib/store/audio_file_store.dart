@@ -18,8 +18,8 @@ abstract class AudioFileStore {
     @required Podcast podcast,
     @required String storagePath,
   });
-  Stream<List<AudioFile>> watchAll();
   Stream<AudioFile> watchByEpisode(String episodeId);
+  Stream<List<AudioFile>> watchAll();
   Stream<DownloadProgress> watchDownloadProgress(String episodeId);
   Future<void> updateDownloadProgress(DownloadProgress progress);
   Future<void> deleteByEpisode(String episodeId);
@@ -40,10 +40,14 @@ class _AudioFileStoreImpl extends AudioFileStore {
     @required Podcast podcast,
     @required String storagePath,
   }) async {
-    final filename = fileutils.newStorageFileName(episode.mediaUrl);
+    final audioFile = await watchByEpisode(episode.id).first;
+    if (audioFile != null && audioFile.downloadState != DownloadState.failed) {
+      return;
+    }
 
     await db.transaction(
       () async {
+        final filename = fileutils.newStorageFileName(episode.mediaUrl);
         final taskId = await db.taskDao.saveTask(
           Task.init(
             taskType: TaskType.downloadEpisode(
@@ -69,13 +73,13 @@ class _AudioFileStoreImpl extends AudioFileStore {
   }
 
   @override
-  Stream<List<AudioFile>> watchAll() {
-    return db.audioFileDao.watchAllFiles();
+  Stream<AudioFile> watchByEpisode(String episodeId) {
+    return db.audioFileDao.watchFileByEpisode(episodeId);
   }
 
   @override
-  Stream<AudioFile> watchByEpisode(String episodeId) {
-    return db.audioFileDao.watchFileByEpisode(episodeId);
+  Stream<List<AudioFile>> watchAll() {
+    return db.audioFileDao.watchAllFiles();
   }
 
   @override
@@ -93,8 +97,8 @@ class _AudioFileStoreImpl extends AudioFileStore {
     final audioFile = await db.audioFileDao.watchFileByEpisode(episodeId).first;
     if (audioFile != null) {
       await db.transaction(() async {
-        await db.audioFileDao.deleteByEpisode(episodeId);
         await db.taskDao.deleteTask(audioFile.downloadTaskId);
+        await db.audioFileDao.deleteByEpisode(episodeId);
       });
       await deleteFile(audioFile.filepath);
     }
