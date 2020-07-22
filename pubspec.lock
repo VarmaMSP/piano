@@ -1127,6 +1127,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.22+1"
+  when_expression:
+    dependency: "direct main"
+    description:
+      name: when_expression
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   xdg_directories:
     dependency: transitive
     description:

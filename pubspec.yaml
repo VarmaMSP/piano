@@ -58,6 +58,7 @@ dependencies:
   tuple: ^1.0.3
   url_launcher: ^5.5.0
   uuid: ^2.2.0
+  when_expression: ^1.0.1
 
 dev_dependencies:
   flutter_test:
