@@ -13,7 +13,8 @@ TaskStore newTaskStore(Api api, Db db) {
 
 abstract class TaskStore {
   Future<void> saveTask(Task task);
-  Stream<Task> watchFirst();
+  Stream<Task> watchById(int id);
+  Stream<Task> watchQueueTop();
   Future<void> delete(int taskId);
 }
 
@@ -32,8 +33,13 @@ class _TaskStoreImpl extends TaskStore {
   }
 
   @override
-  Stream<Task> watchFirst() {
-    return db.taskDao.watchOldestTask().map((row) => row?.toModel());
+  Stream<Task> watchById(int id) {
+    return db.taskDao.watchTaskById(id);
+  }
+
+  @override
+  Stream<Task> watchQueueTop() {
+    return db.taskDao.watchOldestTask(taskStatus: TaskStatus.queued);
   }
 
   @override

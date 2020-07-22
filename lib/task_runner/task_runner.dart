@@ -4,6 +4,8 @@ import 'package:phenopod/service/alarm_service/alarm_service.dart';
 
 // Project imports:
 import 'package:phenopod/store/store.dart';
+import 'package:phenopod/utils/stream.dart' as stream_utils;
+import 'package:when_expression/when_expression.dart';
 import 'worker/cache_podcast_worker.dart';
 import 'worker/download_episode_worker.dart';
 
@@ -30,29 +32,39 @@ class TaskRunner {
   });
 
   Future<void> start() async {
-    await for (var task in store.task.watchFirst()) {
-      if (task == null) {
-        return;
-      }
+    final queuedTasks = stream_utils.StreamLongPoll(
+      store.task.watchQueueTop(),
+      waitDuration: when<TaskRunnerMode, Duration>({
+        (v) => v == TaskRunnerMode.foreground: (_) => Duration(minutes: 2),
+        (v) => v == TaskRunnerMode.background: (_) => Duration.zero,
+      })(mode),
+    ).stream;
 
-      final worker = task.taskType.map(
-        cachePodcast: (data) => CachePodcastWorker(
-          taskId: task.id,
-          store: store,
-          podcastId: data.podcastId,
-          podcastUrlParam: data.podcastUrlParam,
-        ),
-        downloadEpisode: (data) => DownloadEpisodeWorker(
-          taskId: task.id,
-          store: store,
-          episodeId: data.episodeId,
-          url: data.url,
-          filename: data.filename,
-          storagePath: data.storagePath,
-        ),
-      );
+    await for (var task in queuedTasks) {
+      print('task begun ${task.taskType}');
 
-      await worker.run();
+      await task.taskType
+          .map(
+            cachePodcast: (data) => CachePodcastWorker(
+              taskId: task.id,
+              store: store,
+              podcastId: data.podcastId,
+              podcastUrlParam: data.podcastUrlParam,
+            ),
+            downloadEpisode: (data) => DownloadEpisodeWorker(
+              taskId: task.id,
+              store: store,
+              episodeId: data.episodeId,
+              url: data.url,
+              filename: data.filename,
+              storagePath: data.storagePath,
+            ),
+          )
+          .run();
+
+      print('task complete ${task.taskType}');
     }
+
+    print('task runner is closing');
   }
 }

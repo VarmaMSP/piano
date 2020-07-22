@@ -58,6 +58,9 @@ class CachePodcastWorker extends Worker {
       cachedAllEpisodes: true,
     );
 
-    await markComplete();
+    await deleteTask();
   }
+
+  @override
+  Future<void> dispose() async {}
 }

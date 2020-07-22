@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:path/path.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:super_enum/super_enum.dart';
 import 'package:tuple/tuple.dart';
 
 // Project imports:
@@ -19,8 +20,13 @@ class DownloadEpisodeWorker extends Worker {
   final String filename;
   final String storagePath;
 
-  final PublishSubject<Tuple2<int, int>> _progressUpdate =
+  final Dio dio = Dio();
+  final CancelToken cancelToken = CancelToken();
+  final PublishSubject<Tuple2<int, int>> _progressUpdates =
       PublishSubject<Tuple2<int, int>>();
+
+  StreamSubscription<dynamic> _cancellationSubscription;
+  StreamSubscription<dynamic> _progressUpdatesSubscription;
 
   DownloadEpisodeWorker({
     @required int taskId,
@@ -30,55 +36,62 @@ class DownloadEpisodeWorker extends Worker {
     @required this.filename,
     @required this.storagePath,
   }) : super(taskId: taskId, store: store) {
-    _handleProgressUpdates();
+    // Cancellation subscription
+    _cancellationSubscription = store.task
+        .watchById(taskId)
+        .where((e) => e == null)
+        .listen((_) => cancelToken.cancel());
+
+    // Handle progress updates
+    _progressUpdatesSubscription = _progressUpdates.stream
+        .sampleTime(Duration(seconds: 1, milliseconds: 500))
+        .listen((e) => _updateDownloadProgress(e.item1, e.item2));
   }
 
   @override
   Future<bool> shouldExecute() async {
     final audioFile = await store.audioFile.watchByEpisode(episodeId).first;
-    return !audioFile.isComplete;
+    return audioFile != null && !audioFile.isComplete;
   }
 
   @override
   Future<void> execute() async {
-    final dio = Dio();
-    final cancelToken = CancelToken();
-
     try {
       await fileutils.createDirectory(storagePath);
       await dio.download(
         url,
         join(storagePath, filename),
         cancelToken: cancelToken,
-        onReceiveProgress: (received, total) => _progressUpdate.add(
+        onReceiveProgress: (received, total) => _progressUpdates.add(
           Tuple2(received, total),
         ),
       );
-    } catch (err) {
+      await deleteTask();
+    } on DioError catch (err) {
       if (CancelToken.isCancel(err)) {
-        return;
+        await fileutils.deleteFile(join(storagePath, filename));
       }
-    } finally {
-      await markComplete();
     }
   }
 
-  void _handleProgressUpdates() {
-    _progressUpdate.stream.sampleTime(Duration(seconds: 1)).listen((e) async {
-      final received = e.item1;
-      final total = e.item2;
+  @override
+  Future<void> dispose() async {
+    await _progressUpdates.close();
+    await _cancellationSubscription.cancel();
+    await _progressUpdatesSubscription.cancel();
+  }
 
-      if (total > 0) {
-        await store.audioFile.updateDownloadProgress(
-          DownloadProgress(
-            episodeId: episodeId,
-            downloadState: received == total
-                ? DownloadState.downloaded
-                : DownloadState.downloading,
-            downloadPercentage: received / total,
-          ),
-        );
-      }
-    });
+  Future<void> _updateDownloadProgress(int received, int total) async {
+    if (total > 0) {
+      await store.audioFile.updateDownloadProgress(
+        DownloadProgress(
+          episodeId: episodeId,
+          downloadState: received == total
+              ? DownloadState.downloaded
+              : DownloadState.downloading,
+          downloadPercentage: received / total,
+        ),
+      );
+    }
   }
 }

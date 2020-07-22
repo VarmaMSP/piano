@@ -9,11 +9,19 @@ class TaskDao extends DatabaseAccessor<SqlDb> with _$TaskDaoMixin {
         .insert(taskRowFromModel(task), mode: InsertMode.insertOrReplace);
   }
 
-  Stream<TaskRow> watchOldestTask() {
+  Stream<Task> watchTaskById(int id) {
+    return (select(tasks)..where((tbl) => tbl.id.equals(id)))
+        .watchSingle()
+        .map((e) => e?.toModel());
+  }
+
+  Stream<Task> watchOldestTask({@required TaskStatus taskStatus}) {
     return (select(tasks)
+          ..where((tbl) => tbl.taskStatus.equals(taskStatus.index))
           ..orderBy([(tbl) => OrderingTerm(expression: tbl.id)])
           ..limit(1))
-        .watchSingle();
+        .watchSingle()
+        .map((e) => e?.toModel());
   }
 
   Future<void> deleteTask(int id) {

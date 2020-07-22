@@ -1,4 +1,5 @@
 // Project imports:
+import 'package:flutter/foundation.dart';
 import 'package:phenopod/store/store.dart';
 
 // A worker should execute the given task idempotently
@@ -6,11 +7,16 @@ abstract class Worker {
   final int taskId;
   final Store store;
 
-  Worker({this.taskId, this.store});
+  Worker({
+    @required this.taskId,
+    @required this.store,
+  });
 
   Future<void> run() async {
-    if (await shouldExecute()) {
-      await execute();
+    try {
+      await shouldExecute() ? await execute() : await deleteTask();
+    } finally {
+      await dispose();
     }
   }
 
@@ -20,8 +26,11 @@ abstract class Worker {
   // Execute the task
   Future<void> execute();
 
-  // For now just delete the task
-  Future<void> markComplete() async {
+  // Dispose any resources
+  Future<void> dispose();
+
+  // Deletes tasks premanently
+  Future<void> deleteTask() async {
     await store.task.delete(taskId);
   }
 }

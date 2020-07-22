@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:async/async.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
+import 'package:when_expression/when_expression.dart';
 
 /// StreamMap extends async StreamGroup to provide a
 /// map like interface to add streams by key
@@ -42,10 +43,55 @@ class StreamDelayTill<T> {
 
   Stream<T> get stream {
     final t = delayDuration.inMilliseconds ~/ 100;
+
     return Rx.combineLatest2<int, T, Tuple2<int, T>>(
       Stream.periodic(Duration(milliseconds: 100), (x) => x).take(t),
       inputStream,
       (a, b) => Tuple2(a, b),
     ).where((e) => e.item1 == t || predicate(e.item2)).map((e) => e.item2);
   }
+}
+
+/// Creates a stream that waits [waitDuration] for a non null value
+/// before closing
+class StreamLongPoll<T> {
+  final Stream<T> inputStream;
+  final Duration waitDuration;
+  final PublishSubject<T> _values = PublishSubject<T>();
+
+  StreamSubscription<T> _inputStreamSubscription;
+
+  StreamLongPoll(
+    this.inputStream, {
+    this.waitDuration = const Duration(minutes: 10),
+  }) {
+    /// 1. Let non null values pass else race the stream with wait duration.
+    /// 2. Racing stream with duration in the above step can result in
+    ///    same value being emitted the next time.
+    /// 3. Close the stream on receiving a null value.
+    _inputStreamSubscription = inputStream
+        .asyncMap<T>(
+          when<T, FutureOr<T>>({
+            (t) => t != null: (t) => t,
+            (t) => true: (_) => Rx.race([
+                  inputStream.skip(1),
+                  Stream.periodic(waitDuration, (_) => null).take(1),
+                ]).first,
+          }),
+        )
+        .distinct()
+        .listen(
+          when<T, void>({
+            (t) => t != null: (t) {
+              _values.add(t);
+            },
+            (t) => true: (_) {
+              _values.close();
+              _inputStreamSubscription?.cancel();
+            },
+          }),
+        );
+  }
+
+  Stream<T> get stream => _values.stream;
 }

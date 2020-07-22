@@ -8,8 +8,10 @@ part 'task.freezed.dart';
 part 'task.g.dart';
 
 //! DO NOT CHANGE THE ORDER
+// Currently all completed tasks are deleted and The status
+// completed is currently not in use.
 enum TaskStatus {
-  pending,
+  queued,
   completed,
   failed,
 }
@@ -74,7 +76,7 @@ class Task {
     return Task(
       id: null,
       taskType: taskType,
-      taskStatus: TaskStatus.pending,
+      taskStatus: TaskStatus.queued,
       taskPriority: TaskPriority.high,
       canRetry: false,
       createdAt: DateTime.now(),
