@@ -31,36 +31,34 @@ class SubscriptionsFeed extends StatelessWidget {
       slivers: [
         _buildPodcasts(context, screenData),
         _buildAnimatedEpisodeList(
-          screenData.podcastById,
-          screenData.episodes.length <= 30
-              ? screenData.episodes
-              : screenData.episodes.sublist(0, 30),
+          screenData.feedItems.length <= 30
+              ? screenData.feedItems
+              : screenData.feedItems.sublist(0, 30),
         ),
-        _buildEpisodeList(
-          screenData.podcastById,
-          screenData.episodes.length <= 30
-              ? []
-              : screenData.episodes.sublist(30),
-          screenData.receivedAllEpisodes,
-        ),
+        if (screenData.feedItems.isNotEmpty)
+          _buildEpisodeList(
+            screenData.feedItems.length <= 30
+                ? []
+                : screenData.feedItems.sublist(30),
+            screenData.receivedAllEpisodes,
+          ),
       ],
     );
   }
 
   Widget _buildAnimatedEpisodeList(
-    Map<String, Podcast> podcastById,
-    List<Episode> episodes,
+    List<FeedItem> feedItems,
   ) {
-    return SliverImplicitlyAnimatedList<Episode>(
-      items: episodes,
-      areItemsTheSame: (a, b) => a.id == b.id,
-      itemBuilder: (context, animation, episode, index) => SizeFadeTransition(
+    return SliverImplicitlyAnimatedList<FeedItem>(
+      items: feedItems,
+      areItemsTheSame: (a, b) => a.episode.id == b.episode.id,
+      itemBuilder: (context, animation, feedItem, index) => SizeFadeTransition(
         sizeFraction: 0.7,
         curve: Curves.easeInOut,
         animation: animation,
         child: EpisodeListItem(
-          episode: episode,
-          podcast: podcastById[episode.podcastId],
+          episode: feedItem.episode,
+          podcast: feedItem.podcast,
           type: EpisodeListItemType.subscriptionsItem,
         ),
       ),
@@ -68,24 +66,24 @@ class SubscriptionsFeed extends StatelessWidget {
   }
 
   Widget _buildEpisodeList(
-    Map<String, Podcast> podcastById,
-    List<Episode> episodes,
+    List<FeedItem> feedItems,
     bool receivedAllEpisodes,
   ) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          if (index < episodes.length) {
+          if (index < feedItems.length) {
             return EpisodeListItem(
-              episode: episodes[index],
-              podcast: podcastById[episodes[index].podcastId],
+              episode: feedItems[index].episode,
+              podcast: feedItems[index].podcast,
               type: EpisodeListItemType.subscriptionsItem,
             );
           }
           loadMoreEpisodes();
           return _buildLoadingIndicator();
         },
-        childCount: receivedAllEpisodes ? episodes.length : episodes.length + 1,
+        childCount:
+            receivedAllEpisodes ? feedItems.length : feedItems.length + 1,
       ),
     );
   }

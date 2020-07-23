@@ -26,12 +26,12 @@ extension PodcastScreenDataCopyWithExtension on PodcastScreenData {
 
 extension SubscriptionsScreenDataCopyWithExtension on SubscriptionsScreenData {
   SubscriptionsScreenData copyWith({
-    List<Episode> episodes,
+    List<FeedItem> feedItems,
     List<Podcast> podcasts,
     bool receivedAllEpisodes,
   }) {
     return SubscriptionsScreenData(
-      episodes: episodes ?? this.episodes,
+      feedItems: feedItems ?? this.feedItems,
       podcasts: podcasts ?? this.podcasts,
       receivedAllEpisodes: receivedAllEpisodes ?? this.receivedAllEpisodes,
     );

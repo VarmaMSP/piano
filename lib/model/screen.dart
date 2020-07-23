@@ -11,6 +11,16 @@ import 'podcast.dart';
 
 part 'screen.g.dart';
 
+class FeedItem extends Equatable {
+  final Episode episode;
+  final Podcast podcast;
+
+  FeedItem({this.episode, this.podcast});
+
+  @override
+  List<Object> get props => [episode, podcast];
+}
+
 @CopyWith()
 class PodcastScreenData extends Equatable {
   final Podcast podcast;
@@ -37,16 +47,19 @@ class PodcastScreenData extends Equatable {
 @CopyWith()
 class SubscriptionsScreenData extends Equatable {
   final List<Podcast> podcasts;
-  final List<Episode> episodes;
+  final List<FeedItem> feedItems;
   final bool receivedAllEpisodes;
-  final Map<String, Podcast> podcastById;
 
   SubscriptionsScreenData({
     @required this.podcasts,
-    @required this.episodes,
+    @required this.feedItems,
     @required this.receivedAllEpisodes,
-  }) : podcastById = {for (var i in podcasts) i.id: i};
+  });
 
   @override
-  List<Object> get props => [podcasts, episodes];
+  List<Object> get props => [
+        podcasts,
+        feedItems,
+        receivedAllEpisodes,
+      ];
 }

@@ -42,11 +42,21 @@ class SubscriptionsScreenBloc {
         SubscriptionsScreenData>(
       _subscriptionsStream,
       _episodePageStreamMap.streamValues,
-      (subscriptions, episodePages) => SubscriptionsScreenData(
-        podcasts: subscriptions,
-        episodes: episodePages.expand((x) => x).toList(),
-        receivedAllEpisodes: episodePages.last.length < 30,
-      ),
+      (subscriptions, episodePages) {
+        final subscriptionById = {for (var i in subscriptions) i.id: i};
+        return SubscriptionsScreenData(
+          podcasts: subscriptions,
+          feedItems: episodePages
+              .expand((page) => page)
+              .map((episode) => FeedItem(
+                    episode: episode,
+                    podcast: subscriptionById[episode.podcastId],
+                  ))
+              .where((feedItem) => feedItem.podcast != null)
+              .toList(),
+          receivedAllEpisodes: episodePages.last.length < 30,
+        );
+      },
     ).distinct().listen(_screenData.add);
 
     _episodePageStreamMap.add(
@@ -66,7 +76,7 @@ class SubscriptionsScreenBloc {
   /// Sink to load more episodes
   void loadMoreEpisodes() async {
     final screenData = await _screenData.first;
-    final offset = screenData.episodes.length;
+    final offset = screenData.feedItems.length;
 
     if (!_episodePageStreamMap.contains(offset)) {
       _episodePageStreamMap.add(
