@@ -1,11 +1,4 @@
-// Flutter imports:
-import 'package:flutter/foundation.dart';
-
-// Package imports:
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'preference.freezed.dart';
-part 'preference.g.dart';
+part of 'main.dart';
 
 enum Storage {
   none,

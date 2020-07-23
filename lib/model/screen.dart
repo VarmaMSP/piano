@@ -1,15 +1,4 @@
-// Flutter imports:
-import 'package:flutter/foundation.dart';
-
-// Package imports:
-import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:equatable/equatable.dart';
-
-// Project imports:
-import 'episode.dart';
-import 'podcast.dart';
-
-part 'screen.g.dart';
+part of 'main.dart';
 
 class FeedItem extends Equatable {
   final Episode episode;

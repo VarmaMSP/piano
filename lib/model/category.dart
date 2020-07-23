@@ -1,8 +1,4 @@
-// Package imports:
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
-
-part 'category.g.dart';
+part of 'main.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Category extends Equatable {

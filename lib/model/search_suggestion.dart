@@ -1,9 +1,4 @@
-// Package imports:
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:uuid/uuid.dart';
-
-part 'search_suggestion.g.dart';
+part of 'main.dart';
 
 const String typeText = 'T';
 const String typePodcast = 'P';

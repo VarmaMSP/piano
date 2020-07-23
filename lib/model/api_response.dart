@@ -1,16 +1,4 @@
-// Package imports:
-import 'package:json_annotation/json_annotation.dart';
-
-// Project imports:
-import 'category.dart';
-import 'curation.dart';
-import 'episode.dart';
-import 'playlist.dart';
-import 'podcast.dart';
-import 'search_suggestion.dart';
-import 'user.dart';
-
-part 'api_response.g.dart';
+part of 'main.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class ApiResponse {

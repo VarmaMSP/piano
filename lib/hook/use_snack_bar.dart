@@ -15,7 +15,7 @@ void useSnackBar() {
 
     final eventBus = Provider.of<EventBus>(context, listen: false);
     final eventSubscription = eventBus.on().listen((e) {
-      (e as AppEvent).whenPartial(
+      (e as AppEvent).maybeMap(
         subscribe: (data) {
           if (data.synced) {
             Flushbar(
@@ -36,6 +36,7 @@ void useSnackBar() {
             )..show(context);
           }
         },
+        orElse: () {},
       );
     });
 

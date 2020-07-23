@@ -1,11 +1,4 @@
-// Flutter imports:
-import 'package:flutter/foundation.dart';
-
-// Package imports:
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'task.freezed.dart';
-part 'task.g.dart';
+part of 'main.dart';
 
 //! DO NOT CHANGE THE ORDER
 // Currently all completed tasks are deleted and The status

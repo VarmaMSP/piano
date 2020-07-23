@@ -1,13 +1,4 @@
-// Flutter imports:
-import 'package:flutter/foundation.dart';
-
-// Package imports:
-import 'package:equatable/equatable.dart';
-import 'package:path/path.dart';
-
-// Project imports:
-import 'episode.dart';
-import 'podcast.dart';
+part of 'main.dart';
 
 //!! DO NOT CHANGE THE ORDER OF THIS ENUM VALUES
 enum DownloadState {

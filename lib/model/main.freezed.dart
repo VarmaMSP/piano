@@ -1,13 +1,347 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
-part of 'preference.dart';
+part of 'main.dart';
 
 // **************************************************************************
 // FreezedGenerator
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+class _$AppEventTearOff {
+  const _$AppEventTearOff();
+
+// ignore: unused_element
+  _Subscribe subscribe({@required Podcast podcast, @required bool synced}) {
+    return _Subscribe(
+      podcast: podcast,
+      synced: synced,
+    );
+  }
+
+// ignore: unused_element
+  _Unsubscribe unsubscribe({@required Podcast podcast, @required bool synced}) {
+    return _Unsubscribe(
+      podcast: podcast,
+      synced: synced,
+    );
+  }
+}
+
+// ignore: unused_element
+const $AppEvent = _$AppEventTearOff();
+
+mixin _$AppEvent {
+  Podcast get podcast;
+  bool get synced;
+
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result subscribe(Podcast podcast, bool synced),
+    @required Result unsubscribe(Podcast podcast, bool synced),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result subscribe(Podcast podcast, bool synced),
+    Result unsubscribe(Podcast podcast, bool synced),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result subscribe(_Subscribe value),
+    @required Result unsubscribe(_Unsubscribe value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result subscribe(_Subscribe value),
+    Result unsubscribe(_Unsubscribe value),
+    @required Result orElse(),
+  });
+
+  $AppEventCopyWith<AppEvent> get copyWith;
+}
+
+abstract class $AppEventCopyWith<$Res> {
+  factory $AppEventCopyWith(AppEvent value, $Res Function(AppEvent) then) =
+      _$AppEventCopyWithImpl<$Res>;
+  $Res call({Podcast podcast, bool synced});
+}
+
+class _$AppEventCopyWithImpl<$Res> implements $AppEventCopyWith<$Res> {
+  _$AppEventCopyWithImpl(this._value, this._then);
+
+  final AppEvent _value;
+  // ignore: unused_field
+  final $Res Function(AppEvent) _then;
+
+  @override
+  $Res call({
+    Object podcast = freezed,
+    Object synced = freezed,
+  }) {
+    return _then(_value.copyWith(
+      podcast: podcast == freezed ? _value.podcast : podcast as Podcast,
+      synced: synced == freezed ? _value.synced : synced as bool,
+    ));
+  }
+}
+
+abstract class _$SubscribeCopyWith<$Res> implements $AppEventCopyWith<$Res> {
+  factory _$SubscribeCopyWith(
+          _Subscribe value, $Res Function(_Subscribe) then) =
+      __$SubscribeCopyWithImpl<$Res>;
+  @override
+  $Res call({Podcast podcast, bool synced});
+}
+
+class __$SubscribeCopyWithImpl<$Res> extends _$AppEventCopyWithImpl<$Res>
+    implements _$SubscribeCopyWith<$Res> {
+  __$SubscribeCopyWithImpl(_Subscribe _value, $Res Function(_Subscribe) _then)
+      : super(_value, (v) => _then(v as _Subscribe));
+
+  @override
+  _Subscribe get _value => super._value as _Subscribe;
+
+  @override
+  $Res call({
+    Object podcast = freezed,
+    Object synced = freezed,
+  }) {
+    return _then(_Subscribe(
+      podcast: podcast == freezed ? _value.podcast : podcast as Podcast,
+      synced: synced == freezed ? _value.synced : synced as bool,
+    ));
+  }
+}
+
+class _$_Subscribe implements _Subscribe {
+  const _$_Subscribe({@required this.podcast, @required this.synced})
+      : assert(podcast != null),
+        assert(synced != null);
+
+  @override
+  final Podcast podcast;
+  @override
+  final bool synced;
+
+  @override
+  String toString() {
+    return 'AppEvent.subscribe(podcast: $podcast, synced: $synced)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Subscribe &&
+            (identical(other.podcast, podcast) ||
+                const DeepCollectionEquality()
+                    .equals(other.podcast, podcast)) &&
+            (identical(other.synced, synced) ||
+                const DeepCollectionEquality().equals(other.synced, synced)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(podcast) ^
+      const DeepCollectionEquality().hash(synced);
+
+  @override
+  _$SubscribeCopyWith<_Subscribe> get copyWith =>
+      __$SubscribeCopyWithImpl<_Subscribe>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result subscribe(Podcast podcast, bool synced),
+    @required Result unsubscribe(Podcast podcast, bool synced),
+  }) {
+    assert(subscribe != null);
+    assert(unsubscribe != null);
+    return subscribe(podcast, synced);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result subscribe(Podcast podcast, bool synced),
+    Result unsubscribe(Podcast podcast, bool synced),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (subscribe != null) {
+      return subscribe(podcast, synced);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result subscribe(_Subscribe value),
+    @required Result unsubscribe(_Unsubscribe value),
+  }) {
+    assert(subscribe != null);
+    assert(unsubscribe != null);
+    return subscribe(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result subscribe(_Subscribe value),
+    Result unsubscribe(_Unsubscribe value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (subscribe != null) {
+      return subscribe(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Subscribe implements AppEvent {
+  const factory _Subscribe({@required Podcast podcast, @required bool synced}) =
+      _$_Subscribe;
+
+  @override
+  Podcast get podcast;
+  @override
+  bool get synced;
+  @override
+  _$SubscribeCopyWith<_Subscribe> get copyWith;
+}
+
+abstract class _$UnsubscribeCopyWith<$Res> implements $AppEventCopyWith<$Res> {
+  factory _$UnsubscribeCopyWith(
+          _Unsubscribe value, $Res Function(_Unsubscribe) then) =
+      __$UnsubscribeCopyWithImpl<$Res>;
+  @override
+  $Res call({Podcast podcast, bool synced});
+}
+
+class __$UnsubscribeCopyWithImpl<$Res> extends _$AppEventCopyWithImpl<$Res>
+    implements _$UnsubscribeCopyWith<$Res> {
+  __$UnsubscribeCopyWithImpl(
+      _Unsubscribe _value, $Res Function(_Unsubscribe) _then)
+      : super(_value, (v) => _then(v as _Unsubscribe));
+
+  @override
+  _Unsubscribe get _value => super._value as _Unsubscribe;
+
+  @override
+  $Res call({
+    Object podcast = freezed,
+    Object synced = freezed,
+  }) {
+    return _then(_Unsubscribe(
+      podcast: podcast == freezed ? _value.podcast : podcast as Podcast,
+      synced: synced == freezed ? _value.synced : synced as bool,
+    ));
+  }
+}
+
+class _$_Unsubscribe implements _Unsubscribe {
+  const _$_Unsubscribe({@required this.podcast, @required this.synced})
+      : assert(podcast != null),
+        assert(synced != null);
+
+  @override
+  final Podcast podcast;
+  @override
+  final bool synced;
+
+  @override
+  String toString() {
+    return 'AppEvent.unsubscribe(podcast: $podcast, synced: $synced)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Unsubscribe &&
+            (identical(other.podcast, podcast) ||
+                const DeepCollectionEquality()
+                    .equals(other.podcast, podcast)) &&
+            (identical(other.synced, synced) ||
+                const DeepCollectionEquality().equals(other.synced, synced)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(podcast) ^
+      const DeepCollectionEquality().hash(synced);
+
+  @override
+  _$UnsubscribeCopyWith<_Unsubscribe> get copyWith =>
+      __$UnsubscribeCopyWithImpl<_Unsubscribe>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result subscribe(Podcast podcast, bool synced),
+    @required Result unsubscribe(Podcast podcast, bool synced),
+  }) {
+    assert(subscribe != null);
+    assert(unsubscribe != null);
+    return unsubscribe(podcast, synced);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result subscribe(Podcast podcast, bool synced),
+    Result unsubscribe(Podcast podcast, bool synced),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unsubscribe != null) {
+      return unsubscribe(podcast, synced);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result subscribe(_Subscribe value),
+    @required Result unsubscribe(_Unsubscribe value),
+  }) {
+    assert(subscribe != null);
+    assert(unsubscribe != null);
+    return unsubscribe(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result subscribe(_Subscribe value),
+    Result unsubscribe(_Unsubscribe value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unsubscribe != null) {
+      return unsubscribe(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Unsubscribe implements AppEvent {
+  const factory _Unsubscribe(
+      {@required Podcast podcast, @required bool synced}) = _$_Unsubscribe;
+
+  @override
+  Podcast get podcast;
+  @override
+  bool get synced;
+  @override
+  _$UnsubscribeCopyWith<_Unsubscribe> get copyWith;
+}
+
 PreferenceValue _$PreferenceValueFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType'] as String) {
     case 'queueDetails':
@@ -143,7 +477,7 @@ class _$QueueDetailsCopyWithImpl<$Res>
 }
 
 @JsonSerializable()
-class _$QueueDetails with DiagnosticableTreeMixin implements QueueDetails {
+class _$QueueDetails implements QueueDetails {
   const _$QueueDetails({@required this.position}) : assert(position != null);
 
   factory _$QueueDetails.fromJson(Map<String, dynamic> json) =>
@@ -153,16 +487,8 @@ class _$QueueDetails with DiagnosticableTreeMixin implements QueueDetails {
   final int position;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'PreferenceValue.queueDetails(position: $position)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'PreferenceValue.queueDetails'))
-      ..add(DiagnosticsProperty('position', position));
   }
 
   @override
@@ -294,9 +620,7 @@ class _$SubscriptionsRefreshDetailsCopyWithImpl<$Res>
 }
 
 @JsonSerializable()
-class _$SubscriptionsRefreshDetails
-    with DiagnosticableTreeMixin
-    implements SubscriptionsRefreshDetails {
+class _$SubscriptionsRefreshDetails implements SubscriptionsRefreshDetails {
   const _$SubscriptionsRefreshDetails({@required this.lastRefreshedAt})
       : assert(lastRefreshedAt != null);
 
@@ -307,17 +631,8 @@ class _$SubscriptionsRefreshDetails
   final DateTime lastRefreshedAt;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'PreferenceValue.subscriptionsRefreshDetails(lastRefreshedAt: $lastRefreshedAt)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty(
-          'type', 'PreferenceValue.subscriptionsRefreshDetails'))
-      ..add(DiagnosticsProperty('lastRefreshedAt', lastRefreshedAt));
   }
 
   @override
@@ -456,9 +771,7 @@ class _$AudioPlayerSettingCopyWithImpl<$Res>
 }
 
 @JsonSerializable()
-class _$AudioPlayerSetting
-    with DiagnosticableTreeMixin
-    implements AudioPlayerSetting {
+class _$AudioPlayerSetting implements AudioPlayerSetting {
   const _$AudioPlayerSetting(
       {@required this.seekForwardTime, @required this.seekBackwardTime})
       : assert(seekForwardTime != null),
@@ -473,17 +786,8 @@ class _$AudioPlayerSetting
   final int seekBackwardTime;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'PreferenceValue.audioPlayerSetting(seekForwardTime: $seekForwardTime, seekBackwardTime: $seekBackwardTime)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'PreferenceValue.audioPlayerSetting'))
-      ..add(DiagnosticsProperty('seekForwardTime', seekForwardTime))
-      ..add(DiagnosticsProperty('seekBackwardTime', seekBackwardTime));
   }
 
   @override
@@ -623,7 +927,7 @@ class _$StorageSettingCopyWithImpl<$Res>
 }
 
 @JsonSerializable()
-class _$StorageSetting with DiagnosticableTreeMixin implements StorageSetting {
+class _$StorageSetting implements StorageSetting {
   const _$StorageSetting({@required this.storage, @required this.storagePath})
       : assert(storage != null),
         assert(storagePath != null);
@@ -637,17 +941,8 @@ class _$StorageSetting with DiagnosticableTreeMixin implements StorageSetting {
   final String storagePath;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'PreferenceValue.storageSetting(storage: $storage, storagePath: $storagePath)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'PreferenceValue.storageSetting'))
-      ..add(DiagnosticsProperty('storage', storage))
-      ..add(DiagnosticsProperty('storagePath', storagePath));
   }
 
   @override
@@ -753,4 +1048,401 @@ abstract class StorageSetting implements PreferenceValue {
   Storage get storage;
   String get storagePath;
   $StorageSettingCopyWith<StorageSetting> get copyWith;
+}
+
+TaskType _$TaskTypeFromJson(Map<String, dynamic> json) {
+  switch (json['runtimeType'] as String) {
+    case 'cachePodcast':
+      return _CachePodcast.fromJson(json);
+    case 'downloadEpisode':
+      return _DownloadEpisode.fromJson(json);
+
+    default:
+      throw FallThroughError();
+  }
+}
+
+class _$TaskTypeTearOff {
+  const _$TaskTypeTearOff();
+
+// ignore: unused_element
+  _CachePodcast cachePodcast(
+      {@required String podcastId, @required String podcastUrlParam}) {
+    return _CachePodcast(
+      podcastId: podcastId,
+      podcastUrlParam: podcastUrlParam,
+    );
+  }
+
+// ignore: unused_element
+  _DownloadEpisode downloadEpisode(
+      {@required String episodeId,
+      @required String url,
+      @required String filename,
+      @required String storagePath}) {
+    return _DownloadEpisode(
+      episodeId: episodeId,
+      url: url,
+      filename: filename,
+      storagePath: storagePath,
+    );
+  }
+}
+
+// ignore: unused_element
+const $TaskType = _$TaskTypeTearOff();
+
+mixin _$TaskType {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result cachePodcast(String podcastId, String podcastUrlParam),
+    @required
+        Result downloadEpisode(
+            String episodeId, String url, String filename, String storagePath),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result cachePodcast(String podcastId, String podcastUrlParam),
+    Result downloadEpisode(
+        String episodeId, String url, String filename, String storagePath),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result cachePodcast(_CachePodcast value),
+    @required Result downloadEpisode(_DownloadEpisode value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result cachePodcast(_CachePodcast value),
+    Result downloadEpisode(_DownloadEpisode value),
+    @required Result orElse(),
+  });
+  Map<String, dynamic> toJson();
+}
+
+abstract class $TaskTypeCopyWith<$Res> {
+  factory $TaskTypeCopyWith(TaskType value, $Res Function(TaskType) then) =
+      _$TaskTypeCopyWithImpl<$Res>;
+}
+
+class _$TaskTypeCopyWithImpl<$Res> implements $TaskTypeCopyWith<$Res> {
+  _$TaskTypeCopyWithImpl(this._value, this._then);
+
+  final TaskType _value;
+  // ignore: unused_field
+  final $Res Function(TaskType) _then;
+}
+
+abstract class _$CachePodcastCopyWith<$Res> {
+  factory _$CachePodcastCopyWith(
+          _CachePodcast value, $Res Function(_CachePodcast) then) =
+      __$CachePodcastCopyWithImpl<$Res>;
+  $Res call({String podcastId, String podcastUrlParam});
+}
+
+class __$CachePodcastCopyWithImpl<$Res> extends _$TaskTypeCopyWithImpl<$Res>
+    implements _$CachePodcastCopyWith<$Res> {
+  __$CachePodcastCopyWithImpl(
+      _CachePodcast _value, $Res Function(_CachePodcast) _then)
+      : super(_value, (v) => _then(v as _CachePodcast));
+
+  @override
+  _CachePodcast get _value => super._value as _CachePodcast;
+
+  @override
+  $Res call({
+    Object podcastId = freezed,
+    Object podcastUrlParam = freezed,
+  }) {
+    return _then(_CachePodcast(
+      podcastId: podcastId == freezed ? _value.podcastId : podcastId as String,
+      podcastUrlParam: podcastUrlParam == freezed
+          ? _value.podcastUrlParam
+          : podcastUrlParam as String,
+    ));
+  }
+}
+
+@JsonSerializable()
+class _$_CachePodcast implements _CachePodcast {
+  const _$_CachePodcast(
+      {@required this.podcastId, @required this.podcastUrlParam})
+      : assert(podcastId != null),
+        assert(podcastUrlParam != null);
+
+  factory _$_CachePodcast.fromJson(Map<String, dynamic> json) =>
+      _$_$_CachePodcastFromJson(json);
+
+  @override
+  final String podcastId;
+  @override
+  final String podcastUrlParam;
+
+  @override
+  String toString() {
+    return 'TaskType.cachePodcast(podcastId: $podcastId, podcastUrlParam: $podcastUrlParam)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _CachePodcast &&
+            (identical(other.podcastId, podcastId) ||
+                const DeepCollectionEquality()
+                    .equals(other.podcastId, podcastId)) &&
+            (identical(other.podcastUrlParam, podcastUrlParam) ||
+                const DeepCollectionEquality()
+                    .equals(other.podcastUrlParam, podcastUrlParam)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(podcastId) ^
+      const DeepCollectionEquality().hash(podcastUrlParam);
+
+  @override
+  _$CachePodcastCopyWith<_CachePodcast> get copyWith =>
+      __$CachePodcastCopyWithImpl<_CachePodcast>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result cachePodcast(String podcastId, String podcastUrlParam),
+    @required
+        Result downloadEpisode(
+            String episodeId, String url, String filename, String storagePath),
+  }) {
+    assert(cachePodcast != null);
+    assert(downloadEpisode != null);
+    return cachePodcast(podcastId, podcastUrlParam);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result cachePodcast(String podcastId, String podcastUrlParam),
+    Result downloadEpisode(
+        String episodeId, String url, String filename, String storagePath),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (cachePodcast != null) {
+      return cachePodcast(podcastId, podcastUrlParam);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result cachePodcast(_CachePodcast value),
+    @required Result downloadEpisode(_DownloadEpisode value),
+  }) {
+    assert(cachePodcast != null);
+    assert(downloadEpisode != null);
+    return cachePodcast(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result cachePodcast(_CachePodcast value),
+    Result downloadEpisode(_DownloadEpisode value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (cachePodcast != null) {
+      return cachePodcast(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_CachePodcastToJson(this)..['runtimeType'] = 'cachePodcast';
+  }
+}
+
+abstract class _CachePodcast implements TaskType {
+  const factory _CachePodcast(
+      {@required String podcastId,
+      @required String podcastUrlParam}) = _$_CachePodcast;
+
+  factory _CachePodcast.fromJson(Map<String, dynamic> json) =
+      _$_CachePodcast.fromJson;
+
+  String get podcastId;
+  String get podcastUrlParam;
+  _$CachePodcastCopyWith<_CachePodcast> get copyWith;
+}
+
+abstract class _$DownloadEpisodeCopyWith<$Res> {
+  factory _$DownloadEpisodeCopyWith(
+          _DownloadEpisode value, $Res Function(_DownloadEpisode) then) =
+      __$DownloadEpisodeCopyWithImpl<$Res>;
+  $Res call(
+      {String episodeId, String url, String filename, String storagePath});
+}
+
+class __$DownloadEpisodeCopyWithImpl<$Res> extends _$TaskTypeCopyWithImpl<$Res>
+    implements _$DownloadEpisodeCopyWith<$Res> {
+  __$DownloadEpisodeCopyWithImpl(
+      _DownloadEpisode _value, $Res Function(_DownloadEpisode) _then)
+      : super(_value, (v) => _then(v as _DownloadEpisode));
+
+  @override
+  _DownloadEpisode get _value => super._value as _DownloadEpisode;
+
+  @override
+  $Res call({
+    Object episodeId = freezed,
+    Object url = freezed,
+    Object filename = freezed,
+    Object storagePath = freezed,
+  }) {
+    return _then(_DownloadEpisode(
+      episodeId: episodeId == freezed ? _value.episodeId : episodeId as String,
+      url: url == freezed ? _value.url : url as String,
+      filename: filename == freezed ? _value.filename : filename as String,
+      storagePath:
+          storagePath == freezed ? _value.storagePath : storagePath as String,
+    ));
+  }
+}
+
+@JsonSerializable()
+class _$_DownloadEpisode implements _DownloadEpisode {
+  const _$_DownloadEpisode(
+      {@required this.episodeId,
+      @required this.url,
+      @required this.filename,
+      @required this.storagePath})
+      : assert(episodeId != null),
+        assert(url != null),
+        assert(filename != null),
+        assert(storagePath != null);
+
+  factory _$_DownloadEpisode.fromJson(Map<String, dynamic> json) =>
+      _$_$_DownloadEpisodeFromJson(json);
+
+  @override
+  final String episodeId;
+  @override
+  final String url;
+  @override
+  final String filename;
+  @override
+  final String storagePath;
+
+  @override
+  String toString() {
+    return 'TaskType.downloadEpisode(episodeId: $episodeId, url: $url, filename: $filename, storagePath: $storagePath)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _DownloadEpisode &&
+            (identical(other.episodeId, episodeId) ||
+                const DeepCollectionEquality()
+                    .equals(other.episodeId, episodeId)) &&
+            (identical(other.url, url) ||
+                const DeepCollectionEquality().equals(other.url, url)) &&
+            (identical(other.filename, filename) ||
+                const DeepCollectionEquality()
+                    .equals(other.filename, filename)) &&
+            (identical(other.storagePath, storagePath) ||
+                const DeepCollectionEquality()
+                    .equals(other.storagePath, storagePath)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(episodeId) ^
+      const DeepCollectionEquality().hash(url) ^
+      const DeepCollectionEquality().hash(filename) ^
+      const DeepCollectionEquality().hash(storagePath);
+
+  @override
+  _$DownloadEpisodeCopyWith<_DownloadEpisode> get copyWith =>
+      __$DownloadEpisodeCopyWithImpl<_DownloadEpisode>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result cachePodcast(String podcastId, String podcastUrlParam),
+    @required
+        Result downloadEpisode(
+            String episodeId, String url, String filename, String storagePath),
+  }) {
+    assert(cachePodcast != null);
+    assert(downloadEpisode != null);
+    return downloadEpisode(episodeId, url, filename, storagePath);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result cachePodcast(String podcastId, String podcastUrlParam),
+    Result downloadEpisode(
+        String episodeId, String url, String filename, String storagePath),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (downloadEpisode != null) {
+      return downloadEpisode(episodeId, url, filename, storagePath);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result cachePodcast(_CachePodcast value),
+    @required Result downloadEpisode(_DownloadEpisode value),
+  }) {
+    assert(cachePodcast != null);
+    assert(downloadEpisode != null);
+    return downloadEpisode(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result cachePodcast(_CachePodcast value),
+    Result downloadEpisode(_DownloadEpisode value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (downloadEpisode != null) {
+      return downloadEpisode(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_DownloadEpisodeToJson(this)
+      ..['runtimeType'] = 'downloadEpisode';
+  }
+}
+
+abstract class _DownloadEpisode implements TaskType {
+  const factory _DownloadEpisode(
+      {@required String episodeId,
+      @required String url,
+      @required String filename,
+      @required String storagePath}) = _$_DownloadEpisode;
+
+  factory _DownloadEpisode.fromJson(Map<String, dynamic> json) =
+      _$_DownloadEpisode.fromJson;
+
+  String get episodeId;
+  String get url;
+  String get filename;
+  String get storagePath;
+  _$DownloadEpisodeCopyWith<_DownloadEpisode> get copyWith;
 }

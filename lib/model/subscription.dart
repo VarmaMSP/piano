@@ -1,5 +1,4 @@
-// Flutter imports:
-import 'package:flutter/foundation.dart';
+part of 'main.dart';
 
 class Subscription {
   final String podcastId;

@@ -1,13 +1,14 @@
-// Package imports:
-import 'package:phenopod/model/podcast.dart';
-import 'package:super_enum/super_enum.dart';
+part of 'main.dart';
 
-part 'app_event.g.dart';
+@freezed
+abstract class AppEvent with _$AppEvent {
+  const factory AppEvent.subscribe({
+    @required Podcast podcast,
+    @required bool synced,
+  }) = _Subscribe;
 
-@superEnum
-enum _AppEvent {
-  @Data(fields: [DataField<Podcast>('podcast'), DataField<bool>('synced')])
-  Subscribe,
-  @Data(fields: [DataField<Podcast>('podcast'), DataField<bool>('synced')])
-  Unsubscribe,
+  const factory AppEvent.unsubscribe({
+    @required Podcast podcast,
+    @required bool synced,
+  }) = _Unsubscribe;
 }

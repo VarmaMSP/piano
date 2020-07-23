@@ -1,17 +1,4 @@
-// Flutter imports:
-import 'package:flutter/foundation.dart';
-
-// Package imports:
-import 'package:audio_service/audio_service.dart' as audioservice;
-import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:equatable/equatable.dart';
-
-// Project imports:
-import 'package:phenopod/utils/request.dart';
-import 'episode.dart';
-import 'podcast.dart';
-
-part 'queue.g.dart';
+part of 'main.dart';
 
 @CopyWith()
 class Queue extends Equatable {

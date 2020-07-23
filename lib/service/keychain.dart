@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 // Project imports:
-import 'package:phenopod/model/user.dart';
+import 'package:phenopod/model/main.dart';
 
 class Keychain {
   static const String guestCredentialsStorageKey =

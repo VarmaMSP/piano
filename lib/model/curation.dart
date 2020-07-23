@@ -1,11 +1,4 @@
-// Package imports:
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
-
-// Project imports:
-import 'podcast.dart';
-
-part 'curation.g.dart';
+part of 'main.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Curation extends Equatable {

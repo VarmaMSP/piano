@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:when_expression/when_expression.dart';
 
 // Project imports:
-import 'package:phenopod/model/preference.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;

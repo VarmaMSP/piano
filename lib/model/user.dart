@@ -1,13 +1,4 @@
-// Flutter imports:
-import 'package:flutter/foundation.dart';
-
-// Package imports:
-import 'package:device_info/device_info.dart';
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:uuid/uuid.dart';
-
-part 'user.g.dart';
+part of 'main.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class User extends Equatable {
