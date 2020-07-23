@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:event_bus/event_bus.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
 import 'package:provider/provider.dart';
@@ -6,7 +7,6 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/animation/podcast_screen_animation.dart';
-import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/hook/use_value.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/page_route/route_transition_complete_notifier.dart';
@@ -45,7 +45,7 @@ class PodcastScreen extends HookWidget {
       create: (context) => PodcastScreenBloc(
         urlParam: urlParam,
         store: Provider.of<Store>(context),
-        podcastActionsBloc: Provider.of<PodcastActionsBloc>(context),
+        eventBus: Provider.of<EventBus>(context),
       ),
       dispose: (_, value) => value.dispose(),
     );

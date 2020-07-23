@@ -37,7 +37,7 @@ class TaskRunner {
     final queuedTasks = stream_utils.StreamLongPoll(
       store.task.watchQueueTop(),
       waitDuration: when<TaskRunnerMode, Duration>({
-        (v) => v == TaskRunnerMode.foreground: (_) => Duration(minutes: 2),
+        (v) => v == TaskRunnerMode.foreground: (_) => Duration(minutes: 15),
         (v) => v == TaskRunnerMode.background: (_) => Duration.zero,
       })(mode),
     ).stream;
@@ -61,8 +61,13 @@ class TaskRunner {
             ),
           )
           .run();
-    }
 
-    print('task runner is closing');
+      // Incase where app is closed with tasks still to be executed, we need them
+      // to be run by taskrunner in background some time later. We achieve this by
+      // repeatedly rescheduling taskrunner to run some time in future.
+      if (mode == TaskRunnerMode.foreground) {
+        await alarmService.scheduleTaskRunner(mode: TaskRunnerMode.background);
+      }
+    }
   }
 }

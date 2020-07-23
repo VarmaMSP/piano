@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -37,11 +38,12 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  // FIX ME: calling this error
+  // FIXME: calling this method, throwing error
   // await alarmService.scheduleTaskRunner();
 
   runApp(Root(
     store: newStore(api, db),
+    eventBus: EventBus(),
     audioService: audioService,
     alarmService: alarmService,
   ));
@@ -50,11 +52,13 @@ void main() async {
 class Root extends StatefulWidget {
   Root({
     @required this.store,
+    @required this.eventBus,
     @required this.audioService,
     @required this.alarmService,
   });
 
   final Store store;
+  final EventBus eventBus;
   final AudioService audioService;
   final AlarmService alarmService;
 
@@ -116,6 +120,10 @@ class _RootState extends State<Root>
           value: widget.store,
           updateShouldNotify: (_, __) => false,
         ),
+        Provider.value(
+          value: widget.eventBus,
+          updateShouldNotify: (_, __) => false,
+        ),
         Provider<AppNavigationBloc>(
           create: (_) => AppNavigationBloc(
             playerTabController: _tabController,
@@ -132,7 +140,11 @@ class _RootState extends State<Root>
           dispose: (_, value) => value.dispose(),
         ),
         Provider<PodcastActionsBloc>(
-          create: (_) => PodcastActionsBloc(widget.store),
+          create: (_) => PodcastActionsBloc(
+            widget.store,
+            widget.eventBus,
+            widget.alarmService,
+          ),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<EpisodeActionsBloc>(

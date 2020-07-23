@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/hook/use_value.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/screen/subscriptions_screen/widgets/subscriptions_feed.dart';
@@ -21,7 +20,6 @@ class SubscriptionsScreen extends HookWidget {
     final subscriptionsScreenBloc = useValue<SubscriptionsScreenBloc>(
       create: (context) => SubscriptionsScreenBloc(
         store: Provider.of<Store>(context),
-        podcastActionsBloc: Provider.of<PodcastActionsBloc>(context),
       ),
       dispose: (_, value) => value.dispose(),
     );

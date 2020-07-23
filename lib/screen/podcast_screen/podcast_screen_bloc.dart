@@ -2,13 +2,13 @@
 import 'dart:async';
 
 // Flutter imports:
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/foundation.dart';
 
 // Package imports:
 import 'package:rxdart/rxdart.dart';
 
 // Project imports:
-import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/stream.dart';
@@ -17,15 +17,13 @@ import 'package:phenopod/utils/utils.dart';
 /// This bloc is used to represent local state of podcast screen
 class PodcastScreenBloc {
   final Store store;
+  final EventBus eventBus;
 
   /// id of current podcast
   final String id;
 
   /// urlParam of current podcast;
   final String urlParam;
-
-  /// This is used to apply updates to screenData
-  final PodcastActionsBloc podcastActionsBloc;
 
   /// Controller for screen data
   final BehaviorSubject<PodcastScreenData> _screenData =
@@ -37,18 +35,18 @@ class PodcastScreenBloc {
 
   /// Subscriptions made in this bloc
   StreamSubscription<dynamic> _storeSubscription;
-  StreamSubscription<dynamic> _podcastActionsSubscription;
+  StreamSubscription<dynamic> _eventSubscription;
 
   PodcastScreenBloc({
     @required this.store,
+    @required this.eventBus,
     @required this.urlParam,
-    @required this.podcastActionsBloc,
   }) : id = getIdFromUrlParam(urlParam) {
     /// load data from streams
     _handleDataFromStore();
 
     /// Handle any changes as a result of podcast actions
-    _handlePodcastActions();
+    _handleEvents();
   }
 
   Future<void> _handleDataFromStore() async {
@@ -75,27 +73,27 @@ class PodcastScreenBloc {
     );
   }
 
-  void _handlePodcastActions() {
-    _podcastActionsSubscription = podcastActionsBloc.actions.listen(
-      (action) => action.whenPartial(
-        subscribed: (data) async {
-          if (data.podcastId == id) {
+  void _handleEvents() {
+    _eventSubscription = eventBus.on().listen((e) {
+      (e as AppEvent).whenPartial(
+        subscribe: (data) async {
+          if (data.podcast.id == id) {
             final screenData = await _screenData.first;
             if (!screenData.isSubscribed) {
               _screenData.add(screenData.copyWith(isSubscribed: true));
             }
           }
         },
-        unsubscribed: (data) async {
-          if (data.podcastId == id) {
+        unsubscribe: (data) async {
+          if (data.podcast.id == id) {
             final screenData = await _screenData.first;
             if (screenData.isSubscribed) {
               _screenData.add(screenData.copyWith(isSubscribed: false));
             }
           }
         },
-      ),
-    );
+      );
+    });
   }
 
   /// Sink to load more episodes
@@ -124,6 +122,6 @@ class PodcastScreenBloc {
   Future<void> dispose() async {
     await _screenData.close();
     await _storeSubscription.cancel();
-    await _podcastActionsSubscription.cancel();
+    await _eventSubscription.cancel();
   }
 }

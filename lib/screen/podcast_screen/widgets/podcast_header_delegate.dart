@@ -272,8 +272,12 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               widthFactor: 0.65,
               child: FlatButton(
                 onPressed: () => screenData != null && screenData.isSubscribed
-                    ? podcastActionsBloc.unsubscribe(screenData.podcast)
-                    : podcastActionsBloc.subscribe(screenData.podcast),
+                    ? podcastActionsBloc.addAction(
+                        PodcastAction.unsubscribe(podcast: screenData.podcast),
+                      )
+                    : podcastActionsBloc.addAction(
+                        PodcastAction.subscribe(podcast: screenData.podcast),
+                      ),
                 color: screenData?.isSubscribed ?? false
                     ? Colors.grey.shade300
                     : TWColors.purple.shade600,

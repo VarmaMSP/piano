@@ -1,4 +1,5 @@
 export 'api_response.dart';
+export 'app_event.dart';
 export 'category.dart';
 export 'curation.dart';
 export 'episode.dart';

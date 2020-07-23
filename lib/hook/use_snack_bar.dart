@@ -1,47 +1,43 @@
 // Flutter imports:
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:connectivity/connectivity.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:provider/provider.dart';
-
-// Project imports:
-import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 
 void useSnackBar() {
   useEffect(() {
     final context = useContext();
 
-    final podcastActionsBloc = Provider.of<PodcastActionsBloc>(
-      context,
-      listen: false,
-    );
-    final podcastActionsSubscription = podcastActionsBloc.actions.listen(
-      (a) => a.when(
-        subscribed: (data) {
+    final eventBus = Provider.of<EventBus>(context, listen: false);
+    final eventSubscription = eventBus.on().listen((e) {
+      (e as AppEvent).whenPartial(
+        subscribe: (data) {
           if (data.synced) {
             Flushbar(
               message: 'Subscription added.',
-              duration: Duration(seconds: 6),
+              duration: Duration(seconds: 4),
               animationDuration: Duration(milliseconds: 250),
               isDismissible: true,
             )..show(context);
           }
         },
-        unsubscribed: (data) {
+        unsubscribe: (data) {
           if (data.synced) {
             Flushbar(
               message: 'Unsubscribed.',
-              duration: Duration(seconds: 6),
+              duration: Duration(seconds: 4),
               animationDuration: Duration(milliseconds: 250),
               isDismissible: true,
             )..show(context);
           }
         },
-      ),
-    );
+      );
+    });
 
     final connectivitySubscription =
         Connectivity().onConnectivityChanged.listen(
@@ -64,7 +60,7 @@ void useSnackBar() {
     );
 
     return () {
-      podcastActionsSubscription.cancel();
+      eventSubscription.cancel();
       connectivitySubscription.cancel();
     };
   }, []);

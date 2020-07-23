@@ -24,41 +24,43 @@ class CachePodcastWorker extends Worker {
 
   @override
   Future<void> execute() async {
-    /// Cache podcast
-    final podcast = await store.db.podcastDao.watchPodcast(podcastId).first;
-    if (podcast == null) {
-      await store.podcast
-          .watchByUrlParam(podcastUrlParam)
-          .where((p) => p != null)
-          .first;
-    }
+    try {
+      /// Cache podcast
+      final podcast = await store.db.podcastDao.watchPodcast(podcastId).first;
+      if (podcast == null) {
+        await store.podcast
+            .watchByUrlParam(podcastUrlParam)
+            .where((p) => p != null)
+            .first;
+      }
 
-    /// Load all episodes from db
-    var episodes = await store.db.episodeDao.watchEpisodesByPodcastsPaginated(
-      podcastIds: [podcastId],
-      offset: 0,
-      limit: 10000,
-    ).first;
-    var episodeCount = episodes.length;
+      /// Load all episodes from db
+      var episodes = await store.db.episodeDao.watchEpisodesByPodcastsPaginated(
+        podcastIds: [podcastId],
+        offset: 0,
+        limit: 10000,
+      ).first;
+      var episodeCount = episodes.length;
 
-    /// Paginate all episodes
-    do {
-      episodes = await store.api.episode.getByPodcastPaginated(
-        podcastId: podcastId,
-        offset: episodeCount,
-        limit: 50,
+      /// Paginate all episodes
+      do {
+        episodes = await store.api.episode.getByPodcastPaginated(
+          podcastId: podcastId,
+          offset: episodeCount,
+          limit: 50,
+        );
+        episodeCount += episodes.length;
+        await store.db.episodeDao.saveEpisodes(episodes);
+      } while (episodes.length < 50);
+
+      /// Update podcast cache details
+      await store.db.podcastDao.updateCacheDetails(
+        podcastId,
+        cachedAllEpisodes: true,
       );
-      episodeCount += episodes.length;
-      await store.db.episodeDao.saveEpisodes(episodes);
-    } while (episodes.length < 50);
-
-    /// Update podcast cache details
-    await store.db.podcastDao.updateCacheDetails(
-      podcastId,
-      cachedAllEpisodes: true,
-    );
-
-    await deleteTask();
+    } finally {
+      await deleteTask();
+    }
   }
 
   @override

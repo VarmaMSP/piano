@@ -2,21 +2,23 @@
 
 // ignore_for_file: unnecessary_this, return_of_invalid_type, constant_identifier_names, prefer_const_constructors_in_immutables, sort_unnamed_constructors_first, join_return_with_assignment
 
-part of 'podcast_actions_bloc.dart';
+part of 'app_event.dart';
 
 // **************************************************************************
 // SuperEnumGenerator
 // **************************************************************************
 
 @immutable
-abstract class PodcastAction extends Equatable {
-  const PodcastAction(this._type);
+abstract class AppEvent extends Equatable {
+  const AppEvent(this._type);
 
-  factory PodcastAction.subscribe({@required Podcast podcast}) = Subscribe;
+  factory AppEvent.subscribe(
+      {@required Podcast podcast, @required bool synced}) = Subscribe;
 
-  factory PodcastAction.unsubscribe({@required Podcast podcast}) = Unsubscribe;
+  factory AppEvent.unsubscribe(
+      {@required Podcast podcast, @required bool synced}) = Unsubscribe;
 
-  final _PodcastAction _type;
+  final _AppEvent _type;
 
 //ignore: missing_return
   R when<R>(
@@ -29,9 +31,9 @@ abstract class PodcastAction extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _PodcastAction.Subscribe:
+      case _AppEvent.Subscribe:
         return subscribe(this as Subscribe);
-      case _PodcastAction.Unsubscribe:
+      case _AppEvent.Unsubscribe:
         return unsubscribe(this as Unsubscribe);
     }
   }
@@ -47,9 +49,9 @@ abstract class PodcastAction extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _PodcastAction.Subscribe:
+      case _AppEvent.Subscribe:
         return subscribe(this as Subscribe);
-      case _PodcastAction.Unsubscribe:
+      case _AppEvent.Unsubscribe:
         return unsubscribe(this as Unsubscribe);
     }
   }
@@ -57,7 +59,7 @@ abstract class PodcastAction extends Equatable {
   R whenOrElse<R>(
       {R Function(Subscribe) subscribe,
       R Function(Unsubscribe) unsubscribe,
-      @required R Function(PodcastAction) orElse}) {
+      @required R Function(AppEvent) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -65,10 +67,10 @@ abstract class PodcastAction extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _PodcastAction.Subscribe:
+      case _AppEvent.Subscribe:
         if (subscribe == null) break;
         return subscribe(this as Subscribe);
-      case _PodcastAction.Unsubscribe:
+      case _AppEvent.Unsubscribe:
         if (unsubscribe == null) break;
         return unsubscribe(this as Unsubscribe);
     }
@@ -78,7 +80,7 @@ abstract class PodcastAction extends Equatable {
   Future<R> asyncWhenOrElse<R>(
       {FutureOr<R> Function(Subscribe) subscribe,
       FutureOr<R> Function(Unsubscribe) unsubscribe,
-      @required FutureOr<R> Function(PodcastAction) orElse}) {
+      @required FutureOr<R> Function(AppEvent) orElse}) {
     assert(() {
       if (orElse == null) {
         throw 'Missing orElse case';
@@ -86,10 +88,10 @@ abstract class PodcastAction extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _PodcastAction.Subscribe:
+      case _AppEvent.Subscribe:
         if (subscribe == null) break;
         return subscribe(this as Subscribe);
-      case _PodcastAction.Unsubscribe:
+      case _AppEvent.Unsubscribe:
         if (unsubscribe == null) break;
         return unsubscribe(this as Unsubscribe);
     }
@@ -107,10 +109,10 @@ abstract class PodcastAction extends Equatable {
       return true;
     }());
     switch (this._type) {
-      case _PodcastAction.Subscribe:
+      case _AppEvent.Subscribe:
         if (subscribe == null) break;
         return subscribe(this as Subscribe);
-      case _PodcastAction.Unsubscribe:
+      case _AppEvent.Unsubscribe:
         if (unsubscribe == null) break;
         return unsubscribe(this as Unsubscribe);
     }
@@ -121,26 +123,33 @@ abstract class PodcastAction extends Equatable {
 }
 
 @immutable
-class Subscribe extends PodcastAction {
-  const Subscribe({@required this.podcast}) : super(_PodcastAction.Subscribe);
+class Subscribe extends AppEvent {
+  const Subscribe({@required this.podcast, @required this.synced})
+      : super(_AppEvent.Subscribe);
 
   final Podcast podcast;
 
+  final bool synced;
+
   @override
-  String toString() => 'Subscribe(podcast:${this.podcast})';
+  String toString() =>
+      'Subscribe(podcast:${this.podcast},synced:${this.synced})';
   @override
-  List get props => [podcast];
+  List get props => [podcast, synced];
 }
 
 @immutable
-class Unsubscribe extends PodcastAction {
-  const Unsubscribe({@required this.podcast})
-      : super(_PodcastAction.Unsubscribe);
+class Unsubscribe extends AppEvent {
+  const Unsubscribe({@required this.podcast, @required this.synced})
+      : super(_AppEvent.Unsubscribe);
 
   final Podcast podcast;
 
+  final bool synced;
+
   @override
-  String toString() => 'Unsubscribe(podcast:${this.podcast})';
+  String toString() =>
+      'Unsubscribe(podcast:${this.podcast},synced:${this.synced})';
   @override
-  List get props => [podcast];
+  List get props => [podcast, synced];
 }

@@ -1,4 +1,6 @@
 // Package imports:
+import 'package:event_bus/event_bus.dart';
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:super_enum/super_enum.dart';
 
@@ -10,62 +12,65 @@ part 'podcast_actions_bloc.g.dart';
 
 @superEnum
 enum _PodcastAction {
-  @Data(fields: [
-    DataField<String>('podcastId'),
-    DataField<String>('podcastUrlParam'),
-    DataField<bool>('synced'),
-  ])
-  Subscribed,
-  @Data(fields: [
-    DataField<String>('podcastId'),
-    DataField<String>('podcastUrlParam'),
-    DataField<bool>('synced'),
-  ])
-  Unsubscribed,
+  @Data(fields: [DataField<Podcast>('podcast')])
+  Subscribe,
+  @Data(fields: [DataField<Podcast>('podcast')])
+  Unsubscribe,
 }
 
 class PodcastActionsBloc {
   final Store store;
+  final EventBus eventBus;
+  final AlarmService alarmService;
 
   /// Stream controller for actions
   final PublishSubject<PodcastAction> _actions =
       PublishSubject<PodcastAction>();
 
-  PodcastActionsBloc(this.store);
-
-  // Subscribe to podcast
-  Future<void> subscribe(Podcast podcast) async {
-    _actions.add(PodcastAction.subscribed(
-      podcastId: podcast.id,
-      podcastUrlParam: podcast.urlParam,
-      synced: false,
-    ));
-    await store.subscription.subscribe(podcast);
-    _actions.add(PodcastAction.subscribed(
-      podcastId: podcast.id,
-      podcastUrlParam: podcast.urlParam,
-      synced: true,
-    ));
+  PodcastActionsBloc(this.store, this.eventBus, this.alarmService) {
+    _handleActions();
   }
 
-  // Unsubscribe to podcast
-  Future<void> unsubscribe(Podcast podcast) async {
-    _actions.add(PodcastAction.unsubscribed(
-      podcastId: podcast.id,
-      podcastUrlParam: podcast.urlParam,
-      synced: false,
-    ));
-    await store.subscription.unsubscribe(podcast);
+  void _handleActions() {
+    _actions.distinct().listen((e) async {
+      await e.when(
+        subscribe: (data) async {
+          eventBus.fire(AppEvent.subscribe(
+            podcast: data.podcast,
+            synced: false,
+          ));
+          await store.subscription.subscribe(data.podcast);
+          eventBus.fire(AppEvent.subscribe(
+            podcast: data.podcast,
+            synced: true,
+          ));
 
-    _actions.add(PodcastAction.unsubscribed(
-      podcastId: podcast.id,
-      podcastUrlParam: podcast.urlParam,
-      synced: true,
-    ));
+          // final cachePodcastTask = Task.init(
+          //   taskType: TaskType.cachePodcast(
+          //     podcastId: data.podcast.id,
+          //     podcastUrlParam: data.podcast.urlParam,
+          //   ),
+          // );
+          // await store.task.saveTask(cachePodcastTask);
+          // await alarmService.scheduleTaskRunner();
+        },
+        unsubscribe: (data) async {
+          eventBus.fire(AppEvent.subscribe(
+            podcast: data.podcast,
+            synced: false,
+          ));
+          await store.subscription.unsubscribe(data.podcast);
+          eventBus.fire(AppEvent.subscribe(
+            podcast: data.podcast,
+            synced: true,
+          ));
+        },
+      );
+    });
   }
 
-  // Stream of actions
-  Stream<PodcastAction> get actions => _actions.stream;
+  // Sink to add actions to processed
+  void Function(PodcastAction) get addAction => _actions.add;
 
   Future<void> dispose() async {
     await _actions.close();
