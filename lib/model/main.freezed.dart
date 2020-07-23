@@ -2771,8 +2771,8 @@ abstract class StorageSetting implements PreferenceValue {
   $StorageSettingCopyWith<StorageSetting> get copyWith;
 }
 
-class _$ScreenTearOff {
-  const _$ScreenTearOff();
+class _$AppScreenTearOff {
+  const _$AppScreenTearOff();
 
 // ignore: unused_element
   _PodcastScreen podcastScreen(
@@ -2793,9 +2793,9 @@ class _$ScreenTearOff {
 }
 
 // ignore: unused_element
-const $Screen = _$ScreenTearOff();
+const $AppScreen = _$AppScreenTearOff();
 
-mixin _$Screen {
+mixin _$AppScreen {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required
@@ -2821,17 +2821,17 @@ mixin _$Screen {
   });
 }
 
-abstract class $ScreenCopyWith<$Res> {
-  factory $ScreenCopyWith(Screen value, $Res Function(Screen) then) =
-      _$ScreenCopyWithImpl<$Res>;
+abstract class $AppScreenCopyWith<$Res> {
+  factory $AppScreenCopyWith(AppScreen value, $Res Function(AppScreen) then) =
+      _$AppScreenCopyWithImpl<$Res>;
 }
 
-class _$ScreenCopyWithImpl<$Res> implements $ScreenCopyWith<$Res> {
-  _$ScreenCopyWithImpl(this._value, this._then);
+class _$AppScreenCopyWithImpl<$Res> implements $AppScreenCopyWith<$Res> {
+  _$AppScreenCopyWithImpl(this._value, this._then);
 
-  final Screen _value;
+  final AppScreen _value;
   // ignore: unused_field
-  final $Res Function(Screen) _then;
+  final $Res Function(AppScreen) _then;
 }
 
 abstract class _$PodcastScreenCopyWith<$Res> {
@@ -2841,7 +2841,7 @@ abstract class _$PodcastScreenCopyWith<$Res> {
   $Res call({String urlParam, String title, String author});
 }
 
-class __$PodcastScreenCopyWithImpl<$Res> extends _$ScreenCopyWithImpl<$Res>
+class __$PodcastScreenCopyWithImpl<$Res> extends _$AppScreenCopyWithImpl<$Res>
     implements _$PodcastScreenCopyWith<$Res> {
   __$PodcastScreenCopyWithImpl(
       _PodcastScreen _value, $Res Function(_PodcastScreen) _then)
@@ -2880,7 +2880,7 @@ class _$_PodcastScreen implements _PodcastScreen {
 
   @override
   String toString() {
-    return 'Screen.podcastScreen(urlParam: $urlParam, title: $title, author: $author)';
+    return 'AppScreen.podcastScreen(urlParam: $urlParam, title: $title, author: $author)';
   }
 
   @override
@@ -2959,7 +2959,7 @@ class _$_PodcastScreen implements _PodcastScreen {
   }
 }
 
-abstract class _PodcastScreen implements Screen {
+abstract class _PodcastScreen implements AppScreen {
   const factory _PodcastScreen(
       {@required String urlParam,
       @required String title,
@@ -2977,7 +2977,7 @@ abstract class _$DownloadsScreenCopyWith<$Res> {
       __$DownloadsScreenCopyWithImpl<$Res>;
 }
 
-class __$DownloadsScreenCopyWithImpl<$Res> extends _$ScreenCopyWithImpl<$Res>
+class __$DownloadsScreenCopyWithImpl<$Res> extends _$AppScreenCopyWithImpl<$Res>
     implements _$DownloadsScreenCopyWith<$Res> {
   __$DownloadsScreenCopyWithImpl(
       _DownloadsScreen _value, $Res Function(_DownloadsScreen) _then)
@@ -2992,7 +2992,7 @@ class _$_DownloadsScreen implements _DownloadsScreen {
 
   @override
   String toString() {
-    return 'Screen.downloadsScreen()';
+    return 'AppScreen.downloadsScreen()';
   }
 
   @override
@@ -3055,7 +3055,7 @@ class _$_DownloadsScreen implements _DownloadsScreen {
   }
 }
 
-abstract class _DownloadsScreen implements Screen {
+abstract class _DownloadsScreen implements AppScreen {
   const factory _DownloadsScreen() = _$_DownloadsScreen;
 }
 

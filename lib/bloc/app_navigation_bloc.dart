@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:rxdart/subjects.dart';
-import 'package:super_enum/super_enum.dart';
 
 // Project imports:
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
 import 'package:phenopod/utils/utils.dart';
-import 'package:phenopod/model/main.dart';
 
 class AppNavigationBloc {
   /// TabController and animations for bottom app bar
@@ -56,7 +55,7 @@ class AppNavigationBloc {
   }
 
   /// Use this to select a screen
-  void pushScreen(Screen screen) async {
+  void pushScreen(AppScreen screen) async {
     final currentTab = (await _tabHistorySubject.first).currentTab;
     final navigator = _tabNavigatorKeys[currentTab];
 

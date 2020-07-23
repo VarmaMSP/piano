@@ -7,14 +7,14 @@ enum AppTab {
 }
 
 @freezed
-abstract class Screen with _$Screen {
-  const factory Screen.podcastScreen({
+abstract class AppScreen with _$AppScreen {
+  const factory AppScreen.podcastScreen({
     @required String urlParam,
     @required String title,
     @required String author,
   }) = _PodcastScreen;
 
-  const factory Screen.downloadsScreen() = _DownloadsScreen;
+  const factory AppScreen.downloadsScreen() = _DownloadsScreen;
 }
 
 class FeedItem extends Equatable {

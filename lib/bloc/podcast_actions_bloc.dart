@@ -1,10 +1,10 @@
 // Package imports:
 import 'package:event_bus/event_bus.dart';
-import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:rxdart/subjects.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/store/store.dart';
 
 class PodcastActionsBloc {

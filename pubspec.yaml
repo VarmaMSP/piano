@@ -53,7 +53,6 @@ dependencies:
   rxdart: ^0.24.0
   seekbar: ^0.0.2
   share: ^0.6.4+3
-  super_enum: ^0.4.2
   tailwind_colors: ^0.1.0
   timeago: ^2.0.26
   tuple: ^1.0.3
@@ -71,7 +70,6 @@ dev_dependencies:
   json_serializable: ^3.3.0
   moor_generator: ^3.1.0
   pedantic: ^1.9.0
-  super_enum_generator: ^0.5.0
 
 flutter:
   uses-material-design: true

@@ -1,5 +1,8 @@
 // Flutter imports:
 
+// Dart imports:
+import 'dart:async';
+
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 
@@ -7,7 +10,6 @@ import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:path/path.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:super_enum/super_enum.dart';
 import 'package:tuple/tuple.dart';
 
 // Project imports:

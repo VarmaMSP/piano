@@ -197,7 +197,7 @@ class EpisodeMenu extends StatelessWidget {
     switch (option) {
       case EpisodeOption.playNext:
         if (audioTrack != null && audioTrack.position != nowPlayingPosition) {
-          Provider.of<AudioPlayerBloc>(context).addQueueAction(
+          Provider.of<AudioPlayerBloc>(context, listen: false).addQueueAction(
             QueueAction.changeTrackPosition(
               from: audioTrack.position,
               to: nowPlayingPosition + 1 < trackCount
@@ -206,7 +206,7 @@ class EpisodeMenu extends StatelessWidget {
             ),
           );
         } else {
-          Provider.of<AudioPlayerBloc>(context).addQueueAction(
+          Provider.of<AudioPlayerBloc>(context, listen: false).addQueueAction(
             QueueAction.addToQueueTop(
               audioTrack: AudioTrack(
                 episode: episode,
@@ -218,7 +218,7 @@ class EpisodeMenu extends StatelessWidget {
         break;
 
       case EpisodeOption.addToQueue:
-        Provider.of<AudioPlayerBloc>(context).addQueueAction(
+        Provider.of<AudioPlayerBloc>(context, listen: false).addQueueAction(
           QueueAction.addToQueueBottom(
             audioTrack: AudioTrack(
               episode: episode,
@@ -233,7 +233,7 @@ class EpisodeMenu extends StatelessWidget {
           Navigator.of(context, rootNavigator: true).pop();
         }
         Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
-          Screen.podcastScreen(
+          AppScreen.podcastScreen(
             urlParam: podcast.urlParam,
             title: podcast.title,
             author: podcast.author,
@@ -246,7 +246,7 @@ class EpisodeMenu extends StatelessWidget {
         break;
 
       case EpisodeOption.moveToQueueBottom:
-        Provider.of<AudioPlayerBloc>(context).addQueueAction(
+        Provider.of<AudioPlayerBloc>(context, listen: false).addQueueAction(
           QueueAction.changeTrackPosition(
             from: audioTrack.position,
             to: trackCount - 1,
@@ -255,7 +255,7 @@ class EpisodeMenu extends StatelessWidget {
         break;
 
       case EpisodeOption.removeFromQueue:
-        Provider.of<AudioPlayerBloc>(context).addQueueAction(
+        Provider.of<AudioPlayerBloc>(context, listen: false).addQueueAction(
           QueueAction.removeTrack(
             position: audioTrack.position,
           ),

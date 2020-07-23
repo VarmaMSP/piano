@@ -135,7 +135,7 @@ class SubscriptionsFeed extends StatelessWidget {
                   context,
                   listen: false,
                 ).pushScreen(
-                  Screen.podcastScreen(
+                  AppScreen.podcastScreen(
                     urlParam: podcast.urlParam,
                     title: podcast.title,
                     author: podcast.author,

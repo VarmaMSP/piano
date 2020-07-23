@@ -1,13 +1,15 @@
 // Flutter imports:
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:connectivity/connectivity.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:phenopod/model/main.dart';
 import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:phenopod/model/main.dart';
 
 void useSnackBar() {
   useEffect(() {

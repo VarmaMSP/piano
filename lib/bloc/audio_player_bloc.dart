@@ -1,7 +1,6 @@
 // Package imports:
 import 'package:logger/logger.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:super_enum/super_enum.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';

@@ -1,12 +1,15 @@
+// Package imports:
+import 'package:audio_service/audio_service.dart' as audioservice;
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:device_info/device_info.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:audio_service/audio_service.dart' as audioservice;
 import 'package:path/path.dart';
+import 'package:uuid/uuid.dart';
+
+// Project imports:
 import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/utils/utils.dart';
-import 'package:uuid/uuid.dart';
 
 part 'main.g.dart';
 part 'main.freezed.dart';

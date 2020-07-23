@@ -2,10 +2,10 @@
 import 'dart:async';
 
 // Flutter imports:
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter/foundation.dart';
 
 // Package imports:
+import 'package:event_bus/event_bus.dart';
 import 'package:rxdart/rxdart.dart';
 
 // Project imports:
