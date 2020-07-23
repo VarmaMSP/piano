@@ -1,14 +1,17 @@
-// Flutter imports:
+// Dart imports:
 import 'dart:async';
 
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:when_expression/when_expression.dart';
 
 // Project imports:
 import 'package:phenopod/model/preference.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
-import 'package:when_expression/when_expression.dart';
 
 SettingStore newSettingStore(Api api, Db db) {
   return _SettingStoreImpl(api: api, db: db);

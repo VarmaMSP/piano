@@ -1,11 +1,13 @@
-// Package imports:
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:phenopod/service/alarm_service/alarm_service.dart';
+
+// Package imports:
+import 'package:when_expression/when_expression.dart';
 
 // Project imports:
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/stream.dart' as stream_utils;
-import 'package:when_expression/when_expression.dart';
 import 'worker/cache_podcast_worker.dart';
 import 'worker/download_episode_worker.dart';
 

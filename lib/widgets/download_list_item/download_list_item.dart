@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:phenopod/widgets/episode_menu.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/utils.dart';
+import 'package:phenopod/widgets/episode_menu.dart';
 import 'package:phenopod/widgets/queue_list_item/thumbnail.dart';
 
 class DownloadListItem extends StatelessWidget {

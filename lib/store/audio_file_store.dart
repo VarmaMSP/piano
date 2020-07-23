@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
-import 'package:phenopod/utils/file.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
+import 'package:phenopod/utils/file.dart';
 
 AudioFileStore newAudioFileStore(Api api, Db db) {
   return _AudioFileStoreImpl(api: api, db: db);
@@ -100,7 +100,12 @@ class _AudioFileStoreImpl extends AudioFileStore {
         await db.taskDao.deleteTask(audioFile.downloadTaskId);
         await db.audioFileDao.deleteByEpisode(episodeId);
       });
-      await deleteFile(audioFile.filepath);
+      // It takes time for deletion to reflect in the background, so
+      // apply a slight delay to avoid download errors
+      Future.delayed(
+        Duration(seconds: 1),
+        () => deleteFile(audioFile.filepath),
+      );
     }
   }
 }

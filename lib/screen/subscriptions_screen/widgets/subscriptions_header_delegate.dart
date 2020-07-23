@@ -61,20 +61,18 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
                 IconButton(
                   icon: Icon(
                     Icons.search,
-                    size: 22,
+                    size: 23,
                     color: TWColors.gray.shade700,
                   ),
-                  visualDensity: VisualDensity.comfortable,
                   onPressed: () => Navigator.of(context, rootNavigator: true)
                       .pushNamed('/search'),
                 ),
                 IconButton(
                   icon: Icon(
                     MdiIcons.accountCircleOutline,
-                    size: 22,
+                    size: 23,
                     color: TWColors.gray.shade700,
                   ),
-                  visualDensity: VisualDensity.comfortable,
                   onPressed: () => Navigator.of(context, rootNavigator: true)
                       .pushNamed('/search'),
                 ),

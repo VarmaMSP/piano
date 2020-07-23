@@ -1,10 +1,15 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:provider/provider.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
 import 'package:phenopod/bloc/app_navigation_bloc.dart' hide Podcast;
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/episode_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:provider/provider.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 enum EpisodeOption {
   playNext,

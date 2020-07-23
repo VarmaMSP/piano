@@ -61,7 +61,7 @@ class LibraryHeaderDelegate implements SliverPersistentHeaderDelegate {
                 IconButton(
                   icon: Icon(
                     Icons.search,
-                    size: 22,
+                    size: 23,
                     color: TWColors.gray.shade700,
                   ),
                   onPressed: () => Navigator.of(context, rootNavigator: true)
@@ -70,7 +70,7 @@ class LibraryHeaderDelegate implements SliverPersistentHeaderDelegate {
                 IconButton(
                   icon: Icon(
                     MdiIcons.accountCircleOutline,
-                    size: 22,
+                    size: 23,
                     color: TWColors.gray.shade700,
                   ),
                   onPressed: () => Navigator.of(context, rootNavigator: true)

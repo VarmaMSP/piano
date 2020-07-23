@@ -115,8 +115,8 @@ class SubscriptionsFeed extends StatelessWidget {
     BuildContext context,
     SubscriptionsScreenData screenData,
   ) {
-    final thumbnailSize = getScreenHeight() < 850 ? 75.0 : 80.0;
-    final borderRadius = 7.0;
+    final thumbnailSize = 75.0;
+    final borderRadius = 8.0;
 
     return SliverToBoxAdapter(
       child: Container(

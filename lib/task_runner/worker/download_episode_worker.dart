@@ -1,4 +1,6 @@
 // Flutter imports:
+
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 
 // Package imports:
@@ -69,8 +71,8 @@ class DownloadEpisodeWorker extends Worker {
       await _cancellationSubscription.cancel();
       await deleteTask();
     } on DioError catch (err) {
-      if (CancelToken.isCancel(err)) {
-        print('download cancelled');
+      if (!CancelToken.isCancel(err)) {
+        //TODO: Mark as failure
       }
     }
   }
