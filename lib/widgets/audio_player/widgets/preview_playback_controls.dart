@@ -15,9 +15,8 @@ class PreviewPlaybackControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
-    final onPlay = () => audioPlayerBloc.transitionState(StateTransition.play);
-    final onPause =
-        () => audioPlayerBloc.transitionState(StateTransition.pause);
+    final onPlay = () => audioPlayerBloc.addAudioAction(AudioAction.play);
+    final onPause = () => audioPlayerBloc.addAudioAction(AudioAction.pause);
 
     return StreamBuilder<AudioState>(
       stream: audioPlayerBloc.audioState,

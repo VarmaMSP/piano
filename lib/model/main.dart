@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
+import 'package:when_expression/when_expression.dart';
 
 // Project imports:
 import 'package:phenopod/utils/request.dart';

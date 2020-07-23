@@ -77,7 +77,7 @@ class QueueListItem extends StatelessWidget {
             context,
             listen: false,
           ).addQueueAction(
-            QueueAction.playTrack(position: audioTrack.position),
+            QueueAction.playTrackAt(position: audioTrack.position),
           ),
           child: StreamBuilder<DownloadProgress>(
             stream:

@@ -1,5 +1,13 @@
 part of 'main.dart';
 
+enum AudioAction {
+  play,
+  pause,
+  stop,
+  fastforward,
+  rewind,
+}
+
 @freezed
 abstract class PodcastAction with _$PodcastAction {
   const factory PodcastAction.subscribe({
@@ -25,9 +33,13 @@ abstract class EpisodeAction with _$EpisodeAction {
 
 @freezed
 abstract class QueueAction with _$QueueAction {
-  const factory QueueAction.play({
+  const factory QueueAction.playTrack({
     @required AudioTrack audioTrack,
-  }) = _Play;
+  }) = _PlayTrack;
+
+  const factory QueueAction.playTrackAt({
+    @required int position,
+  }) = _PlayTrackAt;
 
   const factory QueueAction.addToQueueTop({
     @required AudioTrack audioTrack,
@@ -41,10 +53,6 @@ abstract class QueueAction with _$QueueAction {
     @required int from,
     @required int to,
   }) = _ChangeTrackPosition;
-
-  const factory QueueAction.playTrack({
-    @required int position,
-  }) = _PlayTrack;
 
   const factory QueueAction.removeTrack({
     @required int position,

@@ -104,27 +104,9 @@ class AudioPlayerController {
   }
 
   Future<void> _playNext() async {
-    final queue = await _queueSubject.first;
-    final prevPosition = queue.position;
-
-    Queue nextQueue;
-    AudioTrack nextTrack;
-
-    if (queue.hasNextTrack) {
-      nextQueue = queue.playTrack(prevPosition + 1).removeTrack(prevPosition);
-      nextTrack = nextQueue.nowPlaying;
-    } else if (queue.hasPreviousTrack) {
-      nextQueue = queue.playTrack(prevPosition - 1).removeTrack(prevPosition);
-    } else {
-      nextQueue = Queue.empty();
-    }
-
-    await Future.wait(
-      [
-        _store.audioPlayer.saveQueue(nextQueue),
-        if (nextTrack != null)
-          _audioPlayer.playMediaItem(nextTrack.toMediaItem()),
-      ],
+    final prevQueue = await _queueSubject.first;
+    await _store.audioPlayer.saveQueue(
+      prevQueue.skipToNextTrack().removeTrack(prevQueue.position),
     );
   }
 

@@ -621,9 +621,16 @@ class _$QueueActionTearOff {
   const _$QueueActionTearOff();
 
 // ignore: unused_element
-  _Play play({@required AudioTrack audioTrack}) {
-    return _Play(
+  _PlayTrack playTrack({@required AudioTrack audioTrack}) {
+    return _PlayTrack(
       audioTrack: audioTrack,
+    );
+  }
+
+// ignore: unused_element
+  _PlayTrackAt playTrackAt({@required int position}) {
+    return _PlayTrackAt(
+      position: position,
     );
   }
 
@@ -651,13 +658,6 @@ class _$QueueActionTearOff {
   }
 
 // ignore: unused_element
-  _PlayTrack playTrack({@required int position}) {
-    return _PlayTrack(
-      position: position,
-    );
-  }
-
-// ignore: unused_element
   _RemoveTrack removeTrack({@required int position}) {
     return _RemoveTrack(
       position: position,
@@ -676,42 +676,42 @@ const $QueueAction = _$QueueActionTearOff();
 mixin _$QueueAction {
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result play(AudioTrack audioTrack),
+    @required Result playTrack(AudioTrack audioTrack),
+    @required Result playTrackAt(int position),
     @required Result addToQueueTop(AudioTrack audioTrack),
     @required Result addToQueueBottom(AudioTrack audioTrack),
     @required Result changeTrackPosition(int from, int to),
-    @required Result playTrack(int position),
     @required Result removeTrack(int position),
     @required Result clearQueue(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result play(AudioTrack audioTrack),
+    Result playTrack(AudioTrack audioTrack),
+    Result playTrackAt(int position),
     Result addToQueueTop(AudioTrack audioTrack),
     Result addToQueueBottom(AudioTrack audioTrack),
     Result changeTrackPosition(int from, int to),
-    Result playTrack(int position),
     Result removeTrack(int position),
     Result clearQueue(),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result play(_Play value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result playTrackAt(_PlayTrackAt value),
     @required Result addToQueueTop(_AddToQueueTop value),
     @required Result addToQueueBottom(_AddToQueueBottom value),
     @required Result changeTrackPosition(_ChangeTrackPosition value),
-    @required Result playTrack(_PlayTrack value),
     @required Result removeTrack(_RemoveTrack value),
     @required Result clearQueue(_ClearQueue value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result play(_Play value),
+    Result playTrack(_PlayTrack value),
+    Result playTrackAt(_PlayTrackAt value),
     Result addToQueueTop(_AddToQueueTop value),
     Result addToQueueBottom(_AddToQueueBottom value),
     Result changeTrackPosition(_ChangeTrackPosition value),
-    Result playTrack(_PlayTrack value),
     Result removeTrack(_RemoveTrack value),
     Result clearQueue(_ClearQueue value),
     @required Result orElse(),
@@ -732,46 +732,47 @@ class _$QueueActionCopyWithImpl<$Res> implements $QueueActionCopyWith<$Res> {
   final $Res Function(QueueAction) _then;
 }
 
-abstract class _$PlayCopyWith<$Res> {
-  factory _$PlayCopyWith(_Play value, $Res Function(_Play) then) =
-      __$PlayCopyWithImpl<$Res>;
+abstract class _$PlayTrackCopyWith<$Res> {
+  factory _$PlayTrackCopyWith(
+          _PlayTrack value, $Res Function(_PlayTrack) then) =
+      __$PlayTrackCopyWithImpl<$Res>;
   $Res call({AudioTrack audioTrack});
 }
 
-class __$PlayCopyWithImpl<$Res> extends _$QueueActionCopyWithImpl<$Res>
-    implements _$PlayCopyWith<$Res> {
-  __$PlayCopyWithImpl(_Play _value, $Res Function(_Play) _then)
-      : super(_value, (v) => _then(v as _Play));
+class __$PlayTrackCopyWithImpl<$Res> extends _$QueueActionCopyWithImpl<$Res>
+    implements _$PlayTrackCopyWith<$Res> {
+  __$PlayTrackCopyWithImpl(_PlayTrack _value, $Res Function(_PlayTrack) _then)
+      : super(_value, (v) => _then(v as _PlayTrack));
 
   @override
-  _Play get _value => super._value as _Play;
+  _PlayTrack get _value => super._value as _PlayTrack;
 
   @override
   $Res call({
     Object audioTrack = freezed,
   }) {
-    return _then(_Play(
+    return _then(_PlayTrack(
       audioTrack:
           audioTrack == freezed ? _value.audioTrack : audioTrack as AudioTrack,
     ));
   }
 }
 
-class _$_Play implements _Play {
-  const _$_Play({@required this.audioTrack}) : assert(audioTrack != null);
+class _$_PlayTrack implements _PlayTrack {
+  const _$_PlayTrack({@required this.audioTrack}) : assert(audioTrack != null);
 
   @override
   final AudioTrack audioTrack;
 
   @override
   String toString() {
-    return 'QueueAction.play(audioTrack: $audioTrack)';
+    return 'QueueAction.playTrack(audioTrack: $audioTrack)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Play &&
+        (other is _PlayTrack &&
             (identical(other.audioTrack, audioTrack) ||
                 const DeepCollectionEquality()
                     .equals(other.audioTrack, audioTrack)));
@@ -782,45 +783,45 @@ class _$_Play implements _Play {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(audioTrack);
 
   @override
-  _$PlayCopyWith<_Play> get copyWith =>
-      __$PlayCopyWithImpl<_Play>(this, _$identity);
+  _$PlayTrackCopyWith<_PlayTrack> get copyWith =>
+      __$PlayTrackCopyWithImpl<_PlayTrack>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result play(AudioTrack audioTrack),
+    @required Result playTrack(AudioTrack audioTrack),
+    @required Result playTrackAt(int position),
     @required Result addToQueueTop(AudioTrack audioTrack),
     @required Result addToQueueBottom(AudioTrack audioTrack),
     @required Result changeTrackPosition(int from, int to),
-    @required Result playTrack(int position),
     @required Result removeTrack(int position),
     @required Result clearQueue(),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
-    return play(audioTrack);
+    return playTrack(audioTrack);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result play(AudioTrack audioTrack),
+    Result playTrack(AudioTrack audioTrack),
+    Result playTrackAt(int position),
     Result addToQueueTop(AudioTrack audioTrack),
     Result addToQueueBottom(AudioTrack audioTrack),
     Result changeTrackPosition(int from, int to),
-    Result playTrack(int position),
     Result removeTrack(int position),
     Result clearQueue(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (play != null) {
-      return play(audioTrack);
+    if (playTrack != null) {
+      return playTrack(audioTrack);
     }
     return orElse();
   }
@@ -828,49 +829,191 @@ class _$_Play implements _Play {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result play(_Play value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result playTrackAt(_PlayTrackAt value),
     @required Result addToQueueTop(_AddToQueueTop value),
     @required Result addToQueueBottom(_AddToQueueBottom value),
     @required Result changeTrackPosition(_ChangeTrackPosition value),
-    @required Result playTrack(_PlayTrack value),
     @required Result removeTrack(_RemoveTrack value),
     @required Result clearQueue(_ClearQueue value),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
-    return play(this);
+    return playTrack(this);
   }
 
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result play(_Play value),
+    Result playTrack(_PlayTrack value),
+    Result playTrackAt(_PlayTrackAt value),
     Result addToQueueTop(_AddToQueueTop value),
     Result addToQueueBottom(_AddToQueueBottom value),
     Result changeTrackPosition(_ChangeTrackPosition value),
-    Result playTrack(_PlayTrack value),
     Result removeTrack(_RemoveTrack value),
     Result clearQueue(_ClearQueue value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (play != null) {
-      return play(this);
+    if (playTrack != null) {
+      return playTrack(this);
     }
     return orElse();
   }
 }
 
-abstract class _Play implements QueueAction {
-  const factory _Play({@required AudioTrack audioTrack}) = _$_Play;
+abstract class _PlayTrack implements QueueAction {
+  const factory _PlayTrack({@required AudioTrack audioTrack}) = _$_PlayTrack;
 
   AudioTrack get audioTrack;
-  _$PlayCopyWith<_Play> get copyWith;
+  _$PlayTrackCopyWith<_PlayTrack> get copyWith;
+}
+
+abstract class _$PlayTrackAtCopyWith<$Res> {
+  factory _$PlayTrackAtCopyWith(
+          _PlayTrackAt value, $Res Function(_PlayTrackAt) then) =
+      __$PlayTrackAtCopyWithImpl<$Res>;
+  $Res call({int position});
+}
+
+class __$PlayTrackAtCopyWithImpl<$Res> extends _$QueueActionCopyWithImpl<$Res>
+    implements _$PlayTrackAtCopyWith<$Res> {
+  __$PlayTrackAtCopyWithImpl(
+      _PlayTrackAt _value, $Res Function(_PlayTrackAt) _then)
+      : super(_value, (v) => _then(v as _PlayTrackAt));
+
+  @override
+  _PlayTrackAt get _value => super._value as _PlayTrackAt;
+
+  @override
+  $Res call({
+    Object position = freezed,
+  }) {
+    return _then(_PlayTrackAt(
+      position: position == freezed ? _value.position : position as int,
+    ));
+  }
+}
+
+class _$_PlayTrackAt implements _PlayTrackAt {
+  const _$_PlayTrackAt({@required this.position}) : assert(position != null);
+
+  @override
+  final int position;
+
+  @override
+  String toString() {
+    return 'QueueAction.playTrackAt(position: $position)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _PlayTrackAt &&
+            (identical(other.position, position) ||
+                const DeepCollectionEquality()
+                    .equals(other.position, position)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(position);
+
+  @override
+  _$PlayTrackAtCopyWith<_PlayTrackAt> get copyWith =>
+      __$PlayTrackAtCopyWithImpl<_PlayTrackAt>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result playTrack(AudioTrack audioTrack),
+    @required Result playTrackAt(int position),
+    @required Result addToQueueTop(AudioTrack audioTrack),
+    @required Result addToQueueBottom(AudioTrack audioTrack),
+    @required Result changeTrackPosition(int from, int to),
+    @required Result removeTrack(int position),
+    @required Result clearQueue(),
+  }) {
+    assert(playTrack != null);
+    assert(playTrackAt != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return playTrackAt(position);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result playTrack(AudioTrack audioTrack),
+    Result playTrackAt(int position),
+    Result addToQueueTop(AudioTrack audioTrack),
+    Result addToQueueBottom(AudioTrack audioTrack),
+    Result changeTrackPosition(int from, int to),
+    Result removeTrack(int position),
+    Result clearQueue(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (playTrackAt != null) {
+      return playTrackAt(position);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result playTrack(_PlayTrack value),
+    @required Result playTrackAt(_PlayTrackAt value),
+    @required Result addToQueueTop(_AddToQueueTop value),
+    @required Result addToQueueBottom(_AddToQueueBottom value),
+    @required Result changeTrackPosition(_ChangeTrackPosition value),
+    @required Result removeTrack(_RemoveTrack value),
+    @required Result clearQueue(_ClearQueue value),
+  }) {
+    assert(playTrack != null);
+    assert(playTrackAt != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return playTrackAt(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result playTrack(_PlayTrack value),
+    Result playTrackAt(_PlayTrackAt value),
+    Result addToQueueTop(_AddToQueueTop value),
+    Result addToQueueBottom(_AddToQueueBottom value),
+    Result changeTrackPosition(_ChangeTrackPosition value),
+    Result removeTrack(_RemoveTrack value),
+    Result clearQueue(_ClearQueue value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (playTrackAt != null) {
+      return playTrackAt(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PlayTrackAt implements QueueAction {
+  const factory _PlayTrackAt({@required int position}) = _$_PlayTrackAt;
+
+  int get position;
+  _$PlayTrackAtCopyWith<_PlayTrackAt> get copyWith;
 }
 
 abstract class _$AddToQueueTopCopyWith<$Res> {
@@ -932,19 +1075,19 @@ class _$_AddToQueueTop implements _AddToQueueTop {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result play(AudioTrack audioTrack),
+    @required Result playTrack(AudioTrack audioTrack),
+    @required Result playTrackAt(int position),
     @required Result addToQueueTop(AudioTrack audioTrack),
     @required Result addToQueueBottom(AudioTrack audioTrack),
     @required Result changeTrackPosition(int from, int to),
-    @required Result playTrack(int position),
     @required Result removeTrack(int position),
     @required Result clearQueue(),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
     return addToQueueTop(audioTrack);
@@ -953,11 +1096,11 @@ class _$_AddToQueueTop implements _AddToQueueTop {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result play(AudioTrack audioTrack),
+    Result playTrack(AudioTrack audioTrack),
+    Result playTrackAt(int position),
     Result addToQueueTop(AudioTrack audioTrack),
     Result addToQueueBottom(AudioTrack audioTrack),
     Result changeTrackPosition(int from, int to),
-    Result playTrack(int position),
     Result removeTrack(int position),
     Result clearQueue(),
     @required Result orElse(),
@@ -972,19 +1115,19 @@ class _$_AddToQueueTop implements _AddToQueueTop {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result play(_Play value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result playTrackAt(_PlayTrackAt value),
     @required Result addToQueueTop(_AddToQueueTop value),
     @required Result addToQueueBottom(_AddToQueueBottom value),
     @required Result changeTrackPosition(_ChangeTrackPosition value),
-    @required Result playTrack(_PlayTrack value),
     @required Result removeTrack(_RemoveTrack value),
     @required Result clearQueue(_ClearQueue value),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
     return addToQueueTop(this);
@@ -993,11 +1136,11 @@ class _$_AddToQueueTop implements _AddToQueueTop {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result play(_Play value),
+    Result playTrack(_PlayTrack value),
+    Result playTrackAt(_PlayTrackAt value),
     Result addToQueueTop(_AddToQueueTop value),
     Result addToQueueBottom(_AddToQueueBottom value),
     Result changeTrackPosition(_ChangeTrackPosition value),
-    Result playTrack(_PlayTrack value),
     Result removeTrack(_RemoveTrack value),
     Result clearQueue(_ClearQueue value),
     @required Result orElse(),
@@ -1078,19 +1221,19 @@ class _$_AddToQueueBottom implements _AddToQueueBottom {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result play(AudioTrack audioTrack),
+    @required Result playTrack(AudioTrack audioTrack),
+    @required Result playTrackAt(int position),
     @required Result addToQueueTop(AudioTrack audioTrack),
     @required Result addToQueueBottom(AudioTrack audioTrack),
     @required Result changeTrackPosition(int from, int to),
-    @required Result playTrack(int position),
     @required Result removeTrack(int position),
     @required Result clearQueue(),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
     return addToQueueBottom(audioTrack);
@@ -1099,11 +1242,11 @@ class _$_AddToQueueBottom implements _AddToQueueBottom {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result play(AudioTrack audioTrack),
+    Result playTrack(AudioTrack audioTrack),
+    Result playTrackAt(int position),
     Result addToQueueTop(AudioTrack audioTrack),
     Result addToQueueBottom(AudioTrack audioTrack),
     Result changeTrackPosition(int from, int to),
-    Result playTrack(int position),
     Result removeTrack(int position),
     Result clearQueue(),
     @required Result orElse(),
@@ -1118,19 +1261,19 @@ class _$_AddToQueueBottom implements _AddToQueueBottom {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result play(_Play value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result playTrackAt(_PlayTrackAt value),
     @required Result addToQueueTop(_AddToQueueTop value),
     @required Result addToQueueBottom(_AddToQueueBottom value),
     @required Result changeTrackPosition(_ChangeTrackPosition value),
-    @required Result playTrack(_PlayTrack value),
     @required Result removeTrack(_RemoveTrack value),
     @required Result clearQueue(_ClearQueue value),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
     return addToQueueBottom(this);
@@ -1139,11 +1282,11 @@ class _$_AddToQueueBottom implements _AddToQueueBottom {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result play(_Play value),
+    Result playTrack(_PlayTrack value),
+    Result playTrackAt(_PlayTrackAt value),
     Result addToQueueTop(_AddToQueueTop value),
     Result addToQueueBottom(_AddToQueueBottom value),
     Result changeTrackPosition(_ChangeTrackPosition value),
-    Result playTrack(_PlayTrack value),
     Result removeTrack(_RemoveTrack value),
     Result clearQueue(_ClearQueue value),
     @required Result orElse(),
@@ -1232,19 +1375,19 @@ class _$_ChangeTrackPosition implements _ChangeTrackPosition {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result play(AudioTrack audioTrack),
+    @required Result playTrack(AudioTrack audioTrack),
+    @required Result playTrackAt(int position),
     @required Result addToQueueTop(AudioTrack audioTrack),
     @required Result addToQueueBottom(AudioTrack audioTrack),
     @required Result changeTrackPosition(int from, int to),
-    @required Result playTrack(int position),
     @required Result removeTrack(int position),
     @required Result clearQueue(),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
     return changeTrackPosition(from, to);
@@ -1253,11 +1396,11 @@ class _$_ChangeTrackPosition implements _ChangeTrackPosition {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result play(AudioTrack audioTrack),
+    Result playTrack(AudioTrack audioTrack),
+    Result playTrackAt(int position),
     Result addToQueueTop(AudioTrack audioTrack),
     Result addToQueueBottom(AudioTrack audioTrack),
     Result changeTrackPosition(int from, int to),
-    Result playTrack(int position),
     Result removeTrack(int position),
     Result clearQueue(),
     @required Result orElse(),
@@ -1272,19 +1415,19 @@ class _$_ChangeTrackPosition implements _ChangeTrackPosition {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result play(_Play value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result playTrackAt(_PlayTrackAt value),
     @required Result addToQueueTop(_AddToQueueTop value),
     @required Result addToQueueBottom(_AddToQueueBottom value),
     @required Result changeTrackPosition(_ChangeTrackPosition value),
-    @required Result playTrack(_PlayTrack value),
     @required Result removeTrack(_RemoveTrack value),
     @required Result clearQueue(_ClearQueue value),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
     return changeTrackPosition(this);
@@ -1293,11 +1436,11 @@ class _$_ChangeTrackPosition implements _ChangeTrackPosition {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result play(_Play value),
+    Result playTrack(_PlayTrack value),
+    Result playTrackAt(_PlayTrackAt value),
     Result addToQueueTop(_AddToQueueTop value),
     Result addToQueueBottom(_AddToQueueBottom value),
     Result changeTrackPosition(_ChangeTrackPosition value),
-    Result playTrack(_PlayTrack value),
     Result removeTrack(_RemoveTrack value),
     Result clearQueue(_ClearQueue value),
     @required Result orElse(),
@@ -1317,147 +1460,6 @@ abstract class _ChangeTrackPosition implements QueueAction {
   int get from;
   int get to;
   _$ChangeTrackPositionCopyWith<_ChangeTrackPosition> get copyWith;
-}
-
-abstract class _$PlayTrackCopyWith<$Res> {
-  factory _$PlayTrackCopyWith(
-          _PlayTrack value, $Res Function(_PlayTrack) then) =
-      __$PlayTrackCopyWithImpl<$Res>;
-  $Res call({int position});
-}
-
-class __$PlayTrackCopyWithImpl<$Res> extends _$QueueActionCopyWithImpl<$Res>
-    implements _$PlayTrackCopyWith<$Res> {
-  __$PlayTrackCopyWithImpl(_PlayTrack _value, $Res Function(_PlayTrack) _then)
-      : super(_value, (v) => _then(v as _PlayTrack));
-
-  @override
-  _PlayTrack get _value => super._value as _PlayTrack;
-
-  @override
-  $Res call({
-    Object position = freezed,
-  }) {
-    return _then(_PlayTrack(
-      position: position == freezed ? _value.position : position as int,
-    ));
-  }
-}
-
-class _$_PlayTrack implements _PlayTrack {
-  const _$_PlayTrack({@required this.position}) : assert(position != null);
-
-  @override
-  final int position;
-
-  @override
-  String toString() {
-    return 'QueueAction.playTrack(position: $position)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is _PlayTrack &&
-            (identical(other.position, position) ||
-                const DeepCollectionEquality()
-                    .equals(other.position, position)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(position);
-
-  @override
-  _$PlayTrackCopyWith<_PlayTrack> get copyWith =>
-      __$PlayTrackCopyWithImpl<_PlayTrack>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result play(AudioTrack audioTrack),
-    @required Result addToQueueTop(AudioTrack audioTrack),
-    @required Result addToQueueBottom(AudioTrack audioTrack),
-    @required Result changeTrackPosition(int from, int to),
-    @required Result playTrack(int position),
-    @required Result removeTrack(int position),
-    @required Result clearQueue(),
-  }) {
-    assert(play != null);
-    assert(addToQueueTop != null);
-    assert(addToQueueBottom != null);
-    assert(changeTrackPosition != null);
-    assert(playTrack != null);
-    assert(removeTrack != null);
-    assert(clearQueue != null);
-    return playTrack(position);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result play(AudioTrack audioTrack),
-    Result addToQueueTop(AudioTrack audioTrack),
-    Result addToQueueBottom(AudioTrack audioTrack),
-    Result changeTrackPosition(int from, int to),
-    Result playTrack(int position),
-    Result removeTrack(int position),
-    Result clearQueue(),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (playTrack != null) {
-      return playTrack(position);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result play(_Play value),
-    @required Result addToQueueTop(_AddToQueueTop value),
-    @required Result addToQueueBottom(_AddToQueueBottom value),
-    @required Result changeTrackPosition(_ChangeTrackPosition value),
-    @required Result playTrack(_PlayTrack value),
-    @required Result removeTrack(_RemoveTrack value),
-    @required Result clearQueue(_ClearQueue value),
-  }) {
-    assert(play != null);
-    assert(addToQueueTop != null);
-    assert(addToQueueBottom != null);
-    assert(changeTrackPosition != null);
-    assert(playTrack != null);
-    assert(removeTrack != null);
-    assert(clearQueue != null);
-    return playTrack(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result play(_Play value),
-    Result addToQueueTop(_AddToQueueTop value),
-    Result addToQueueBottom(_AddToQueueBottom value),
-    Result changeTrackPosition(_ChangeTrackPosition value),
-    Result playTrack(_PlayTrack value),
-    Result removeTrack(_RemoveTrack value),
-    Result clearQueue(_ClearQueue value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (playTrack != null) {
-      return playTrack(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _PlayTrack implements QueueAction {
-  const factory _PlayTrack({@required int position}) = _$_PlayTrack;
-
-  int get position;
-  _$PlayTrackCopyWith<_PlayTrack> get copyWith;
 }
 
 abstract class _$RemoveTrackCopyWith<$Res> {
@@ -1517,19 +1519,19 @@ class _$_RemoveTrack implements _RemoveTrack {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result play(AudioTrack audioTrack),
+    @required Result playTrack(AudioTrack audioTrack),
+    @required Result playTrackAt(int position),
     @required Result addToQueueTop(AudioTrack audioTrack),
     @required Result addToQueueBottom(AudioTrack audioTrack),
     @required Result changeTrackPosition(int from, int to),
-    @required Result playTrack(int position),
     @required Result removeTrack(int position),
     @required Result clearQueue(),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
     return removeTrack(position);
@@ -1538,11 +1540,11 @@ class _$_RemoveTrack implements _RemoveTrack {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result play(AudioTrack audioTrack),
+    Result playTrack(AudioTrack audioTrack),
+    Result playTrackAt(int position),
     Result addToQueueTop(AudioTrack audioTrack),
     Result addToQueueBottom(AudioTrack audioTrack),
     Result changeTrackPosition(int from, int to),
-    Result playTrack(int position),
     Result removeTrack(int position),
     Result clearQueue(),
     @required Result orElse(),
@@ -1557,19 +1559,19 @@ class _$_RemoveTrack implements _RemoveTrack {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result play(_Play value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result playTrackAt(_PlayTrackAt value),
     @required Result addToQueueTop(_AddToQueueTop value),
     @required Result addToQueueBottom(_AddToQueueBottom value),
     @required Result changeTrackPosition(_ChangeTrackPosition value),
-    @required Result playTrack(_PlayTrack value),
     @required Result removeTrack(_RemoveTrack value),
     @required Result clearQueue(_ClearQueue value),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
     return removeTrack(this);
@@ -1578,11 +1580,11 @@ class _$_RemoveTrack implements _RemoveTrack {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result play(_Play value),
+    Result playTrack(_PlayTrack value),
+    Result playTrackAt(_PlayTrackAt value),
     Result addToQueueTop(_AddToQueueTop value),
     Result addToQueueBottom(_AddToQueueBottom value),
     Result changeTrackPosition(_ChangeTrackPosition value),
-    Result playTrack(_PlayTrack value),
     Result removeTrack(_RemoveTrack value),
     Result clearQueue(_ClearQueue value),
     @required Result orElse(),
@@ -1637,19 +1639,19 @@ class _$_ClearQueue implements _ClearQueue {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result play(AudioTrack audioTrack),
+    @required Result playTrack(AudioTrack audioTrack),
+    @required Result playTrackAt(int position),
     @required Result addToQueueTop(AudioTrack audioTrack),
     @required Result addToQueueBottom(AudioTrack audioTrack),
     @required Result changeTrackPosition(int from, int to),
-    @required Result playTrack(int position),
     @required Result removeTrack(int position),
     @required Result clearQueue(),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
     return clearQueue();
@@ -1658,11 +1660,11 @@ class _$_ClearQueue implements _ClearQueue {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result play(AudioTrack audioTrack),
+    Result playTrack(AudioTrack audioTrack),
+    Result playTrackAt(int position),
     Result addToQueueTop(AudioTrack audioTrack),
     Result addToQueueBottom(AudioTrack audioTrack),
     Result changeTrackPosition(int from, int to),
-    Result playTrack(int position),
     Result removeTrack(int position),
     Result clearQueue(),
     @required Result orElse(),
@@ -1677,19 +1679,19 @@ class _$_ClearQueue implements _ClearQueue {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result play(_Play value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result playTrackAt(_PlayTrackAt value),
     @required Result addToQueueTop(_AddToQueueTop value),
     @required Result addToQueueBottom(_AddToQueueBottom value),
     @required Result changeTrackPosition(_ChangeTrackPosition value),
-    @required Result playTrack(_PlayTrack value),
     @required Result removeTrack(_RemoveTrack value),
     @required Result clearQueue(_ClearQueue value),
   }) {
-    assert(play != null);
+    assert(playTrack != null);
+    assert(playTrackAt != null);
     assert(addToQueueTop != null);
     assert(addToQueueBottom != null);
     assert(changeTrackPosition != null);
-    assert(playTrack != null);
     assert(removeTrack != null);
     assert(clearQueue != null);
     return clearQueue(this);
@@ -1698,11 +1700,11 @@ class _$_ClearQueue implements _ClearQueue {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result play(_Play value),
+    Result playTrack(_PlayTrack value),
+    Result playTrackAt(_PlayTrackAt value),
     Result addToQueueTop(_AddToQueueTop value),
     Result addToQueueBottom(_AddToQueueBottom value),
     Result changeTrackPosition(_ChangeTrackPosition value),
-    Result playTrack(_PlayTrack value),
     Result removeTrack(_RemoveTrack value),
     Result clearQueue(_ClearQueue value),
     @required Result orElse(),

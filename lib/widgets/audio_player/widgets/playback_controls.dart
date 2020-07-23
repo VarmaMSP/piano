@@ -7,6 +7,7 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/bloc/audio_player_bloc.dart';
+import 'package:phenopod/model/main.dart';
 
 class PlaybackControls extends StatelessWidget {
   PlaybackControls({
@@ -16,13 +17,12 @@ class PlaybackControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
-    final onPlay = () => audioPlayerBloc.transitionState(StateTransition.play);
-    final onPause =
-        () => audioPlayerBloc.transitionState(StateTransition.pause);
-    final onFastForward =
-        () => audioPlayerBloc.transitionState(StateTransition.fastforward);
-    final onRewind =
-        () => audioPlayerBloc.transitionState(StateTransition.rewind);
+    final onPlay = () => audioPlayerBloc.addAudioAction(AudioAction.play);
+    final onPause = () => audioPlayerBloc.addAudioAction(AudioAction.pause);
+    final onFastForward = () => audioPlayerBloc.addAudioAction(
+          AudioAction.fastforward,
+        );
+    final onRewind = () => audioPlayerBloc.addAudioAction(AudioAction.rewind);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
