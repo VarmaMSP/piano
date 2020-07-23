@@ -4,19 +4,17 @@ import 'package:rxdart/subjects.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/store/store.dart';
 
 class PodcastActionsBloc {
   final Store store;
   final EventBus eventBus;
-  final AlarmService alarmService;
 
   /// Stream controller for actions
   final PublishSubject<PodcastAction> _actions =
       PublishSubject<PodcastAction>();
 
-  PodcastActionsBloc(this.store, this.eventBus, this.alarmService) {
+  PodcastActionsBloc(this.store, this.eventBus) {
     _handleActions();
   }
 
@@ -33,15 +31,6 @@ class PodcastActionsBloc {
             podcast: data.podcast,
             synced: true,
           ));
-
-          // final cachePodcastTask = Task.init(
-          //   taskType: TaskType.cachePodcast(
-          //     podcastId: data.podcast.id,
-          //     podcastUrlParam: data.podcast.urlParam,
-          //   ),
-          // );
-          // await store.task.saveTask(cachePodcastTask);
-          // await alarmService.scheduleTaskRunner();
         },
         unsubscribe: (data) async {
           eventBus.fire(AppEvent.unsubscribeFromPodcast(

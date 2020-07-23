@@ -3,11 +3,12 @@ import 'package:flutter/foundation.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 
-EpisodeStore newEpisodeStore(Api api, Db db) {
-  return _EpisodeStoreImpl(api: api, db: db);
+EpisodeStore newEpisodeStore(Api api, Db db, [AlarmService alarmService]) {
+  return _EpisodeStoreImpl(api: api, db: db, alarmService: alarmService);
 }
 
 abstract class EpisodeStore {
@@ -26,10 +27,12 @@ abstract class EpisodeStore {
 class _EpisodeStoreImpl extends EpisodeStore {
   final Api api;
   final Db db;
+  final AlarmService alarmService;
 
   _EpisodeStoreImpl({
     @required this.api,
     @required this.db,
+    @required this.alarmService,
   });
 
   @override

@@ -3,11 +3,12 @@ import 'package:flutter/foundation.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 
-UserStore newUserStore(Api api, Db db) {
-  return _UserStoreImpl(api: api, db: db);
+UserStore newUserStore(Api api, Db db, [AlarmService alarmService]) {
+  return _UserStoreImpl(api: api, db: db, alarmService: alarmService);
 }
 
 abstract class UserStore {
@@ -26,10 +27,12 @@ abstract class UserStore {
 class _UserStoreImpl extends UserStore {
   final Api api;
   final Db db;
+  final AlarmService alarmService;
 
   _UserStoreImpl({
     @required this.api,
     @required this.db,
+    @required this.alarmService,
   });
 
   @override
@@ -43,7 +46,9 @@ class _UserStoreImpl extends UserStore {
     GuestCredentials guestCredentials,
   }) {
     return api.user.signInWithFacebook(
-        accessToken: accessToken, guestCredentials: guestCredentials);
+      accessToken: accessToken,
+      guestCredentials: guestCredentials,
+    );
   }
 
   @override
@@ -51,8 +56,10 @@ class _UserStoreImpl extends UserStore {
     String idToken,
     GuestCredentials guestCredentials,
   }) {
-    return api.user
-        .signInWithGoogle(idToken: idToken, guestCredentials: guestCredentials);
+    return api.user.signInWithGoogle(
+      idToken: idToken,
+      guestCredentials: guestCredentials,
+    );
   }
 
   @override

@@ -7,8 +7,8 @@ AlarmService alarmService;
 bool _isTaskRunnerActive = false;
 
 void startTaskRunner(int x) async {
-  store ??= newStore(await newApi(), await newDb());
   alarmService ??= await newAlarmService();
+  store ??= newStore(await newApi(), await newDb());
 
   if (!_isTaskRunnerActive) {
     _isTaskRunnerActive = true;

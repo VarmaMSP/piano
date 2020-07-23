@@ -3,19 +3,17 @@ import 'package:rxdart/subjects.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
 
 class EpisodeActionsBloc {
   final Store store;
-  final AlarmService alarmService;
 
   /// Stream controller for actions
   final PublishSubject<EpisodeAction> _actions =
       PublishSubject<EpisodeAction>();
 
-  EpisodeActionsBloc(this.store, this.alarmService) {
+  EpisodeActionsBloc(this.store) {
     _handleActions();
   }
 
@@ -23,22 +21,19 @@ class EpisodeActionsBloc {
     _actions.distinct().listen((e) async {
       await e.map(
         startDownload: (data) async {
-          if (!await fileutils.hasStoragePermission()) {
-            return;
+          if (await fileutils.hasStoragePermission()) {
+            final setting = await store.setting.watchStorageSetting().first;
+            await store.audioFile.download(
+              episode: data.episode,
+              podcast: data.podcast,
+              storagePath: setting.storagePath,
+            );
           }
-          await store.audioFile.download(
-            episode: data.episode,
-            podcast: data.podcast,
-            storagePath:
-                (await store.setting.watchStorageSetting().first).storagePath,
-          );
-          await alarmService.scheduleTaskRunner();
         },
         cancelDownload: (data) async {
-          if (!await fileutils.hasStoragePermission()) {
-            return;
+          if (await fileutils.hasStoragePermission()) {
+            await store.audioFile.deleteByEpisode(data.episodeId);
           }
-          await store.audioFile.deleteByEpisode(data.episodeId);
         },
       );
     });

@@ -6,11 +6,20 @@ import 'package:rxdart/rxdart.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 
-AudioPlayerStore newAudioPlayerStore(Api api, Db db) {
-  return _AudioPlayerStoreImpl(api: api, db: db);
+AudioPlayerStore newAudioPlayerStore(
+  Api api,
+  Db db, [
+  AlarmService alarmService,
+]) {
+  return _AudioPlayerStoreImpl(
+    api: api,
+    db: db,
+    alarmService: alarmService,
+  );
 }
 
 abstract class AudioPlayerStore {
@@ -22,12 +31,14 @@ abstract class AudioPlayerStore {
 class _AudioPlayerStoreImpl extends AudioPlayerStore {
   final Api api;
   final Db db;
+  final AlarmService alarmService;
 
   final String _queueDetailsKey = 'QUEUE_DETAILS';
 
   _AudioPlayerStoreImpl({
     @required this.api,
     @required this.db,
+    @required this.alarmService,
   });
 
   @override

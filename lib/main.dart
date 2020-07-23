@@ -42,10 +42,9 @@ void main() async {
   // await alarmService.scheduleTaskRunner();
 
   runApp(Root(
-    store: newStore(api, db),
+    store: newStore(api, db, alarmService),
     eventBus: EventBus(),
     audioService: audioService,
-    alarmService: alarmService,
   ));
 }
 
@@ -54,13 +53,11 @@ class Root extends StatefulWidget {
     @required this.store,
     @required this.eventBus,
     @required this.audioService,
-    @required this.alarmService,
   });
 
   final Store store;
   final EventBus eventBus;
   final AudioService audioService;
-  final AlarmService alarmService;
 
   @override
   _RootState createState() => _RootState();
@@ -140,15 +137,11 @@ class _RootState extends State<Root>
           dispose: (_, value) => value.dispose(),
         ),
         Provider<PodcastActionsBloc>(
-          create: (_) => PodcastActionsBloc(
-            widget.store,
-            widget.eventBus,
-            widget.alarmService,
-          ),
+          create: (_) => PodcastActionsBloc(widget.store, widget.eventBus),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<EpisodeActionsBloc>(
-          create: (_) => EpisodeActionsBloc(widget.store, widget.alarmService),
+          create: (_) => EpisodeActionsBloc(widget.store),
           dispose: (_, value) => value.dispose(),
         ),
       ],

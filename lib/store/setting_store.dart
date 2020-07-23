@@ -9,12 +9,13 @@ import 'package:when_expression/when_expression.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
 
-SettingStore newSettingStore(Api api, Db db) {
-  return _SettingStoreImpl(api: api, db: db);
+SettingStore newSettingStore(Api api, Db db, [AlarmService alarmService]) {
+  return _SettingStoreImpl(api: api, db: db, alarmService: alarmService);
 }
 
 abstract class SettingStore {
@@ -27,6 +28,7 @@ abstract class SettingStore {
 class _SettingStoreImpl extends SettingStore {
   final Api api;
   final Db db;
+  final AlarmService alarmService;
 
   final String _storageSettingKey = 'STORAGE_SETTING';
   final String _audioPlayerSettingKey = 'AUDIO_PLAYER_SETTING';
@@ -34,6 +36,7 @@ class _SettingStoreImpl extends SettingStore {
   _SettingStoreImpl({
     @required this.api,
     @required this.db,
+    @required this.alarmService,
   });
 
   @override

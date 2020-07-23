@@ -3,11 +3,12 @@ import 'package:flutter/foundation.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 
-TaskStore newTaskStore(Api api, Db db) {
-  return _TaskStoreImpl(api: api, db: db);
+TaskStore newTaskStore(Api api, Db db, [AlarmService alarmService]) {
+  return _TaskStoreImpl(api: api, db: db, alarmService: alarmService);
 }
 
 abstract class TaskStore {
@@ -20,10 +21,12 @@ abstract class TaskStore {
 class _TaskStoreImpl extends TaskStore {
   final Api api;
   final Db db;
+  final AlarmService alarmService;
 
   _TaskStoreImpl({
     @required this.api,
     @required this.db,
+    @required this.alarmService,
   });
 
   @override

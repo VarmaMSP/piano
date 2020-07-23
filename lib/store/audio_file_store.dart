@@ -3,13 +3,14 @@ import 'package:flutter/foundation.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
 import 'package:phenopod/utils/file.dart';
 
-AudioFileStore newAudioFileStore(Api api, Db db) {
-  return _AudioFileStoreImpl(api: api, db: db);
+AudioFileStore newAudioFileStore(Api api, Db db, [AlarmService alarmService]) {
+  return _AudioFileStoreImpl(api: api, db: db, alarmService: alarmService);
 }
 
 abstract class AudioFileStore {
@@ -28,10 +29,12 @@ abstract class AudioFileStore {
 class _AudioFileStoreImpl extends AudioFileStore {
   final Api api;
   final Db db;
+  final AlarmService alarmService;
 
   _AudioFileStoreImpl({
     @required this.api,
     @required this.db,
+    @required this.alarmService,
   });
 
   @override
@@ -70,6 +73,8 @@ class _AudioFileStoreImpl extends AudioFileStore {
         );
       },
     );
+
+    await alarmService?.scheduleTaskRunner();
   }
 
   @override
