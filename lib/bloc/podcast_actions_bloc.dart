@@ -2,21 +2,10 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:super_enum/super_enum.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
-
-part 'podcast_actions_bloc.g.dart';
-
-@superEnum
-enum _PodcastAction {
-  @Data(fields: [DataField<Podcast>('podcast')])
-  Subscribe,
-  @Data(fields: [DataField<Podcast>('podcast')])
-  Unsubscribe,
-}
 
 class PodcastActionsBloc {
   final Store store;
@@ -33,14 +22,14 @@ class PodcastActionsBloc {
 
   void _handleActions() {
     _actions.distinct().listen((e) async {
-      await e.when(
+      await e.map(
         subscribe: (data) async {
-          eventBus.fire(AppEvent.subscribe(
+          eventBus.fire(AppEvent.subscribeToPodcast(
             podcast: data.podcast,
             synced: false,
           ));
           await store.subscription.subscribe(data.podcast);
-          eventBus.fire(AppEvent.subscribe(
+          eventBus.fire(AppEvent.subscribeToPodcast(
             podcast: data.podcast,
             synced: true,
           ));
@@ -55,12 +44,12 @@ class PodcastActionsBloc {
           // await alarmService.scheduleTaskRunner();
         },
         unsubscribe: (data) async {
-          eventBus.fire(AppEvent.subscribe(
+          eventBus.fire(AppEvent.unsubscribeFromPodcast(
             podcast: data.podcast,
             synced: false,
           ));
           await store.subscription.unsubscribe(data.podcast);
-          eventBus.fire(AppEvent.subscribe(
+          eventBus.fire(AppEvent.unsubscribeFromPodcast(
             podcast: data.podcast,
             synced: true,
           ));

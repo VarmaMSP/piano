@@ -76,7 +76,7 @@ class PodcastScreenBloc {
   void _handleEvents() {
     _eventSubscription = eventBus.on().listen((e) {
       (e as AppEvent).maybeMap(
-        subscribe: (data) async {
+        subscribeToPodcast: (data) async {
           if (data.podcast.id == id) {
             final screenData = await _screenData.first;
             if (!screenData.isSubscribed) {
@@ -84,7 +84,7 @@ class PodcastScreenBloc {
             }
           }
         },
-        unsubscribe: (data) async {
+        unsubscribeFromPodcast: (data) async {
           if (data.podcast.id == id) {
             final screenData = await _screenData.first;
             if (screenData.isSubscribed) {

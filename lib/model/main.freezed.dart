@@ -9,20 +9,630 @@ part of 'main.dart';
 
 T _$identity<T>(T value) => value;
 
+class _$PodcastActionTearOff {
+  const _$PodcastActionTearOff();
+
+// ignore: unused_element
+  _Subscribe subscribe({@required Podcast podcast}) {
+    return _Subscribe(
+      podcast: podcast,
+    );
+  }
+
+// ignore: unused_element
+  _Unsubscribe unsubscribe({@required Podcast podcast}) {
+    return _Unsubscribe(
+      podcast: podcast,
+    );
+  }
+}
+
+// ignore: unused_element
+const $PodcastAction = _$PodcastActionTearOff();
+
+mixin _$PodcastAction {
+  Podcast get podcast;
+
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result subscribe(Podcast podcast),
+    @required Result unsubscribe(Podcast podcast),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result subscribe(Podcast podcast),
+    Result unsubscribe(Podcast podcast),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result subscribe(_Subscribe value),
+    @required Result unsubscribe(_Unsubscribe value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result subscribe(_Subscribe value),
+    Result unsubscribe(_Unsubscribe value),
+    @required Result orElse(),
+  });
+
+  $PodcastActionCopyWith<PodcastAction> get copyWith;
+}
+
+abstract class $PodcastActionCopyWith<$Res> {
+  factory $PodcastActionCopyWith(
+          PodcastAction value, $Res Function(PodcastAction) then) =
+      _$PodcastActionCopyWithImpl<$Res>;
+  $Res call({Podcast podcast});
+}
+
+class _$PodcastActionCopyWithImpl<$Res>
+    implements $PodcastActionCopyWith<$Res> {
+  _$PodcastActionCopyWithImpl(this._value, this._then);
+
+  final PodcastAction _value;
+  // ignore: unused_field
+  final $Res Function(PodcastAction) _then;
+
+  @override
+  $Res call({
+    Object podcast = freezed,
+  }) {
+    return _then(_value.copyWith(
+      podcast: podcast == freezed ? _value.podcast : podcast as Podcast,
+    ));
+  }
+}
+
+abstract class _$SubscribeCopyWith<$Res>
+    implements $PodcastActionCopyWith<$Res> {
+  factory _$SubscribeCopyWith(
+          _Subscribe value, $Res Function(_Subscribe) then) =
+      __$SubscribeCopyWithImpl<$Res>;
+  @override
+  $Res call({Podcast podcast});
+}
+
+class __$SubscribeCopyWithImpl<$Res> extends _$PodcastActionCopyWithImpl<$Res>
+    implements _$SubscribeCopyWith<$Res> {
+  __$SubscribeCopyWithImpl(_Subscribe _value, $Res Function(_Subscribe) _then)
+      : super(_value, (v) => _then(v as _Subscribe));
+
+  @override
+  _Subscribe get _value => super._value as _Subscribe;
+
+  @override
+  $Res call({
+    Object podcast = freezed,
+  }) {
+    return _then(_Subscribe(
+      podcast: podcast == freezed ? _value.podcast : podcast as Podcast,
+    ));
+  }
+}
+
+class _$_Subscribe implements _Subscribe {
+  const _$_Subscribe({@required this.podcast}) : assert(podcast != null);
+
+  @override
+  final Podcast podcast;
+
+  @override
+  String toString() {
+    return 'PodcastAction.subscribe(podcast: $podcast)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Subscribe &&
+            (identical(other.podcast, podcast) ||
+                const DeepCollectionEquality().equals(other.podcast, podcast)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(podcast);
+
+  @override
+  _$SubscribeCopyWith<_Subscribe> get copyWith =>
+      __$SubscribeCopyWithImpl<_Subscribe>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result subscribe(Podcast podcast),
+    @required Result unsubscribe(Podcast podcast),
+  }) {
+    assert(subscribe != null);
+    assert(unsubscribe != null);
+    return subscribe(podcast);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result subscribe(Podcast podcast),
+    Result unsubscribe(Podcast podcast),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (subscribe != null) {
+      return subscribe(podcast);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result subscribe(_Subscribe value),
+    @required Result unsubscribe(_Unsubscribe value),
+  }) {
+    assert(subscribe != null);
+    assert(unsubscribe != null);
+    return subscribe(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result subscribe(_Subscribe value),
+    Result unsubscribe(_Unsubscribe value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (subscribe != null) {
+      return subscribe(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Subscribe implements PodcastAction {
+  const factory _Subscribe({@required Podcast podcast}) = _$_Subscribe;
+
+  @override
+  Podcast get podcast;
+  @override
+  _$SubscribeCopyWith<_Subscribe> get copyWith;
+}
+
+abstract class _$UnsubscribeCopyWith<$Res>
+    implements $PodcastActionCopyWith<$Res> {
+  factory _$UnsubscribeCopyWith(
+          _Unsubscribe value, $Res Function(_Unsubscribe) then) =
+      __$UnsubscribeCopyWithImpl<$Res>;
+  @override
+  $Res call({Podcast podcast});
+}
+
+class __$UnsubscribeCopyWithImpl<$Res> extends _$PodcastActionCopyWithImpl<$Res>
+    implements _$UnsubscribeCopyWith<$Res> {
+  __$UnsubscribeCopyWithImpl(
+      _Unsubscribe _value, $Res Function(_Unsubscribe) _then)
+      : super(_value, (v) => _then(v as _Unsubscribe));
+
+  @override
+  _Unsubscribe get _value => super._value as _Unsubscribe;
+
+  @override
+  $Res call({
+    Object podcast = freezed,
+  }) {
+    return _then(_Unsubscribe(
+      podcast: podcast == freezed ? _value.podcast : podcast as Podcast,
+    ));
+  }
+}
+
+class _$_Unsubscribe implements _Unsubscribe {
+  const _$_Unsubscribe({@required this.podcast}) : assert(podcast != null);
+
+  @override
+  final Podcast podcast;
+
+  @override
+  String toString() {
+    return 'PodcastAction.unsubscribe(podcast: $podcast)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Unsubscribe &&
+            (identical(other.podcast, podcast) ||
+                const DeepCollectionEquality().equals(other.podcast, podcast)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(podcast);
+
+  @override
+  _$UnsubscribeCopyWith<_Unsubscribe> get copyWith =>
+      __$UnsubscribeCopyWithImpl<_Unsubscribe>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result subscribe(Podcast podcast),
+    @required Result unsubscribe(Podcast podcast),
+  }) {
+    assert(subscribe != null);
+    assert(unsubscribe != null);
+    return unsubscribe(podcast);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result subscribe(Podcast podcast),
+    Result unsubscribe(Podcast podcast),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unsubscribe != null) {
+      return unsubscribe(podcast);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result subscribe(_Subscribe value),
+    @required Result unsubscribe(_Unsubscribe value),
+  }) {
+    assert(subscribe != null);
+    assert(unsubscribe != null);
+    return unsubscribe(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result subscribe(_Subscribe value),
+    Result unsubscribe(_Unsubscribe value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (unsubscribe != null) {
+      return unsubscribe(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Unsubscribe implements PodcastAction {
+  const factory _Unsubscribe({@required Podcast podcast}) = _$_Unsubscribe;
+
+  @override
+  Podcast get podcast;
+  @override
+  _$UnsubscribeCopyWith<_Unsubscribe> get copyWith;
+}
+
+class _$EpisodeActionTearOff {
+  const _$EpisodeActionTearOff();
+
+// ignore: unused_element
+  _StartDownload startDownload(
+      {@required Episode episode, @required Podcast podcast}) {
+    return _StartDownload(
+      episode: episode,
+      podcast: podcast,
+    );
+  }
+
+// ignore: unused_element
+  _CancelDownload cancelDownload({@required String episodeId}) {
+    return _CancelDownload(
+      episodeId: episodeId,
+    );
+  }
+}
+
+// ignore: unused_element
+const $EpisodeAction = _$EpisodeActionTearOff();
+
+mixin _$EpisodeAction {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result startDownload(Episode episode, Podcast podcast),
+    @required Result cancelDownload(String episodeId),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result startDownload(Episode episode, Podcast podcast),
+    Result cancelDownload(String episodeId),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result startDownload(_StartDownload value),
+    @required Result cancelDownload(_CancelDownload value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result startDownload(_StartDownload value),
+    Result cancelDownload(_CancelDownload value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $EpisodeActionCopyWith<$Res> {
+  factory $EpisodeActionCopyWith(
+          EpisodeAction value, $Res Function(EpisodeAction) then) =
+      _$EpisodeActionCopyWithImpl<$Res>;
+}
+
+class _$EpisodeActionCopyWithImpl<$Res>
+    implements $EpisodeActionCopyWith<$Res> {
+  _$EpisodeActionCopyWithImpl(this._value, this._then);
+
+  final EpisodeAction _value;
+  // ignore: unused_field
+  final $Res Function(EpisodeAction) _then;
+}
+
+abstract class _$StartDownloadCopyWith<$Res> {
+  factory _$StartDownloadCopyWith(
+          _StartDownload value, $Res Function(_StartDownload) then) =
+      __$StartDownloadCopyWithImpl<$Res>;
+  $Res call({Episode episode, Podcast podcast});
+}
+
+class __$StartDownloadCopyWithImpl<$Res>
+    extends _$EpisodeActionCopyWithImpl<$Res>
+    implements _$StartDownloadCopyWith<$Res> {
+  __$StartDownloadCopyWithImpl(
+      _StartDownload _value, $Res Function(_StartDownload) _then)
+      : super(_value, (v) => _then(v as _StartDownload));
+
+  @override
+  _StartDownload get _value => super._value as _StartDownload;
+
+  @override
+  $Res call({
+    Object episode = freezed,
+    Object podcast = freezed,
+  }) {
+    return _then(_StartDownload(
+      episode: episode == freezed ? _value.episode : episode as Episode,
+      podcast: podcast == freezed ? _value.podcast : podcast as Podcast,
+    ));
+  }
+}
+
+class _$_StartDownload implements _StartDownload {
+  const _$_StartDownload({@required this.episode, @required this.podcast})
+      : assert(episode != null),
+        assert(podcast != null);
+
+  @override
+  final Episode episode;
+  @override
+  final Podcast podcast;
+
+  @override
+  String toString() {
+    return 'EpisodeAction.startDownload(episode: $episode, podcast: $podcast)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _StartDownload &&
+            (identical(other.episode, episode) ||
+                const DeepCollectionEquality()
+                    .equals(other.episode, episode)) &&
+            (identical(other.podcast, podcast) ||
+                const DeepCollectionEquality().equals(other.podcast, podcast)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(episode) ^
+      const DeepCollectionEquality().hash(podcast);
+
+  @override
+  _$StartDownloadCopyWith<_StartDownload> get copyWith =>
+      __$StartDownloadCopyWithImpl<_StartDownload>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result startDownload(Episode episode, Podcast podcast),
+    @required Result cancelDownload(String episodeId),
+  }) {
+    assert(startDownload != null);
+    assert(cancelDownload != null);
+    return startDownload(episode, podcast);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result startDownload(Episode episode, Podcast podcast),
+    Result cancelDownload(String episodeId),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (startDownload != null) {
+      return startDownload(episode, podcast);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result startDownload(_StartDownload value),
+    @required Result cancelDownload(_CancelDownload value),
+  }) {
+    assert(startDownload != null);
+    assert(cancelDownload != null);
+    return startDownload(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result startDownload(_StartDownload value),
+    Result cancelDownload(_CancelDownload value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (startDownload != null) {
+      return startDownload(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _StartDownload implements EpisodeAction {
+  const factory _StartDownload(
+      {@required Episode episode,
+      @required Podcast podcast}) = _$_StartDownload;
+
+  Episode get episode;
+  Podcast get podcast;
+  _$StartDownloadCopyWith<_StartDownload> get copyWith;
+}
+
+abstract class _$CancelDownloadCopyWith<$Res> {
+  factory _$CancelDownloadCopyWith(
+          _CancelDownload value, $Res Function(_CancelDownload) then) =
+      __$CancelDownloadCopyWithImpl<$Res>;
+  $Res call({String episodeId});
+}
+
+class __$CancelDownloadCopyWithImpl<$Res>
+    extends _$EpisodeActionCopyWithImpl<$Res>
+    implements _$CancelDownloadCopyWith<$Res> {
+  __$CancelDownloadCopyWithImpl(
+      _CancelDownload _value, $Res Function(_CancelDownload) _then)
+      : super(_value, (v) => _then(v as _CancelDownload));
+
+  @override
+  _CancelDownload get _value => super._value as _CancelDownload;
+
+  @override
+  $Res call({
+    Object episodeId = freezed,
+  }) {
+    return _then(_CancelDownload(
+      episodeId: episodeId == freezed ? _value.episodeId : episodeId as String,
+    ));
+  }
+}
+
+class _$_CancelDownload implements _CancelDownload {
+  const _$_CancelDownload({@required this.episodeId})
+      : assert(episodeId != null);
+
+  @override
+  final String episodeId;
+
+  @override
+  String toString() {
+    return 'EpisodeAction.cancelDownload(episodeId: $episodeId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _CancelDownload &&
+            (identical(other.episodeId, episodeId) ||
+                const DeepCollectionEquality()
+                    .equals(other.episodeId, episodeId)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(episodeId);
+
+  @override
+  _$CancelDownloadCopyWith<_CancelDownload> get copyWith =>
+      __$CancelDownloadCopyWithImpl<_CancelDownload>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result startDownload(Episode episode, Podcast podcast),
+    @required Result cancelDownload(String episodeId),
+  }) {
+    assert(startDownload != null);
+    assert(cancelDownload != null);
+    return cancelDownload(episodeId);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result startDownload(Episode episode, Podcast podcast),
+    Result cancelDownload(String episodeId),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (cancelDownload != null) {
+      return cancelDownload(episodeId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result startDownload(_StartDownload value),
+    @required Result cancelDownload(_CancelDownload value),
+  }) {
+    assert(startDownload != null);
+    assert(cancelDownload != null);
+    return cancelDownload(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result startDownload(_StartDownload value),
+    Result cancelDownload(_CancelDownload value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (cancelDownload != null) {
+      return cancelDownload(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CancelDownload implements EpisodeAction {
+  const factory _CancelDownload({@required String episodeId}) =
+      _$_CancelDownload;
+
+  String get episodeId;
+  _$CancelDownloadCopyWith<_CancelDownload> get copyWith;
+}
+
 class _$AppEventTearOff {
   const _$AppEventTearOff();
 
 // ignore: unused_element
-  _Subscribe subscribe({@required Podcast podcast, @required bool synced}) {
-    return _Subscribe(
+  _SubscribeToPodcast subscribeToPodcast(
+      {@required Podcast podcast, @required bool synced}) {
+    return _SubscribeToPodcast(
       podcast: podcast,
       synced: synced,
     );
   }
 
 // ignore: unused_element
-  _Unsubscribe unsubscribe({@required Podcast podcast, @required bool synced}) {
-    return _Unsubscribe(
+  _UnsubscribeFromPodcast unsubscribeFromPodcast(
+      {@required Podcast podcast, @required bool synced}) {
+    return _UnsubscribeFromPodcast(
       podcast: podcast,
       synced: synced,
     );
@@ -38,24 +648,24 @@ mixin _$AppEvent {
 
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result subscribe(Podcast podcast, bool synced),
-    @required Result unsubscribe(Podcast podcast, bool synced),
+    @required Result subscribeToPodcast(Podcast podcast, bool synced),
+    @required Result unsubscribeFromPodcast(Podcast podcast, bool synced),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result subscribe(Podcast podcast, bool synced),
-    Result unsubscribe(Podcast podcast, bool synced),
+    Result subscribeToPodcast(Podcast podcast, bool synced),
+    Result unsubscribeFromPodcast(Podcast podcast, bool synced),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result subscribe(_Subscribe value),
-    @required Result unsubscribe(_Unsubscribe value),
+    @required Result subscribeToPodcast(_SubscribeToPodcast value),
+    @required Result unsubscribeFromPodcast(_UnsubscribeFromPodcast value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result subscribe(_Subscribe value),
-    Result unsubscribe(_Unsubscribe value),
+    Result subscribeToPodcast(_SubscribeToPodcast value),
+    Result unsubscribeFromPodcast(_UnsubscribeFromPodcast value),
     @required Result orElse(),
   });
 
@@ -87,36 +697,39 @@ class _$AppEventCopyWithImpl<$Res> implements $AppEventCopyWith<$Res> {
   }
 }
 
-abstract class _$SubscribeCopyWith<$Res> implements $AppEventCopyWith<$Res> {
-  factory _$SubscribeCopyWith(
-          _Subscribe value, $Res Function(_Subscribe) then) =
-      __$SubscribeCopyWithImpl<$Res>;
+abstract class _$SubscribeToPodcastCopyWith<$Res>
+    implements $AppEventCopyWith<$Res> {
+  factory _$SubscribeToPodcastCopyWith(
+          _SubscribeToPodcast value, $Res Function(_SubscribeToPodcast) then) =
+      __$SubscribeToPodcastCopyWithImpl<$Res>;
   @override
   $Res call({Podcast podcast, bool synced});
 }
 
-class __$SubscribeCopyWithImpl<$Res> extends _$AppEventCopyWithImpl<$Res>
-    implements _$SubscribeCopyWith<$Res> {
-  __$SubscribeCopyWithImpl(_Subscribe _value, $Res Function(_Subscribe) _then)
-      : super(_value, (v) => _then(v as _Subscribe));
+class __$SubscribeToPodcastCopyWithImpl<$Res>
+    extends _$AppEventCopyWithImpl<$Res>
+    implements _$SubscribeToPodcastCopyWith<$Res> {
+  __$SubscribeToPodcastCopyWithImpl(
+      _SubscribeToPodcast _value, $Res Function(_SubscribeToPodcast) _then)
+      : super(_value, (v) => _then(v as _SubscribeToPodcast));
 
   @override
-  _Subscribe get _value => super._value as _Subscribe;
+  _SubscribeToPodcast get _value => super._value as _SubscribeToPodcast;
 
   @override
   $Res call({
     Object podcast = freezed,
     Object synced = freezed,
   }) {
-    return _then(_Subscribe(
+    return _then(_SubscribeToPodcast(
       podcast: podcast == freezed ? _value.podcast : podcast as Podcast,
       synced: synced == freezed ? _value.synced : synced as bool,
     ));
   }
 }
 
-class _$_Subscribe implements _Subscribe {
-  const _$_Subscribe({@required this.podcast, @required this.synced})
+class _$_SubscribeToPodcast implements _SubscribeToPodcast {
+  const _$_SubscribeToPodcast({@required this.podcast, @required this.synced})
       : assert(podcast != null),
         assert(synced != null);
 
@@ -127,13 +740,13 @@ class _$_Subscribe implements _Subscribe {
 
   @override
   String toString() {
-    return 'AppEvent.subscribe(podcast: $podcast, synced: $synced)';
+    return 'AppEvent.subscribeToPodcast(podcast: $podcast, synced: $synced)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Subscribe &&
+        (other is _SubscribeToPodcast &&
             (identical(other.podcast, podcast) ||
                 const DeepCollectionEquality()
                     .equals(other.podcast, podcast)) &&
@@ -148,30 +761,30 @@ class _$_Subscribe implements _Subscribe {
       const DeepCollectionEquality().hash(synced);
 
   @override
-  _$SubscribeCopyWith<_Subscribe> get copyWith =>
-      __$SubscribeCopyWithImpl<_Subscribe>(this, _$identity);
+  _$SubscribeToPodcastCopyWith<_SubscribeToPodcast> get copyWith =>
+      __$SubscribeToPodcastCopyWithImpl<_SubscribeToPodcast>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result subscribe(Podcast podcast, bool synced),
-    @required Result unsubscribe(Podcast podcast, bool synced),
+    @required Result subscribeToPodcast(Podcast podcast, bool synced),
+    @required Result unsubscribeFromPodcast(Podcast podcast, bool synced),
   }) {
-    assert(subscribe != null);
-    assert(unsubscribe != null);
-    return subscribe(podcast, synced);
+    assert(subscribeToPodcast != null);
+    assert(unsubscribeFromPodcast != null);
+    return subscribeToPodcast(podcast, synced);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result subscribe(Podcast podcast, bool synced),
-    Result unsubscribe(Podcast podcast, bool synced),
+    Result subscribeToPodcast(Podcast podcast, bool synced),
+    Result unsubscribeFromPodcast(Podcast podcast, bool synced),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (subscribe != null) {
-      return subscribe(podcast, synced);
+    if (subscribeToPodcast != null) {
+      return subscribeToPodcast(podcast, synced);
     }
     return orElse();
   }
@@ -179,72 +792,76 @@ class _$_Subscribe implements _Subscribe {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result subscribe(_Subscribe value),
-    @required Result unsubscribe(_Unsubscribe value),
+    @required Result subscribeToPodcast(_SubscribeToPodcast value),
+    @required Result unsubscribeFromPodcast(_UnsubscribeFromPodcast value),
   }) {
-    assert(subscribe != null);
-    assert(unsubscribe != null);
-    return subscribe(this);
+    assert(subscribeToPodcast != null);
+    assert(unsubscribeFromPodcast != null);
+    return subscribeToPodcast(this);
   }
 
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result subscribe(_Subscribe value),
-    Result unsubscribe(_Unsubscribe value),
+    Result subscribeToPodcast(_SubscribeToPodcast value),
+    Result unsubscribeFromPodcast(_UnsubscribeFromPodcast value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (subscribe != null) {
-      return subscribe(this);
+    if (subscribeToPodcast != null) {
+      return subscribeToPodcast(this);
     }
     return orElse();
   }
 }
 
-abstract class _Subscribe implements AppEvent {
-  const factory _Subscribe({@required Podcast podcast, @required bool synced}) =
-      _$_Subscribe;
+abstract class _SubscribeToPodcast implements AppEvent {
+  const factory _SubscribeToPodcast(
+      {@required Podcast podcast,
+      @required bool synced}) = _$_SubscribeToPodcast;
 
   @override
   Podcast get podcast;
   @override
   bool get synced;
   @override
-  _$SubscribeCopyWith<_Subscribe> get copyWith;
+  _$SubscribeToPodcastCopyWith<_SubscribeToPodcast> get copyWith;
 }
 
-abstract class _$UnsubscribeCopyWith<$Res> implements $AppEventCopyWith<$Res> {
-  factory _$UnsubscribeCopyWith(
-          _Unsubscribe value, $Res Function(_Unsubscribe) then) =
-      __$UnsubscribeCopyWithImpl<$Res>;
+abstract class _$UnsubscribeFromPodcastCopyWith<$Res>
+    implements $AppEventCopyWith<$Res> {
+  factory _$UnsubscribeFromPodcastCopyWith(_UnsubscribeFromPodcast value,
+          $Res Function(_UnsubscribeFromPodcast) then) =
+      __$UnsubscribeFromPodcastCopyWithImpl<$Res>;
   @override
   $Res call({Podcast podcast, bool synced});
 }
 
-class __$UnsubscribeCopyWithImpl<$Res> extends _$AppEventCopyWithImpl<$Res>
-    implements _$UnsubscribeCopyWith<$Res> {
-  __$UnsubscribeCopyWithImpl(
-      _Unsubscribe _value, $Res Function(_Unsubscribe) _then)
-      : super(_value, (v) => _then(v as _Unsubscribe));
+class __$UnsubscribeFromPodcastCopyWithImpl<$Res>
+    extends _$AppEventCopyWithImpl<$Res>
+    implements _$UnsubscribeFromPodcastCopyWith<$Res> {
+  __$UnsubscribeFromPodcastCopyWithImpl(_UnsubscribeFromPodcast _value,
+      $Res Function(_UnsubscribeFromPodcast) _then)
+      : super(_value, (v) => _then(v as _UnsubscribeFromPodcast));
 
   @override
-  _Unsubscribe get _value => super._value as _Unsubscribe;
+  _UnsubscribeFromPodcast get _value => super._value as _UnsubscribeFromPodcast;
 
   @override
   $Res call({
     Object podcast = freezed,
     Object synced = freezed,
   }) {
-    return _then(_Unsubscribe(
+    return _then(_UnsubscribeFromPodcast(
       podcast: podcast == freezed ? _value.podcast : podcast as Podcast,
       synced: synced == freezed ? _value.synced : synced as bool,
     ));
   }
 }
 
-class _$_Unsubscribe implements _Unsubscribe {
-  const _$_Unsubscribe({@required this.podcast, @required this.synced})
+class _$_UnsubscribeFromPodcast implements _UnsubscribeFromPodcast {
+  const _$_UnsubscribeFromPodcast(
+      {@required this.podcast, @required this.synced})
       : assert(podcast != null),
         assert(synced != null);
 
@@ -255,13 +872,13 @@ class _$_Unsubscribe implements _Unsubscribe {
 
   @override
   String toString() {
-    return 'AppEvent.unsubscribe(podcast: $podcast, synced: $synced)';
+    return 'AppEvent.unsubscribeFromPodcast(podcast: $podcast, synced: $synced)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unsubscribe &&
+        (other is _UnsubscribeFromPodcast &&
             (identical(other.podcast, podcast) ||
                 const DeepCollectionEquality()
                     .equals(other.podcast, podcast)) &&
@@ -276,30 +893,31 @@ class _$_Unsubscribe implements _Unsubscribe {
       const DeepCollectionEquality().hash(synced);
 
   @override
-  _$UnsubscribeCopyWith<_Unsubscribe> get copyWith =>
-      __$UnsubscribeCopyWithImpl<_Unsubscribe>(this, _$identity);
+  _$UnsubscribeFromPodcastCopyWith<_UnsubscribeFromPodcast> get copyWith =>
+      __$UnsubscribeFromPodcastCopyWithImpl<_UnsubscribeFromPodcast>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result subscribe(Podcast podcast, bool synced),
-    @required Result unsubscribe(Podcast podcast, bool synced),
+    @required Result subscribeToPodcast(Podcast podcast, bool synced),
+    @required Result unsubscribeFromPodcast(Podcast podcast, bool synced),
   }) {
-    assert(subscribe != null);
-    assert(unsubscribe != null);
-    return unsubscribe(podcast, synced);
+    assert(subscribeToPodcast != null);
+    assert(unsubscribeFromPodcast != null);
+    return unsubscribeFromPodcast(podcast, synced);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result subscribe(Podcast podcast, bool synced),
-    Result unsubscribe(Podcast podcast, bool synced),
+    Result subscribeToPodcast(Podcast podcast, bool synced),
+    Result unsubscribeFromPodcast(Podcast podcast, bool synced),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (unsubscribe != null) {
-      return unsubscribe(podcast, synced);
+    if (unsubscribeFromPodcast != null) {
+      return unsubscribeFromPodcast(podcast, synced);
     }
     return orElse();
   }
@@ -307,39 +925,40 @@ class _$_Unsubscribe implements _Unsubscribe {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result subscribe(_Subscribe value),
-    @required Result unsubscribe(_Unsubscribe value),
+    @required Result subscribeToPodcast(_SubscribeToPodcast value),
+    @required Result unsubscribeFromPodcast(_UnsubscribeFromPodcast value),
   }) {
-    assert(subscribe != null);
-    assert(unsubscribe != null);
-    return unsubscribe(this);
+    assert(subscribeToPodcast != null);
+    assert(unsubscribeFromPodcast != null);
+    return unsubscribeFromPodcast(this);
   }
 
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result subscribe(_Subscribe value),
-    Result unsubscribe(_Unsubscribe value),
+    Result subscribeToPodcast(_SubscribeToPodcast value),
+    Result unsubscribeFromPodcast(_UnsubscribeFromPodcast value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (unsubscribe != null) {
-      return unsubscribe(this);
+    if (unsubscribeFromPodcast != null) {
+      return unsubscribeFromPodcast(this);
     }
     return orElse();
   }
 }
 
-abstract class _Unsubscribe implements AppEvent {
-  const factory _Unsubscribe(
-      {@required Podcast podcast, @required bool synced}) = _$_Unsubscribe;
+abstract class _UnsubscribeFromPodcast implements AppEvent {
+  const factory _UnsubscribeFromPodcast(
+      {@required Podcast podcast,
+      @required bool synced}) = _$_UnsubscribeFromPodcast;
 
   @override
   Podcast get podcast;
   @override
   bool get synced;
   @override
-  _$UnsubscribeCopyWith<_Unsubscribe> get copyWith;
+  _$UnsubscribeFromPodcastCopyWith<_UnsubscribeFromPodcast> get copyWith;
 }
 
 PreferenceValue _$PreferenceValueFromJson(Map<String, dynamic> json) {

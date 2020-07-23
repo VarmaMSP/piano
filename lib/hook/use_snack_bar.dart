@@ -16,7 +16,7 @@ void useSnackBar() {
     final eventBus = Provider.of<EventBus>(context, listen: false);
     final eventSubscription = eventBus.on().listen((e) {
       (e as AppEvent).maybeMap(
-        subscribe: (data) {
+        subscribeToPodcast: (data) {
           if (data.synced) {
             Flushbar(
               message: 'Subscription added.',
@@ -26,7 +26,7 @@ void useSnackBar() {
             )..show(context);
           }
         },
-        unsubscribe: (data) {
+        unsubscribeFromPodcast: (data) {
           if (data.synced) {
             Flushbar(
               message: 'Unsubscribed.',

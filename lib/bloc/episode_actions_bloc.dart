@@ -1,25 +1,11 @@
 // Package imports:
 import 'package:rxdart/subjects.dart';
-import 'package:super_enum/super_enum.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
-
-part 'episode_actions_bloc.g.dart';
-
-@superEnum
-enum _EpisodeAction {
-  @Data(fields: [
-    DataField<Episode>('episode'),
-    DataField<Podcast>('podcast'),
-  ])
-  StartDownload,
-  @Data(fields: [DataField<String>('episodeId')])
-  CancelDownload,
-}
 
 class EpisodeActionsBloc {
   final Store store;
@@ -35,7 +21,7 @@ class EpisodeActionsBloc {
 
   void _handleActions() {
     _actions.distinct().listen((e) async {
-      await e.when(
+      await e.map(
         startDownload: (data) async {
           if (!await fileutils.hasStoragePermission()) {
             return;

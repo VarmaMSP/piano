@@ -11,6 +11,7 @@ import 'package:uuid/uuid.dart';
 part 'main.g.dart';
 part 'main.freezed.dart';
 
+part 'action.dart';
 part 'api_response.dart';
 part 'app_event.dart';
 part 'audio_file.dart';

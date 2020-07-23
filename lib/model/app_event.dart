@@ -2,13 +2,13 @@ part of 'main.dart';
 
 @freezed
 abstract class AppEvent with _$AppEvent {
-  const factory AppEvent.subscribe({
+  const factory AppEvent.subscribeToPodcast({
     @required Podcast podcast,
     @required bool synced,
-  }) = _Subscribe;
+  }) = _SubscribeToPodcast;
 
-  const factory AppEvent.unsubscribe({
+  const factory AppEvent.unsubscribeFromPodcast({
     @required Podcast podcast,
     @required bool synced,
-  }) = _Unsubscribe;
+  }) = _UnsubscribeFromPodcast;
 }
