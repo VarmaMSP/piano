@@ -1,8 +1,9 @@
 // Flutter imports:
-import 'package:flutter/material.dart' hide Tab;
+import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -17,7 +18,7 @@ class NavigationBar extends StatelessWidget {
     @required this.currentTab,
   }) : super(key: key);
 
-  final Tab currentTab;
+  final AppTab currentTab;
   final BottomAppBarAnimation animations;
 
   @override
@@ -35,7 +36,7 @@ class NavigationBar extends StatelessWidget {
         child: BottomNavigationBar(
           currentIndex: currentTab.index,
           onTap: (tabIndex) => appNavigationBloc.pushTab(
-            Tab.values[tabIndex],
+            AppTab.values[tabIndex],
           ),
           type: BottomNavigationBarType.fixed,
           elevation: 0,

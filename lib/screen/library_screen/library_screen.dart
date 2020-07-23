@@ -1,6 +1,7 @@
 // Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
+import 'package:phenopod/model/main.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -40,7 +41,7 @@ class LibraryScreen extends HookWidget {
           GestureDetector(
             onTap: () {
               Provider.of<AppNavigationBloc>(context, listen: false)
-                  .pushScreen(Screen.downloads());
+                  .pushScreen(Screen.downloadsScreen());
             },
             behavior: HitTestBehavior.translucent,
             child: Container(

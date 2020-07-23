@@ -9,26 +9,7 @@ import 'package:super_enum/super_enum.dart';
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
 import 'package:phenopod/utils/utils.dart';
-
-part 'app_navigation_bloc.g.dart';
-
-enum Tab {
-  home,
-  subscriptions,
-  library,
-}
-
-@superEnum
-enum _Screen {
-  @Data(fields: [
-    DataField<String>('urlParam'),
-    DataField<String>('title'),
-    DataField<String>('author'),
-  ])
-  Podcast,
-  @object
-  Downloads,
-}
+import 'package:phenopod/model/main.dart';
 
 class AppNavigationBloc {
   /// TabController and animations for bottom app bar
@@ -36,10 +17,10 @@ class AppNavigationBloc {
   final AnimationController playerAnimationController;
 
   /// Keys for individual tab navigators
-  final Map<Tab, GlobalKey<NavigatorState>> _tabNavigatorKeys = {
-    Tab.home: GlobalKey<NavigatorState>(),
-    Tab.subscriptions: GlobalKey<NavigatorState>(),
-    Tab.library: GlobalKey<NavigatorState>(),
+  final Map<AppTab, GlobalKey<NavigatorState>> _tabNavigatorKeys = {
+    AppTab.homeTab: GlobalKey<NavigatorState>(),
+    AppTab.subscriptionsTab: GlobalKey<NavigatorState>(),
+    AppTab.libraryTab: GlobalKey<NavigatorState>(),
   };
 
   /// Stream of history changes
@@ -59,7 +40,7 @@ class AppNavigationBloc {
   });
 
   /// Use this select a tab
-  void pushTab(Tab tab) async {
+  void pushTab(AppTab tab) async {
     final prev = await _tabHistorySubject.first;
     if (prev.currentTab == tab) {
       _tabNavigatorKeys[tab].currentState.popUntil((route) => route.isFirst);
@@ -87,8 +68,8 @@ class AppNavigationBloc {
     }
 
     // Push new route
-    await screen.when(
-      podcast: (data) async {
+    await screen.map(
+      podcastScreen: (data) async {
         final screen = await Future.microtask(
           () => PodcastScreen(
             urlParam: data.urlParam,
@@ -102,7 +83,7 @@ class AppNavigationBloc {
           arguments: {'screen': screen},
         );
       },
-      downloads: (data) => navigator.currentState.pushNamed(
+      downloadsScreen: (data) => navigator.currentState.pushNamed(
         '/downloads',
         arguments: {},
       ),
@@ -139,7 +120,8 @@ class AppNavigationBloc {
 
   BottomAppBarAnimation get bottomAppBarAnimation => _bottomAppBarAnimation;
 
-  Map<Tab, GlobalKey<NavigatorState>> get tabNavigatorKeys => _tabNavigatorKeys;
+  Map<AppTab, GlobalKey<NavigatorState>> get tabNavigatorKeys =>
+      _tabNavigatorKeys;
 
   Future<void> dispose() async {
     await _tabHistorySubject.close();
@@ -147,15 +129,15 @@ class AppNavigationBloc {
 }
 
 class TabHistory {
-  final List<Tab> s;
+  final List<AppTab> s;
 
   TabHistory(this.s);
 
   factory TabHistory.init() {
-    return TabHistory([Tab.home]);
+    return TabHistory([AppTab.homeTab]);
   }
 
-  TabHistory push(Tab tab) {
+  TabHistory push(AppTab tab) {
     return TabHistory(
       [if (listExists(s, tab)) ...listDelete(s, tab) else ...s, tab],
     );
@@ -166,8 +148,8 @@ class TabHistory {
   }
 
   /// Return current tab
-  Tab get currentTab => s.last;
+  AppTab get currentTab => s.last;
 
   /// Returns previous tab if exists
-  Tab get previousTab => s.length > 1 ? s[s.length - 2] : null;
+  AppTab get previousTab => s.length > 1 ? s[s.length - 2] : null;
 }

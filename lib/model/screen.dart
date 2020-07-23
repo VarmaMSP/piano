@@ -1,5 +1,22 @@
 part of 'main.dart';
 
+enum AppTab {
+  homeTab,
+  subscriptionsTab,
+  libraryTab,
+}
+
+@freezed
+abstract class Screen with _$Screen {
+  const factory Screen.podcastScreen({
+    @required String urlParam,
+    @required String title,
+    @required String author,
+  }) = _PodcastScreen;
+
+  const factory Screen.downloadsScreen() = _DownloadsScreen;
+}
+
 class FeedItem extends Equatable {
   final Episode episode;
   final Podcast podcast;

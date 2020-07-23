@@ -1,9 +1,10 @@
 // Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' hide Tab;
+import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:phenopod/model/main.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -30,19 +31,19 @@ class AppScreenContent extends HookWidget {
           child: Stack(
             children: <Widget>[
               _buildTab(
-                key: tabNavigatorKeys[Tab.home],
+                key: tabNavigatorKeys[AppTab.homeTab],
                 initialRoute: '/home',
-                offstage: snapshot.data.currentTab != Tab.home,
+                offstage: snapshot.data.currentTab != AppTab.homeTab,
               ),
               _buildTab(
-                key: tabNavigatorKeys[Tab.subscriptions],
+                key: tabNavigatorKeys[AppTab.subscriptionsTab],
                 initialRoute: '/subscriptions',
-                offstage: snapshot.data.currentTab != Tab.subscriptions,
+                offstage: snapshot.data.currentTab != AppTab.subscriptionsTab,
               ),
               _buildTab(
-                key: tabNavigatorKeys[Tab.library],
+                key: tabNavigatorKeys[AppTab.libraryTab],
                 initialRoute: '/library',
-                offstage: snapshot.data.currentTab != Tab.library,
+                offstage: snapshot.data.currentTab != AppTab.libraryTab,
               )
             ],
           ),

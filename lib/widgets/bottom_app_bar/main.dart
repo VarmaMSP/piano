@@ -71,7 +71,7 @@ class _BottomAppBarState extends State<BottomAppBar> {
   }
 
   Widget _buildBody({
-    @required Tab currentTab,
+    @required AppTab currentTab,
     @required TabController audioPlayerTabController,
     @required BottomAppBarAnimation bottomAppBarAnimation,
   }) {

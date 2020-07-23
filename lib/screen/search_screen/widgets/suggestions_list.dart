@@ -56,7 +56,7 @@ class SuggestionsList extends StatelessWidget {
         Future.delayed(
           Duration(milliseconds: 400),
           () => appNavigationBloc.pushScreen(
-            Screen.podcast(
+            Screen.podcastScreen(
               urlParam: suggestion.i,
               title: suggestion.header,
               author: suggestion.subHeader,

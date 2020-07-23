@@ -617,6 +617,1108 @@ abstract class _CancelDownload implements EpisodeAction {
   _$CancelDownloadCopyWith<_CancelDownload> get copyWith;
 }
 
+class _$QueueActionTearOff {
+  const _$QueueActionTearOff();
+
+// ignore: unused_element
+  _Play play({@required AudioTrack audioTrack}) {
+    return _Play(
+      audioTrack: audioTrack,
+    );
+  }
+
+// ignore: unused_element
+  _AddToQueueTop addToQueueTop({@required AudioTrack audioTrack}) {
+    return _AddToQueueTop(
+      audioTrack: audioTrack,
+    );
+  }
+
+// ignore: unused_element
+  _AddToQueueBottom addToQueueBottom({@required AudioTrack audioTrack}) {
+    return _AddToQueueBottom(
+      audioTrack: audioTrack,
+    );
+  }
+
+// ignore: unused_element
+  _ChangeTrackPosition changeTrackPosition(
+      {@required int from, @required int to}) {
+    return _ChangeTrackPosition(
+      from: from,
+      to: to,
+    );
+  }
+
+// ignore: unused_element
+  _PlayTrack playTrack({@required int position}) {
+    return _PlayTrack(
+      position: position,
+    );
+  }
+
+// ignore: unused_element
+  _RemoveTrack removeTrack({@required int position}) {
+    return _RemoveTrack(
+      position: position,
+    );
+  }
+
+// ignore: unused_element
+  _ClearQueue clearQueue() {
+    return const _ClearQueue();
+  }
+}
+
+// ignore: unused_element
+const $QueueAction = _$QueueActionTearOff();
+
+mixin _$QueueAction {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result play(AudioTrack audioTrack),
+    @required Result addToQueueTop(AudioTrack audioTrack),
+    @required Result addToQueueBottom(AudioTrack audioTrack),
+    @required Result changeTrackPosition(int from, int to),
+    @required Result playTrack(int position),
+    @required Result removeTrack(int position),
+    @required Result clearQueue(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result play(AudioTrack audioTrack),
+    Result addToQueueTop(AudioTrack audioTrack),
+    Result addToQueueBottom(AudioTrack audioTrack),
+    Result changeTrackPosition(int from, int to),
+    Result playTrack(int position),
+    Result removeTrack(int position),
+    Result clearQueue(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result play(_Play value),
+    @required Result addToQueueTop(_AddToQueueTop value),
+    @required Result addToQueueBottom(_AddToQueueBottom value),
+    @required Result changeTrackPosition(_ChangeTrackPosition value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result removeTrack(_RemoveTrack value),
+    @required Result clearQueue(_ClearQueue value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result play(_Play value),
+    Result addToQueueTop(_AddToQueueTop value),
+    Result addToQueueBottom(_AddToQueueBottom value),
+    Result changeTrackPosition(_ChangeTrackPosition value),
+    Result playTrack(_PlayTrack value),
+    Result removeTrack(_RemoveTrack value),
+    Result clearQueue(_ClearQueue value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $QueueActionCopyWith<$Res> {
+  factory $QueueActionCopyWith(
+          QueueAction value, $Res Function(QueueAction) then) =
+      _$QueueActionCopyWithImpl<$Res>;
+}
+
+class _$QueueActionCopyWithImpl<$Res> implements $QueueActionCopyWith<$Res> {
+  _$QueueActionCopyWithImpl(this._value, this._then);
+
+  final QueueAction _value;
+  // ignore: unused_field
+  final $Res Function(QueueAction) _then;
+}
+
+abstract class _$PlayCopyWith<$Res> {
+  factory _$PlayCopyWith(_Play value, $Res Function(_Play) then) =
+      __$PlayCopyWithImpl<$Res>;
+  $Res call({AudioTrack audioTrack});
+}
+
+class __$PlayCopyWithImpl<$Res> extends _$QueueActionCopyWithImpl<$Res>
+    implements _$PlayCopyWith<$Res> {
+  __$PlayCopyWithImpl(_Play _value, $Res Function(_Play) _then)
+      : super(_value, (v) => _then(v as _Play));
+
+  @override
+  _Play get _value => super._value as _Play;
+
+  @override
+  $Res call({
+    Object audioTrack = freezed,
+  }) {
+    return _then(_Play(
+      audioTrack:
+          audioTrack == freezed ? _value.audioTrack : audioTrack as AudioTrack,
+    ));
+  }
+}
+
+class _$_Play implements _Play {
+  const _$_Play({@required this.audioTrack}) : assert(audioTrack != null);
+
+  @override
+  final AudioTrack audioTrack;
+
+  @override
+  String toString() {
+    return 'QueueAction.play(audioTrack: $audioTrack)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Play &&
+            (identical(other.audioTrack, audioTrack) ||
+                const DeepCollectionEquality()
+                    .equals(other.audioTrack, audioTrack)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(audioTrack);
+
+  @override
+  _$PlayCopyWith<_Play> get copyWith =>
+      __$PlayCopyWithImpl<_Play>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result play(AudioTrack audioTrack),
+    @required Result addToQueueTop(AudioTrack audioTrack),
+    @required Result addToQueueBottom(AudioTrack audioTrack),
+    @required Result changeTrackPosition(int from, int to),
+    @required Result playTrack(int position),
+    @required Result removeTrack(int position),
+    @required Result clearQueue(),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return play(audioTrack);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result play(AudioTrack audioTrack),
+    Result addToQueueTop(AudioTrack audioTrack),
+    Result addToQueueBottom(AudioTrack audioTrack),
+    Result changeTrackPosition(int from, int to),
+    Result playTrack(int position),
+    Result removeTrack(int position),
+    Result clearQueue(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (play != null) {
+      return play(audioTrack);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result play(_Play value),
+    @required Result addToQueueTop(_AddToQueueTop value),
+    @required Result addToQueueBottom(_AddToQueueBottom value),
+    @required Result changeTrackPosition(_ChangeTrackPosition value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result removeTrack(_RemoveTrack value),
+    @required Result clearQueue(_ClearQueue value),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return play(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result play(_Play value),
+    Result addToQueueTop(_AddToQueueTop value),
+    Result addToQueueBottom(_AddToQueueBottom value),
+    Result changeTrackPosition(_ChangeTrackPosition value),
+    Result playTrack(_PlayTrack value),
+    Result removeTrack(_RemoveTrack value),
+    Result clearQueue(_ClearQueue value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (play != null) {
+      return play(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Play implements QueueAction {
+  const factory _Play({@required AudioTrack audioTrack}) = _$_Play;
+
+  AudioTrack get audioTrack;
+  _$PlayCopyWith<_Play> get copyWith;
+}
+
+abstract class _$AddToQueueTopCopyWith<$Res> {
+  factory _$AddToQueueTopCopyWith(
+          _AddToQueueTop value, $Res Function(_AddToQueueTop) then) =
+      __$AddToQueueTopCopyWithImpl<$Res>;
+  $Res call({AudioTrack audioTrack});
+}
+
+class __$AddToQueueTopCopyWithImpl<$Res> extends _$QueueActionCopyWithImpl<$Res>
+    implements _$AddToQueueTopCopyWith<$Res> {
+  __$AddToQueueTopCopyWithImpl(
+      _AddToQueueTop _value, $Res Function(_AddToQueueTop) _then)
+      : super(_value, (v) => _then(v as _AddToQueueTop));
+
+  @override
+  _AddToQueueTop get _value => super._value as _AddToQueueTop;
+
+  @override
+  $Res call({
+    Object audioTrack = freezed,
+  }) {
+    return _then(_AddToQueueTop(
+      audioTrack:
+          audioTrack == freezed ? _value.audioTrack : audioTrack as AudioTrack,
+    ));
+  }
+}
+
+class _$_AddToQueueTop implements _AddToQueueTop {
+  const _$_AddToQueueTop({@required this.audioTrack})
+      : assert(audioTrack != null);
+
+  @override
+  final AudioTrack audioTrack;
+
+  @override
+  String toString() {
+    return 'QueueAction.addToQueueTop(audioTrack: $audioTrack)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _AddToQueueTop &&
+            (identical(other.audioTrack, audioTrack) ||
+                const DeepCollectionEquality()
+                    .equals(other.audioTrack, audioTrack)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(audioTrack);
+
+  @override
+  _$AddToQueueTopCopyWith<_AddToQueueTop> get copyWith =>
+      __$AddToQueueTopCopyWithImpl<_AddToQueueTop>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result play(AudioTrack audioTrack),
+    @required Result addToQueueTop(AudioTrack audioTrack),
+    @required Result addToQueueBottom(AudioTrack audioTrack),
+    @required Result changeTrackPosition(int from, int to),
+    @required Result playTrack(int position),
+    @required Result removeTrack(int position),
+    @required Result clearQueue(),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return addToQueueTop(audioTrack);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result play(AudioTrack audioTrack),
+    Result addToQueueTop(AudioTrack audioTrack),
+    Result addToQueueBottom(AudioTrack audioTrack),
+    Result changeTrackPosition(int from, int to),
+    Result playTrack(int position),
+    Result removeTrack(int position),
+    Result clearQueue(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (addToQueueTop != null) {
+      return addToQueueTop(audioTrack);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result play(_Play value),
+    @required Result addToQueueTop(_AddToQueueTop value),
+    @required Result addToQueueBottom(_AddToQueueBottom value),
+    @required Result changeTrackPosition(_ChangeTrackPosition value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result removeTrack(_RemoveTrack value),
+    @required Result clearQueue(_ClearQueue value),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return addToQueueTop(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result play(_Play value),
+    Result addToQueueTop(_AddToQueueTop value),
+    Result addToQueueBottom(_AddToQueueBottom value),
+    Result changeTrackPosition(_ChangeTrackPosition value),
+    Result playTrack(_PlayTrack value),
+    Result removeTrack(_RemoveTrack value),
+    Result clearQueue(_ClearQueue value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (addToQueueTop != null) {
+      return addToQueueTop(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AddToQueueTop implements QueueAction {
+  const factory _AddToQueueTop({@required AudioTrack audioTrack}) =
+      _$_AddToQueueTop;
+
+  AudioTrack get audioTrack;
+  _$AddToQueueTopCopyWith<_AddToQueueTop> get copyWith;
+}
+
+abstract class _$AddToQueueBottomCopyWith<$Res> {
+  factory _$AddToQueueBottomCopyWith(
+          _AddToQueueBottom value, $Res Function(_AddToQueueBottom) then) =
+      __$AddToQueueBottomCopyWithImpl<$Res>;
+  $Res call({AudioTrack audioTrack});
+}
+
+class __$AddToQueueBottomCopyWithImpl<$Res>
+    extends _$QueueActionCopyWithImpl<$Res>
+    implements _$AddToQueueBottomCopyWith<$Res> {
+  __$AddToQueueBottomCopyWithImpl(
+      _AddToQueueBottom _value, $Res Function(_AddToQueueBottom) _then)
+      : super(_value, (v) => _then(v as _AddToQueueBottom));
+
+  @override
+  _AddToQueueBottom get _value => super._value as _AddToQueueBottom;
+
+  @override
+  $Res call({
+    Object audioTrack = freezed,
+  }) {
+    return _then(_AddToQueueBottom(
+      audioTrack:
+          audioTrack == freezed ? _value.audioTrack : audioTrack as AudioTrack,
+    ));
+  }
+}
+
+class _$_AddToQueueBottom implements _AddToQueueBottom {
+  const _$_AddToQueueBottom({@required this.audioTrack})
+      : assert(audioTrack != null);
+
+  @override
+  final AudioTrack audioTrack;
+
+  @override
+  String toString() {
+    return 'QueueAction.addToQueueBottom(audioTrack: $audioTrack)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _AddToQueueBottom &&
+            (identical(other.audioTrack, audioTrack) ||
+                const DeepCollectionEquality()
+                    .equals(other.audioTrack, audioTrack)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(audioTrack);
+
+  @override
+  _$AddToQueueBottomCopyWith<_AddToQueueBottom> get copyWith =>
+      __$AddToQueueBottomCopyWithImpl<_AddToQueueBottom>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result play(AudioTrack audioTrack),
+    @required Result addToQueueTop(AudioTrack audioTrack),
+    @required Result addToQueueBottom(AudioTrack audioTrack),
+    @required Result changeTrackPosition(int from, int to),
+    @required Result playTrack(int position),
+    @required Result removeTrack(int position),
+    @required Result clearQueue(),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return addToQueueBottom(audioTrack);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result play(AudioTrack audioTrack),
+    Result addToQueueTop(AudioTrack audioTrack),
+    Result addToQueueBottom(AudioTrack audioTrack),
+    Result changeTrackPosition(int from, int to),
+    Result playTrack(int position),
+    Result removeTrack(int position),
+    Result clearQueue(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (addToQueueBottom != null) {
+      return addToQueueBottom(audioTrack);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result play(_Play value),
+    @required Result addToQueueTop(_AddToQueueTop value),
+    @required Result addToQueueBottom(_AddToQueueBottom value),
+    @required Result changeTrackPosition(_ChangeTrackPosition value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result removeTrack(_RemoveTrack value),
+    @required Result clearQueue(_ClearQueue value),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return addToQueueBottom(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result play(_Play value),
+    Result addToQueueTop(_AddToQueueTop value),
+    Result addToQueueBottom(_AddToQueueBottom value),
+    Result changeTrackPosition(_ChangeTrackPosition value),
+    Result playTrack(_PlayTrack value),
+    Result removeTrack(_RemoveTrack value),
+    Result clearQueue(_ClearQueue value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (addToQueueBottom != null) {
+      return addToQueueBottom(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AddToQueueBottom implements QueueAction {
+  const factory _AddToQueueBottom({@required AudioTrack audioTrack}) =
+      _$_AddToQueueBottom;
+
+  AudioTrack get audioTrack;
+  _$AddToQueueBottomCopyWith<_AddToQueueBottom> get copyWith;
+}
+
+abstract class _$ChangeTrackPositionCopyWith<$Res> {
+  factory _$ChangeTrackPositionCopyWith(_ChangeTrackPosition value,
+          $Res Function(_ChangeTrackPosition) then) =
+      __$ChangeTrackPositionCopyWithImpl<$Res>;
+  $Res call({int from, int to});
+}
+
+class __$ChangeTrackPositionCopyWithImpl<$Res>
+    extends _$QueueActionCopyWithImpl<$Res>
+    implements _$ChangeTrackPositionCopyWith<$Res> {
+  __$ChangeTrackPositionCopyWithImpl(
+      _ChangeTrackPosition _value, $Res Function(_ChangeTrackPosition) _then)
+      : super(_value, (v) => _then(v as _ChangeTrackPosition));
+
+  @override
+  _ChangeTrackPosition get _value => super._value as _ChangeTrackPosition;
+
+  @override
+  $Res call({
+    Object from = freezed,
+    Object to = freezed,
+  }) {
+    return _then(_ChangeTrackPosition(
+      from: from == freezed ? _value.from : from as int,
+      to: to == freezed ? _value.to : to as int,
+    ));
+  }
+}
+
+class _$_ChangeTrackPosition implements _ChangeTrackPosition {
+  const _$_ChangeTrackPosition({@required this.from, @required this.to})
+      : assert(from != null),
+        assert(to != null);
+
+  @override
+  final int from;
+  @override
+  final int to;
+
+  @override
+  String toString() {
+    return 'QueueAction.changeTrackPosition(from: $from, to: $to)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _ChangeTrackPosition &&
+            (identical(other.from, from) ||
+                const DeepCollectionEquality().equals(other.from, from)) &&
+            (identical(other.to, to) ||
+                const DeepCollectionEquality().equals(other.to, to)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(from) ^
+      const DeepCollectionEquality().hash(to);
+
+  @override
+  _$ChangeTrackPositionCopyWith<_ChangeTrackPosition> get copyWith =>
+      __$ChangeTrackPositionCopyWithImpl<_ChangeTrackPosition>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result play(AudioTrack audioTrack),
+    @required Result addToQueueTop(AudioTrack audioTrack),
+    @required Result addToQueueBottom(AudioTrack audioTrack),
+    @required Result changeTrackPosition(int from, int to),
+    @required Result playTrack(int position),
+    @required Result removeTrack(int position),
+    @required Result clearQueue(),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return changeTrackPosition(from, to);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result play(AudioTrack audioTrack),
+    Result addToQueueTop(AudioTrack audioTrack),
+    Result addToQueueBottom(AudioTrack audioTrack),
+    Result changeTrackPosition(int from, int to),
+    Result playTrack(int position),
+    Result removeTrack(int position),
+    Result clearQueue(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (changeTrackPosition != null) {
+      return changeTrackPosition(from, to);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result play(_Play value),
+    @required Result addToQueueTop(_AddToQueueTop value),
+    @required Result addToQueueBottom(_AddToQueueBottom value),
+    @required Result changeTrackPosition(_ChangeTrackPosition value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result removeTrack(_RemoveTrack value),
+    @required Result clearQueue(_ClearQueue value),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return changeTrackPosition(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result play(_Play value),
+    Result addToQueueTop(_AddToQueueTop value),
+    Result addToQueueBottom(_AddToQueueBottom value),
+    Result changeTrackPosition(_ChangeTrackPosition value),
+    Result playTrack(_PlayTrack value),
+    Result removeTrack(_RemoveTrack value),
+    Result clearQueue(_ClearQueue value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (changeTrackPosition != null) {
+      return changeTrackPosition(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ChangeTrackPosition implements QueueAction {
+  const factory _ChangeTrackPosition({@required int from, @required int to}) =
+      _$_ChangeTrackPosition;
+
+  int get from;
+  int get to;
+  _$ChangeTrackPositionCopyWith<_ChangeTrackPosition> get copyWith;
+}
+
+abstract class _$PlayTrackCopyWith<$Res> {
+  factory _$PlayTrackCopyWith(
+          _PlayTrack value, $Res Function(_PlayTrack) then) =
+      __$PlayTrackCopyWithImpl<$Res>;
+  $Res call({int position});
+}
+
+class __$PlayTrackCopyWithImpl<$Res> extends _$QueueActionCopyWithImpl<$Res>
+    implements _$PlayTrackCopyWith<$Res> {
+  __$PlayTrackCopyWithImpl(_PlayTrack _value, $Res Function(_PlayTrack) _then)
+      : super(_value, (v) => _then(v as _PlayTrack));
+
+  @override
+  _PlayTrack get _value => super._value as _PlayTrack;
+
+  @override
+  $Res call({
+    Object position = freezed,
+  }) {
+    return _then(_PlayTrack(
+      position: position == freezed ? _value.position : position as int,
+    ));
+  }
+}
+
+class _$_PlayTrack implements _PlayTrack {
+  const _$_PlayTrack({@required this.position}) : assert(position != null);
+
+  @override
+  final int position;
+
+  @override
+  String toString() {
+    return 'QueueAction.playTrack(position: $position)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _PlayTrack &&
+            (identical(other.position, position) ||
+                const DeepCollectionEquality()
+                    .equals(other.position, position)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(position);
+
+  @override
+  _$PlayTrackCopyWith<_PlayTrack> get copyWith =>
+      __$PlayTrackCopyWithImpl<_PlayTrack>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result play(AudioTrack audioTrack),
+    @required Result addToQueueTop(AudioTrack audioTrack),
+    @required Result addToQueueBottom(AudioTrack audioTrack),
+    @required Result changeTrackPosition(int from, int to),
+    @required Result playTrack(int position),
+    @required Result removeTrack(int position),
+    @required Result clearQueue(),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return playTrack(position);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result play(AudioTrack audioTrack),
+    Result addToQueueTop(AudioTrack audioTrack),
+    Result addToQueueBottom(AudioTrack audioTrack),
+    Result changeTrackPosition(int from, int to),
+    Result playTrack(int position),
+    Result removeTrack(int position),
+    Result clearQueue(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (playTrack != null) {
+      return playTrack(position);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result play(_Play value),
+    @required Result addToQueueTop(_AddToQueueTop value),
+    @required Result addToQueueBottom(_AddToQueueBottom value),
+    @required Result changeTrackPosition(_ChangeTrackPosition value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result removeTrack(_RemoveTrack value),
+    @required Result clearQueue(_ClearQueue value),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return playTrack(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result play(_Play value),
+    Result addToQueueTop(_AddToQueueTop value),
+    Result addToQueueBottom(_AddToQueueBottom value),
+    Result changeTrackPosition(_ChangeTrackPosition value),
+    Result playTrack(_PlayTrack value),
+    Result removeTrack(_RemoveTrack value),
+    Result clearQueue(_ClearQueue value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (playTrack != null) {
+      return playTrack(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PlayTrack implements QueueAction {
+  const factory _PlayTrack({@required int position}) = _$_PlayTrack;
+
+  int get position;
+  _$PlayTrackCopyWith<_PlayTrack> get copyWith;
+}
+
+abstract class _$RemoveTrackCopyWith<$Res> {
+  factory _$RemoveTrackCopyWith(
+          _RemoveTrack value, $Res Function(_RemoveTrack) then) =
+      __$RemoveTrackCopyWithImpl<$Res>;
+  $Res call({int position});
+}
+
+class __$RemoveTrackCopyWithImpl<$Res> extends _$QueueActionCopyWithImpl<$Res>
+    implements _$RemoveTrackCopyWith<$Res> {
+  __$RemoveTrackCopyWithImpl(
+      _RemoveTrack _value, $Res Function(_RemoveTrack) _then)
+      : super(_value, (v) => _then(v as _RemoveTrack));
+
+  @override
+  _RemoveTrack get _value => super._value as _RemoveTrack;
+
+  @override
+  $Res call({
+    Object position = freezed,
+  }) {
+    return _then(_RemoveTrack(
+      position: position == freezed ? _value.position : position as int,
+    ));
+  }
+}
+
+class _$_RemoveTrack implements _RemoveTrack {
+  const _$_RemoveTrack({@required this.position}) : assert(position != null);
+
+  @override
+  final int position;
+
+  @override
+  String toString() {
+    return 'QueueAction.removeTrack(position: $position)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _RemoveTrack &&
+            (identical(other.position, position) ||
+                const DeepCollectionEquality()
+                    .equals(other.position, position)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(position);
+
+  @override
+  _$RemoveTrackCopyWith<_RemoveTrack> get copyWith =>
+      __$RemoveTrackCopyWithImpl<_RemoveTrack>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result play(AudioTrack audioTrack),
+    @required Result addToQueueTop(AudioTrack audioTrack),
+    @required Result addToQueueBottom(AudioTrack audioTrack),
+    @required Result changeTrackPosition(int from, int to),
+    @required Result playTrack(int position),
+    @required Result removeTrack(int position),
+    @required Result clearQueue(),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return removeTrack(position);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result play(AudioTrack audioTrack),
+    Result addToQueueTop(AudioTrack audioTrack),
+    Result addToQueueBottom(AudioTrack audioTrack),
+    Result changeTrackPosition(int from, int to),
+    Result playTrack(int position),
+    Result removeTrack(int position),
+    Result clearQueue(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (removeTrack != null) {
+      return removeTrack(position);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result play(_Play value),
+    @required Result addToQueueTop(_AddToQueueTop value),
+    @required Result addToQueueBottom(_AddToQueueBottom value),
+    @required Result changeTrackPosition(_ChangeTrackPosition value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result removeTrack(_RemoveTrack value),
+    @required Result clearQueue(_ClearQueue value),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return removeTrack(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result play(_Play value),
+    Result addToQueueTop(_AddToQueueTop value),
+    Result addToQueueBottom(_AddToQueueBottom value),
+    Result changeTrackPosition(_ChangeTrackPosition value),
+    Result playTrack(_PlayTrack value),
+    Result removeTrack(_RemoveTrack value),
+    Result clearQueue(_ClearQueue value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (removeTrack != null) {
+      return removeTrack(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _RemoveTrack implements QueueAction {
+  const factory _RemoveTrack({@required int position}) = _$_RemoveTrack;
+
+  int get position;
+  _$RemoveTrackCopyWith<_RemoveTrack> get copyWith;
+}
+
+abstract class _$ClearQueueCopyWith<$Res> {
+  factory _$ClearQueueCopyWith(
+          _ClearQueue value, $Res Function(_ClearQueue) then) =
+      __$ClearQueueCopyWithImpl<$Res>;
+}
+
+class __$ClearQueueCopyWithImpl<$Res> extends _$QueueActionCopyWithImpl<$Res>
+    implements _$ClearQueueCopyWith<$Res> {
+  __$ClearQueueCopyWithImpl(
+      _ClearQueue _value, $Res Function(_ClearQueue) _then)
+      : super(_value, (v) => _then(v as _ClearQueue));
+
+  @override
+  _ClearQueue get _value => super._value as _ClearQueue;
+}
+
+class _$_ClearQueue implements _ClearQueue {
+  const _$_ClearQueue();
+
+  @override
+  String toString() {
+    return 'QueueAction.clearQueue()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _ClearQueue);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result play(AudioTrack audioTrack),
+    @required Result addToQueueTop(AudioTrack audioTrack),
+    @required Result addToQueueBottom(AudioTrack audioTrack),
+    @required Result changeTrackPosition(int from, int to),
+    @required Result playTrack(int position),
+    @required Result removeTrack(int position),
+    @required Result clearQueue(),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return clearQueue();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result play(AudioTrack audioTrack),
+    Result addToQueueTop(AudioTrack audioTrack),
+    Result addToQueueBottom(AudioTrack audioTrack),
+    Result changeTrackPosition(int from, int to),
+    Result playTrack(int position),
+    Result removeTrack(int position),
+    Result clearQueue(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (clearQueue != null) {
+      return clearQueue();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result play(_Play value),
+    @required Result addToQueueTop(_AddToQueueTop value),
+    @required Result addToQueueBottom(_AddToQueueBottom value),
+    @required Result changeTrackPosition(_ChangeTrackPosition value),
+    @required Result playTrack(_PlayTrack value),
+    @required Result removeTrack(_RemoveTrack value),
+    @required Result clearQueue(_ClearQueue value),
+  }) {
+    assert(play != null);
+    assert(addToQueueTop != null);
+    assert(addToQueueBottom != null);
+    assert(changeTrackPosition != null);
+    assert(playTrack != null);
+    assert(removeTrack != null);
+    assert(clearQueue != null);
+    return clearQueue(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result play(_Play value),
+    Result addToQueueTop(_AddToQueueTop value),
+    Result addToQueueBottom(_AddToQueueBottom value),
+    Result changeTrackPosition(_ChangeTrackPosition value),
+    Result playTrack(_PlayTrack value),
+    Result removeTrack(_RemoveTrack value),
+    Result clearQueue(_ClearQueue value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (clearQueue != null) {
+      return clearQueue(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ClearQueue implements QueueAction {
+  const factory _ClearQueue() = _$_ClearQueue;
+}
+
 class _$AppEventTearOff {
   const _$AppEventTearOff();
 
@@ -1667,6 +2769,294 @@ abstract class StorageSetting implements PreferenceValue {
   Storage get storage;
   String get storagePath;
   $StorageSettingCopyWith<StorageSetting> get copyWith;
+}
+
+class _$ScreenTearOff {
+  const _$ScreenTearOff();
+
+// ignore: unused_element
+  _PodcastScreen podcastScreen(
+      {@required String urlParam,
+      @required String title,
+      @required String author}) {
+    return _PodcastScreen(
+      urlParam: urlParam,
+      title: title,
+      author: author,
+    );
+  }
+
+// ignore: unused_element
+  _DownloadsScreen downloadsScreen() {
+    return const _DownloadsScreen();
+  }
+}
+
+// ignore: unused_element
+const $Screen = _$ScreenTearOff();
+
+mixin _$Screen {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required
+        Result podcastScreen(String urlParam, String title, String author),
+    @required Result downloadsScreen(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result podcastScreen(String urlParam, String title, String author),
+    Result downloadsScreen(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result podcastScreen(_PodcastScreen value),
+    @required Result downloadsScreen(_DownloadsScreen value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result podcastScreen(_PodcastScreen value),
+    Result downloadsScreen(_DownloadsScreen value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $ScreenCopyWith<$Res> {
+  factory $ScreenCopyWith(Screen value, $Res Function(Screen) then) =
+      _$ScreenCopyWithImpl<$Res>;
+}
+
+class _$ScreenCopyWithImpl<$Res> implements $ScreenCopyWith<$Res> {
+  _$ScreenCopyWithImpl(this._value, this._then);
+
+  final Screen _value;
+  // ignore: unused_field
+  final $Res Function(Screen) _then;
+}
+
+abstract class _$PodcastScreenCopyWith<$Res> {
+  factory _$PodcastScreenCopyWith(
+          _PodcastScreen value, $Res Function(_PodcastScreen) then) =
+      __$PodcastScreenCopyWithImpl<$Res>;
+  $Res call({String urlParam, String title, String author});
+}
+
+class __$PodcastScreenCopyWithImpl<$Res> extends _$ScreenCopyWithImpl<$Res>
+    implements _$PodcastScreenCopyWith<$Res> {
+  __$PodcastScreenCopyWithImpl(
+      _PodcastScreen _value, $Res Function(_PodcastScreen) _then)
+      : super(_value, (v) => _then(v as _PodcastScreen));
+
+  @override
+  _PodcastScreen get _value => super._value as _PodcastScreen;
+
+  @override
+  $Res call({
+    Object urlParam = freezed,
+    Object title = freezed,
+    Object author = freezed,
+  }) {
+    return _then(_PodcastScreen(
+      urlParam: urlParam == freezed ? _value.urlParam : urlParam as String,
+      title: title == freezed ? _value.title : title as String,
+      author: author == freezed ? _value.author : author as String,
+    ));
+  }
+}
+
+class _$_PodcastScreen implements _PodcastScreen {
+  const _$_PodcastScreen(
+      {@required this.urlParam, @required this.title, @required this.author})
+      : assert(urlParam != null),
+        assert(title != null),
+        assert(author != null);
+
+  @override
+  final String urlParam;
+  @override
+  final String title;
+  @override
+  final String author;
+
+  @override
+  String toString() {
+    return 'Screen.podcastScreen(urlParam: $urlParam, title: $title, author: $author)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _PodcastScreen &&
+            (identical(other.urlParam, urlParam) ||
+                const DeepCollectionEquality()
+                    .equals(other.urlParam, urlParam)) &&
+            (identical(other.title, title) ||
+                const DeepCollectionEquality().equals(other.title, title)) &&
+            (identical(other.author, author) ||
+                const DeepCollectionEquality().equals(other.author, author)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(urlParam) ^
+      const DeepCollectionEquality().hash(title) ^
+      const DeepCollectionEquality().hash(author);
+
+  @override
+  _$PodcastScreenCopyWith<_PodcastScreen> get copyWith =>
+      __$PodcastScreenCopyWithImpl<_PodcastScreen>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required
+        Result podcastScreen(String urlParam, String title, String author),
+    @required Result downloadsScreen(),
+  }) {
+    assert(podcastScreen != null);
+    assert(downloadsScreen != null);
+    return podcastScreen(urlParam, title, author);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result podcastScreen(String urlParam, String title, String author),
+    Result downloadsScreen(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (podcastScreen != null) {
+      return podcastScreen(urlParam, title, author);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result podcastScreen(_PodcastScreen value),
+    @required Result downloadsScreen(_DownloadsScreen value),
+  }) {
+    assert(podcastScreen != null);
+    assert(downloadsScreen != null);
+    return podcastScreen(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result podcastScreen(_PodcastScreen value),
+    Result downloadsScreen(_DownloadsScreen value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (podcastScreen != null) {
+      return podcastScreen(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PodcastScreen implements Screen {
+  const factory _PodcastScreen(
+      {@required String urlParam,
+      @required String title,
+      @required String author}) = _$_PodcastScreen;
+
+  String get urlParam;
+  String get title;
+  String get author;
+  _$PodcastScreenCopyWith<_PodcastScreen> get copyWith;
+}
+
+abstract class _$DownloadsScreenCopyWith<$Res> {
+  factory _$DownloadsScreenCopyWith(
+          _DownloadsScreen value, $Res Function(_DownloadsScreen) then) =
+      __$DownloadsScreenCopyWithImpl<$Res>;
+}
+
+class __$DownloadsScreenCopyWithImpl<$Res> extends _$ScreenCopyWithImpl<$Res>
+    implements _$DownloadsScreenCopyWith<$Res> {
+  __$DownloadsScreenCopyWithImpl(
+      _DownloadsScreen _value, $Res Function(_DownloadsScreen) _then)
+      : super(_value, (v) => _then(v as _DownloadsScreen));
+
+  @override
+  _DownloadsScreen get _value => super._value as _DownloadsScreen;
+}
+
+class _$_DownloadsScreen implements _DownloadsScreen {
+  const _$_DownloadsScreen();
+
+  @override
+  String toString() {
+    return 'Screen.downloadsScreen()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _DownloadsScreen);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required
+        Result podcastScreen(String urlParam, String title, String author),
+    @required Result downloadsScreen(),
+  }) {
+    assert(podcastScreen != null);
+    assert(downloadsScreen != null);
+    return downloadsScreen();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result podcastScreen(String urlParam, String title, String author),
+    Result downloadsScreen(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (downloadsScreen != null) {
+      return downloadsScreen();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result podcastScreen(_PodcastScreen value),
+    @required Result downloadsScreen(_DownloadsScreen value),
+  }) {
+    assert(podcastScreen != null);
+    assert(downloadsScreen != null);
+    return downloadsScreen(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result podcastScreen(_PodcastScreen value),
+    Result downloadsScreen(_DownloadsScreen value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (downloadsScreen != null) {
+      return downloadsScreen(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _DownloadsScreen implements Screen {
+  const factory _DownloadsScreen() = _$_DownloadsScreen;
 }
 
 TaskType _$TaskTypeFromJson(Map<String, dynamic> json) {

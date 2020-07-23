@@ -12,32 +12,12 @@ import 'package:phenopod/utils/logger.dart';
 export 'package:phenopod/service/audio_service/audio_service.dart'
     show AudioState;
 
-part 'audio_player_bloc.g.dart';
-
 enum StateTransition {
   play,
   pause,
   stop,
   fastforward,
   rewind,
-}
-
-@superEnum
-enum _QueueTransition {
-  @Data(fields: [DataField<AudioTrack>('audioTrack')])
-  Play,
-  @Data(fields: [DataField<AudioTrack>('audioTrack')])
-  AddToQueueTop,
-  @Data(fields: [DataField<AudioTrack>('audioTrack')])
-  AddToQueueBottom,
-  @Data(fields: [DataField<int>('from'), DataField<int>('to')])
-  ChangeTrackPosition,
-  @Data(fields: [DataField<int>('position')])
-  PlayTrack,
-  @Data(fields: [DataField<int>('position')])
-  RemoveTrack,
-  @Data(fields: [DataField<bool>('askUser')])
-  ClearQueue,
 }
 
 class AudioPlayerBloc {
@@ -53,8 +33,8 @@ class AudioPlayerBloc {
       BehaviorSubject<PlaybackPosition>();
 
   /// Sink for snapshot transitions
-  final PublishSubject<QueueTransition> _queueTransition =
-      PublishSubject<QueueTransition>();
+  final PublishSubject<QueueAction> _queueAction =
+      PublishSubject<QueueAction>();
 
   /// Sink for state transitions
   final PublishSubject<StateTransition> _stateTransition =
@@ -114,9 +94,9 @@ class AudioPlayerBloc {
         .listen(_playbackPositionSubject.add);
 
     // handle queue transitions
-    _queueTransition.stream.listen((t) async {
+    _queueAction.stream.listen((action) async {
       final prevQueue = await _queueSubject.first;
-      await t.when(
+      await action.map(
         play: (data) async {
           await store.audioPlayer.saveQueue(
             prevQueue
@@ -171,7 +151,7 @@ class AudioPlayerBloc {
   void Function(StateTransition) get transitionState => _stateTransition.add;
 
   // Transisition snapshot
-  void Function(QueueTransition) get transitionQueue => _queueTransition.add;
+  void Function(QueueAction) get addQueueAction => _queueAction.add;
 
   // Transition position
   void Function(Duration) get transitionPosition => _posistionTransition.add;
@@ -193,7 +173,7 @@ class AudioPlayerBloc {
   Future<void> dispose() async {
     await _queueSubject.close();
     await _playbackPositionSubject.close();
-    await _queueTransition.close();
+    await _queueAction.close();
     await _stateTransition.close();
     await _posistionTransition.close();
     await audioService.dispose();

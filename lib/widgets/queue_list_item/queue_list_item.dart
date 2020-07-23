@@ -26,7 +26,6 @@ class QueueListItem extends StatelessWidget {
     @required this.nowPlayingPosition,
     @required this.audioTrack,
     @required this.dragAnimation,
-    @required this.transitionQueue,
   });
 
   static final double itemHeight = 80;
@@ -35,7 +34,6 @@ class QueueListItem extends StatelessWidget {
   final int nowPlayingPosition;
   final AudioTrack audioTrack;
   final Animation<double> dragAnimation;
-  final void Function(QueueTransition) transitionQueue;
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +61,11 @@ class QueueListItem extends StatelessWidget {
       key: Key(audioTrack.episode.id),
       background: background(alignRight: false),
       secondaryBackground: background(alignRight: true),
-      onDismissed: (direction) => transitionQueue(
-        QueueTransition.removeTrack(position: audioTrack.position),
+      onDismissed: (direction) => Provider.of<AudioPlayerBloc>(
+        context,
+        listen: false,
+      ).addQueueAction(
+        QueueAction.removeTrack(position: audioTrack.position),
       ),
       child: Box(
         color: color,
@@ -72,8 +73,11 @@ class QueueListItem extends StatelessWidget {
         alignment: Alignment.center,
         height: itemHeight,
         child: GestureDetector(
-          onTap: () => transitionQueue(
-            QueueTransition.playTrack(position: audioTrack.position),
+          onTap: () => Provider.of<AudioPlayerBloc>(
+            context,
+            listen: false,
+          ).addQueueAction(
+            QueueAction.playTrack(position: audioTrack.position),
           ),
           child: StreamBuilder<DownloadProgress>(
             stream:

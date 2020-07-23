@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
-import 'package:phenopod/bloc/app_navigation_bloc.dart' hide Podcast;
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/bloc/episode_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
@@ -197,8 +197,8 @@ class EpisodeMenu extends StatelessWidget {
     switch (option) {
       case EpisodeOption.playNext:
         if (audioTrack != null && audioTrack.position != nowPlayingPosition) {
-          Provider.of<AudioPlayerBloc>(context).transitionQueue(
-            QueueTransition.changeTrackPosition(
+          Provider.of<AudioPlayerBloc>(context).addQueueAction(
+            QueueAction.changeTrackPosition(
               from: audioTrack.position,
               to: nowPlayingPosition + 1 < trackCount
                   ? nowPlayingPosition + 1
@@ -206,8 +206,8 @@ class EpisodeMenu extends StatelessWidget {
             ),
           );
         } else {
-          Provider.of<AudioPlayerBloc>(context).transitionQueue(
-            QueueTransition.addToQueueTop(
+          Provider.of<AudioPlayerBloc>(context).addQueueAction(
+            QueueAction.addToQueueTop(
               audioTrack: AudioTrack(
                 episode: episode,
                 podcast: podcast,
@@ -218,8 +218,8 @@ class EpisodeMenu extends StatelessWidget {
         break;
 
       case EpisodeOption.addToQueue:
-        Provider.of<AudioPlayerBloc>(context).transitionQueue(
-          QueueTransition.addToQueueBottom(
+        Provider.of<AudioPlayerBloc>(context).addQueueAction(
+          QueueAction.addToQueueBottom(
             audioTrack: AudioTrack(
               episode: episode,
               podcast: podcast,
@@ -233,7 +233,7 @@ class EpisodeMenu extends StatelessWidget {
           Navigator.of(context, rootNavigator: true).pop();
         }
         Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
-          Screen.podcast(
+          Screen.podcastScreen(
             urlParam: podcast.urlParam,
             title: podcast.title,
             author: podcast.author,
@@ -246,8 +246,8 @@ class EpisodeMenu extends StatelessWidget {
         break;
 
       case EpisodeOption.moveToQueueBottom:
-        Provider.of<AudioPlayerBloc>(context).transitionQueue(
-          QueueTransition.changeTrackPosition(
+        Provider.of<AudioPlayerBloc>(context).addQueueAction(
+          QueueAction.changeTrackPosition(
             from: audioTrack.position,
             to: trackCount - 1,
           ),
@@ -255,8 +255,8 @@ class EpisodeMenu extends StatelessWidget {
         break;
 
       case EpisodeOption.removeFromQueue:
-        Provider.of<AudioPlayerBloc>(context).transitionQueue(
-          QueueTransition.removeTrack(
+        Provider.of<AudioPlayerBloc>(context).addQueueAction(
+          QueueAction.removeTrack(
             position: audioTrack.position,
           ),
         );

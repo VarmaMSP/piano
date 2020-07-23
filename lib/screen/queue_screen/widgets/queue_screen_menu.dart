@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:phenopod/model/main.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -47,7 +48,7 @@ class QueueScreenMenu extends StatelessWidget {
         switch (option) {
           case QueueScreenOptions.clearQueue:
             Provider.of<AudioPlayerBloc>(context, listen: false)
-                .transitionQueue(QueueTransition.clearQueue(askUser: false));
+                .addQueueAction(QueueAction.clearQueue());
             break;
         }
       },

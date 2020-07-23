@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
-import 'package:phenopod/bloc/app_navigation_bloc.dart' hide Podcast;
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/utils/utils.dart';
@@ -135,7 +135,7 @@ class SubscriptionsFeed extends StatelessWidget {
                   context,
                   listen: false,
                 ).pushScreen(
-                  Screen.podcast(
+                  Screen.podcastScreen(
                     urlParam: podcast.urlParam,
                     title: podcast.title,
                     author: podcast.author,
