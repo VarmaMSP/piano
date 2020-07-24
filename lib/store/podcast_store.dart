@@ -13,6 +13,7 @@ PodcastStore newPodcastStore(Api api, Db db, [AlarmService alarmService]) {
 }
 
 abstract class PodcastStore {
+  Future<void> refresh(String urlParam);
   Stream<Podcast> watchByUrlParam(String urlParam);
   Stream<List<Podcast>> watchSubscribed();
 }
@@ -29,45 +30,48 @@ class _PodcastStoreImpl extends PodcastStore {
   });
 
   @override
-  Stream<Podcast> watchByUrlParam(String urlParam) {
-    // ignore: unawaited_futures
-    api.podcast.getPage(urlParam: urlParam).then((value) async {
-      final podcast = value.item1;
-      final episodes = value.item2;
+  Future<void> refresh(String urlParam) async {
+    final data = await api.podcast.getPage(urlParam: urlParam);
+    final podcast = data.item1;
+    final episodes = data.item2;
 
-      await db.transaction(() async {
-        await db.podcastDao.upsert(podcast);
-        await db.episodeDao.saveEpisodes(episodes);
+    await db.transaction(() async {
+      await db.podcastDao.upsert(podcast);
+      await db.episodeDao.saveEpisodes(episodes);
 
-        if (episodes.length < 15) {
-          await db.podcastDao.updateCacheDetails(
-            podcast.id,
-            cachedAllEpisodes: true,
-          );
-        }
-
-        if (podcast.isSubscribed) {
-          await db.subscriptionDao.saveSubscription(
-            Subscription(podcastId: podcast.id),
-          );
-          await db.taskDao.saveTask(
-            Task.init(
-              taskType: TaskType.cachePodcast(
-                podcastId: podcast.id,
-                podcastUrlParam: podcast.urlParam,
-              ),
-            ),
-          );
-        } else {
-          await db.subscriptionDao.deleteSubscription(podcast.id);
-        }
-      });
+      if (episodes.length < 15) {
+        await db.podcastDao.updateCacheDetails(
+          podcast.id,
+          cachedAllEpisodes: true,
+        );
+      }
 
       if (podcast.isSubscribed) {
-        await alarmService?.scheduleTaskRunner();
+        await db.subscriptionDao.saveSubscription(
+          Subscription(podcastId: podcast.id),
+        );
+        await db.taskDao.saveTask(
+          Task.init(
+            taskType: TaskType.cachePodcast(
+              podcastId: podcast.id,
+              podcastUrlParam: podcast.urlParam,
+            ),
+          ),
+        );
+      } else {
+        await db.subscriptionDao.deleteSubscription(podcast.id);
       }
     });
 
+    if (podcast.isSubscribed) {
+      await alarmService?.scheduleTaskRunner();
+    }
+  }
+
+  @override
+  Stream<Podcast> watchByUrlParam(String urlParam) {
+    // ignore: unawaited_futures
+    refresh(urlParam);
     return db.podcastDao.watchPodcast(getIdFromUrlParam(urlParam));
   }
 

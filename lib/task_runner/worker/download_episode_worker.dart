@@ -75,6 +75,7 @@ class DownloadEpisodeWorker extends Worker {
     } on DioError catch (err) {
       if (!CancelToken.isCancel(err)) {
         //FIXME: handle failure case
+        await deleteTask();
       }
     }
   }

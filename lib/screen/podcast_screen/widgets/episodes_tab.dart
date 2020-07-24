@@ -42,14 +42,22 @@ class EpisodesTab extends StatelessWidget {
                       : screenData.episodes.sublist(0, 15),
                 ),
               ),
-              if (screenData.episodes.isNotEmpty)
-                _buildEpisodeList(
-                  screenData.podcast,
-                  screenData.episodes.length <= 15
-                      ? []
-                      : screenData.episodes.sublist(15),
-                  screenData.receivedAllEpisodes,
-                ),
+              FutureBuilder<int>(
+                future: Future.delayed(Duration(seconds: 1), () => 1),
+                builder: (contex, snapshot) {
+                  if (!snapshot.hasData) {
+                    return SliverToBoxAdapter(child: Container());
+                  }
+
+                  return _buildEpisodeList(
+                    screenData.podcast,
+                    screenData.episodes.length <= 15
+                        ? []
+                        : screenData.episodes.sublist(15),
+                    screenData.receivedAllEpisodes,
+                  );
+                },
+              ),
             ],
           ),
         ),

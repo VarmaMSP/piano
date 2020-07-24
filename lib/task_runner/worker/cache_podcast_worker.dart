@@ -1,8 +1,10 @@
 // Flutter imports:
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 // Project imports:
 import 'package:phenopod/store/store.dart';
+import 'package:retry/retry.dart';
 import 'worker.dart';
 
 class CachePodcastWorker extends Worker {
@@ -28,10 +30,7 @@ class CachePodcastWorker extends Worker {
       /// Cache podcast
       final podcast = await store.db.podcastDao.watchPodcast(podcastId).first;
       if (podcast == null) {
-        await store.podcast
-            .watchByUrlParam(podcastUrlParam)
-            .where((p) => p != null)
-            .first;
+        await store.podcast.refresh(podcastUrlParam);
       }
 
       /// Load all episodes from db
@@ -44,14 +43,18 @@ class CachePodcastWorker extends Worker {
 
       /// Paginate all episodes
       do {
-        episodes = await store.api.episode.getByPodcastPaginated(
-          podcastId: podcastId,
-          offset: episodeCount,
-          limit: 50,
+        final r = RetryOptions(maxAttempts: 3);
+        episodes = await r.retry(
+          () => store.api.episode.getByPodcastPaginated(
+            podcastId: podcastId,
+            offset: episodeCount,
+            limit: 50,
+          ),
+          retryIf: (e) => e is DioError,
         );
         episodeCount += episodes.length;
         await store.db.episodeDao.saveEpisodes(episodes);
-      } while (episodes.length < 50);
+      } while (episodes.length >= 50);
 
       /// Update podcast cache details
       await store.db.podcastDao.updateCacheDetails(
