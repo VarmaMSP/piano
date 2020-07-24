@@ -5,26 +5,28 @@ part of 'main.dart';
 // completed is currently not in use.
 enum TaskStatus {
   queued,
+  paused,
   completed,
   failed,
 }
 
 //! DO NOT CHANGE THE ORDER
 enum TaskPriority {
-  /// Reserved for interrupts that need to be run right
+  /// NOTE: Reserved for future use
+  /// Intended to be used for interrupts that need to be run right
   /// away as they effect execution of other task
   ///   Ex: canceling / pausing file download
   highest,
 
-  /// Reserved for tasks that are initiated by user to
-  /// run in the background
+  /// For tasks that are initiated by user to run in the background
   ///   Ex: downloading a file
   high,
 
-  /// Reserved for tasks that are initiated by the application
+  /// For tasks that are initiated by the application
+  ///   Ex: caching podcast data
   medium,
 
-  /// Yet to be decided
+  /// NOTE: Reserved for future use
   low,
 }
 
@@ -51,7 +53,6 @@ class Task {
   final TaskType taskType;
   final TaskStatus taskStatus;
   final TaskPriority taskPriority;
-  final bool canRetry;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -60,18 +61,27 @@ class Task {
     @required this.taskType,
     @required this.taskStatus,
     @required this.taskPriority,
-    @required this.canRetry,
     @required this.createdAt,
     @required this.updatedAt,
   });
 
-  factory Task.init({TaskType taskType}) {
+  factory Task.highPriority({TaskType taskType}) {
     return Task(
       id: null,
       taskType: taskType,
       taskStatus: TaskStatus.queued,
       taskPriority: TaskPriority.high,
-      canRetry: false,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  factory Task.mediumPriority({TaskType taskType}) {
+    return Task(
+      id: null,
+      taskType: taskType,
+      taskStatus: TaskStatus.queued,
+      taskPriority: TaskPriority.medium,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );

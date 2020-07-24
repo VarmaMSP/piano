@@ -15,9 +15,16 @@ class TaskDao extends DatabaseAccessor<SqlDb> with _$TaskDaoMixin {
         .map((e) => e?.toModel());
   }
 
-  Stream<Task> watchOldestTask({@required TaskStatus taskStatus}) {
+  Stream<Task> watchOldestTask({
+    @required TaskStatus taskStatus,
+    @required TaskPriority taskPriority,
+  }) {
     return (select(tasks)
-          ..where((tbl) => tbl.taskStatus.equals(taskStatus.index))
+          ..where(
+            (tbl) =>
+                tbl.taskStatus.equals(taskStatus.index) &
+                tbl.taskPriority.equals(taskPriority.index),
+          )
           ..orderBy([(tbl) => OrderingTerm(expression: tbl.id)])
           ..limit(1))
         .watchSingle()

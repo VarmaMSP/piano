@@ -14,7 +14,7 @@ TaskStore newTaskStore(Api api, Db db, [AlarmService alarmService]) {
 abstract class TaskStore {
   Future<void> saveTask(Task task);
   Stream<Task> watchById(int id);
-  Stream<Task> watchQueueTop();
+  Stream<Task> watchQueueTop(TaskPriority taskPriority);
   Future<void> delete(int taskId);
 }
 
@@ -40,8 +40,11 @@ class _TaskStoreImpl extends TaskStore {
   }
 
   @override
-  Stream<Task> watchQueueTop() {
-    return db.taskDao.watchOldestTask(taskStatus: TaskStatus.queued);
+  Stream<Task> watchQueueTop(TaskPriority taskPriority) {
+    return db.taskDao.watchOldestTask(
+      taskStatus: TaskStatus.queued,
+      taskPriority: taskPriority,
+    );
   }
 
   @override

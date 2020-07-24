@@ -6,7 +6,6 @@ class Tasks extends Table {
   TextColumn get taskType => text().map(TaskTypeConverter())();
   IntColumn get taskStatus => integer().map(TaskStatusConverter())();
   IntColumn get taskPriority => integer().map(TaskPriorityConverter())();
-  BoolColumn get canRetry => boolean()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
 
@@ -62,7 +61,6 @@ TaskRow taskRowFromModel(Task model) {
     taskType: model.taskType,
     taskStatus: model.taskStatus,
     taskPriority: model.taskPriority,
-    canRetry: model.canRetry,
     createdAt: model.createdAt,
     updatedAt: model.updatedAt,
   );
@@ -75,7 +73,6 @@ extension TaskRowExtension on TaskRow {
       taskType: taskType,
       taskStatus: taskStatus,
       taskPriority: taskPriority,
-      canRetry: canRetry,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );

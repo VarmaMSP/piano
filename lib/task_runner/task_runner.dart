@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:when_expression/when_expression.dart';
 
 // Project imports:
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/stream.dart' as stream_utils;
@@ -34,8 +35,15 @@ class TaskRunner {
   });
 
   Future<void> start() async {
+    await Future.wait([
+      startExecutor(TaskPriority.high),
+      startExecutor(TaskPriority.medium),
+    ]);
+  }
+
+  Future<void> startExecutor(TaskPriority taskPriority) async {
     final queuedTasks = stream_utils.StreamLongPoll(
-      store.task.watchQueueTop(),
+      store.task.watchQueueTop(taskPriority),
       waitDuration: when<TaskRunnerMode, Duration>({
         (v) => v == TaskRunnerMode.foreground: (_) => Duration(minutes: 15),
         (v) => v == TaskRunnerMode.background: (_) => Duration.zero,

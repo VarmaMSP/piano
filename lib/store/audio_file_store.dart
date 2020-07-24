@@ -52,7 +52,7 @@ class _AudioFileStoreImpl extends AudioFileStore {
       () async {
         final filename = fileutils.newStorageFileName(episode.mediaUrl);
         final taskId = await db.taskDao.saveTask(
-          Task.init(
+          Task.highPriority(
             taskType: TaskType.downloadEpisode(
               episodeId: episode.id,
               url: episode.mediaUrl,

@@ -51,7 +51,7 @@ class _PodcastStoreImpl extends PodcastStore {
           Subscription(podcastId: podcast.id),
         );
         await db.taskDao.saveTask(
-          Task.init(
+          Task.mediumPriority(
             taskType: TaskType.cachePodcast(
               podcastId: podcast.id,
               podcastUrlParam: podcast.urlParam,

@@ -2709,7 +2709,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
   final TaskType taskType;
   final TaskStatus taskStatus;
   final TaskPriority taskPriority;
-  final bool canRetry;
   final DateTime createdAt;
   final DateTime updatedAt;
   TaskRow(
@@ -2717,7 +2716,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       @required this.taskType,
       @required this.taskStatus,
       @required this.taskPriority,
-      @required this.canRetry,
       @required this.createdAt,
       @required this.updatedAt});
   factory TaskRow.fromData(Map<String, dynamic> data, GeneratedDatabase db,
@@ -2725,7 +2723,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    final boolType = db.typeSystem.forDartType<bool>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return TaskRow(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
@@ -2735,8 +2732,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           .mapFromDatabaseResponse(data['${effectivePrefix}task_status'])),
       taskPriority: $TasksTable.$converter2.mapToDart(intType
           .mapFromDatabaseResponse(data['${effectivePrefix}task_priority'])),
-      canRetry:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}can_retry']),
       createdAt: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
       updatedAt: dateTimeType
@@ -2761,9 +2756,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       final converter = $TasksTable.$converter2;
       map['task_priority'] = Variable<int>(converter.mapToSql(taskPriority));
     }
-    if (!nullToAbsent || canRetry != null) {
-      map['can_retry'] = Variable<bool>(canRetry);
-    }
     if (!nullToAbsent || createdAt != null) {
       map['created_at'] = Variable<DateTime>(createdAt);
     }
@@ -2785,9 +2777,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       taskPriority: taskPriority == null && nullToAbsent
           ? const Value.absent()
           : Value(taskPriority),
-      canRetry: canRetry == null && nullToAbsent
-          ? const Value.absent()
-          : Value(canRetry),
       createdAt: createdAt == null && nullToAbsent
           ? const Value.absent()
           : Value(createdAt),
@@ -2805,7 +2794,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       taskType: serializer.fromJson<TaskType>(json['taskType']),
       taskStatus: serializer.fromJson<TaskStatus>(json['taskStatus']),
       taskPriority: serializer.fromJson<TaskPriority>(json['taskPriority']),
-      canRetry: serializer.fromJson<bool>(json['canRetry']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -2818,7 +2806,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       'taskType': serializer.toJson<TaskType>(taskType),
       'taskStatus': serializer.toJson<TaskStatus>(taskStatus),
       'taskPriority': serializer.toJson<TaskPriority>(taskPriority),
-      'canRetry': serializer.toJson<bool>(canRetry),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -2829,7 +2816,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           TaskType taskType,
           TaskStatus taskStatus,
           TaskPriority taskPriority,
-          bool canRetry,
           DateTime createdAt,
           DateTime updatedAt}) =>
       TaskRow(
@@ -2837,7 +2823,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
         taskType: taskType ?? this.taskType,
         taskStatus: taskStatus ?? this.taskStatus,
         taskPriority: taskPriority ?? this.taskPriority,
-        canRetry: canRetry ?? this.canRetry,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
@@ -2848,7 +2833,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           ..write('taskType: $taskType, ')
           ..write('taskStatus: $taskStatus, ')
           ..write('taskPriority: $taskPriority, ')
-          ..write('canRetry: $canRetry, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -2862,10 +2846,8 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           taskType.hashCode,
           $mrjc(
               taskStatus.hashCode,
-              $mrjc(
-                  taskPriority.hashCode,
-                  $mrjc(canRetry.hashCode,
-                      $mrjc(createdAt.hashCode, updatedAt.hashCode)))))));
+              $mrjc(taskPriority.hashCode,
+                  $mrjc(createdAt.hashCode, updatedAt.hashCode))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -2874,7 +2856,6 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           other.taskType == this.taskType &&
           other.taskStatus == this.taskStatus &&
           other.taskPriority == this.taskPriority &&
-          other.canRetry == this.canRetry &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -2884,7 +2865,6 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
   final Value<TaskType> taskType;
   final Value<TaskStatus> taskStatus;
   final Value<TaskPriority> taskPriority;
-  final Value<bool> canRetry;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const TasksCompanion({
@@ -2892,7 +2872,6 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     this.taskType = const Value.absent(),
     this.taskStatus = const Value.absent(),
     this.taskPriority = const Value.absent(),
-    this.canRetry = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
@@ -2901,13 +2880,11 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     @required TaskType taskType,
     @required TaskStatus taskStatus,
     @required TaskPriority taskPriority,
-    @required bool canRetry,
     @required DateTime createdAt,
     @required DateTime updatedAt,
   })  : taskType = Value(taskType),
         taskStatus = Value(taskStatus),
         taskPriority = Value(taskPriority),
-        canRetry = Value(canRetry),
         createdAt = Value(createdAt),
         updatedAt = Value(updatedAt);
   static Insertable<TaskRow> custom({
@@ -2915,7 +2892,6 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     Expression<String> taskType,
     Expression<int> taskStatus,
     Expression<int> taskPriority,
-    Expression<bool> canRetry,
     Expression<DateTime> createdAt,
     Expression<DateTime> updatedAt,
   }) {
@@ -2924,7 +2900,6 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
       if (taskType != null) 'task_type': taskType,
       if (taskStatus != null) 'task_status': taskStatus,
       if (taskPriority != null) 'task_priority': taskPriority,
-      if (canRetry != null) 'can_retry': canRetry,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -2935,7 +2910,6 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
       Value<TaskType> taskType,
       Value<TaskStatus> taskStatus,
       Value<TaskPriority> taskPriority,
-      Value<bool> canRetry,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt}) {
     return TasksCompanion(
@@ -2943,7 +2917,6 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
       taskType: taskType ?? this.taskType,
       taskStatus: taskStatus ?? this.taskStatus,
       taskPriority: taskPriority ?? this.taskPriority,
-      canRetry: canRetry ?? this.canRetry,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -2967,9 +2940,6 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
       final converter = $TasksTable.$converter2;
       map['task_priority'] =
           Variable<int>(converter.mapToSql(taskPriority.value));
-    }
-    if (canRetry.present) {
-      map['can_retry'] = Variable<bool>(canRetry.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -3032,18 +3002,6 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
     );
   }
 
-  final VerificationMeta _canRetryMeta = const VerificationMeta('canRetry');
-  GeneratedBoolColumn _canRetry;
-  @override
-  GeneratedBoolColumn get canRetry => _canRetry ??= _constructCanRetry();
-  GeneratedBoolColumn _constructCanRetry() {
-    return GeneratedBoolColumn(
-      'can_retry',
-      $tableName,
-      false,
-    );
-  }
-
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   GeneratedDateTimeColumn _createdAt;
   @override
@@ -3070,7 +3028,7 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
 
   @override
   List<GeneratedColumn> get $columns =>
-      [id, taskType, taskStatus, taskPriority, canRetry, createdAt, updatedAt];
+      [id, taskType, taskStatus, taskPriority, createdAt, updatedAt];
   @override
   $TasksTable get asDslTable => this;
   @override
@@ -3088,12 +3046,6 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
     context.handle(_taskTypeMeta, const VerificationResult.success());
     context.handle(_taskStatusMeta, const VerificationResult.success());
     context.handle(_taskPriorityMeta, const VerificationResult.success());
-    if (data.containsKey('can_retry')) {
-      context.handle(_canRetryMeta,
-          canRetry.isAcceptableOrUnknown(data['can_retry'], _canRetryMeta));
-    } else if (isInserting) {
-      context.missing(_canRetryMeta);
-    }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at'], _createdAtMeta));

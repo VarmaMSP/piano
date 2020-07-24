@@ -1,10 +1,12 @@
 // Flutter imports:
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:dio/dio.dart';
+import 'package:retry/retry.dart';
 
 // Project imports:
 import 'package:phenopod/store/store.dart';
-import 'package:retry/retry.dart';
 import 'worker.dart';
 
 class CachePodcastWorker extends Worker {
