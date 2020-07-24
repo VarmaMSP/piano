@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -21,6 +22,13 @@ class App extends StatelessWidget {
     /// Cache screen height and screen width
     getScreenHeight(context: context);
     getScreenWidth(context: context);
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
 
     return StreamBuilder<bool>(
       stream: Provider.of<UserBloc>(context).userSignedIn,

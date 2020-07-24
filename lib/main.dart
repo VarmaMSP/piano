@@ -42,6 +42,7 @@ void main() async {
   // await alarmService.scheduleTaskRunner();
 
   runApp(Root(
+    db: db,
     store: newStore(api, db, alarmService),
     eventBus: EventBus(),
     audioService: audioService,
@@ -50,11 +51,13 @@ void main() async {
 
 class Root extends StatefulWidget {
   Root({
+    @required this.db,
     @required this.store,
     @required this.eventBus,
     @required this.audioService,
   });
 
+  final Db db;
   final Store store;
   final EventBus eventBus;
   final AudioService audioService;
@@ -113,6 +116,10 @@ class _RootState extends State<Root>
 
     return MultiProvider(
       providers: [
+        Provider.value(
+          value: widget.db.sqlDb,
+          updateShouldNotify: (_, __) => false,
+        ),
         Provider.value(
           value: widget.store,
           updateShouldNotify: (_, __) => false,

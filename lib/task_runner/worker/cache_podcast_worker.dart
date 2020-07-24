@@ -26,7 +26,7 @@ class CachePodcastWorker extends Worker {
 
   @override
   Future<bool> shouldExecute() async {
-    final podcast = await store.db.podcastDao.watchPodcast(podcastId).first;
+    final podcast = await db.podcastDao.watchPodcast(podcastId).first;
     return podcast == null || !podcast.cachedAllEpisodes;
   }
 
@@ -34,13 +34,13 @@ class CachePodcastWorker extends Worker {
   Future<void> execute() async {
     try {
       /// Cache podcast
-      final podcast = await store.db.podcastDao.watchPodcast(podcastId).first;
+      final podcast = await db.podcastDao.watchPodcast(podcastId).first;
       if (podcast == null) {
         await store.podcast.refresh(podcastUrlParam);
       }
 
       /// Load all episodes from db
-      var episodes = await store.db.episodeDao.watchEpisodesByPodcastsPaginated(
+      var episodes = await db.episodeDao.watchEpisodesByPodcastsPaginated(
         podcastIds: [podcastId],
         offset: 0,
         limit: 10000,
@@ -51,7 +51,7 @@ class CachePodcastWorker extends Worker {
       do {
         final r = RetryOptions(maxAttempts: 3);
         episodes = await r.retry(
-          () => store.api.episode.getByPodcastPaginated(
+          () => api.episode.getByPodcastPaginated(
             podcastId: podcastId,
             offset: episodeCount,
             limit: 50,
@@ -59,11 +59,11 @@ class CachePodcastWorker extends Worker {
           retryIf: (e) => e is DioError,
         );
         episodeCount += episodes.length;
-        await store.db.episodeDao.saveEpisodes(episodes);
+        await db.episodeDao.saveEpisodes(episodes);
       } while (episodes.length >= 50);
 
       /// Update podcast cache details
-      await store.db.podcastDao.updateCacheDetails(
+      await db.podcastDao.updateCacheDetails(
         podcastId,
         cachedAllEpisodes: true,
       );

@@ -20,9 +20,6 @@ Store newStore(Api api, Db db, [AlarmService alarmService]) {
 }
 
 abstract class Store {
-  Db get db;
-  Api get api;
-  AlarmService get alarmService;
   UserStore get user;
   PodcastStore get podcast;
   EpisodeStore get episode;
@@ -35,9 +32,6 @@ abstract class Store {
 }
 
 class _StoreImpl extends Store {
-  final Db _db;
-  final Api _api;
-  final AlarmService _alarmService;
   final UserStore _user;
   final PodcastStore _podcast;
   final EpisodeStore _episode;
@@ -52,10 +46,7 @@ class _StoreImpl extends Store {
     @required Api api,
     @required Db db,
     @required AlarmService alarmService,
-  })  : _db = db,
-        _api = api,
-        _alarmService = alarmService,
-        _user = newUserStore(api, db, alarmService),
+  })  : _user = newUserStore(api, db, alarmService),
         _podcast = newPodcastStore(api, db, alarmService),
         _episode = newEpisodeStore(api, db, alarmService),
         _subscription = newSubscriptionStore(api, db, alarmService),
@@ -64,15 +55,6 @@ class _StoreImpl extends Store {
         _task = newTaskStore(api, db, alarmService),
         _audioFile = newAudioFileStore(api, db, alarmService),
         _setting = newSettingStore(api, db, alarmService);
-
-  @override
-  Db get db => _db;
-
-  @override
-  Api get api => _api;
-
-  @override
-  AlarmService get alarmService => _alarmService;
 
   @override
   AudioPlayerStore get audioPlayer => _audioPlayer;
