@@ -5,11 +5,16 @@ class SubscriptionDao extends DatabaseAccessor<SqlDb>
     with _$SubscriptionDaoMixin {
   SubscriptionDao(SqlDb db) : super(db);
 
-  Future<void> saveSubscription(Subscription subscription) {
-    return into(subscriptions).insert(
-      subscriptionRowFromModel(subscription),
-      mode: InsertMode.insertOrIgnore,
-    );
+  Future<void> saveSubscriptions(List<Subscription> subscriptionList) async {
+    if (subscriptionList.isNotEmpty) {
+      await batch(
+        (b) => b.insertAll(
+          subscriptions,
+          subscriptionList.map((s) => subscriptionRowFromModel(s)).toList(),
+          mode: InsertMode.insertOrIgnore,
+        ),
+      );
+    }
   }
 
   Stream<Subscription> watchByPodcast(String podcastId) {

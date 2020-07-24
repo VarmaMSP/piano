@@ -1,4 +1,8 @@
+// Package imports:
+import 'package:tuple/tuple.dart';
+
 // Project imports:
+import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/api/http_client.dart';
 
 SubscriptionApi newSubscriptionApi(HttpClient httpClient) {
@@ -8,6 +12,7 @@ SubscriptionApi newSubscriptionApi(HttpClient httpClient) {
 abstract class SubscriptionApi {
   Future<void> subscribe(String podcastId);
   Future<void> unsubscribe(String podcastId);
+  Future<Tuple2<List<Podcast>, List<Episode>>> getPage();
 }
 
 class _SubscriptionApiImpl extends SubscriptionApi {
@@ -32,6 +37,18 @@ class _SubscriptionApiImpl extends SubscriptionApi {
       path: '/ajax/service',
       queryParams: {'endpoint': 'unsubscribe_podcast'},
       body: {'podcast_id': podcastId},
+    );
+  }
+
+  @override
+  Future<Tuple2<List<Podcast>, List<Episode>>> getPage() async {
+    final apiResponse = await httpClient.makeRequest(
+      method: 'GET',
+      path: '/subscriptions',
+    );
+    return Tuple2(
+      apiResponse.podcasts,
+      apiResponse.episodes,
     );
   }
 }

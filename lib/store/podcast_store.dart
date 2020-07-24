@@ -15,7 +15,6 @@ PodcastStore newPodcastStore(Api api, Db db, [AlarmService alarmService]) {
 abstract class PodcastStore {
   Future<void> refresh(String urlParam);
   Stream<Podcast> watchByUrlParam(String urlParam);
-  Stream<List<Podcast>> watchSubscribed();
 }
 
 class _PodcastStoreImpl extends PodcastStore {
@@ -47,8 +46,8 @@ class _PodcastStoreImpl extends PodcastStore {
       }
 
       if (podcast.isSubscribed) {
-        await db.subscriptionDao.saveSubscription(
-          Subscription(podcastId: podcast.id),
+        await db.subscriptionDao.saveSubscriptions(
+          [Subscription(podcastId: podcast.id)],
         );
         await db.taskDao.saveTask(
           Task.mediumPriority(
@@ -70,13 +69,7 @@ class _PodcastStoreImpl extends PodcastStore {
 
   @override
   Stream<Podcast> watchByUrlParam(String urlParam) {
-    // ignore: unawaited_futures
     refresh(urlParam);
     return db.podcastDao.watchPodcast(getIdFromUrlParam(urlParam));
-  }
-
-  @override
-  Stream<List<Podcast>> watchSubscribed() {
-    return db.podcastDao.watchSubscribedPodcasts();
   }
 }

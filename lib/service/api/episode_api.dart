@@ -15,6 +15,11 @@ abstract class EpisodeApi {
     @required int offset,
     @required int limit,
   });
+
+  Future<List<Episode>> getSubscriptionFeed({
+    @required int offset,
+    @required int limit,
+  });
 }
 
 class _EpisodeApiImpl extends EpisodeApi {
@@ -37,6 +42,23 @@ class _EpisodeApiImpl extends EpisodeApi {
         'offset': offset.toString(),
         'limit': limit.toString(),
         'order': 'pub_date_desc',
+      },
+    );
+    return apiResponse.episodes;
+  }
+
+  @override
+  Future<List<Episode>> getSubscriptionFeed({
+    @required int offset,
+    @required int limit,
+  }) async {
+    final apiResponse = await httpClient.makeRequest(
+      method: 'GET',
+      path: '/ajax/browse',
+      queryParams: {
+        'endpoint': 'subscriptions_feed',
+        'offset': offset.toString(),
+        'limit': limit.toString(),
       },
     );
     return apiResponse.episodes;

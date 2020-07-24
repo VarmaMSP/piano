@@ -20,9 +20,11 @@ SubscriptionStore newSubscriptionStore(
 }
 
 abstract class SubscriptionStore {
+  Future<void> refresh();
   Future<void> subscribe(Podcast podcast);
   Future<void> unsubscribe(Podcast podcast);
   Stream<Subscription> watchByPodcast(String podcastId);
+  Stream<List<Podcast>> watchSubscribedPodcasts();
 }
 
 class _SubscriptionStoreImpl extends SubscriptionStore {
@@ -37,11 +39,41 @@ class _SubscriptionStoreImpl extends SubscriptionStore {
   });
 
   @override
+  Future<void> refresh() async {
+    final page = await api.subscription.getPage();
+    final podcasts = page.item1;
+    final episodes = page.item2;
+
+    await db.transaction(() async {
+      await db.podcastDao.savePodcasts(podcasts);
+      await db.episodeDao.saveEpisodes(episodes);
+      await db.subscriptionDao.saveSubscriptions(
+        podcasts.map((p) => Subscription(podcastId: p.id)).toList(),
+      );
+      await Future.wait(
+        podcasts
+            .map(
+              (p) => db.taskDao.saveTask(
+                Task.mediumPriority(
+                  taskType: TaskType.cachePodcast(
+                    podcastId: p.id,
+                    podcastUrlParam: p.urlParam,
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+      );
+    });
+    await alarmService?.scheduleTaskRunner();
+  }
+
+  @override
   Future<void> subscribe(Podcast podcast) async {
     await api.subscription.subscribe(podcast.id);
     await db.transaction(() async {
-      await db.subscriptionDao.saveSubscription(
-        Subscription(podcastId: podcast.id),
+      await db.subscriptionDao.saveSubscriptions(
+        [Subscription(podcastId: podcast.id)],
       );
       await db.taskDao.saveTask(
         Task.mediumPriority(
@@ -64,5 +96,11 @@ class _SubscriptionStoreImpl extends SubscriptionStore {
   @override
   Stream<Subscription> watchByPodcast(String podcastId) {
     return db.subscriptionDao.watchByPodcast(podcastId);
+  }
+
+  @override
+  Stream<List<Podcast>> watchSubscribedPodcasts() {
+    refresh();
+    return db.podcastDao.watchSubscribedPodcasts();
   }
 }
