@@ -41,6 +41,7 @@ dependencies:
   just_audio: ^0.1.10
   logger: ^0.9.1
   material_design_icons_flutter: ^4.0.5345
+  md2_tab_indicator: ^1.0.2
   modal_bottom_sheet: ^0.1.6+1
   moor: ^3.1.0
   moor_db_viewer: ^2.0.3
