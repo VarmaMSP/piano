@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 
 // Package imports:
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -29,7 +30,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
   static const double appBarHeight = 60;
   static const double tabBarHeight = 35;
-  static const double flexibleAreaHeight = 140;
+  static const double flexibleAreaHeight = 150;
 
   final TabController tabController;
   final String urlParam;
@@ -104,7 +105,6 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   Widget _appBar(BuildContext context) {
     return Container(
       height: appBarHeight,
-      padding: EdgeInsets.only(bottom: 5),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,9 +191,12 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       transform: Matrix4.translationValues(-14, 0, 0),
       child: TabBar(
         isScrollable: true,
-        indicatorColor: Color(0xffffbe0b),
+        indicator: MD2Indicator(
+          indicatorHeight: 3.5,
+          indicatorColor: Color(0xffffbe0b),
+          indicatorSize: MD2IndicatorSize.full,
+        ),
         indicatorSize: TabBarIndicatorSize.label,
-        indicatorWeight: 3.5,
         labelColor: Colors.grey.shade900,
         labelStyle: Theme.of(context)
             .textTheme
@@ -204,7 +207,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             .textTheme
             .headline6
             .copyWith(fontSize: 13, letterSpacing: 0.4),
-        labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 4),
+        labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 6),
         controller: tabController,
         tabs: const <Widget>[
           Tab(text: ' Episodes '),
@@ -310,7 +313,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       opacity: animation.podcastDetailsOpacity,
       child: Container(
         height: flexibleAreaHeight,
-        padding: const EdgeInsets.only(top: 2),
+        padding: const EdgeInsets.only(top: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

@@ -40,7 +40,7 @@ class SubscriptionsScreen extends HookWidget {
                 delegate: SubscriptionsHeaderDelegate(
                   forceElevated: hasScrolled,
                   scrollToTop: () => nestedScrollViewKey
-                      .currentState.outerController
+                      .currentState.innerController
                       .jumpTo(0.0),
                 ),
               ),

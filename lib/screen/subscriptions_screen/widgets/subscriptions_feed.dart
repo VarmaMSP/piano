@@ -11,6 +11,7 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 // Project imports:
 import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/episode_list_item/episode_list_item.dart';
@@ -27,22 +28,30 @@ class SubscriptionsFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        _buildPodcasts(context, screenData),
-        _buildAnimatedEpisodeList(
-          screenData.feedItems.length <= 30
-              ? screenData.feedItems
-              : screenData.feedItems.sublist(0, 30),
-        ),
-        if (screenData.feedItems.isNotEmpty)
-          _buildEpisodeList(
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Provider.of<Store>(context, listen: false).subscription.refresh();
+        return true;
+      },
+      color: TWColors.purple.shade600,
+      displacement: 100,
+      child: CustomScrollView(
+        slivers: [
+          _buildPodcasts(context, screenData),
+          _buildAnimatedEpisodeList(
             screenData.feedItems.length <= 30
-                ? []
-                : screenData.feedItems.sublist(30),
-            screenData.receivedAllEpisodes,
+                ? screenData.feedItems
+                : screenData.feedItems.sublist(0, 30),
           ),
-      ],
+          if (screenData.feedItems.isNotEmpty)
+            _buildEpisodeList(
+              screenData.feedItems.length <= 30
+                  ? []
+                  : screenData.feedItems.sublist(30),
+              screenData.receivedAllEpisodes,
+            ),
+        ],
+      ),
     );
   }
 

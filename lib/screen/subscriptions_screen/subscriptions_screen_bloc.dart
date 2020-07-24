@@ -39,7 +39,7 @@ class SubscriptionsScreenBloc {
   }
 
   void _watchStore() {
-    _subscriptionsStream = store.podcast.watchSubscribed();
+    _subscriptionsStream = store.subscription.watchSubscribedPodcasts();
     _storeSubscription = Rx.combineLatest2<List<Podcast>, List<List<Episode>>,
         SubscriptionsScreenData>(
       _subscriptionsStream,

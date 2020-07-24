@@ -36,6 +36,13 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
           if (forceElevated)
             BoxShadow(color: TWColors.gray.shade400, blurRadius: 2),
         ],
+        border: !forceElevated
+            ? Border(
+                bottom: BorderSide(
+                color: TWColors.gray.shade300,
+                width: 1.0,
+              ))
+            : null,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,7 +53,7 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
               child: Text(
                 'Phenopod',
                 style: TextStyle(
-                  fontSize: 19,
+                  fontSize: 20,
                   color: Colors.purple.shade700,
                   letterSpacing: 0.4,
                   fontWeight: FontWeight.w500,
@@ -61,7 +68,7 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
                 IconButton(
                   icon: Icon(
                     Icons.search,
-                    size: 23,
+                    size: 24,
                     color: TWColors.gray.shade700,
                   ),
                   onPressed: () => Navigator.of(context, rootNavigator: true)
@@ -70,7 +77,7 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
                 IconButton(
                   icon: Icon(
                     MdiIcons.accountCircleOutline,
-                    size: 23,
+                    size: 24,
                     color: TWColors.gray.shade700,
                   ),
                   onPressed: () => Navigator.of(context, rootNavigator: true)
