@@ -1,5 +1,7 @@
 // Flutter imports:
 import 'package:flutter/foundation.dart';
+import 'package:phenopod/service/api/api.dart';
+import 'package:phenopod/service/db/db.dart';
 
 // Package imports:
 import 'package:when_expression/when_expression.dart';
@@ -25,14 +27,17 @@ enum TaskRunnerMode {
 
 class TaskRunner {
   final Store store;
+  final Db db;
+  final Api api;
   final AlarmService alarmService;
   final TaskRunnerMode mode;
 
   TaskRunner({
-    @required this.store,
+    @required this.db,
+    @required this.api,
     @required this.alarmService,
     @required this.mode,
-  });
+  }) : store = newStore(api, db);
 
   Future<void> start() async {
     await Future.wait([
@@ -45,7 +50,7 @@ class TaskRunner {
     final queuedTasks = stream_utils.StreamLongPoll(
       store.task.watchQueueTop(taskPriority),
       waitDuration: when<TaskRunnerMode, Duration>({
-        (v) => v == TaskRunnerMode.foreground: (_) => Duration(minutes: 15),
+        (v) => v == TaskRunnerMode.foreground: (_) => Duration(minutes: 20),
         (v) => v == TaskRunnerMode.background: (_) => Duration.zero,
       })(mode),
     ).stream;
@@ -55,12 +60,16 @@ class TaskRunner {
           .map(
             cachePodcast: (data) => CachePodcastWorker(
               taskId: task.id,
+              db: db,
+              api: api,
               store: store,
               podcastId: data.podcastId,
               podcastUrlParam: data.podcastUrlParam,
             ),
             downloadEpisode: (data) => DownloadEpisodeWorker(
               taskId: task.id,
+              db: db,
+              api: api,
               store: store,
               episodeId: data.episodeId,
               url: data.url,

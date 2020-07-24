@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 
 // Package imports:
 import 'package:dio/dio.dart';
+import 'package:phenopod/service/api/api.dart';
+import 'package:phenopod/service/db/db.dart';
 import 'package:retry/retry.dart';
 
 // Project imports:
@@ -15,10 +17,12 @@ class CachePodcastWorker extends Worker {
 
   CachePodcastWorker({
     @required int taskId,
+    @required Db db,
+    @required Api api,
     @required Store store,
     @required this.podcastId,
     @required this.podcastUrlParam,
-  }) : super(taskId: taskId, store: store);
+  }) : super(taskId: taskId, db: db, api: api, store: store);
 
   @override
   Future<bool> shouldExecute() async {

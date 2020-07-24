@@ -4,7 +4,6 @@ import 'package:android_alarm_manager/android_alarm_manager.dart';
 // Project imports:
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
-import 'package:phenopod/store/store.dart';
 import 'package:phenopod/task_runner/task_runner.dart';
 
 part 'tasks.dart';

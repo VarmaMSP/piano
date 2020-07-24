@@ -9,6 +9,8 @@ import 'package:flutter/foundation.dart';
 // Package imports:
 import 'package:dio/dio.dart';
 import 'package:path/path.dart';
+import 'package:phenopod/service/api/api.dart';
+import 'package:phenopod/service/db/db.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
@@ -34,12 +36,14 @@ class DownloadEpisodeWorker extends Worker {
 
   DownloadEpisodeWorker({
     @required int taskId,
+    @required Db db,
+    @required Api api,
     @required Store store,
     @required this.episodeId,
     @required this.url,
     @required this.filename,
     @required this.storagePath,
-  }) : super(taskId: taskId, store: store) {
+  }) : super(taskId: taskId, db: db, api: api, store: store) {
     // Cancellation subscription
     _cancellationSubscription = store.task
         .watchById(taskId)

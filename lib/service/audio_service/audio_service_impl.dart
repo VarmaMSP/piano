@@ -45,7 +45,7 @@ class _audioServiceImpl implements AudioService {
   }
 
   @override
-  Future<void> syncQueue({bool startTask = true}) async {
+  Future<void> syncQueue({bool startTask = false}) async {
     if (audioservice.AudioService.running) {
       await audioservice.AudioService.customAction('syncQueue');
     } else if (startTask) {
@@ -54,16 +54,7 @@ class _audioServiceImpl implements AudioService {
   }
 
   @override
-  Future<void> syncNowPlaying({bool startTask = true}) async {
-    if (audioservice.AudioService.running) {
-      await audioservice.AudioService.customAction('syncNowPlaying');
-    } else if (startTask) {
-      await _startBackgroundPlayerTask();
-    }
-  }
-
-  @override
-  Future<void> syncSetting() async {
+  Future<void> syncSetting({bool startTask = false}) async {
     if (audioservice.AudioService.running) {
       await audioservice.AudioService.customAction('syncSetting');
     }

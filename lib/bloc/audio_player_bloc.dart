@@ -89,37 +89,34 @@ class AudioPlayerBloc {
       final prevQueue = await _queueSubject.first;
       await action.map(
         playTrack: (data) async {
-          await store.audioPlayer.saveQueue(
-            prevQueue
-                .addToTop(data.audioTrack)
-                .playTrackAt(prevQueue.position + 1),
-          );
-          await audioService.syncNowPlaying();
+          await store.audioPlayer
+              .saveQueue(prevQueue.addToTop(data.audioTrack).skipToNextTrack());
+          await audioService.syncQueue();
         },
         playTrackAt: (data) async {
           await store.audioPlayer
               .saveQueue(prevQueue.playTrackAt(data.position));
-          await audioService.syncQueue(startTask: false);
+          await audioService.syncQueue();
         },
         addToQueueTop: (data) async {
           await store.audioPlayer
               .saveQueue(prevQueue.addToTop(data.audioTrack));
-          await audioService.syncQueue(startTask: false);
+          await audioService.syncQueue();
         },
         addToQueueBottom: (data) async {
           await store.audioPlayer
               .saveQueue(prevQueue.addToBottom(data.audioTrack));
-          await audioService.syncQueue(startTask: false);
+          await audioService.syncQueue();
         },
         changeTrackPosition: (data) async {
           await store.audioPlayer
               .saveQueue(prevQueue.changeTrackPosition(data.from, data.to));
-          await audioService.syncQueue(startTask: false);
+          await audioService.syncQueue();
         },
         removeTrack: (data) async {
           await store.audioPlayer
               .saveQueue(prevQueue.removeTrack(data.position));
-          await audioService.syncQueue(startTask: false);
+          await audioService.syncQueue();
         },
         clearQueue: (data) async {
           await store.audioPlayer.saveQueue(Queue.empty());
@@ -130,8 +127,9 @@ class AudioPlayerBloc {
   }
 
   void _handlePosistionTransitions() {
-    audioService.playbackPosition
-        .listen((d) => _playbackPositionSubject.add(d));
+    audioService.playbackPosition.listen(
+      (d) => _playbackPositionSubject.add(d),
+    );
 
     _posistionTransition.stream.listen((position) async {
       logger.i('Position transition: $position');

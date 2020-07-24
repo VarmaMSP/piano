@@ -46,15 +46,10 @@ abstract class AudioService {
   ///
   /// This is a expensive method to call, use syncNowPlaying
   /// when appropriate
-  Future<void> syncQueue({bool startTask = true});
-
-  /// Makes background service load now playing track
-  /// [startTask] Starts background task if background task is not running
-  /// defaults to false
-  Future<void> syncNowPlaying({bool startTask = true});
+  Future<void> syncQueue({bool startTask = false});
 
   /// Makes background service load setting
-  Future<void> syncSetting();
+  Future<void> syncSetting({bool startTask = false});
 
   // Resume current episode
   Future<void> play();
