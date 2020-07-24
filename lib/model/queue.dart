@@ -79,7 +79,7 @@ class Queue extends Equatable {
   Queue removeTrack(int pos) {
     return Queue(
       position: when<int, int>({
-        (p) => pos >= p: (p) => p - 1,
+        (p) => p >= pos: (p) => p - 1,
         (_) => true: (p) => p,
       })(position),
       audioTracks: [

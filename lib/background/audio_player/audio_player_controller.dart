@@ -39,7 +39,10 @@ class AudioPlayerController {
   AudioPlayerController({Api api, Db db}) {
     _store = newStore(api, db);
     _audioPlayer = AudioPlayer(
-      onComplete: _playNext,
+      onComplete: () async {
+        await _stopPlaybackSync();
+        await _playNext();
+      },
       onPlaying: _startPlaybackSync,
       onPaused: _stopPlaybackSync,
       onStart: _syncPlaybackStart,
@@ -108,6 +111,7 @@ class AudioPlayerController {
     await _store.audioPlayer.saveQueue(
       prevQueue.skipToNextTrack().removeTrack(prevQueue.position),
     );
+    await syncQueue();
   }
 
   Future<void> _syncPlaybackStart(Duration duration) async {
@@ -147,33 +151,36 @@ class AudioPlayerController {
 
   void _handleStateChanges() {
     _nowPlayingSubject.stream
-        .distinct((prev, next) => prev.episode.id == next.episode.id)
-        .listen((audioTrack) async {
-      if (audioTrack == null) {
-        return;
-      }
+        .distinct((prev, next) => prev?.episode?.id == next?.episode?.id)
+        .listen(
+      (audioTrack) async {
+        if (audioTrack == null) {
+          return;
+        }
 
-      final episodeId = audioTrack.episode.id;
-      final audioFile = await _store.audioFile.watchByEpisode(episodeId).first;
-      final playbackPos =
-          await _store.playbackPosition.watchByEpisode(episodeId).first;
+        final episodeId = audioTrack.episode.id;
+        final audioFile =
+            await _store.audioFile.watchByEpisode(episodeId).first;
+        final playbackPos =
+            await _store.playbackPosition.watchByEpisode(episodeId).first;
 
-      // Check if file is deleted on disk
-      if (audioFile != null && !await checkFileExists(audioFile.filepath)) {
-        await _store.audioFile.deleteByEpisode(episodeId);
+        // Check if file is deleted on disk
+        if (audioFile != null && !await checkFileExists(audioFile.filepath)) {
+          await _store.audioFile.deleteByEpisode(episodeId);
+          await _audioPlayer.playMediaItem(
+            audioTrack.toMediaItem(),
+            start: playbackPos?.position,
+            isFile: false,
+          );
+          return;
+        }
+
         await _audioPlayer.playMediaItem(
-          audioTrack.toMediaItem(),
+          audioTrack.toMediaItem(filePath: audioFile?.filepath),
           start: playbackPos?.position,
-          isFile: false,
+          isFile: audioFile != null,
         );
-        return;
-      }
-
-      await _audioPlayer.playMediaItem(
-        audioTrack.toMediaItem(filePath: audioFile?.filepath),
-        start: playbackPos?.position,
-        isFile: audioFile != null,
-      );
-    });
+      },
+    );
   }
 }

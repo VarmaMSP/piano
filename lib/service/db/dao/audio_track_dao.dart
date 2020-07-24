@@ -64,10 +64,4 @@ class AudioTrackDao extends DatabaseAccessor<SqlDb> with _$AudioTrackDaoMixin {
   Future<void> deleteAllTracks() {
     return delete(audioTracks).go();
   }
-
-  Future<void> deleteTracksNotInQueue(int queueLength) {
-    return (delete(audioTracks)
-          ..where((tbl) => tbl.position.isBiggerOrEqualValue(queueLength)))
-        .go();
-  }
 }

@@ -45,20 +45,24 @@ class AudioPlayer {
             return;
 
           case justaudio.AudioPlaybackState.paused:
-            await onPaused();
-            return utils.setState(
-              playing: false,
-              position: event.position,
-              processingState: audioservice.AudioProcessingState.ready,
-            );
+            return Future.wait([
+              onPaused(),
+              utils.setState(
+                playing: false,
+                position: event.position,
+                processingState: audioservice.AudioProcessingState.ready,
+              )
+            ]);
 
           case justaudio.AudioPlaybackState.playing:
-            await onPlaying();
-            return utils.setState(
-              playing: true,
-              position: event.position,
-              processingState: audioservice.AudioProcessingState.ready,
-            );
+            return Future.wait([
+              onPlaying(),
+              utils.setState(
+                playing: true,
+                position: event.position,
+                processingState: audioservice.AudioProcessingState.ready,
+              ),
+            ]);
 
           case justaudio.AudioPlaybackState.connecting:
             return utils.setState(
@@ -67,8 +71,13 @@ class AudioPlayer {
             );
 
           case justaudio.AudioPlaybackState.completed:
-            await onPaused();
-            return onComplete();
+            return Future.wait([
+              onComplete(),
+              utils.setState(
+                position: event.position,
+                processingState: audioservice.AudioProcessingState.completed,
+              ),
+            ]);
         }
       },
     );
@@ -148,8 +157,9 @@ class AudioPlayer {
       return;
     }
     final position = state.currentPosition;
+    final duration = await _player.durationFuture;
     final newPosition = Duration(seconds: position.inSeconds + seconds);
-    await seekTo(newPosition);
+    await seekTo(newPosition >= duration ? duration : newPosition);
   }
 
   Future<void> rewindBy({int seconds}) async {

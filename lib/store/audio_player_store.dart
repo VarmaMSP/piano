@@ -59,10 +59,10 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
     final podcasts = queue.audioTracks.map((x) => x.podcast).toList();
     final episodes = queue.audioTracks.map((x) => x.episode).toList();
     await db.transaction(() async {
+      await db.audioTrackDao.deleteAllTracks();
       await db.podcastDao.savePodcasts(podcasts);
       await db.episodeDao.saveEpisodes(episodes);
       await db.audioTrackDao.saveTracks(queue.audioTracks);
-      await db.audioTrackDao.deleteTracksNotInQueue(queue.audioTracks.length);
       await db.preferenceDao.savePreference(
         Preference(
           key: _queueDetailsKey,
