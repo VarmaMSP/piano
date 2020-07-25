@@ -30,7 +30,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
   static const double appBarHeight = 60;
   static const double tabBarHeight = 35;
-  static const double flexibleAreaHeight = 150;
+  static const double flexibleAreaHeight = 145;
 
   final TabController tabController;
   final String urlParam;
@@ -192,7 +192,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       child: TabBar(
         isScrollable: true,
         indicator: MD2Indicator(
-          indicatorHeight: 3.5,
+          indicatorHeight: 4,
           indicatorColor: Color(0xffffbe0b),
           indicatorSize: MD2IndicatorSize.full,
         ),
@@ -313,7 +313,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       opacity: animation.podcastDetailsOpacity,
       child: Container(
         height: flexibleAreaHeight,
-        padding: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 6),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

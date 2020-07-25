@@ -84,7 +84,9 @@ class DownloadListItem extends StatelessWidget {
                     Text(
                       '${formatDuration(seconds: audioFile.episode.duration)}',
                       style: Theme.of(context).textTheme.subtitle2.copyWith(
-                          color: TWColors.gray.shade900, fontSize: 11.75),
+                            color: TWColors.gray.shade900,
+                            fontSize: 11.75,
+                          ),
                     ),
                   ],
                 )

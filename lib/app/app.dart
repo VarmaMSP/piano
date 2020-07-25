@@ -17,9 +17,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ///! Calculate screen height as close to top of widget tree as possible,
-    ///! For some reason top padding returns 0 if you do otherwise
-    /// Cache screen height and screen width
+    ///! Calculate and cache screen height as close to the root of widget tree
+    ///! as possible, For some reason top padding returns 0 if you do otherwise
     getScreenHeight(context: context);
     getScreenWidth(context: context);
 

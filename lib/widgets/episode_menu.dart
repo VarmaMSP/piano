@@ -24,6 +24,7 @@ enum EpisodeOption {
 }
 
 class EpisodeMenu extends StatelessWidget {
+  final bool fromPlayer;
   final Episode episode;
   final Podcast podcast;
   final AudioTrack audioTrack;
@@ -34,6 +35,7 @@ class EpisodeMenu extends StatelessWidget {
 
   const EpisodeMenu({
     Key key,
+    this.fromPlayer,
     this.episode,
     this.podcast,
     this.audioTrack,
@@ -47,16 +49,21 @@ class EpisodeMenu extends StatelessWidget {
     Key key,
     @required Episode episode,
     @required Podcast podcast,
-    @required DownloadProgress downloadProgress,
+    @required EpisodeMeta episodeMeta,
   }) {
     return EpisodeMenu(
       key: key,
+      fromPlayer: false,
       episode: episode,
       podcast: podcast,
+      audioTrack: episodeMeta.audioTrack,
       options: [
         EpisodeOption.playNext,
-        EpisodeOption.addToQueue,
-        _downloadOption(downloadProgress)
+        if (episodeMeta?.audioTrack != null)
+          EpisodeOption.addToQueue
+        else
+          EpisodeOption.removeFromQueue,
+        _downloadOption(episodeMeta?.downloadProgress)
       ],
     );
   }
@@ -65,17 +72,22 @@ class EpisodeMenu extends StatelessWidget {
     Key key,
     @required Episode episode,
     @required Podcast podcast,
-    @required DownloadProgress downloadProgress,
+    @required EpisodeMeta episodeMeta,
   }) {
     return EpisodeMenu(
       key: key,
+      fromPlayer: false,
       episode: episode,
       podcast: podcast,
+      audioTrack: episodeMeta.audioTrack,
       options: [
         EpisodeOption.playNext,
-        EpisodeOption.addToQueue,
+        if (episodeMeta?.audioTrack != null)
+          EpisodeOption.addToQueue
+        else
+          EpisodeOption.removeFromQueue,
         EpisodeOption.goToPodcast,
-        _downloadOption(downloadProgress)
+        _downloadOption(episodeMeta?.downloadProgress)
       ],
     );
   }
@@ -88,6 +100,7 @@ class EpisodeMenu extends StatelessWidget {
   }) {
     return EpisodeMenu(
       key: key,
+      fromPlayer: false,
       episode: episode,
       podcast: podcast,
       options: [
@@ -109,6 +122,7 @@ class EpisodeMenu extends StatelessWidget {
   }) {
     return EpisodeMenu(
       key: key,
+      fromPlayer: true,
       episode: audioTrack.episode,
       podcast: audioTrack.podcast,
       audioTrack: audioTrack,
@@ -229,7 +243,7 @@ class EpisodeMenu extends StatelessWidget {
         break;
 
       case EpisodeOption.goToPodcast:
-        if (audioTrack != null) {
+        if (fromPlayer) {
           Navigator.of(context, rootNavigator: true).pop();
         }
         Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(

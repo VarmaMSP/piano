@@ -1,6 +1,9 @@
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 
+// Package imports:
+import 'package:rxdart/rxdart.dart';
+
 // Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/alarm_service/alarm_service.dart';
@@ -12,6 +15,7 @@ EpisodeStore newEpisodeStore(Api api, Db db, [AlarmService alarmService]) {
 }
 
 abstract class EpisodeStore {
+  Stream<EpisodeMeta> watchMeta(String episodeId);
   Stream<List<Episode>> watchByPodcastPaginated({
     @required String podcastId,
     @required int offset,
@@ -34,6 +38,23 @@ class _EpisodeStoreImpl extends EpisodeStore {
     @required this.db,
     @required this.alarmService,
   });
+
+  @override
+  Stream<EpisodeMeta> watchMeta(String episodeId) {
+    return Rx.combineLatest2<DownloadProgress, AudioTrack, EpisodeMeta>(
+      db.audioFileDao.watchProgressByEpisode(episodeId),
+      db.audioTrackDao.watchAllTracks().map(
+            (tracks) => tracks.firstWhere(
+              (track) => track.episode.id == episodeId,
+              orElse: () => null,
+            ),
+          ),
+      (downloadProgress, audioTrack) => EpisodeMeta(
+        downloadProgress: downloadProgress,
+        audioTrack: audioTrack,
+      ),
+    );
+  }
 
   @override
   Stream<List<Episode>> watchByPodcastPaginated({

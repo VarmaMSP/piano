@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 
 // Package imports:
 import 'package:dio/dio.dart';
-import 'package:phenopod/service/api/api.dart';
-import 'package:phenopod/service/db/db.dart';
 import 'package:retry/retry.dart';
 
 // Project imports:
+import 'package:phenopod/service/api/api.dart';
+import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/store/store.dart';
 import 'worker.dart';
 

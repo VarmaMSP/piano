@@ -4,7 +4,6 @@ import 'package:flutter/material.dart' hide BottomAppBar;
 
 // Package imports:
 import 'package:moor_db_viewer/moor_db_viewer.dart';
-import 'package:phenopod/service/db/db.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -12,6 +11,7 @@ import 'package:phenopod/app/app_screen_content.dart';
 import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/widgets/bottom_app_bar/main.dart';
 
 class AppScreen extends StatelessWidget {

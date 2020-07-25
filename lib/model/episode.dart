@@ -81,3 +81,16 @@ class Episode extends Equatable {
   @override
   String toString() => 'Episode: { title: $title }';
 }
+
+class EpisodeMeta extends Equatable {
+  final DownloadProgress downloadProgress;
+  final AudioTrack audioTrack;
+
+  EpisodeMeta({
+    @required this.downloadProgress,
+    @required this.audioTrack,
+  });
+
+  @override
+  List<Object> get props => [audioTrack, downloadProgress];
+}

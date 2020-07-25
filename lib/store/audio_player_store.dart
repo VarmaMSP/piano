@@ -26,6 +26,7 @@ abstract class AudioPlayerStore {
   Future<void> saveQueue(Queue queue);
   Stream<Queue> watchQueue();
   Stream<AudioTrack> watchNowPlaying();
+  Stream<AudioTrack> watchTrackByEpisodeId(String episodeId);
 }
 
 class _AudioPlayerStoreImpl extends AudioPlayerStore {
@@ -103,5 +104,14 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
             : db.audioTrackDao.getTrackByPosition(details.position);
       },
     );
+  }
+
+  @override
+  Stream<AudioTrack> watchTrackByEpisodeId(String episodeId) {
+    return db.audioTrackDao.watchAllTracks().map(
+          (tracks) => tracks.firstWhere(
+              (track) => track.episode.id == episodeId,
+              orElse: () => null),
+        );
   }
 }

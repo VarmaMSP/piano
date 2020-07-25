@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+import 'package:when_expression/when_expression.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
@@ -60,7 +61,10 @@ class EpisodeListItem extends StatelessWidget {
                             .replaceAll('\n', ' ')
                             .replaceAll('&nbsp;', ' ')
                             .replaceAll('&amp', '&'),
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: Theme.of(context).textTheme.subtitle2.copyWith(
+                              fontSize: 12.25,
+                              color: Colors.grey.shade800,
+                            ),
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
@@ -79,9 +83,48 @@ class EpisodeListItem extends StatelessWidget {
   Widget _buildDetails(BuildContext context) {
     final store = Provider.of<Store>(context);
 
-    return StreamBuilder<DownloadProgress>(
-      stream: store.audioFile.watchDownloadProgress(episode.id),
+    return StreamBuilder<EpisodeMeta>(
+      stream: store.episode.watchMeta(episode.id),
       builder: (context, snapshot) {
+        final subtitle = when<EpisodeMeta, Widget>({
+          (m) => m == null: (_) => _episodeInfo(context),
+          (_) => true: when<EpisodeMeta, Widget>({
+            (m) => m.downloadProgress != null && !m.downloadProgress.isComplete:
+                (m) => _episodeDownloadInfo(context, m.downloadProgress),
+            (_) => true: (m) => Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (m.audioTrack != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 0),
+                        child: Icon(
+                          MdiIcons.playlistCheck,
+                          size: 17,
+                          color: TWColors.green.shade700,
+                        ),
+                      ),
+                    if (m.audioTrack != null) Container(width: 12),
+                    if (m.downloadProgress != null &&
+                        m.downloadProgress.isComplete)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 1),
+                        child: Icon(
+                          MdiIcons.checkUnderlineCircle,
+                          size: 14,
+                          color: TWColors.blue.shade700,
+                        ),
+                      ),
+                    if (m.downloadProgress != null &&
+                        m.downloadProgress.isComplete)
+                      Container(width: 12),
+                    Expanded(child: _episodeInfo(context)),
+                  ],
+                ),
+          }),
+        })(snapshot.data);
+
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -98,29 +141,8 @@ class EpisodeListItem extends StatelessWidget {
                       maxLines: 2,
                     ),
                   ),
-                  if (!snapshot.hasData)
-                    _episodeInfo(context)
-                  else if (snapshot.data.isComplete)
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 1),
-                          child: Icon(
-                            MdiIcons.checkUnderlineCircle,
-                            size: 14,
-                            color: TWColors.blue.shade700,
-                          ),
-                        ),
-                        Container(width: 12),
-                        Expanded(child: _episodeInfo(context)),
-                      ],
-                    )
-                  else
-                    _episodeDownloadInfo(context, snapshot.data),
-                  Container(height: 5),
+                  subtitle,
+                  Container(height: 4),
                 ],
               ),
             ),
@@ -130,12 +152,12 @@ class EpisodeListItem extends StatelessWidget {
                   ? EpisodeMenu.episodeListItem(
                       episode: episode,
                       podcast: podcast,
-                      downloadProgress: snapshot.data,
+                      episodeMeta: snapshot.data,
                     )
                   : EpisodeMenu.subscriptionListItem(
                       episode: episode,
                       podcast: podcast,
-                      downloadProgress: snapshot.data,
+                      episodeMeta: snapshot.data,
                     ),
             ),
           ],
@@ -163,7 +185,7 @@ class EpisodeListItem extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .subtitle2
-            .copyWith(fontSize: 12.5, color: Colors.grey.shade900),
+            .copyWith(fontSize: 12.5, color: Colors.grey.shade800),
         children: <TextSpan>[
           // Episode number and type
           if (type == EpisodeListItemType.podcastItem && text != null) ...[

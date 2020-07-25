@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
@@ -41,9 +42,12 @@ class AudioPlayerBottomBar extends StatelessWidget {
       margin: EdgeInsets.only(top: 6),
       child: TabBar(
         isScrollable: true,
-        indicatorColor: TWColors.yellow.shade400,
+        indicator: MD2Indicator(
+          indicatorHeight: 4,
+          indicatorColor: Color(0xffffbe0b),
+          indicatorSize: MD2IndicatorSize.full,
+        ),
         indicatorSize: TabBarIndicatorSize.label,
-        indicatorWeight: 4,
         labelColor: TWColors.gray.shade900,
         labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
         labelStyle: TextStyle(
