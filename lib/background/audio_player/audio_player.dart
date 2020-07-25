@@ -95,23 +95,24 @@ class AudioPlayer {
     bool isFile,
     Duration start,
   }) async {
+    final prevState = audioservice.AudioServiceBackground.state;
     if (utils.canStop(_player.playbackState)) {
       await _player.stop();
     }
-
     await audioservice.AudioServiceBackground.setMediaItem(mediaItem);
     final duration = !isFile
         ? await _player.setUrl(mediaItem.id)
         : await _player.setFilePath(mediaItem.id);
-
-    if (start != null) {
-      await _player.seek(start);
-    }
-    await onStart(duration);
     await audioservice.AudioServiceBackground.setMediaItem(
       mediaItem.copyWith(duration: duration),
     );
-    await play();
+    await onStart(duration);
+    if (start != null) {
+      await _player.seek(start);
+    }
+    if (prevState.playing) {
+      await play();
+    }
   }
 
   Future<void> skipTo(audioservice.MediaItem mediaItem) async {
