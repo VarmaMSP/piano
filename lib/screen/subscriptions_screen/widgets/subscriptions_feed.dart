@@ -33,7 +33,8 @@ class SubscriptionsFeed extends StatelessWidget {
         await Provider.of<Store>(context, listen: false).subscription.refresh();
         return true;
       },
-      color: TWColors.purple.shade600,
+      color: TWColors.gray.shade100,
+      backgroundColor: TWColors.purple.shade700,
       displacement: 100,
       child: CustomScrollView(
         slivers: [

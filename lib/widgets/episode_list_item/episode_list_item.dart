@@ -61,10 +61,7 @@ class EpisodeListItem extends StatelessWidget {
                             .replaceAll('\n', ' ')
                             .replaceAll('&nbsp;', ' ')
                             .replaceAll('&amp', '&'),
-                        style: Theme.of(context).textTheme.subtitle2.copyWith(
-                              fontSize: 12.25,
-                              color: Colors.grey.shade800,
-                            ),
+                        style: Theme.of(context).textTheme.subtitle2,
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
@@ -185,7 +182,7 @@ class EpisodeListItem extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .subtitle2
-            .copyWith(fontSize: 12.5, color: Colors.grey.shade800),
+            .copyWith(fontSize: 12.5, color: Colors.grey.shade900),
         children: <TextSpan>[
           // Episode number and type
           if (type == EpisodeListItemType.podcastItem && text != null) ...[

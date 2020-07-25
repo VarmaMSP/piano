@@ -35,12 +35,12 @@ class EpisodeMenu extends StatelessWidget {
 
   const EpisodeMenu({
     Key key,
-    this.fromPlayer,
+    this.fromPlayer = false,
     this.episode,
     this.podcast,
     this.audioTrack,
     this.options,
-    this.lighten,
+    this.lighten = false,
     this.trackCount,
     this.nowPlayingPosition,
   }) : super(key: key);
@@ -53,13 +53,12 @@ class EpisodeMenu extends StatelessWidget {
   }) {
     return EpisodeMenu(
       key: key,
-      fromPlayer: false,
       episode: episode,
       podcast: podcast,
-      audioTrack: episodeMeta.audioTrack,
+      audioTrack: episodeMeta?.audioTrack,
       options: [
         EpisodeOption.playNext,
-        if (episodeMeta?.audioTrack != null)
+        if (episodeMeta?.audioTrack == null)
           EpisodeOption.addToQueue
         else
           EpisodeOption.removeFromQueue,
@@ -76,13 +75,12 @@ class EpisodeMenu extends StatelessWidget {
   }) {
     return EpisodeMenu(
       key: key,
-      fromPlayer: false,
       episode: episode,
       podcast: podcast,
-      audioTrack: episodeMeta.audioTrack,
+      audioTrack: episodeMeta?.audioTrack,
       options: [
         EpisodeOption.playNext,
-        if (episodeMeta?.audioTrack != null)
+        if (episodeMeta?.audioTrack == null)
           EpisodeOption.addToQueue
         else
           EpisodeOption.removeFromQueue,
@@ -100,7 +98,6 @@ class EpisodeMenu extends StatelessWidget {
   }) {
     return EpisodeMenu(
       key: key,
-      fromPlayer: false,
       episode: episode,
       podcast: podcast,
       options: [
@@ -210,7 +207,7 @@ class EpisodeMenu extends StatelessWidget {
   void _handleOnPress(BuildContext context, EpisodeOption option) {
     switch (option) {
       case EpisodeOption.playNext:
-        if (audioTrack != null && audioTrack.position != nowPlayingPosition) {
+        if (fromPlayer && audioTrack.position != nowPlayingPosition) {
           Provider.of<AudioPlayerBloc>(context, listen: false).addQueueAction(
             QueueAction.changeTrackPosition(
               from: audioTrack.position,
