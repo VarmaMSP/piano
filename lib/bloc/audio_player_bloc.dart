@@ -47,9 +47,9 @@ class AudioPlayerBloc {
   }
 
   void _handleAudioActions() {
-    _audioAction.stream.listen((audioState) async {
-      logger.w('stateTransition: $audioState');
-      switch (audioState) {
+    _audioAction.stream.listen((audioAction) async {
+      logger.w('stateTransition: $audioAction');
+      switch (audioAction) {
         case AudioAction.play:
           await audioService.play();
           break;
@@ -91,12 +91,12 @@ class AudioPlayerBloc {
         playTrack: (data) async {
           await store.audioPlayer
               .saveQueue(prevQueue.addToTop(data.audioTrack).skipToNextTrack());
-          await audioService.syncQueue();
+          await audioService.syncQueue(startTask: true);
         },
         playTrackAt: (data) async {
           await store.audioPlayer
               .saveQueue(prevQueue.playTrackAt(data.position));
-          await audioService.syncQueue();
+          await audioService.syncQueue(startTask: true);
         },
         addToQueueTop: (data) async {
           await store.audioPlayer

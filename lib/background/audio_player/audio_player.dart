@@ -84,7 +84,7 @@ class AudioPlayer {
 
     // Set default state when start up
     await utils.setState(
-      playing: false,
+      playing: true,
       position: Duration.zero,
       processingState: audioservice.AudioProcessingState.none,
     );

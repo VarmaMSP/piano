@@ -15,7 +15,11 @@ class BackgroundPlayerTask extends audioservice.BackgroundAudioTask {
     final db = await newDb();
     final api = await newApi();
 
-    _audioPlayerController = AudioPlayerController(db: db, api: api);
+    _audioPlayerController = AudioPlayerController(
+      db: db,
+      api: api,
+      onQueueExhausted: onStop,
+    );
     await _audioPlayerController.start();
   }
 

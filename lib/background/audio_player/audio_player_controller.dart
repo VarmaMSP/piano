@@ -17,6 +17,7 @@ import 'audio_player.dart';
 class AudioPlayerController {
   Store _store;
   AudioPlayer _audioPlayer;
+  Future<void> Function() onQueueExhausted;
 
   /// Ticker to update playback position
   final Stream<int> _ticker =
@@ -36,7 +37,7 @@ class AudioPlayerController {
   /// Subscription to ticker
   StreamSubscription<dynamic> _tickerSubscription;
 
-  AudioPlayerController({Api api, Db db}) {
+  AudioPlayerController({Api api, Db db, this.onQueueExhausted}) {
     _store = newStore(api, db);
     _audioPlayer = AudioPlayer(
       onComplete: () async {
@@ -151,10 +152,13 @@ class AudioPlayerController {
 
   void _handleStateChanges() {
     _nowPlayingSubject.stream
-        .where((e) => e != null)
-        .distinct((prev, next) => prev.episode.id == next.episode.id)
+        .distinct((prev, next) => prev?.episode?.id == next?.episode?.id)
         .listen(
       (audioTrack) async {
+        if (audioTrack == null) {
+          return onQueueExhausted();
+        }
+
         final episodeId = audioTrack.episode.id;
         final audioFile =
             await _store.audioFile.watchByEpisode(episodeId).first;
