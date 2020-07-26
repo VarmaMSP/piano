@@ -1,9 +1,6 @@
 // Dart imports:
 import 'dart:ui';
 
-// Flutter imports:
-import 'package:flutter/services.dart';
-
 // Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
@@ -13,6 +10,7 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/utils/chrome.dart' as chromeutils;
 import 'package:phenopod/widgets/queue_list_item/queue_list_item.dart';
 import 'widgets/queue_header_delegate.dart';
 
@@ -26,12 +24,7 @@ class QueueScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
+    chromeutils.applySystemUIOverlayStyle();
 
     return Scaffold(
       backgroundColor: Colors.white,

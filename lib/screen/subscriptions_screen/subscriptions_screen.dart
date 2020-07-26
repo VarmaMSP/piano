@@ -44,8 +44,8 @@ class SubscriptionsScreen extends HookWidget {
             }
             return true;
           },
-          color: Colors.white,
-          backgroundColor: TWColors.purple.shade600,
+          color: TWColors.purple.shade600,
+          displacement: 80,
           child: NestedScrollView(
             key: nestedScrollViewKey,
             floatHeaderSlivers: true,

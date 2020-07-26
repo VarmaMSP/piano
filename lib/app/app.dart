@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -21,13 +20,6 @@ class App extends StatelessWidget {
     ///! as possible, For some reason top padding returns 0 if you do otherwise
     getScreenHeight(context: context);
     getScreenWidth(context: context);
-
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
 
     return StreamBuilder<bool>(
       stream: Provider.of<UserBloc>(context).userSignedIn,

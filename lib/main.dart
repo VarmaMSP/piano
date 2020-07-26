@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:event_bus/event_bus.dart';
@@ -22,6 +21,7 @@ import 'package:phenopod/service/audio_service/audio_service.dart';
 import 'package:phenopod/service/db/db.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/theme/theme.dart';
+import 'package:phenopod/utils/chrome.dart' as chromeutils;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,10 +31,7 @@ void main() async {
   final audioService = newAudioService();
   final alarmService = await newAlarmService();
 
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  await chromeutils.applyPreferredOrientations();
 
   // FIXME: calling this method, throwing error
   // await alarmService.scheduleTaskRunner();
@@ -105,12 +102,7 @@ class _RootState extends State<Root>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
+    chromeutils.applySystemUIOverlayStyle();
 
     return MultiProvider(
       providers: [

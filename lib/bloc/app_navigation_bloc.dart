@@ -7,7 +7,6 @@ import 'package:rxdart/subjects.dart';
 // Project imports:
 import 'package:phenopod/animation/bottom_app_bar_animation.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
 import 'package:phenopod/utils/utils.dart';
 
 class AppNavigationBloc {
@@ -68,20 +67,14 @@ class AppNavigationBloc {
 
     // Push new route
     await screen.map(
-      podcastScreen: (data) async {
-        final screen = await Future.microtask(
-          () => PodcastScreen(
-            urlParam: data.urlParam,
-            title: data.title,
-            author: data.author,
-          ),
-        );
-
-        await navigator.currentState.pushNamed(
-          '/podcast',
-          arguments: {'screen': screen},
-        );
-      },
+      podcastScreen: (data) => navigator.currentState.pushNamed(
+        '/podcast',
+        arguments: {
+          'urlParam': data.urlParam,
+          'title': data.title,
+          'author': data.author,
+        },
+      ),
       downloadsScreen: (data) => navigator.currentState.pushNamed(
         '/downloads',
         arguments: {},

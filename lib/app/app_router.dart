@@ -7,6 +7,7 @@ import 'package:phenopod/page_route/slide_left_page_route.dart';
 import 'package:phenopod/screen/downloads_screen/download_screen.dart';
 import 'package:phenopod/screen/home_screen/home_screen.dart';
 import 'package:phenopod/screen/library_screen/library_screen.dart';
+import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
 import 'package:phenopod/screen/subscriptions_screen/subscriptions_screen.dart';
 
 Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
@@ -23,7 +24,13 @@ Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
       case '/downloads':
         return SlideLeftPageRoute(builder: (_) => DownloadsScreen());
       case '/podcast':
-        return SlideLeftPageRoute(builder: (_) => args['screen']);
+        return SlideLeftPageRoute(
+          builder: (_) => PodcastScreen(
+            urlParam: args['urlParam'],
+            title: args['title'],
+            author: args['author'],
+          ),
+        );
       default:
         return null;
     }

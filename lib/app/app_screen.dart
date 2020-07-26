@@ -12,6 +12,7 @@ import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/bloc/audio_player_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/utils/chrome.dart' as chromeutils;
 import 'package:phenopod/widgets/bottom_app_bar/main.dart';
 
 class AppScreen extends StatelessWidget {
@@ -21,6 +22,8 @@ class AppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
     final appNavigationBloc = Provider.of<AppNavigationBloc>(context);
+
+    chromeutils.applySystemUIOverlayStyle();
 
     return Scaffold(
       backgroundColor: Colors.white,
