@@ -8,7 +8,7 @@ final ThemeData appTheme = ThemeData(
   pageTransitionsTheme: PageTransitionsTheme(
     builders: {
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
     },
   ),
   textTheme: TextTheme(

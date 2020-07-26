@@ -13,7 +13,6 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/page_route/route_transition_complete_notifier.dart';
 import 'package:phenopod/utils/request.dart';
 
 class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
@@ -81,22 +80,13 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             right: 0.0,
             child: _appBar(context),
           ),
-          ValueListenableBuilder<bool>(
-            valueListenable: Provider.of<RouteTransitionCompleteNotifier>(
-              context,
-            ),
-            child: Positioned(
+          if (screenData != null)
+            Positioned(
               bottom: 0.0,
               left: 0.0,
               right: 0.0,
               child: _tabBar(context),
             ),
-            builder: (context, routeTransitionComplete, child) {
-              return routeTransitionComplete && screenData != null
-                  ? child
-                  : Container();
-            },
-          ),
         ],
       ),
     );

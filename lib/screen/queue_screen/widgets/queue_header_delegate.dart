@@ -18,10 +18,10 @@ class QueueHeaderDelegate implements SliverPersistentHeaderDelegate {
   final void Function() scrollToTop;
 
   @override
-  double get maxExtent => 55.0;
+  double get maxExtent => 60.0;
 
   @override
-  double get minExtent => 55.0;
+  double get minExtent => 60.0;
 
   @override
   Widget build(

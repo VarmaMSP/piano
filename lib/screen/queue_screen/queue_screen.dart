@@ -56,7 +56,7 @@ class QueueScreen extends StatelessWidget {
               ];
             },
             pinnedHeaderSliverHeightBuilder: () {
-              return 65.0;
+              return 60.0;
             },
             innerScrollPositionKeyBuilder: () {
               return Key('List');

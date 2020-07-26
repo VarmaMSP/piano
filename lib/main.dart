@@ -26,8 +26,6 @@ import 'package:phenopod/theme/theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Provider.debugCheckInvalidValueType = null;
-
   final db = await newDb();
   final api = await newApi();
   final audioService = newAudioService();
@@ -165,7 +163,7 @@ class _RootState extends State<Root>
           onGenerateRoute: (settings) {
             switch (settings.name) {
               case '/app':
-                return SlideUpPageRoute(builder: (_) => App());
+                return SlideUpPageRoute.i(builder: (_) => App());
               case '/queue':
                 return SlideUpPageRoute(builder: (_) => QueueScreen());
               case '/search':

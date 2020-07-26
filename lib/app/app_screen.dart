@@ -47,7 +47,8 @@ class AppScreen extends StatelessWidget {
                       initialRoute: '/app',
                       onGenerateRoute: (settings) => settings.name == '/app'
                           ? MaterialPageRoute(
-                              builder: (_) => AppScreenContent())
+                              builder: (_) => AppScreenContent(),
+                            )
                           : null,
                     ),
                   ),
@@ -55,7 +56,7 @@ class AppScreen extends StatelessWidget {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    child: BottomAppBar(),
+                    child: RepaintBoundary(child: BottomAppBar()),
                   ),
                 ],
               ),

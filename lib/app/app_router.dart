@@ -15,11 +15,11 @@ Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
 
     switch (settings.name) {
       case '/home':
-        return SlideLeftPageRoute(builder: (_) => HomeScreen());
+        return SlideLeftPageRoute.i(builder: (_) => HomeScreen());
       case '/subscriptions':
-        return SlideLeftPageRoute(builder: (_) => SubscriptionsScreen());
+        return SlideLeftPageRoute.i(builder: (_) => SubscriptionsScreen());
       case '/library':
-        return SlideLeftPageRoute(builder: (_) => LibraryScreen());
+        return SlideLeftPageRoute.i(builder: (_) => LibraryScreen());
       case '/downloads':
         return SlideLeftPageRoute(builder: (_) => DownloadsScreen());
       case '/podcast':

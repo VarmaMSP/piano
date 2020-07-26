@@ -26,8 +26,10 @@ class BottomAppBarAnimation {
           CurvedAnimation(
             parent: controller,
             curve: Interval(
-                controllerBeginWhenShow, controllerBeginWhenShow + 0.3,
-                curve: Curves.linear),
+              controllerBeginWhenShow,
+              controllerBeginWhenShow + 0.3,
+              curve: Curves.linear,
+            ),
           ),
         ),
         audioPlayerPreviewOpacity = Tween<double>(

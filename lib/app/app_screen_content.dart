@@ -57,14 +57,16 @@ class AppScreenContent extends HookWidget {
     String initialRoute,
     bool offstage,
   }) {
-    return Offstage(
-      offstage: offstage,
-      child: Container(
-        color: Colors.white,
-        child: Navigator(
-          key: key,
-          initialRoute: initialRoute,
-          onGenerateRoute: makeGenerateRoute(),
+    return RepaintBoundary(
+      child: Offstage(
+        offstage: offstage,
+        child: Container(
+          color: Colors.white,
+          child: Navigator(
+            key: key,
+            initialRoute: initialRoute,
+            onGenerateRoute: makeGenerateRoute(),
+          ),
         ),
       ),
     );

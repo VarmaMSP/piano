@@ -9,7 +9,6 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:phenopod/animation/podcast_screen_animation.dart';
 import 'package:phenopod/hook/use_value.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/page_route/route_transition_complete_notifier.dart';
 import 'package:phenopod/store/store.dart';
 import 'podcast_screen_bloc.dart';
 import 'widgets/about_tab.dart';
@@ -85,21 +84,9 @@ class PodcastScreen extends HookWidget {
           innerScrollPositionKeyBuilder: () {
             return Key('Tab${tabController.index.toString()}');
           },
-          body: ValueListenableBuilder<bool>(
-            valueListenable:
-                Provider.of<RouteTransitionCompleteNotifier>(context),
-            child: !snapshot.hasData
-                ? _buildLoader()
-                : _buildTabs(snapshot.data, podcastScreenBloc, tabController),
-            builder: (context, routeTransitionComplete, child) {
-              return routeTransitionComplete
-                  ? child
-                  : Container(
-                      constraints: BoxConstraints.expand(),
-                      color: Colors.white,
-                    );
-            },
-          ),
+          body: !snapshot.hasData
+              ? _buildLoader()
+              : _buildTabs(snapshot.data, podcastScreenBloc, tabController),
         );
       },
     );
