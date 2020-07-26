@@ -43,7 +43,7 @@ class SlideLeftPageRoute extends MaterialPageRoute {
           CurvedAnimation(
             parent: animation,
             curve: Curves.easeOutExpo,
-            reverseCurve: Curves.easeOutExpo.flipped,
+            reverseCurve: Curves.easeOutCubic.flipped,
           ),
         );
 

@@ -32,17 +32,9 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
       padding: const EdgeInsets.symmetric(horizontal: 18),
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: <BoxShadow>[
-          if (forceElevated)
-            BoxShadow(color: TWColors.gray.shade400, blurRadius: 2),
-        ],
-        border: !forceElevated
-            ? Border(
-                bottom: BorderSide(
-                color: TWColors.gray.shade300,
-                width: 1.0,
-              ))
-            : null,
+        boxShadow: forceElevated
+            ? [BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)]
+            : [],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

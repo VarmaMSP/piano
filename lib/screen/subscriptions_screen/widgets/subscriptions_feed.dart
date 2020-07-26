@@ -11,7 +11,6 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 // Project imports:
 import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/episode_list_item/episode_list_item.dart';
@@ -28,37 +27,26 @@ class SubscriptionsFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        await Provider.of<Store>(context, listen: false).subscription.refresh();
-        return true;
-      },
-      color: TWColors.gray.shade100,
-      backgroundColor: TWColors.purple.shade700,
-      displacement: 100,
-      child: CustomScrollView(
-        slivers: [
-          _buildPodcasts(context, screenData),
-          _buildAnimatedEpisodeList(
+    return CustomScrollView(
+      slivers: [
+        _buildPodcasts(context, screenData),
+        _buildAnimatedEpisodeList(
+          screenData.feedItems.length <= 30
+              ? screenData.feedItems
+              : screenData.feedItems.sublist(0, 30),
+        ),
+        if (screenData.feedItems.isNotEmpty)
+          _buildEpisodeList(
             screenData.feedItems.length <= 30
-                ? screenData.feedItems
-                : screenData.feedItems.sublist(0, 30),
+                ? []
+                : screenData.feedItems.sublist(30),
+            screenData.receivedAllEpisodes,
           ),
-          if (screenData.feedItems.isNotEmpty)
-            _buildEpisodeList(
-              screenData.feedItems.length <= 30
-                  ? []
-                  : screenData.feedItems.sublist(30),
-              screenData.receivedAllEpisodes,
-            ),
-        ],
-      ),
+      ],
     );
   }
 
-  Widget _buildAnimatedEpisodeList(
-    List<FeedItem> feedItems,
-  ) {
+  Widget _buildAnimatedEpisodeList(List<FeedItem> feedItems) {
     return SliverImplicitlyAnimatedList<FeedItem>(
       items: feedItems,
       areItemsTheSame: (a, b) => a.episode.id == b.episode.id,
@@ -75,10 +63,7 @@ class SubscriptionsFeed extends StatelessWidget {
     );
   }
 
-  Widget _buildEpisodeList(
-    List<FeedItem> feedItems,
-    bool receivedAllEpisodes,
-  ) {
+  Widget _buildEpisodeList(List<FeedItem> feedItems, bool receivedAllEpisodes) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
@@ -130,7 +115,7 @@ class SubscriptionsFeed extends StatelessWidget {
       child: Container(
         width: getScreenWidth(),
         height: thumbnailSize,
-        margin: EdgeInsets.only(top: 20, bottom: 20),
+        margin: EdgeInsets.only(top: 15, bottom: 20),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {

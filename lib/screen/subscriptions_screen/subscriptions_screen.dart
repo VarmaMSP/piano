@@ -1,7 +1,14 @@
 // Package imports:
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
+    show NestedScrollViewRefreshIndicator;
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
 import 'package:provider/provider.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/hook/use_value.dart';
@@ -10,9 +17,6 @@ import 'package:phenopod/screen/subscriptions_screen/widgets/subscriptions_feed.
 import 'package:phenopod/screen/subscriptions_screen/widgets/subscriptions_header_delegate.dart';
 import 'package:phenopod/store/store.dart';
 import 'subscriptions_screen_bloc.dart';
-
-import 'package:flutter/material.dart'
-    hide NestedScrollView, NestedScrollViewState;
 
 class SubscriptionsScreen extends HookWidget {
   @override
@@ -31,27 +35,40 @@ class SubscriptionsScreen extends HookWidget {
     return StreamBuilder<SubscriptionsScreenData>(
       stream: subscriptionsScreenBloc.screenData,
       builder: (context, snapshot) {
-        return NestedScrollView(
-          key: nestedScrollViewKey,
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, hasScrolled) {
-            return [
-              SliverPersistentHeader(
-                delegate: SubscriptionsHeaderDelegate(
-                  forceElevated: hasScrolled,
-                  scrollToTop: () => nestedScrollViewKey
-                      .currentState.innerController
-                      .jumpTo(0.0),
-                ),
-              ),
-            ];
+        return NestedScrollViewRefreshIndicator(
+          onRefresh: () async {
+            if (snapshot.hasData) {
+              await Provider.of<Store>(context, listen: false)
+                  .subscription
+                  .refresh();
+            }
+            return true;
           },
-          body: !snapshot.hasData
-              ? Container()
-              : SubscriptionsFeed(
-                  screenData: snapshot.data,
-                  loadMoreEpisodes: subscriptionsScreenBloc.loadMoreEpisodes,
+          color: Colors.white,
+          backgroundColor: TWColors.purple.shade600,
+          child: NestedScrollView(
+            key: nestedScrollViewKey,
+            floatHeaderSlivers: true,
+            physics: const AlwaysScrollableScrollPhysics(),
+            headerSliverBuilder: (context, hasScrolled) {
+              return [
+                SliverPersistentHeader(
+                  delegate: SubscriptionsHeaderDelegate(
+                    forceElevated: hasScrolled,
+                    scrollToTop: () => nestedScrollViewKey
+                        .currentState.outerController
+                        .jumpTo(0.0),
+                  ),
                 ),
+              ];
+            },
+            body: !snapshot.hasData
+                ? Container()
+                : SubscriptionsFeed(
+                    screenData: snapshot.data,
+                    loadMoreEpisodes: subscriptionsScreenBloc.loadMoreEpisodes,
+                  ),
+          ),
         );
       },
     );

@@ -45,6 +45,7 @@ class DownloadListItem extends StatelessWidget {
     );
   }
 
+  // ignore: unused_element
   Widget _buildDetails(BuildContext context, {bool lighten}) {
     return Container(
       padding: EdgeInsets.only(left: 10.0),

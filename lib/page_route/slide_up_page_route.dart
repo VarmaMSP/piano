@@ -37,7 +37,6 @@ class SlideUpPageRoute extends MaterialPageRoute {
           CurvedAnimation(
             parent: animation,
             curve: Curves.easeOutExpo,
-            reverseCurve: Curves.easeOutExpo.flipped,
           ),
         );
 
@@ -47,8 +46,7 @@ class SlideUpPageRoute extends MaterialPageRoute {
         ).animate(
           CurvedAnimation(
             parent: secondaryAnimation,
-            curve: Curves.easeOutCirc,
-            reverseCurve: Curves.easeOutCirc.flipped,
+            curve: Curves.easeOut,
           ),
         );
 
