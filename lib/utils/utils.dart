@@ -48,7 +48,9 @@ String formatRelativeTime(DateTime dateTime) {
 /// If buildContext is not provided cached value is returned
 final getScreenHeight = () {
   double screenHeight;
-  return ({BuildContext context}) {
+  double topPadding;
+  double bottomPadding;
+  return ({BuildContext context, bool ignorePadding = false}) {
     if (screenHeight == null) {
       assert(context != null);
     }
@@ -56,9 +58,14 @@ final getScreenHeight = () {
     if (context != null || screenHeight == null) {
       final padding = MediaQuery.of(context).padding;
       final height = MediaQuery.of(context).size.height;
-      screenHeight = height - padding.top - padding.bottom;
+      screenHeight = height;
+      topPadding = padding.top;
+      bottomPadding = padding.bottom;
     }
-    return screenHeight;
+
+    return ignorePadding
+        ? screenHeight
+        : screenHeight - topPadding - bottomPadding;
   };
 }();
 
@@ -66,15 +73,24 @@ final getScreenHeight = () {
 /// If buildContext is not provided cached value is returned
 final getScreenWidth = () {
   double screenWidth;
-  return ({BuildContext context}) {
+  double leftPadding;
+  double rightPadding;
+  return ({BuildContext context, bool ignorePadding = false}) {
     if (screenWidth == null) {
       assert(context != null);
     }
 
     if (context != null || screenWidth == null) {
-      screenWidth = MediaQuery.of(context).size.width;
+      final padding = MediaQuery.of(context).padding;
+      final width = MediaQuery.of(context).size.width;
+      screenWidth = width;
+      leftPadding = padding.left;
+      rightPadding = padding.right;
     }
-    return screenWidth;
+
+    return ignorePadding
+        ? screenWidth
+        : screenWidth - leftPadding - rightPadding;
   };
 }();
 
