@@ -5,12 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
-import 'package:phenopod/store/audio_file_store.dart';
-import 'package:phenopod/store/setting_store.dart';
+import 'audio_file_store.dart';
 import 'audio_player_store.dart';
 import 'episode_store.dart';
 import 'playback_position_store.dart';
 import 'podcast_store.dart';
+import 'search_store.dart';
+import 'setting_store.dart';
 import 'subscription_store.dart';
 import 'task_store.dart';
 import 'user_store.dart';
@@ -29,57 +30,64 @@ abstract class Store {
   TaskStore get task;
   AudioFileStore get audioFile;
   SettingStore get setting;
+  SearchStore get search;
 }
 
 class _StoreImpl extends Store {
-  final UserStore _user;
-  final PodcastStore _podcast;
-  final EpisodeStore _episode;
-  final SubscriptionStore _subscription;
-  final AudioPlayerStore _audioPlayer;
-  final PlaybackPositionStore _playbackPosition;
-  final TaskStore _task;
-  final AudioFileStore _audioFile;
-  final SettingStore _setting;
+  final UserStore _userStore;
+  final PodcastStore _podcastStore;
+  final EpisodeStore _episodeStore;
+  final SubscriptionStore _subscriptionStore;
+  final AudioPlayerStore _audioPlayerStore;
+  final PlaybackPositionStore _playbackPositionStore;
+  final TaskStore _taskStore;
+  final AudioFileStore _audioFileStore;
+  final SettingStore _settingStore;
+  final SearchStore _searchStore;
 
   _StoreImpl({
     @required Api api,
     @required Db db,
     @required AlarmService alarmService,
-  })  : _user = newUserStore(api, db, alarmService),
-        _podcast = newPodcastStore(api, db, alarmService),
-        _episode = newEpisodeStore(api, db, alarmService),
-        _subscription = newSubscriptionStore(api, db, alarmService),
-        _audioPlayer = newAudioPlayerStore(api, db, alarmService),
-        _playbackPosition = newPlaybackPositionStore(api, db, alarmService),
-        _task = newTaskStore(api, db, alarmService),
-        _audioFile = newAudioFileStore(api, db, alarmService),
-        _setting = newSettingStore(api, db, alarmService);
+  })  : _userStore = newUserStore(api, db, alarmService),
+        _podcastStore = newPodcastStore(api, db, alarmService),
+        _episodeStore = newEpisodeStore(api, db, alarmService),
+        _subscriptionStore = newSubscriptionStore(api, db, alarmService),
+        _audioPlayerStore = newAudioPlayerStore(api, db, alarmService),
+        _playbackPositionStore =
+            newPlaybackPositionStore(api, db, alarmService),
+        _taskStore = newTaskStore(api, db, alarmService),
+        _audioFileStore = newAudioFileStore(api, db, alarmService),
+        _settingStore = newSettingStore(api, db, alarmService),
+        _searchStore = newSearchStore(api, db, alarmService);
 
   @override
-  AudioPlayerStore get audioPlayer => _audioPlayer;
+  AudioPlayerStore get audioPlayer => _audioPlayerStore;
 
   @override
-  EpisodeStore get episode => _episode;
+  EpisodeStore get episode => _episodeStore;
 
   @override
-  PlaybackPositionStore get playbackPosition => _playbackPosition;
+  PlaybackPositionStore get playbackPosition => _playbackPositionStore;
 
   @override
-  PodcastStore get podcast => _podcast;
+  PodcastStore get podcast => _podcastStore;
 
   @override
-  SubscriptionStore get subscription => _subscription;
+  SubscriptionStore get subscription => _subscriptionStore;
 
   @override
-  TaskStore get task => _task;
+  TaskStore get task => _taskStore;
 
   @override
-  UserStore get user => _user;
+  UserStore get user => _userStore;
 
   @override
-  AudioFileStore get audioFile => _audioFile;
+  AudioFileStore get audioFile => _audioFileStore;
 
   @override
-  SettingStore get setting => _setting;
+  SettingStore get setting => _settingStore;
+
+  @override
+  SearchStore get search => _searchStore;
 }

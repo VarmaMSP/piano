@@ -2,6 +2,7 @@
 import 'package:path_provider/path_provider.dart';
 
 // Project imports:
+import 'package:phenopod/service/api/search_api.dart';
 import 'episode_api.dart';
 import 'http_client.dart';
 import 'podcast_api.dart';
@@ -20,6 +21,7 @@ abstract class Api {
   PodcastApi get podcast;
   EpisodeApi get episode;
   SubscriptionApi get subscription;
+  SearchApi get search;
 }
 
 class _ApiImpl extends Api {
@@ -27,12 +29,14 @@ class _ApiImpl extends Api {
   final EpisodeApi _episodeApi;
   final UserApi _userApi;
   final SubscriptionApi _subscriptionApi;
+  final SearchApi _searchApi;
 
   _ApiImpl(HttpClient httpClient)
       : _podcastApi = newPodcastApi(httpClient),
         _episodeApi = newEpisodeApi(httpClient),
         _userApi = newUserApi(httpClient),
-        _subscriptionApi = newSubscriptionApi(httpClient);
+        _subscriptionApi = newSubscriptionApi(httpClient),
+        _searchApi = newSearchApi(httpClient);
 
   @override
   PodcastApi get podcast => _podcastApi;
@@ -45,4 +49,7 @@ class _ApiImpl extends Api {
 
   @override
   SubscriptionApi get subscription => _subscriptionApi;
+
+  @override
+  SearchApi get search => _searchApi;
 }

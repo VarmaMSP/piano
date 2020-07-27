@@ -1,14 +1,18 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'
+    hide NestedScrollView, NestedScrollViewState;
 
 // Package imports:
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
+import 'package:provider/provider.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/hook/use_provider.dart';
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/chrome.dart' as chromeutils;
-import 'package:tailwind_colors/tailwind_colors.dart';
 import 'search_screen_bloc.dart';
 import 'widgets/search_header_delegate.dart';
 import 'widgets/suggestions_list.dart';
@@ -18,8 +22,15 @@ class SearchScreen extends HookWidget {
   Widget build(BuildContext context) {
     chromeutils.applySystemUIOverlayStyle();
 
+    final nestedScrollViewKey = useMemoized(
+      () => GlobalKey<NestedScrollViewState>(),
+      [],
+    );
+
     final searchScreenBloc = useProvider(
-      create: (_) => SearchScreenBloc(),
+      create: (context) => SearchScreenBloc(
+        store: Provider.of<Store>(context),
+      ),
       dispose: (_, value) => value.dispose(),
     );
 
@@ -52,7 +63,9 @@ class SearchScreen extends HookWidget {
         stream: searchScreenBloc.suggestions,
         builder: (context, snapshot) {
           return NestedScrollView(
+            key: nestedScrollViewKey,
             headerSliverBuilder: (context, hasScrolled) {
+              print(hasScrolled);
               return [
                 SliverPersistentHeader(
                   pinned: true,
@@ -64,36 +77,48 @@ class SearchScreen extends HookWidget {
                 ),
               ];
             },
-            body: snapshot.hasData
-                ? SuggestionsList(suggestions: snapshot.data)
-                : Container(
-                    color: Colors.white,
-                    constraints: BoxConstraints.expand(),
-                    padding: EdgeInsets.only(left: 18, right: 18, bottom: 200),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '🔍',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 48),
-                          ),
-                          Container(height: 20),
-                          Text(
-                            'Search for podcasts...',
-                            textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.headline5.copyWith(
-                                      fontSize: 20,
-                                      height: 1.5,
-                                      color: TWColors.gray.shade900,
-                                    ),
-                          ),
-                        ],
+            pinnedHeaderSliverHeightBuilder: () {
+              return 60.0;
+            },
+            innerScrollPositionKeyBuilder: () {
+              return Key('subscriptions');
+            },
+            body: NestedScrollViewInnerScrollPositionKeyWidget(
+              const Key('subscriptions'),
+              snapshot.hasData
+                  ? SuggestionsList(suggestions: snapshot.data)
+                  : Container(
+                      color: Colors.white,
+                      constraints: BoxConstraints.expand(),
+                      padding:
+                          EdgeInsets.only(left: 18, right: 18, bottom: 200),
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '🔍',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 48),
+                            ),
+                            Container(height: 20),
+                            Text(
+                              'Search for podcasts...',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  .copyWith(
+                                    fontSize: 20,
+                                    height: 1.5,
+                                    color: TWColors.gray.shade900,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+            ),
           );
         },
       ),

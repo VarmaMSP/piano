@@ -1,12 +1,20 @@
+// Dart imports:
+import 'dart:async';
+
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+
 // Package imports:
 import 'package:rxdart/rxdart.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
-import 'package:phenopod/utils/request.dart';
+import 'package:phenopod/store/store.dart';
 
 // This Bloc represents local state of search screen
 class SearchScreenBloc {
+  final Store store;
+
   /// controller for suggestions
   final BehaviorSubject<List<SearchSuggestion>> _suggestions =
       BehaviorSubject<List<SearchSuggestion>>();
@@ -14,30 +22,20 @@ class SearchScreenBloc {
   /// Sink for searchText
   final PublishSubject<String> _searchText = PublishSubject<String>();
 
-  /// Indicates if thisblocis disposed
-  bool _isDisposed = false;
+  /// Store subscriptions
+  StreamSubscription<dynamic> _storeSubscription;
 
-  SearchScreenBloc() {
+  SearchScreenBloc({@required this.store}) {
     _handleSearchTextChanges();
   }
 
   void _handleSearchTextChanges() {
-    _searchText.stream
+    _storeSubscription = _searchText.stream
         .where((text) => text.isNotEmpty)
         .debounceTime(Duration(milliseconds: 300))
-        .listen(
-      (text) async {
-        final response = await makeRequest(
-          method: 'GET',
-          path: '/suggest',
-          queryParams: {'query': text},
-        );
-
-        if (!_isDisposed) {
-          _suggestions.add(response.searchSuggestions);
-        }
-      },
-    );
+        .flatMap((text) => Stream.fromFuture(store.search.getSuggestions(text)))
+        .throttleTime(Duration(milliseconds: 100))
+        .listen(_suggestions.add);
   }
 
   // Stream of search suggestions
@@ -47,8 +45,8 @@ class SearchScreenBloc {
   void Function(String) get changeSearchText => _searchText.add;
 
   Future<void> dispose() async {
+    await _storeSubscription.cancel();
     await _suggestions.close();
     await _searchText.close();
-    _isDisposed = true;
   }
 }
