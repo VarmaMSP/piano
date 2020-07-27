@@ -30,18 +30,15 @@ class Thumbnail extends StatelessWidget {
     final store = Provider.of<Store>(context);
     final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
-    final image = ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      child: CachedNetworkImage(
-        imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
-        fit: BoxFit.fill,
+    final image = CachedNetworkImage(
+      imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
+      fit: BoxFit.fill,
+      height: thumbnailSize,
+      width: thumbnailSize,
+      placeholder: (BuildContext context, String url) => Container(
         height: thumbnailSize,
         width: thumbnailSize,
-        placeholder: (BuildContext context, String url) => Container(
-          height: thumbnailSize,
-          width: thumbnailSize,
-          color: TWColors.gray.shade300,
-        ),
+        color: TWColors.gray.shade300,
       ),
     );
 
@@ -64,7 +61,7 @@ class Thumbnail extends StatelessWidget {
       width: thumbnailSize,
       alignment: Alignment.center,
       child: Icon(
-        Icons.play_arrow,
+        Icons.play_arrow_rounded,
         color: Colors.white,
         size: 26,
       ),

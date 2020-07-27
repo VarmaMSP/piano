@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
+import 'package:phenopod/widgets/empty_screen_placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -68,33 +69,9 @@ class SubscriptionsScreen extends HookWidget {
                     screenData: snapshot.data,
                     loadMoreEpisodes: subscriptionsScreenBloc.loadMoreEpisodes,
                   )
-                : Container(
-                    color: Colors.white,
-                    constraints: BoxConstraints.expand(),
-                    padding: EdgeInsets.only(left: 40, right: 40, bottom: 100),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '😅',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 48),
-                          ),
-                          Container(height: 20),
-                          Text(
-                            'Looks like you haven\'t subscribed to any podcasts',
-                            textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.headline5.copyWith(
-                                      fontSize: 20,
-                                      height: 1.5,
-                                      color: TWColors.gray.shade900,
-                                    ),
-                          ),
-                        ],
-                      ),
-                    ),
+                : EmptyScreenPlaceholder(
+                    emoji: '😱',
+                    text: 'You haven\'t subscribed to any podcasts',
                   ),
           ),
         );

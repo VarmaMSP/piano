@@ -5,8 +5,8 @@ import 'package:flutter/material.dart'
 // Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
+import 'package:phenopod/widgets/empty_screen_placeholder.dart';
 import 'package:provider/provider.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/hook/use_provider.dart';
@@ -87,36 +87,9 @@ class SearchScreen extends HookWidget {
               const Key('subscriptions'),
               snapshot.hasData
                   ? SuggestionsList(suggestions: snapshot.data)
-                  : Container(
-                      color: Colors.white,
-                      constraints: BoxConstraints.expand(),
-                      padding:
-                          EdgeInsets.only(left: 18, right: 18, bottom: 200),
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '🔍',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 48),
-                            ),
-                            Container(height: 20),
-                            Text(
-                              'Search for podcasts...',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5
-                                  .copyWith(
-                                    fontSize: 20,
-                                    height: 1.5,
-                                    color: TWColors.gray.shade900,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
+                  : EmptyScreenPlaceholder(
+                      emoji: '🔍',
+                      text: 'Search for podcasts...',
                     ),
             ),
           );

@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:phenopod/widgets/empty_screen_placeholder.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -54,12 +55,15 @@ class QueueScreen extends StatelessWidget {
             innerScrollPositionKeyBuilder: () {
               return Key('List');
             },
-            body: !snapshot.hasData
-                ? Container()
-                : _buildList(
+            body: snapshot.hasData
+                ? _buildList(
                     context,
                     audioPlayerBloc,
                     snapshot.data,
+                  )
+                : EmptyScreenPlaceholder(
+                    emoji: '👻',
+                    text: 'You queue is empty',
                   ),
           );
         },

@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:phenopod/widgets/empty_screen_placeholder.dart';
 import 'package:provider/provider.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
@@ -54,33 +54,9 @@ class DownloadsScreen extends StatelessWidget {
                 ? CustomScrollView(
                     slivers: [_buildList(context, snapshot.data)],
                   )
-                : Container(
-                    color: Colors.white,
-                    constraints: BoxConstraints.expand(),
-                    padding: EdgeInsets.only(left: 40, right: 40, bottom: 100),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '🗄️',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 48),
-                          ),
-                          Container(height: 20),
-                          Text(
-                            'Your download list is empty',
-                            textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.headline5.copyWith(
-                                      fontSize: 20,
-                                      height: 1.5,
-                                      color: TWColors.gray.shade900,
-                                    ),
-                          ),
-                        ],
-                      ),
-                    ),
+                : EmptyScreenPlaceholder(
+                    emoji: '🗄️',
+                    text: 'Your download list is empty',
                   ),
           );
         },

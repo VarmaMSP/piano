@@ -97,7 +97,7 @@ class EpisodeListItem extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 0),
                         child: Icon(
-                          MdiIcons.playlistCheck,
+                          Icons.playlist_add_check_rounded,
                           size: 17,
                           color: TWColors.green.shade700,
                         ),
