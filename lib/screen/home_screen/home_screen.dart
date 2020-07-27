@@ -1,7 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:phenopod/screen/home_screen/widgets/home_header_delegate.dart';
-import 'package:phenopod/screen/home_screen/widgets/home_screen_feed.dart';
 
 // Package imports:
 import 'package:rxdart/rxdart.dart';
@@ -10,6 +8,8 @@ import 'package:tuple/tuple.dart';
 
 // Project imports:
 import 'package:phenopod/model/main.dart';
+import 'package:phenopod/screen/home_screen/widgets/home_header_delegate.dart';
+import 'package:phenopod/screen/home_screen/widgets/home_screen_feed.dart';
 import 'home_screen_bloc.dart';
 
 class HomeScreen extends StatefulWidget {

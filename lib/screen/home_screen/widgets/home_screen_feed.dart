@@ -1,9 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:tailwind_colors/tailwind_colors.dart';
+
+// Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/icon.dart';
 import 'package:phenopod/widgets/link.dart';
 import 'package:phenopod/widgets/podcast_thumbnail.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 class HomeScreenFeed extends StatelessWidget {
   const HomeScreenFeed({
@@ -126,7 +131,7 @@ class HomeScreenFeed extends StatelessWidget {
           Icon(
             getCategoryIcon(category.id),
             size: 22,
-            color: TWColors.gray.shade800,
+            color: TWColors.gray.shade700,
           ),
           Container(width: 14),
           Text(

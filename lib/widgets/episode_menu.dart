@@ -151,7 +151,7 @@ class EpisodeMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<EpisodeOption>(
       icon: Icon(
-        Icons.more_vert,
+        Icons.more_vert_rounded,
         color: audioTrack != null && lighten
             ? TWColors.gray.shade500
             : TWColors.gray.shade700,

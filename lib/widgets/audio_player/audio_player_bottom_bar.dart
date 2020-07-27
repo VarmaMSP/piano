@@ -77,14 +77,14 @@ class AudioPlayerBottomBar extends StatelessWidget {
         IconButton(
           iconSize: 28,
           color: TWColors.gray.shade700,
-          icon: Icon(Icons.expand_more),
+          icon: Icon(Icons.expand_more_rounded),
           onPressed: animations.collapseBottomAppBar,
           enableFeedback: true,
         ),
         IconButton(
           iconSize: 26,
           color: TWColors.gray.shade700,
-          icon: Icon(Icons.playlist_play),
+          icon: Icon(Icons.playlist_play_rounded),
           onPressed: () {
             Navigator.of(context, rootNavigator: true).pushNamed('/queue');
           },
@@ -93,7 +93,7 @@ class AudioPlayerBottomBar extends StatelessWidget {
         IconButton(
           iconSize: 24,
           color: TWColors.gray.shade700,
-          icon: Icon(Icons.more_vert),
+          icon: Icon(Icons.more_vert_rounded),
           onPressed: () {},
           enableFeedback: true,
         ),

@@ -24,13 +24,13 @@ class PodcastThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var thumbnailSize = 90.0;
-    var borderRadius = 10.0;
+    var borderRadius = 8.0;
     if (size == PodcastThumbnailSize.xs) {
       thumbnailSize = 36.0;
       borderRadius = 4.0;
     } else if (size == PodcastThumbnailSize.sm) {
       thumbnailSize = 80.0;
-      borderRadius = 10.0;
+      borderRadius = 8.0;
     }
 
     return Container(

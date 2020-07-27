@@ -64,8 +64,8 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
               color: Colors.white,
               child: IconButton(
                 icon: Icon(
-                  Icons.arrow_back,
-                  size: 23,
+                  Icons.arrow_back_rounded,
+                  size: 24,
                   color: TWColors.gray.shade700,
                 ),
                 visualDensity: VisualDensity.compact,

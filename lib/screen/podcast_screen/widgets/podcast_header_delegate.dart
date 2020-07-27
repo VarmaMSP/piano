@@ -106,8 +106,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
             offset: const Offset(-15, 0),
             child: IconButton(
               icon: Icon(
-                Icons.arrow_back,
-                size: 22,
+                Icons.arrow_back_rounded,
+                size: 24,
                 color: TWColors.gray.shade700,
               ),
               onPressed: () => Navigator.of(context).pop(),
@@ -150,8 +150,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               children: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.search,
-                    size: 22,
+                    Icons.search_rounded,
+                    size: 24,
                     color: TWColors.gray.shade700,
                   ),
                   visualDensity: VisualDensity.comfortable,
@@ -160,8 +160,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                 ),
                 IconButton(
                   icon: Icon(
-                    Icons.more_vert,
-                    size: 22,
+                    Icons.more_vert_rounded,
+                    size: 24,
                     color: TWColors.gray.shade700,
                   ),
                   visualDensity: VisualDensity.comfortable,

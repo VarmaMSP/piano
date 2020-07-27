@@ -31,7 +31,7 @@ class PlaybackControls extends StatelessWidget {
           padding: EdgeInsets.only(right: 32),
           child: IconButton(
             icon: Icon(
-              Icons.fast_rewind,
+              Icons.fast_rewind_rounded,
               color: TWColors.gray.shade700,
               size: 24.0,
             ),
@@ -48,7 +48,7 @@ class PlaybackControls extends StatelessWidget {
           padding: EdgeInsets.only(left: 32),
           child: IconButton(
             icon: Icon(
-              Icons.fast_forward,
+              Icons.fast_forward_rounded,
               color: TWColors.gray.shade700,
               size: 24.0,
             ),
@@ -67,16 +67,16 @@ class PlaybackControls extends StatelessWidget {
     IconData iconData;
     void Function() onPressed;
     if (audioState == AudioState.playing) {
-      iconData = Icons.pause;
+      iconData = Icons.pause_rounded;
       onPressed = onPause;
     } else if (audioState == AudioState.paused) {
-      iconData = Icons.play_arrow;
+      iconData = Icons.play_arrow_rounded;
       onPressed = onPlay;
     } else if (audioState == AudioState.none) {
-      iconData = Icons.play_arrow;
+      iconData = Icons.play_arrow_rounded;
       onPressed = onPlay;
     } else {
-      iconData = Icons.play_arrow;
+      iconData = Icons.play_arrow_rounded;
       onPressed = () {};
     }
 

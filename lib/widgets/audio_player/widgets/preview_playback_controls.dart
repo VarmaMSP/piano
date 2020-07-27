@@ -70,16 +70,16 @@ class PreviewPlaybackControls extends StatelessWidget {
     IconData iconData;
     void Function() onPressed;
     if (audioState == AudioState.playing) {
-      iconData = Icons.pause;
+      iconData = Icons.pause_rounded;
       onPressed = onPause;
     } else if (audioState == AudioState.paused) {
-      iconData = Icons.play_arrow;
+      iconData = Icons.play_arrow_rounded;
       onPressed = onPlay;
     } else if (audioState == AudioState.none) {
-      iconData = Icons.play_arrow;
+      iconData = Icons.play_arrow_rounded;
       onPressed = onPlay;
     } else {
-      iconData = Icons.play_arrow;
+      iconData = Icons.play_arrow_rounded;
       onPressed = () {};
     }
 

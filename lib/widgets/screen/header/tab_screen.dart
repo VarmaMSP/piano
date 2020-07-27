@@ -61,7 +61,7 @@ class TabScreenHeaderDelegate implements SliverPersistentHeaderDelegate {
             offset: Offset(16, 0),
             child: IconButton(
               icon: Icon(
-                Icons.search,
+                Icons.search_rounded,
                 size: 23,
                 color: TWColors.gray.shade700,
               ),

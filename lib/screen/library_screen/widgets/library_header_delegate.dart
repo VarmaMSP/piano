@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 
 // Package imports:
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class LibraryHeaderDelegate implements SliverPersistentHeaderDelegate {
@@ -60,7 +59,7 @@ class LibraryHeaderDelegate implements SliverPersistentHeaderDelegate {
               children: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.search,
+                    Icons.search_rounded,
                     size: 24,
                     color: TWColors.gray.shade700,
                   ),
@@ -69,7 +68,7 @@ class LibraryHeaderDelegate implements SliverPersistentHeaderDelegate {
                 ),
                 IconButton(
                   icon: Icon(
-                    MdiIcons.cogOutline,
+                    Icons.settings_outlined,
                     size: 24,
                     color: TWColors.gray.shade700,
                   ),

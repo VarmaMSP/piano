@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -57,15 +56,15 @@ class NavigationBar extends StatelessWidget {
           ),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(MdiIcons.homeOutline, size: 24.0),
+              icon: Icon(Icons.home_rounded, size: 24.0),
               title: const Text('Home'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.rss_feed, size: 24.0),
+              icon: Icon(Icons.rss_feed_rounded, size: 24.0),
               title: const Text('Subscriptions'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.folder_open, size: 24.0),
+              icon: Icon(Icons.folder_rounded, size: 24.0),
               title: const Text('Library'),
             ),
           ],

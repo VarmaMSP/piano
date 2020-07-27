@@ -52,7 +52,7 @@ class QueueListItem extends StatelessWidget {
               : EdgeInsets.only(left: 12),
           alignment: alignRight ? Alignment.centerRight : Alignment.centerLeft,
           color: TWColors.red.shade600,
-          child: Icon(MdiIcons.deleteOutline, color: Colors.white, size: 28),
+          child: Icon(Icons.delete_rounded, color: Colors.white, size: 28),
         );
 
     final store = Provider.of<Store>(context);
@@ -130,7 +130,7 @@ class QueueListItem extends StatelessWidget {
       padding: EdgeInsets.only(right: 8),
       child: nowPlayingPosition == audioTrack.position
           ? Icon(
-              MdiIcons.play,
+              Icons.play_arrow_rounded,
               color: TWColors.gray.shade700,
               size: 18,
             )
