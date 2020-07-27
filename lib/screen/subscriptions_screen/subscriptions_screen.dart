@@ -63,11 +63,38 @@ class SubscriptionsScreen extends HookWidget {
                 ),
               ];
             },
-            body: !snapshot.hasData
-                ? Container()
-                : SubscriptionsFeed(
+            body: snapshot.hasData && snapshot.data.podcasts.isNotEmpty
+                ? SubscriptionsFeed(
                     screenData: snapshot.data,
                     loadMoreEpisodes: subscriptionsScreenBloc.loadMoreEpisodes,
+                  )
+                : Container(
+                    color: Colors.white,
+                    constraints: BoxConstraints.expand(),
+                    padding: EdgeInsets.only(left: 40, right: 40, bottom: 100),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '😅',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 48),
+                          ),
+                          Container(height: 20),
+                          Text(
+                            'Looks like you haven\'t subscribed to any podcasts',
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.headline5.copyWith(
+                                      fontSize: 20,
+                                      height: 1.5,
+                                      color: TWColors.gray.shade900,
+                                    ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
           ),
         );

@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/widgets/download_list_item/download_list_item.dart';
+import 'package:tailwind_colors/tailwind_colors.dart';
 import 'widgets/dowloads_header_delegate.dart';
 
 class DownloadsScreen extends StatelessWidget {
@@ -49,14 +50,38 @@ class DownloadsScreen extends StatelessWidget {
                 ),
               ];
             },
-            body: CustomScrollView(
-              slivers: [
-                if (snapshot.hasData)
-                  _buildList(context, snapshot.data)
-                else
-                  SliverToBoxAdapter(child: Container()),
-              ],
-            ),
+            body: snapshot.hasData && snapshot.data.isNotEmpty
+                ? CustomScrollView(
+                    slivers: [_buildList(context, snapshot.data)],
+                  )
+                : Container(
+                    color: Colors.white,
+                    constraints: BoxConstraints.expand(),
+                    padding: EdgeInsets.only(left: 40, right: 40, bottom: 100),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '🗄️',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 48),
+                          ),
+                          Container(height: 20),
+                          Text(
+                            'Your download list is empty',
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.headline5.copyWith(
+                                      fontSize: 20,
+                                      height: 1.5,
+                                      color: TWColors.gray.shade900,
+                                    ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
           );
         },
       ),

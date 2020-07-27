@@ -1,7 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
-import 'package:flutter_emoji/flutter_emoji.dart';
 
 // Package imports:
 import 'package:tailwind_colors/tailwind_colors.dart';

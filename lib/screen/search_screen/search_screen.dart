@@ -8,6 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:phenopod/hook/use_provider.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/chrome.dart' as chromeutils;
+import 'package:tailwind_colors/tailwind_colors.dart';
 import 'search_screen_bloc.dart';
 import 'widgets/search_header_delegate.dart';
 import 'widgets/suggestions_list.dart';
@@ -81,10 +82,12 @@ class SearchScreen extends HookWidget {
                           Text(
                             'Search for podcasts...',
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                .copyWith(fontSize: 20),
+                            style:
+                                Theme.of(context).textTheme.headline5.copyWith(
+                                      fontSize: 20,
+                                      height: 1.5,
+                                      color: TWColors.gray.shade900,
+                                    ),
                           ),
                         ],
                       ),
