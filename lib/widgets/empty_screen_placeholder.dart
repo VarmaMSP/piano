@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class EmptyScreenPlaceholder extends StatelessWidget {

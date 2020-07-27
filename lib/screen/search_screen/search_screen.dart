@@ -5,7 +5,6 @@ import 'package:flutter/material.dart'
 // Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
-import 'package:phenopod/widgets/empty_screen_placeholder.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -13,6 +12,7 @@ import 'package:phenopod/hook/use_provider.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/chrome.dart' as chromeutils;
+import 'package:phenopod/widgets/empty_screen_placeholder.dart';
 import 'search_screen_bloc.dart';
 import 'widgets/search_header_delegate.dart';
 import 'widgets/suggestions_list.dart';

@@ -1,9 +1,9 @@
 // Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
-import 'package:phenopod/screen/library_screen/widgets/library_screen_content.dart';
 
 // Project imports:
+import 'package:phenopod/screen/library_screen/widgets/library_screen_content.dart';
 import 'widgets/library_header_delegate.dart';
 
 import 'package:flutter/material.dart'

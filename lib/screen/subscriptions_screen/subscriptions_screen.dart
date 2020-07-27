@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
-import 'package:phenopod/widgets/empty_screen_placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -17,6 +16,7 @@ import 'package:phenopod/model/main.dart';
 import 'package:phenopod/screen/subscriptions_screen/widgets/subscriptions_feed.dart';
 import 'package:phenopod/screen/subscriptions_screen/widgets/subscriptions_header_delegate.dart';
 import 'package:phenopod/store/store.dart';
+import 'package:phenopod/widgets/empty_screen_placeholder.dart';
 import 'subscriptions_screen_bloc.dart';
 
 class SubscriptionsScreen extends HookWidget {

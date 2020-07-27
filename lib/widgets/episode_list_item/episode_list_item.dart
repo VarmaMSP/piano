@@ -1,9 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:html_unescape/html_unescape_small.dart';
 
 // Package imports:
+import 'package:html_unescape/html_unescape_small.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
