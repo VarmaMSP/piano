@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:html_unescape/html_unescape_small.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -40,10 +41,11 @@ class AboutTab extends StatelessWidget {
                         await launch(link.url);
                       }
                     },
-                    text: screenData.podcast.description
+                    text: HtmlUnescape()
+                        .convert(screenData.podcast.description)
                         .replaceAll('\n', ' ')
-                        .replaceAll('&nbsp;', ' ')
-                        .replaceAll('&amp', '&'),
+                        .replaceAll('&amp', '&')
+                        .trim(),
                     style: TextStyle(
                       height: 1.5,
                       fontSize: 13.5,

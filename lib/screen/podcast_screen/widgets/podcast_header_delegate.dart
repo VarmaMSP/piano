@@ -21,7 +21,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.urlParam,
     @required this.title,
     @required this.author,
-    @required this.isSubscribed,
+    this.isSubscribed = false,
     @required this.screenData,
     @required this.animation,
     @required this.forceElevated,

@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:html_unescape/html_unescape_small.dart';
 
 // Package imports:
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -57,10 +58,11 @@ class EpisodeListItem extends StatelessWidget {
                       transform: Matrix4.translationValues(0, -1, 0),
                       padding: const EdgeInsets.only(right: 16.0),
                       child: Text(
-                        episode.summary
+                        HtmlUnescape()
+                            .convert(episode.summary)
                             .replaceAll('\n', ' ')
-                            .replaceAll('&nbsp;', ' ')
-                            .replaceAll('&amp', '&'),
+                            .replaceAll('&amp', '&')
+                            .trim(),
                         style: Theme.of(context).textTheme.subtitle2,
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,

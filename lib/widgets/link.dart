@@ -25,6 +25,7 @@ class PodcastLink extends StatelessWidget {
             'urlParam': podcast.urlParam,
             'title': podcast.title,
             'author': podcast.author,
+            'isSubscribed': false,
           },
         );
       },
