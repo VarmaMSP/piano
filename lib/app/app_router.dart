@@ -29,6 +29,7 @@ Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
             urlParam: args['urlParam'],
             title: args['title'],
             author: args['author'],
+            isSubscribed: args['isSubscribed'],
           ),
         );
       default:

@@ -535,6 +535,29 @@ class PodcastsCompanion extends UpdateCompanion<PodcastRow> {
     }
     return map;
   }
+
+  @override
+  String toString() {
+    return (StringBuffer('PodcastsCompanion(')
+          ..write('id: $id, ')
+          ..write('urlParam: $urlParam, ')
+          ..write('title: $title, ')
+          ..write('description: $description, ')
+          ..write('language: $language, ')
+          ..write('explicit: $explicit, ')
+          ..write('author: $author, ')
+          ..write('type: $type, ')
+          ..write('complete: $complete, ')
+          ..write('link: $link, ')
+          ..write('copyright: $copyright, ')
+          ..write('totalEpisodes: $totalEpisodes, ')
+          ..write('totalSeasons: $totalSeasons, ')
+          ..write('feedUrl: $feedUrl, ')
+          ..write('cachedAllEpisodes: $cachedAllEpisodes, ')
+          ..write('cacheUpdatedAt: $cacheUpdatedAt')
+          ..write(')'))
+        .toString();
+  }
 }
 
 class $PodcastsTable extends Podcasts
@@ -1329,6 +1352,26 @@ class EpisodesCompanion extends UpdateCompanion<EpisodeRow> {
     }
     return map;
   }
+
+  @override
+  String toString() {
+    return (StringBuffer('EpisodesCompanion(')
+          ..write('id: $id, ')
+          ..write('podcastId: $podcastId, ')
+          ..write('urlParam: $urlParam, ')
+          ..write('title: $title, ')
+          ..write('mediaUrl: $mediaUrl, ')
+          ..write('pubDate: $pubDate, ')
+          ..write('summary: $summary, ')
+          ..write('description: $description, ')
+          ..write('duration: $duration, ')
+          ..write('explicit: $explicit, ')
+          ..write('episode: $episode, ')
+          ..write('season: $season, ')
+          ..write('type: $type')
+          ..write(')'))
+        .toString();
+  }
 }
 
 class $EpisodesTable extends Episodes
@@ -1731,6 +1774,15 @@ class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
     }
     return map;
   }
+
+  @override
+  String toString() {
+    return (StringBuffer('AudioTracksCompanion(')
+          ..write('position: $position, ')
+          ..write('episodeId: $episodeId')
+          ..write(')'))
+        .toString();
+  }
 }
 
 class $AudioTracksTable extends AudioTracks
@@ -1980,6 +2032,17 @@ class PlaybackPositionsCompanion extends UpdateCompanion<PlaybackPositionRow> {
     }
     return map;
   }
+
+  @override
+  String toString() {
+    return (StringBuffer('PlaybackPositionsCompanion(')
+          ..write('episodeId: $episodeId, ')
+          ..write('position: $position, ')
+          ..write('duration: $duration, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
 }
 
 class $PlaybackPositionsTable extends PlaybackPositions
@@ -2205,6 +2268,15 @@ class PreferencesCompanion extends UpdateCompanion<PreferenceRow> {
     }
     return map;
   }
+
+  @override
+  String toString() {
+    return (StringBuffer('PreferencesCompanion(')
+          ..write('key: $key, ')
+          ..write('value: $value')
+          ..write(')'))
+        .toString();
+  }
 }
 
 class $PreferencesTable extends Preferences
@@ -2397,6 +2469,15 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SubscriptionsCompanion(')
+          ..write('podcastId: $podcastId, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -2612,6 +2693,16 @@ class SubscriptionFiltersCompanion
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SubscriptionFiltersCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -2948,6 +3039,19 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TasksCompanion(')
+          ..write('id: $id, ')
+          ..write('taskType: $taskType, ')
+          ..write('taskStatus: $taskStatus, ')
+          ..write('taskPriority: $taskPriority, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -3411,6 +3515,22 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFileRow> {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AudioFilesCompanion(')
+          ..write('episodeId: $episodeId, ')
+          ..write('url: $url, ')
+          ..write('filename: $filename, ')
+          ..write('storagePath: $storagePath, ')
+          ..write('downloadState: $downloadState, ')
+          ..write('downloadPercentage: $downloadPercentage, ')
+          ..write('downloadTaskId: $downloadTaskId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
   }
 }
 

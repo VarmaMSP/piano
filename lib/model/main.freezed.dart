@@ -2780,11 +2780,13 @@ class _$AppScreenTearOff {
   _PodcastScreen podcastScreen(
       {@required String urlParam,
       @required String title,
-      @required String author}) {
+      @required String author,
+      bool isSubscribed = false}) {
     return _PodcastScreen(
       urlParam: urlParam,
       title: title,
       author: author,
+      isSubscribed: isSubscribed,
     );
   }
 
@@ -2801,12 +2803,14 @@ mixin _$AppScreen {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required
-        Result podcastScreen(String urlParam, String title, String author),
+        Result podcastScreen(
+            String urlParam, String title, String author, bool isSubscribed),
     @required Result downloadsScreen(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result podcastScreen(String urlParam, String title, String author),
+    Result podcastScreen(
+        String urlParam, String title, String author, bool isSubscribed),
     Result downloadsScreen(),
     @required Result orElse(),
   });
@@ -2840,7 +2844,7 @@ abstract class _$PodcastScreenCopyWith<$Res> {
   factory _$PodcastScreenCopyWith(
           _PodcastScreen value, $Res Function(_PodcastScreen) then) =
       __$PodcastScreenCopyWithImpl<$Res>;
-  $Res call({String urlParam, String title, String author});
+  $Res call({String urlParam, String title, String author, bool isSubscribed});
 }
 
 class __$PodcastScreenCopyWithImpl<$Res> extends _$AppScreenCopyWithImpl<$Res>
@@ -2857,21 +2861,28 @@ class __$PodcastScreenCopyWithImpl<$Res> extends _$AppScreenCopyWithImpl<$Res>
     Object urlParam = freezed,
     Object title = freezed,
     Object author = freezed,
+    Object isSubscribed = freezed,
   }) {
     return _then(_PodcastScreen(
       urlParam: urlParam == freezed ? _value.urlParam : urlParam as String,
       title: title == freezed ? _value.title : title as String,
       author: author == freezed ? _value.author : author as String,
+      isSubscribed:
+          isSubscribed == freezed ? _value.isSubscribed : isSubscribed as bool,
     ));
   }
 }
 
 class _$_PodcastScreen implements _PodcastScreen {
   const _$_PodcastScreen(
-      {@required this.urlParam, @required this.title, @required this.author})
+      {@required this.urlParam,
+      @required this.title,
+      @required this.author,
+      this.isSubscribed = false})
       : assert(urlParam != null),
         assert(title != null),
-        assert(author != null);
+        assert(author != null),
+        assert(isSubscribed != null);
 
   @override
   final String urlParam;
@@ -2879,10 +2890,13 @@ class _$_PodcastScreen implements _PodcastScreen {
   final String title;
   @override
   final String author;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool isSubscribed;
 
   @override
   String toString() {
-    return 'AppScreen.podcastScreen(urlParam: $urlParam, title: $title, author: $author)';
+    return 'AppScreen.podcastScreen(urlParam: $urlParam, title: $title, author: $author, isSubscribed: $isSubscribed)';
   }
 
   @override
@@ -2895,7 +2909,10 @@ class _$_PodcastScreen implements _PodcastScreen {
             (identical(other.title, title) ||
                 const DeepCollectionEquality().equals(other.title, title)) &&
             (identical(other.author, author) ||
-                const DeepCollectionEquality().equals(other.author, author)));
+                const DeepCollectionEquality().equals(other.author, author)) &&
+            (identical(other.isSubscribed, isSubscribed) ||
+                const DeepCollectionEquality()
+                    .equals(other.isSubscribed, isSubscribed)));
   }
 
   @override
@@ -2903,7 +2920,8 @@ class _$_PodcastScreen implements _PodcastScreen {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(urlParam) ^
       const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(author);
+      const DeepCollectionEquality().hash(author) ^
+      const DeepCollectionEquality().hash(isSubscribed);
 
   @override
   _$PodcastScreenCopyWith<_PodcastScreen> get copyWith =>
@@ -2913,24 +2931,26 @@ class _$_PodcastScreen implements _PodcastScreen {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required
-        Result podcastScreen(String urlParam, String title, String author),
+        Result podcastScreen(
+            String urlParam, String title, String author, bool isSubscribed),
     @required Result downloadsScreen(),
   }) {
     assert(podcastScreen != null);
     assert(downloadsScreen != null);
-    return podcastScreen(urlParam, title, author);
+    return podcastScreen(urlParam, title, author, isSubscribed);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result podcastScreen(String urlParam, String title, String author),
+    Result podcastScreen(
+        String urlParam, String title, String author, bool isSubscribed),
     Result downloadsScreen(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (podcastScreen != null) {
-      return podcastScreen(urlParam, title, author);
+      return podcastScreen(urlParam, title, author, isSubscribed);
     }
     return orElse();
   }
@@ -2965,11 +2985,13 @@ abstract class _PodcastScreen implements AppScreen {
   const factory _PodcastScreen(
       {@required String urlParam,
       @required String title,
-      @required String author}) = _$_PodcastScreen;
+      @required String author,
+      bool isSubscribed}) = _$_PodcastScreen;
 
   String get urlParam;
   String get title;
   String get author;
+  bool get isSubscribed;
   _$PodcastScreenCopyWith<_PodcastScreen> get copyWith;
 }
 
@@ -3009,7 +3031,8 @@ class _$_DownloadsScreen implements _DownloadsScreen {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required
-        Result podcastScreen(String urlParam, String title, String author),
+        Result podcastScreen(
+            String urlParam, String title, String author, bool isSubscribed),
     @required Result downloadsScreen(),
   }) {
     assert(podcastScreen != null);
@@ -3020,7 +3043,8 @@ class _$_DownloadsScreen implements _DownloadsScreen {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result podcastScreen(String urlParam, String title, String author),
+    Result podcastScreen(
+        String urlParam, String title, String author, bool isSubscribed),
     Result downloadsScreen(),
     @required Result orElse(),
   }) {

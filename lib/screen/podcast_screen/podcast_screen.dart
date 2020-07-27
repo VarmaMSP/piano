@@ -24,11 +24,13 @@ class PodcastScreen extends HookWidget {
     @required this.urlParam,
     this.title,
     this.author,
+    this.isSubscribed,
   }) : super(key: key);
 
   final String urlParam;
   final String title;
   final String author;
+  final bool isSubscribed;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +70,7 @@ class PodcastScreen extends HookWidget {
                   urlParam: urlParam,
                   title: title,
                   author: author,
+                  isSubscribed: isSubscribed,
                   screenData: snapshot.data,
                   animation: podcastScreenAnimation,
                   forceElevated: innerBoxIsScrolled,

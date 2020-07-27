@@ -21,6 +21,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     @required this.urlParam,
     @required this.title,
     @required this.author,
+    @required this.isSubscribed,
     @required this.screenData,
     @required this.animation,
     @required this.forceElevated,
@@ -35,6 +36,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   final String urlParam;
   final String title;
   final String author;
+  final bool isSubscribed;
   final PodcastScreenData screenData;
   final PodcastScreenAnimation animation;
   final bool forceElevated;
@@ -271,14 +273,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                     : podcastActionsBloc.addAction(
                         PodcastAction.subscribe(podcast: screenData.podcast),
                       ),
-                color: screenData?.isSubscribed ?? false
+                color: screenData?.isSubscribed ?? isSubscribed
                     ? Colors.grey.shade300
                     : TWColors.purple.shade600,
-                textColor: screenData?.isSubscribed ?? false
+                textColor: screenData?.isSubscribed ?? isSubscribed
                     ? Colors.grey.shade800
                     : Colors.grey.shade100,
                 child: Text(
-                  screenData?.isSubscribed ?? false
+                  screenData?.isSubscribed ?? isSubscribed
                       ? 'SUBSCRIBED'
                       : 'SUBSCRIBE',
                   style: Theme.of(context).textTheme.headline6.copyWith(

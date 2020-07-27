@@ -73,6 +73,7 @@ class AppNavigationBloc {
           'urlParam': data.urlParam,
           'title': data.title,
           'author': data.author,
+          'isSubscribed': data.isSubscribed,
         },
       ),
       downloadsScreen: (data) => navigator.currentState.pushNamed(

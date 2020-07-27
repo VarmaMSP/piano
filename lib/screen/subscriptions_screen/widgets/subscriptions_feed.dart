@@ -134,6 +134,7 @@ class SubscriptionsFeed extends StatelessWidget {
                     urlParam: podcast.urlParam,
                     title: podcast.title,
                     author: podcast.author,
+                    isSubscribed: true,
                   ),
                 ),
                 child: Container(
