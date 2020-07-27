@@ -6,8 +6,12 @@ import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
-  SearchHeaderDelegate({this.searchBarController});
+  SearchHeaderDelegate({
+    @required this.focusNode,
+    @required this.searchBarController,
+  });
 
+  final FocusNode focusNode;
   final TextEditingController searchBarController;
 
   @override
@@ -22,12 +26,30 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(5.0),
+      borderSide: BorderSide(
+        color: TWColors.gray.shade400,
+        style: BorderStyle.solid,
+        width: 1,
+      ),
+    );
+
+    final focusedBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(5.0),
+      borderSide: BorderSide(
+        color: TWColors.blue.shade600,
+        style: BorderStyle.solid,
+        width: 1,
+      ),
+    );
+
     return Container(
       height: maxExtent,
-      padding: const EdgeInsets.symmetric(horizontal: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 0),
       color: Colors.white,
       child: Transform.translate(
-        offset: const Offset(-16, 0),
+        offset: const Offset(4, 0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -39,6 +61,7 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
                   size: 23,
                   color: TWColors.gray.shade700,
                 ),
+                visualDensity: VisualDensity.compact,
                 onPressed: () {
                   Navigator.of(context, rootNavigator: true).pop();
                 },
@@ -47,31 +70,31 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
             Container(width: 6),
             Expanded(
               child: Container(
-                height: 35,
-                child: FutureBuilder<bool>(
-                    future:
-                        Future.delayed(Duration(milliseconds: 200), () => true),
-                    builder: (context, snapshot) {
-                      return TextField(
-                        autofocus: snapshot.hasData,
-                        controller: searchBarController,
-                        decoration: InputDecoration(
-                          hintText: 'Search ...',
-                          fillColor: TWColors.gray.shade400,
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 0.0,
-                            horizontal: 10.0,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: BorderSide(
-                              color: Colors.amber,
-                              style: BorderStyle.solid,
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
+                height: 40,
+                padding: EdgeInsets.only(right: 18),
+                child: TextField(
+                  focusNode: focusNode,
+                  controller: searchBarController,
+                  decoration: InputDecoration(
+                    hintText: 'Search for podcasts...',
+                    hintStyle: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        .copyWith(color: TWColors.gray.shade700),
+                    filled: true,
+                    fillColor: TWColors.gray.shade100,
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 0.0,
+                      horizontal: 10.0,
+                    ),
+                    border: border,
+                    errorBorder: border,
+                    enabledBorder: border,
+                    disabledBorder: border,
+                    focusedBorder: focusedBorder,
+                  ),
+                  style: Theme.of(context).textTheme.headline6,
+                ),
               ),
             ),
           ],
@@ -82,7 +105,7 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
+    return oldDelegate != this;
   }
 
   @override

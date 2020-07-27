@@ -51,7 +51,6 @@ class RouteTransitionProgressCompleteNotifier extends ValueNotifier<bool> {
 
   void _listener() {
     final animationValue = animation.value;
-    print('${animationValue} - ${_status} - ${value}');
     if (_status == AnimationStatus.forward && animationValue >= progress) {
       value = true;
       return;

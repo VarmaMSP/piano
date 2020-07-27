@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
-import 'package:phenopod/hook/use_value.dart';
+import 'package:phenopod/hook/use_provider.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/screen/subscriptions_screen/widgets/subscriptions_feed.dart';
 import 'package:phenopod/screen/subscriptions_screen/widgets/subscriptions_header_delegate.dart';
@@ -21,15 +21,16 @@ import 'subscriptions_screen_bloc.dart';
 class SubscriptionsScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final subscriptionsScreenBloc = useValue<SubscriptionsScreenBloc>(
+    final nestedScrollViewKey = useMemoized(
+      () => GlobalKey<NestedScrollViewState>(),
+      [],
+    );
+
+    final subscriptionsScreenBloc = useProvider(
       create: (context) => SubscriptionsScreenBloc(
         store: Provider.of<Store>(context),
       ),
       dispose: (_, value) => value.dispose(),
-    );
-
-    final nestedScrollViewKey = useMemoized(
-      () => GlobalKey<NestedScrollViewState>(),
     );
 
     return StreamBuilder<SubscriptionsScreenData>(

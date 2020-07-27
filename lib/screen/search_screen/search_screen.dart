@@ -1,7 +1,11 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 // Project imports:
+import 'package:phenopod/hook/use_provider.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/chrome.dart' as chromeutils;
 import 'package:phenopod/widgets/screen/layout.dart';
@@ -9,38 +13,33 @@ import 'search_screen_bloc.dart';
 import 'widgets/search_header_delegate.dart';
 import 'widgets/suggestions_list.dart';
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key key}) : super(key: key);
-
-  @override
-  _SearchScreenState createState() => _SearchScreenState();
-}
-
-class _SearchScreenState extends State<SearchScreen> {
-  SearchScreenBloc _searchScreenBloc;
-  TextEditingController _searchBarController;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchScreenBloc = SearchScreenBloc();
-    _searchBarController = TextEditingController();
-
-    _searchBarController.addListener(() {
-      _searchScreenBloc.changeSearchText(_searchBarController.text);
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchScreenBloc.dispose();
-    _searchBarController.dispose();
-    super.dispose();
-  }
-
+class SearchScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     chromeutils.applySystemUIOverlayStyle();
+
+    final searchScreenBloc = useProvider(
+      create: (_) => SearchScreenBloc(),
+      dispose: (_, value) => value.dispose(),
+    );
+
+    final textController = useTextEditingController();
+    useEffect(() {
+      final listener = () {
+        searchScreenBloc.changeSearchText(textController.text);
+      };
+      textController.addListener(listener);
+      return () => textController.removeListener(listener);
+    }, []);
+
+    final focusNode = useFocusNode();
+    useEffect(() {
+      Future.delayed(
+        Duration(milliseconds: 200),
+        () => focusNode.requestFocus(),
+      );
+      return () {};
+    }, []);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -50,11 +49,12 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Container(),
       ),
       body: StreamBuilder<List<SearchSuggestion>>(
-        stream: _searchScreenBloc.suggestions,
+        stream: searchScreenBloc.suggestions,
         builder: (context, snapshot) {
           return ScreenLayout(
             header: SearchHeaderDelegate(
-              searchBarController: _searchBarController,
+              focusNode: focusNode,
+              searchBarController: textController,
             ),
             body: snapshot.hasData
                 ? SuggestionsList(suggestions: snapshot.data)

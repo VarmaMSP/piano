@@ -7,7 +7,7 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/animation/podcast_screen_animation.dart';
-import 'package:phenopod/hook/use_value.dart';
+import 'package:phenopod/hook/use_provider.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'podcast_screen_bloc.dart';
@@ -42,18 +42,18 @@ class PodcastScreen extends HookWidget {
       initialLength: 2,
     );
 
-    final podcastScreenBloc = useValue<PodcastScreenBloc>(
+    final nestedScrollViewKey = useMemoized(
+      () => GlobalKey<NestedScrollViewState>(),
+      [],
+    );
+
+    final podcastScreenBloc = useProvider(
       create: (context) => PodcastScreenBloc(
         urlParam: urlParam,
         store: Provider.of<Store>(context),
         eventBus: Provider.of<EventBus>(context),
       ),
       dispose: (_, value) => value.dispose(),
-    );
-
-    final nestedScrollViewKey = useValue(
-      create: (_) => GlobalKey<NestedScrollViewState>(),
-      dispose: (_, __) => null,
     );
 
     return StreamBuilder<PodcastScreenData>(
