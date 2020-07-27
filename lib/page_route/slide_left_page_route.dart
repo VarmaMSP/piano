@@ -1,23 +1,32 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:provider/provider.dart';
-
 // Project imports:
-import 'common.dart';
+import 'helpers.dart';
 
 class SlideLeftPageRoute extends MaterialPageRoute {
-  final bool isInitialPageRoute;
+  final PagePopInMode pagePopInMode;
 
   SlideLeftPageRoute({
     @required WidgetBuilder builder,
-    this.isInitialPageRoute = false,
+    @required this.pagePopInMode,
   }) : super(builder: builder);
 
-  /// Construct initial route
+  /// instant pop in
   SlideLeftPageRoute.i({WidgetBuilder builder})
-      : this(builder: builder, isInitialPageRoute: true);
+      : this(builder: builder, pagePopInMode: PagePopInMode.instant);
+
+  /// show before complete
+  SlideLeftPageRoute.b({WidgetBuilder builder})
+      : this(builder: builder, pagePopInMode: PagePopInMode.showBeforeComplete);
+
+  /// show on complete
+  SlideLeftPageRoute.c({WidgetBuilder builder})
+      : this(builder: builder, pagePopInMode: PagePopInMode.showOnComplete);
+
+  /// show after delay
+  SlideLeftPageRoute.d({WidgetBuilder builder})
+      : this(builder: builder, pagePopInMode: PagePopInMode.showAfterDelay);
 
   @override
   Duration get transitionDuration => Duration(milliseconds: 260);
@@ -77,7 +86,7 @@ class SlideLeftPageRoute extends MaterialPageRoute {
           },
           child: AnimatedBuilder(
             animation: secondaryAnimation,
-            child: isInitialPageRoute ? child : _buildWidget(child, animation),
+            child: buildPagePopIn(child, animation, pagePopInMode),
             builder: (context, child) {
               return FractionalTranslation(
                 translation: secondaryTranslationAnimation.value,
@@ -88,33 +97,6 @@ class SlideLeftPageRoute extends MaterialPageRoute {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildWidget(Widget child, Animation<double> animation) {
-    return ValueListenableProvider<bool>(
-      create: (_) => RouteTransitionCompleteNotifier(animation),
-      builder: (context, child) => child,
-      child: Consumer<bool>(
-        child: child,
-        builder: (context, routeTransitionComplete, child) {
-          return FutureBuilder<bool>(
-            future: Future.delayed(Duration(milliseconds: 40), () => true),
-            builder: (context, snapshot) {
-              return Stack(
-                children: [
-                  Container(color: Colors.white),
-                  if (routeTransitionComplete)
-                    Offstage(
-                      offstage: !snapshot.hasData,
-                      child: child,
-                    ),
-                ],
-              );
-            },
-          );
-        },
-      ),
     );
   }
 }

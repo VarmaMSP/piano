@@ -22,9 +22,9 @@ Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
       case '/library':
         return SlideLeftPageRoute.i(builder: (_) => LibraryScreen());
       case '/downloads':
-        return SlideLeftPageRoute(builder: (_) => DownloadsScreen());
+        return SlideLeftPageRoute.c(builder: (_) => DownloadsScreen());
       case '/podcast':
-        return SlideLeftPageRoute(
+        return SlideLeftPageRoute.d(
           builder: (_) => PodcastScreen(
             urlParam: args['urlParam'],
             title: args['title'],

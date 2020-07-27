@@ -11,10 +11,10 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
   final TextEditingController searchBarController;
 
   @override
-  double get maxExtent => 50.0;
+  double get maxExtent => 60.0;
 
   @override
-  double get minExtent => 50.0;
+  double get minExtent => 60.0;
 
   @override
   Widget build(
@@ -48,25 +48,30 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
             Expanded(
               child: Container(
                 height: 35,
-                child: TextField(
-                  autofocus: true,
-                  controller: searchBarController,
-                  decoration: InputDecoration(
-                    hintText: 'Search ...',
-                    fillColor: TWColors.gray.shade400,
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 0.0,
-                      horizontal: 10.0,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: Colors.amber,
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                  ),
-                ),
+                child: FutureBuilder<bool>(
+                    future:
+                        Future.delayed(Duration(milliseconds: 200), () => true),
+                    builder: (context, snapshot) {
+                      return TextField(
+                        autofocus: snapshot.hasData,
+                        controller: searchBarController,
+                        decoration: InputDecoration(
+                          hintText: 'Search ...',
+                          fillColor: TWColors.gray.shade400,
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 0.0,
+                            horizontal: 10.0,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.amber,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
               ),
             ),
           ],

@@ -157,9 +157,9 @@ class _RootState extends State<Root>
               case '/app':
                 return SlideUpPageRoute.i(builder: (_) => App());
               case '/queue':
-                return SlideUpPageRoute(builder: (_) => QueueScreen());
+                return SlideUpPageRoute.b(builder: (_) => QueueScreen());
               case '/search':
-                return SlideUpPageRoute(builder: (_) => SearchScreen());
+                return SlideUpPageRoute.b(builder: (_) => SearchScreen());
               default:
                 return null;
             }

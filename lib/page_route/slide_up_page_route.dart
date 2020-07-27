@@ -1,17 +1,32 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
+// Project imports:
+import 'package:phenopod/page_route/helpers.dart';
+
 class SlideUpPageRoute extends MaterialPageRoute {
-  final bool isInitialPageRoute;
+  final PagePopInMode pagePopInMode;
 
   SlideUpPageRoute({
     @required WidgetBuilder builder,
-    this.isInitialPageRoute = false,
+    @required this.pagePopInMode,
   }) : super(builder: builder);
 
-  /// Construct initial route
+  /// instant pop in
   SlideUpPageRoute.i({WidgetBuilder builder})
-      : this(builder: builder, isInitialPageRoute: true);
+      : this(builder: builder, pagePopInMode: PagePopInMode.instant);
+
+  /// show before complete
+  SlideUpPageRoute.b({WidgetBuilder builder})
+      : this(builder: builder, pagePopInMode: PagePopInMode.showBeforeComplete);
+
+  /// show before complete
+  SlideUpPageRoute.c({WidgetBuilder builder})
+      : this(builder: builder, pagePopInMode: PagePopInMode.showOnComplete);
+
+  /// show aftter delay
+  SlideUpPageRoute.d({WidgetBuilder builder})
+      : this(builder: builder, pagePopInMode: PagePopInMode.showAfterDelay);
 
   @override
   Duration get transitionDuration => Duration(milliseconds: 260);
@@ -69,7 +84,7 @@ class SlideUpPageRoute extends MaterialPageRoute {
           },
           child: AnimatedBuilder(
             animation: secondaryAnimation,
-            child: child,
+            child: buildPagePopIn(child, animation, pagePopInMode),
             builder: (context, child) {
               return FractionalTranslation(
                 translation: secondaryTranslationAnimation.value,
