@@ -1,5 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:phenopod/screen/home_screen/widgets/home_header_delegate.dart';
+import 'package:phenopod/screen/home_screen/widgets/home_screen_feed.dart';
 
 // Package imports:
 import 'package:rxdart/rxdart.dart';
@@ -9,8 +11,6 @@ import 'package:tuple/tuple.dart';
 // Project imports:
 import 'package:phenopod/model/main.dart';
 import 'home_screen_bloc.dart';
-import 'widgets/categories.dart';
-import 'widgets/trending.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({
@@ -45,64 +45,42 @@ class _HomeScreenState extends State<HomeScreen> {
         (a, b) => Tuple2(a, b),
       ),
       builder: (context, snapshot) {
-        return CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              floating: true,
-              snap: true,
-              elevation: 2,
-              backgroundColor: Colors.white,
-              title: Text(
-                'Phenopod',
-                style: TextStyle(
-                  fontSize: 19,
-                  color: Colors.purple.shade800,
-                  letterSpacing: 0.3,
-                  fontWeight: FontWeight.w500,
-                ),
+        return NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, hasScrolled) {
+            return [
+              SliverPersistentHeader(
+                delegate: HomeHeaderDelegate(forceElevated: hasScrolled),
               ),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.search,
-                    size: 23,
-                    color: TWColors.gray.shade700,
-                  ),
-                  onPressed: () => Navigator.of(context, rootNavigator: true)
-                      .pushNamed('/search'),
-                ),
-              ],
-            ),
-            if (!snapshot.hasData)
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Container(
+            ];
+          },
+          body: snapshot.hasData
+              ? HomeScreenFeed(
+                  trending: snapshot.data.item1.fold<List<Podcast>>(
+                    [],
+                    (acc, curation) => [...acc, ...curation.podcasts],
+                  ).toList(),
+                  categories: snapshot.data.item2,
+                )
+              : Container(
                   color: Colors.white,
                   constraints: BoxConstraints.expand(),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-              ),
-            if (snapshot.hasData)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 0),
-                  child: Trending(
-                    trending: snapshot.data.item1.fold<List<Podcast>>(
-                      [],
-                      (acc, curation) => [
-                        ...acc,
-                        ...curation.podcasts,
-                      ],
-                    ).toList(),
+                  padding: EdgeInsets.only(left: 40, right: 40, bottom: 100),
+                  child: Center(
+                    child: Container(
+                      constraints: BoxConstraints.expand(
+                        width: 40,
+                        height: 40,
+                      ),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3,
+                        valueColor: AlwaysStoppedAnimation(
+                          TWColors.purple.shade600,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            if (snapshot.hasData)
-              SliverToBoxAdapter(
-                child: Categories(categories: snapshot.data.item2),
-              ),
-            // SliverToBoxAdapter(child: AppSnackBar()),
-          ],
         );
       },
     );
