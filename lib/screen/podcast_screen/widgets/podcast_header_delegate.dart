@@ -284,7 +284,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                       ? 'SUBSCRIBED'
                       : 'SUBSCRIBE',
                   style: Theme.of(context).textTheme.headline6.copyWith(
-                        color: screenData?.isSubscribed ?? false
+                        color: screenData?.isSubscribed ?? isSubscribed
                             ? Colors.grey.shade900
                             : Colors.white,
                         fontSize: 12.5,

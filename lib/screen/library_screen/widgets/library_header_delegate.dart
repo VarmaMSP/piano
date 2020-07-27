@@ -46,7 +46,7 @@ class LibraryHeaderDelegate implements SliverPersistentHeaderDelegate {
               child: Text(
                 'Phenopod',
                 style: TextStyle(
-                  fontSize: 19,
+                  fontSize: 20,
                   color: Colors.purple.shade700,
                   letterSpacing: 0.4,
                   fontWeight: FontWeight.w500,
@@ -61,7 +61,7 @@ class LibraryHeaderDelegate implements SliverPersistentHeaderDelegate {
                 IconButton(
                   icon: Icon(
                     Icons.search,
-                    size: 23,
+                    size: 24,
                     color: TWColors.gray.shade700,
                   ),
                   onPressed: () => Navigator.of(context, rootNavigator: true)
@@ -69,8 +69,8 @@ class LibraryHeaderDelegate implements SliverPersistentHeaderDelegate {
                 ),
                 IconButton(
                   icon: Icon(
-                    MdiIcons.accountCircleOutline,
-                    size: 23,
+                    MdiIcons.cogOutline,
+                    size: 24,
                     color: TWColors.gray.shade700,
                   ),
                   onPressed: () => Navigator.of(context, rootNavigator: true)

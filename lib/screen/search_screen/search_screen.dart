@@ -59,6 +59,7 @@ class SearchScreen extends HookWidget {
                   delegate: SearchHeaderDelegate(
                     focusNode: focusNode,
                     searchBarController: textController,
+                    forceElevated: hasScrolled,
                   ),
                 ),
               ];

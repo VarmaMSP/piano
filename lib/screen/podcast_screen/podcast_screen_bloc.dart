@@ -121,8 +121,8 @@ class PodcastScreenBloc {
   Stream<PodcastScreenData> get screenData => _screenData.stream;
 
   Future<void> dispose() async {
-    await _screenData.close();
     await _storeSubscription.cancel();
     await _eventSubscription.cancel();
+    await _screenData.close();
   }
 }

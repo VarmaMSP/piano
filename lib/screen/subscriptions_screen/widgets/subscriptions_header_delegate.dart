@@ -68,7 +68,7 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
                 ),
                 IconButton(
                   icon: Icon(
-                    MdiIcons.accountCircleOutline,
+                    MdiIcons.cogOutline,
                     size: 24,
                     color: TWColors.gray.shade700,
                   ),

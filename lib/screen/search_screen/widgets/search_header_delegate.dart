@@ -9,10 +9,12 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
   SearchHeaderDelegate({
     @required this.focusNode,
     @required this.searchBarController,
+    @required this.forceElevated,
   });
 
   final FocusNode focusNode;
   final TextEditingController searchBarController;
+  final bool forceElevated;
 
   @override
   double get maxExtent => 60.0;
@@ -47,7 +49,12 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
     return Container(
       height: maxExtent,
       padding: const EdgeInsets.symmetric(horizontal: 0),
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: forceElevated
+            ? [BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)]
+            : [],
+      ),
       child: Transform.translate(
         offset: const Offset(6, 0),
         child: Row(
