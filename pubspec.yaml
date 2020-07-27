@@ -62,6 +62,7 @@ dependencies:
 
 dependency_overrides:
   flutter_svg: ^0.18.0
+  analyzer: 0.39.14
   moor:
     git:
       url: https://github.com/simolus3/moor.git
