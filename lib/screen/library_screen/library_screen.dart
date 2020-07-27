@@ -1,11 +1,9 @@
 // Package imports:
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
-import 'package:provider/provider.dart';
+import 'package:phenopod/screen/library_screen/widgets/library_screen_content.dart';
 
 // Project imports:
-import 'package:phenopod/bloc/app_navigation_bloc.dart';
-import 'package:phenopod/model/main.dart';
 import 'widgets/library_header_delegate.dart';
 
 import 'package:flutter/material.dart'
@@ -34,24 +32,7 @@ class LibraryScreen extends HookWidget {
           ),
         ];
       },
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Provider.of<AppNavigationBloc>(context, listen: false)
-                  .pushScreen(AppScreen.downloadsScreen());
-            },
-            behavior: HitTestBehavior.translucent,
-            child: Container(
-              height: 32,
-              color: Colors.grey.shade200,
-              child: Text('Downloads Page'),
-            ),
-          )
-        ],
-      ),
+      body: LibraryScreenContent(),
     );
   }
 }
