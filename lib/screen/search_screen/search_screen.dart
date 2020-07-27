@@ -8,7 +8,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:phenopod/hook/use_provider.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/utils/chrome.dart' as chromeutils;
-import 'package:phenopod/widgets/screen/layout.dart';
 import 'search_screen_bloc.dart';
 import 'widgets/search_header_delegate.dart';
 import 'widgets/suggestions_list.dart';
@@ -51,18 +50,44 @@ class SearchScreen extends HookWidget {
       body: StreamBuilder<List<SearchSuggestion>>(
         stream: searchScreenBloc.suggestions,
         builder: (context, snapshot) {
-          return ScreenLayout(
-            header: SearchHeaderDelegate(
-              focusNode: focusNode,
-              searchBarController: textController,
-            ),
+          return NestedScrollView(
+            headerSliverBuilder: (context, hasScrolled) {
+              return [
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: SearchHeaderDelegate(
+                    focusNode: focusNode,
+                    searchBarController: textController,
+                  ),
+                ),
+              ];
+            },
             body: snapshot.hasData
                 ? SuggestionsList(suggestions: snapshot.data)
                 : Container(
                     color: Colors.white,
                     constraints: BoxConstraints.expand(),
-                    child: Text(
-                      'Search for podcasts, episodes, topics, person...',
+                    padding: EdgeInsets.only(left: 18, right: 18, bottom: 200),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '🔍',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 48),
+                          ),
+                          Container(height: 20),
+                          Text(
+                            'Search for podcasts...',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                .copyWith(fontSize: 20),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
           );

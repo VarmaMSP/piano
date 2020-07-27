@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 
 // Package imports:
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -49,7 +50,7 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
       padding: const EdgeInsets.symmetric(horizontal: 0),
       color: Colors.white,
       child: Transform.translate(
-        offset: const Offset(4, 0),
+        offset: const Offset(6, 0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -70,8 +71,8 @@ class SearchHeaderDelegate implements SliverPersistentHeaderDelegate {
             Container(width: 6),
             Expanded(
               child: Container(
-                height: 40,
-                padding: EdgeInsets.only(right: 18),
+                height: 36,
+                padding: EdgeInsets.only(right: 24),
                 child: TextField(
                   focusNode: focusNode,
                   controller: searchBarController,

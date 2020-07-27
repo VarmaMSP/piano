@@ -26,7 +26,7 @@ class SuggestionsList extends StatelessWidget {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverPadding(
-            padding: const EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.only(top: 4),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -71,18 +71,18 @@ class SuggestionsList extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Container(
-              height: 46,
-              width: 46,
+              height: 55,
+              width: 55,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(5.0),
                 child: CachedNetworkImage(
                   imageUrl: '$thumbnailUrl/${suggestion.i}.jpg',
                   fit: BoxFit.fill,
-                  height: 46,
-                  width: 46,
+                  height: 60,
+                  width: 60,
                   placeholder: (BuildContext context, String url) => Container(
-                    height: 46,
-                    width: 46,
+                    height: 60,
+                    width: 60,
                     color: TWColors.gray.shade300,
                   ),
                 ),
@@ -90,7 +90,31 @@ class SuggestionsList extends StatelessWidget {
             ),
             Container(width: 10),
             Expanded(
-              child: Text(suggestion.header),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    suggestion.header,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        .copyWith(color: TWColors.gray.shade900),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Container(height: 8),
+                  Text(
+                    suggestion.subHeader,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(color: TWColors.gray.shade700),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
