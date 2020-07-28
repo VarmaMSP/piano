@@ -14,6 +14,7 @@ PodcastStore newPodcastStore(Api api, Db db, [AlarmService alarmService]) {
 
 abstract class PodcastStore {
   Future<void> refresh(String urlParam);
+  Stream<Podcast> watchById(String id);
   Stream<Podcast> watchByUrlParam(String urlParam);
 }
 
@@ -65,6 +66,11 @@ class _PodcastStoreImpl extends PodcastStore {
     if (podcast.isSubscribed) {
       await alarmService?.scheduleTaskRunner();
     }
+  }
+
+  @override
+  Stream<Podcast> watchById(String id) {
+    return db.podcastDao.watchPodcast(id);
   }
 
   @override

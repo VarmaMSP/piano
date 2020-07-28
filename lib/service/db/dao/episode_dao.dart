@@ -16,6 +16,12 @@ class EpisodeDao extends DatabaseAccessor<SqlDb> with _$EpisodeDaoMixin {
     }
   }
 
+  Stream<Episode> watchEpisodeById(String episodeId) {
+    return (select(episodes)..where((tbl) => tbl.id.equals(episodeId)))
+        .watchSingle()
+        .map((x) => x?.toModel());
+  }
+
   Stream<List<Episode>> watchEpisodesByPodcastsPaginated({
     @required List<String> podcastIds,
     int offset = 0,

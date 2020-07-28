@@ -52,6 +52,26 @@ class PodcastScreenData extends Equatable {
 }
 
 @CopyWith()
+class EpisodeScreenData extends Equatable {
+  final Podcast podcast;
+  final Episode episode;
+  final EpisodeMeta episodeMeta;
+
+  EpisodeScreenData({
+    @required this.podcast,
+    @required this.episode,
+    @required this.episodeMeta,
+  });
+
+  @override
+  List<Object> get props => [
+        podcast,
+        episode,
+        episodeMeta,
+      ];
+}
+
+@CopyWith()
 class SubscriptionsScreenData extends Equatable {
   final List<Podcast> podcasts;
   final List<FeedItem> feedItems;

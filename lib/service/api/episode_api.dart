@@ -1,6 +1,9 @@
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 
+// Package imports:
+import 'package:tuple/tuple.dart';
+
 // Project imports:
 import 'package:phenopod/model/main.dart';
 import 'http_client.dart';
@@ -10,6 +13,7 @@ EpisodeApi newEpisodeApi(HttpClient httpClient) {
 }
 
 abstract class EpisodeApi {
+  Future<Tuple2<Podcast, Episode>> getByUrlParam(String urlParam);
   Future<List<Episode>> getByPodcastPaginated({
     @required String podcastId,
     @required int offset,
@@ -26,6 +30,18 @@ class _EpisodeApiImpl extends EpisodeApi {
   final HttpClient httpClient;
 
   _EpisodeApiImpl(this.httpClient);
+
+  @override
+  Future<Tuple2<Podcast, Episode>> getByUrlParam(String urlParam) async {
+    final apiResponse = await httpClient.makeRequest(
+      method: 'GET',
+      path: '/episodes/${urlParam}',
+    );
+    return Tuple2(
+      apiResponse.podcasts[0],
+      apiResponse.episodes[0],
+    );
+  }
 
   @override
   Future<List<Episode>> getByPodcastPaginated({

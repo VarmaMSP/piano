@@ -9,12 +9,15 @@ import 'package:phenopod/model/main.dart';
 import 'package:phenopod/service/alarm_service/alarm_service.dart';
 import 'package:phenopod/service/api/api.dart';
 import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/utils/utils.dart';
 
 EpisodeStore newEpisodeStore(Api api, Db db, [AlarmService alarmService]) {
   return _EpisodeStoreImpl(api: api, db: db, alarmService: alarmService);
 }
 
 abstract class EpisodeStore {
+  Future<void> refresh(String urlParam);
+  Stream<Episode> watchByUrlParam(String urlParam);
   Stream<EpisodeMeta> watchMeta(String episodeId);
   Stream<List<Episode>> watchByPodcastPaginated({
     @required String podcastId,
@@ -38,6 +41,23 @@ class _EpisodeStoreImpl extends EpisodeStore {
     @required this.db,
     @required this.alarmService,
   });
+
+  @override
+  Future<void> refresh(String urlParam) async {
+    final data = await api.episode.getByUrlParam(urlParam);
+    final podcast = data.item1;
+    final episode = data.item2;
+
+    await db.transaction(() async {
+      await db.podcastDao.savePodcasts([podcast]);
+      await db.episodeDao.saveEpisodes([episode]);
+    });
+  }
+
+  @override
+  Stream<Episode> watchByUrlParam(String urlParam) {
+    return db.episodeDao.watchEpisodeById(getIdFromUrlParam(urlParam));
+  }
 
   @override
   Stream<EpisodeMeta> watchMeta(String episodeId) {

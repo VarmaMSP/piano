@@ -1,5 +1,20 @@
 part of 'main.dart';
 
+class EpisodePlaceholder extends Equatable {
+  final String title;
+  final String podcastTitle;
+  final String podcastUrlparam;
+
+  EpisodePlaceholder({
+    this.title,
+    this.podcastTitle,
+    this.podcastUrlparam,
+  });
+
+  @override
+  List<Object> get props => [title];
+}
+
 @CopyWith()
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Episode extends Equatable {
