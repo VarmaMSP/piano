@@ -76,6 +76,10 @@ class AppNavigationBloc {
           'isSubscribed': data.isSubscribed,
         },
       ),
+      episodeScreen: (data) => navigator.currentState.pushNamed(
+        '/episode',
+        arguments: {'urlParam': data.urlParam},
+      ),
       downloadsScreen: (data) => navigator.currentState.pushNamed(
         '/downloads',
         arguments: {},

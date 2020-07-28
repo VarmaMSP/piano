@@ -167,6 +167,20 @@ extension PodcastScreenDataCopyWithExtension on PodcastScreenData {
   }
 }
 
+extension EpisodeScreenDataCopyWithExtension on EpisodeScreenData {
+  EpisodeScreenData copyWith({
+    Episode episode,
+    EpisodeMeta episodeMeta,
+    Podcast podcast,
+  }) {
+    return EpisodeScreenData(
+      episode: episode ?? this.episode,
+      episodeMeta: episodeMeta ?? this.episodeMeta,
+      podcast: podcast ?? this.podcast,
+    );
+  }
+}
+
 extension SubscriptionsScreenDataCopyWithExtension on SubscriptionsScreenData {
   SubscriptionsScreenData copyWith({
     List<FeedItem> feedItems,

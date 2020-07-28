@@ -10,6 +10,7 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:when_expression/when_expression.dart';
 
 // Project imports:
+import 'package:phenopod/bloc/app_navigation_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/utils.dart';
@@ -35,46 +36,52 @@ class EpisodeListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: type == EpisodeListItemType.podcastItem
-          ? const EdgeInsets.only(top: 14, bottom: 14, left: 18, right: 4)
-          : const EdgeInsets.only(top: 18, bottom: 18, left: 18, right: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Thumbnail(episode: episode, podcast: podcast),
-          Expanded(
-            child: Transform.translate(
-              offset: const Offset(0, -2),
-              child: Container(
-                padding: const EdgeInsets.only(left: 12),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    _buildDetails(context),
-                    Container(
-                      transform: Matrix4.translationValues(0, -1, 0),
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Text(
-                        HtmlUnescape()
-                            .convert(episode.summary)
-                            .replaceAll('\n', ' ')
-                            .replaceAll('&amp', '&')
-                            .trim(),
-                        style: Theme.of(context).textTheme.subtitle2,
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
+    return GestureDetector(
+      onTap: () {
+        Provider.of<AppNavigationBloc>(context, listen: false)
+            .pushScreen(AppScreen.episodeScreen(urlParam: episode.urlParam));
+      },
+      child: Container(
+        padding: type == EpisodeListItemType.podcastItem
+            ? const EdgeInsets.only(top: 14, bottom: 14, left: 18, right: 4)
+            : const EdgeInsets.only(top: 18, bottom: 18, left: 18, right: 4),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Thumbnail(episode: episode, podcast: podcast),
+            Expanded(
+              child: Transform.translate(
+                offset: const Offset(0, -2),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      _buildDetails(context),
+                      Container(
+                        transform: Matrix4.translationValues(0, -1, 0),
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: Text(
+                          HtmlUnescape()
+                              .convert(episode.summary)
+                              .replaceAll('\n', ' ')
+                              .replaceAll('&amp', '&')
+                              .trim(),
+                          style: Theme.of(context).textTheme.subtitle2,
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -2791,6 +2791,13 @@ class _$AppScreenTearOff {
   }
 
 // ignore: unused_element
+  _EpisodeScreen episodeScreen({@required String urlParam}) {
+    return _EpisodeScreen(
+      urlParam: urlParam,
+    );
+  }
+
+// ignore: unused_element
   _DownloadsScreen downloadsScreen() {
     return const _DownloadsScreen();
   }
@@ -2805,23 +2812,27 @@ mixin _$AppScreen {
     @required
         Result podcastScreen(
             String urlParam, String title, String author, bool isSubscribed),
+    @required Result episodeScreen(String urlParam),
     @required Result downloadsScreen(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result podcastScreen(
         String urlParam, String title, String author, bool isSubscribed),
+    Result episodeScreen(String urlParam),
     Result downloadsScreen(),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result podcastScreen(_PodcastScreen value),
+    @required Result episodeScreen(_EpisodeScreen value),
     @required Result downloadsScreen(_DownloadsScreen value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result podcastScreen(_PodcastScreen value),
+    Result episodeScreen(_EpisodeScreen value),
     Result downloadsScreen(_DownloadsScreen value),
     @required Result orElse(),
   });
@@ -2933,9 +2944,11 @@ class _$_PodcastScreen implements _PodcastScreen {
     @required
         Result podcastScreen(
             String urlParam, String title, String author, bool isSubscribed),
+    @required Result episodeScreen(String urlParam),
     @required Result downloadsScreen(),
   }) {
     assert(podcastScreen != null);
+    assert(episodeScreen != null);
     assert(downloadsScreen != null);
     return podcastScreen(urlParam, title, author, isSubscribed);
   }
@@ -2945,6 +2958,7 @@ class _$_PodcastScreen implements _PodcastScreen {
   Result maybeWhen<Result extends Object>({
     Result podcastScreen(
         String urlParam, String title, String author, bool isSubscribed),
+    Result episodeScreen(String urlParam),
     Result downloadsScreen(),
     @required Result orElse(),
   }) {
@@ -2959,9 +2973,11 @@ class _$_PodcastScreen implements _PodcastScreen {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result podcastScreen(_PodcastScreen value),
+    @required Result episodeScreen(_EpisodeScreen value),
     @required Result downloadsScreen(_DownloadsScreen value),
   }) {
     assert(podcastScreen != null);
+    assert(episodeScreen != null);
     assert(downloadsScreen != null);
     return podcastScreen(this);
   }
@@ -2970,6 +2986,7 @@ class _$_PodcastScreen implements _PodcastScreen {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result podcastScreen(_PodcastScreen value),
+    Result episodeScreen(_EpisodeScreen value),
     Result downloadsScreen(_DownloadsScreen value),
     @required Result orElse(),
   }) {
@@ -2993,6 +3010,127 @@ abstract class _PodcastScreen implements AppScreen {
   String get author;
   bool get isSubscribed;
   _$PodcastScreenCopyWith<_PodcastScreen> get copyWith;
+}
+
+abstract class _$EpisodeScreenCopyWith<$Res> {
+  factory _$EpisodeScreenCopyWith(
+          _EpisodeScreen value, $Res Function(_EpisodeScreen) then) =
+      __$EpisodeScreenCopyWithImpl<$Res>;
+  $Res call({String urlParam});
+}
+
+class __$EpisodeScreenCopyWithImpl<$Res> extends _$AppScreenCopyWithImpl<$Res>
+    implements _$EpisodeScreenCopyWith<$Res> {
+  __$EpisodeScreenCopyWithImpl(
+      _EpisodeScreen _value, $Res Function(_EpisodeScreen) _then)
+      : super(_value, (v) => _then(v as _EpisodeScreen));
+
+  @override
+  _EpisodeScreen get _value => super._value as _EpisodeScreen;
+
+  @override
+  $Res call({
+    Object urlParam = freezed,
+  }) {
+    return _then(_EpisodeScreen(
+      urlParam: urlParam == freezed ? _value.urlParam : urlParam as String,
+    ));
+  }
+}
+
+class _$_EpisodeScreen implements _EpisodeScreen {
+  const _$_EpisodeScreen({@required this.urlParam}) : assert(urlParam != null);
+
+  @override
+  final String urlParam;
+
+  @override
+  String toString() {
+    return 'AppScreen.episodeScreen(urlParam: $urlParam)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _EpisodeScreen &&
+            (identical(other.urlParam, urlParam) ||
+                const DeepCollectionEquality()
+                    .equals(other.urlParam, urlParam)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(urlParam);
+
+  @override
+  _$EpisodeScreenCopyWith<_EpisodeScreen> get copyWith =>
+      __$EpisodeScreenCopyWithImpl<_EpisodeScreen>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required
+        Result podcastScreen(
+            String urlParam, String title, String author, bool isSubscribed),
+    @required Result episodeScreen(String urlParam),
+    @required Result downloadsScreen(),
+  }) {
+    assert(podcastScreen != null);
+    assert(episodeScreen != null);
+    assert(downloadsScreen != null);
+    return episodeScreen(urlParam);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result podcastScreen(
+        String urlParam, String title, String author, bool isSubscribed),
+    Result episodeScreen(String urlParam),
+    Result downloadsScreen(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (episodeScreen != null) {
+      return episodeScreen(urlParam);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result podcastScreen(_PodcastScreen value),
+    @required Result episodeScreen(_EpisodeScreen value),
+    @required Result downloadsScreen(_DownloadsScreen value),
+  }) {
+    assert(podcastScreen != null);
+    assert(episodeScreen != null);
+    assert(downloadsScreen != null);
+    return episodeScreen(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result podcastScreen(_PodcastScreen value),
+    Result episodeScreen(_EpisodeScreen value),
+    Result downloadsScreen(_DownloadsScreen value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (episodeScreen != null) {
+      return episodeScreen(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _EpisodeScreen implements AppScreen {
+  const factory _EpisodeScreen({@required String urlParam}) = _$_EpisodeScreen;
+
+  String get urlParam;
+  _$EpisodeScreenCopyWith<_EpisodeScreen> get copyWith;
 }
 
 abstract class _$DownloadsScreenCopyWith<$Res> {
@@ -3033,9 +3171,11 @@ class _$_DownloadsScreen implements _DownloadsScreen {
     @required
         Result podcastScreen(
             String urlParam, String title, String author, bool isSubscribed),
+    @required Result episodeScreen(String urlParam),
     @required Result downloadsScreen(),
   }) {
     assert(podcastScreen != null);
+    assert(episodeScreen != null);
     assert(downloadsScreen != null);
     return downloadsScreen();
   }
@@ -3045,6 +3185,7 @@ class _$_DownloadsScreen implements _DownloadsScreen {
   Result maybeWhen<Result extends Object>({
     Result podcastScreen(
         String urlParam, String title, String author, bool isSubscribed),
+    Result episodeScreen(String urlParam),
     Result downloadsScreen(),
     @required Result orElse(),
   }) {
@@ -3059,9 +3200,11 @@ class _$_DownloadsScreen implements _DownloadsScreen {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result podcastScreen(_PodcastScreen value),
+    @required Result episodeScreen(_EpisodeScreen value),
     @required Result downloadsScreen(_DownloadsScreen value),
   }) {
     assert(podcastScreen != null);
+    assert(episodeScreen != null);
     assert(downloadsScreen != null);
     return downloadsScreen(this);
   }
@@ -3070,6 +3213,7 @@ class _$_DownloadsScreen implements _DownloadsScreen {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result podcastScreen(_PodcastScreen value),
+    Result episodeScreen(_EpisodeScreen value),
     Result downloadsScreen(_DownloadsScreen value),
     @required Result orElse(),
   }) {

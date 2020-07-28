@@ -15,6 +15,10 @@ abstract class AppScreen with _$AppScreen {
     @Default(false) bool isSubscribed,
   }) = _PodcastScreen;
 
+  const factory AppScreen.episodeScreen({
+    @required String urlParam,
+  }) = _EpisodeScreen;
+
   const factory AppScreen.downloadsScreen() = _DownloadsScreen;
 }
 
