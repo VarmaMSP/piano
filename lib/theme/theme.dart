@@ -12,19 +12,22 @@ final ThemeData appTheme = ThemeData(
     },
   ),
   textTheme: TextTheme(
-    headline4: GoogleFonts.inter(
+    headline4: TextStyle(
+      fontFamily: 'Inter',
       fontSize: 18,
       color: Colors.black,
       letterSpacing: 0.2,
       fontWeight: FontWeight.w500,
     ),
-    headline5: GoogleFonts.inter(
+    headline5: TextStyle(
+      fontFamily: 'Inter',
       fontSize: 17,
       color: Colors.black,
       letterSpacing: 0.2,
       fontWeight: FontWeight.w500,
     ),
-    headline6: GoogleFonts.inter(
+    headline6: TextStyle(
+      fontFamily: 'Inter',
       fontSize: 14,
       color: Colors.black,
       letterSpacing: 0.1,

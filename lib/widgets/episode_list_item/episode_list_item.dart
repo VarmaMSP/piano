@@ -135,7 +135,10 @@ class EpisodeListItem extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 6),
                     child: Text(
                       episode.title,
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.headline6.copyWith(
+                            fontWeight: FontWeight.w600,
+                            height: 1.3,
+                          ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
