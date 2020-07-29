@@ -58,11 +58,13 @@ class EpisodeScreenData extends Equatable {
   final Podcast podcast;
   final Episode episode;
   final EpisodeMeta episodeMeta;
+  final bool isPodcastSubscribed;
 
   EpisodeScreenData({
     @required this.podcast,
     @required this.episode,
     @required this.episodeMeta,
+    @required this.isPodcastSubscribed,
   });
 
   @override
@@ -70,6 +72,7 @@ class EpisodeScreenData extends Equatable {
         podcast,
         episode,
         episodeMeta,
+        isPodcastSubscribed,
       ];
 }
 

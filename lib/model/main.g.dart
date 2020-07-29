@@ -171,11 +171,13 @@ extension EpisodeScreenDataCopyWithExtension on EpisodeScreenData {
   EpisodeScreenData copyWith({
     Episode episode,
     EpisodeMeta episodeMeta,
+    bool isPodcastSubscribed,
     Podcast podcast,
   }) {
     return EpisodeScreenData(
       episode: episode ?? this.episode,
       episodeMeta: episodeMeta ?? this.episodeMeta,
+      isPodcastSubscribed: isPodcastSubscribed ?? this.isPodcastSubscribed,
       podcast: podcast ?? this.podcast,
     );
   }

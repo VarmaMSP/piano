@@ -70,10 +70,7 @@ class EpisodeScreen extends HookWidget {
             ];
           },
           body: snapshot.hasData
-              ? EpisodeScreenContent(
-                  episode: snapshot.data.episode,
-                  podcast: snapshot.data.podcast,
-                )
+              ? EpisodeScreenContent(screenData: snapshot.data)
               : _buildLoader(),
         );
       },

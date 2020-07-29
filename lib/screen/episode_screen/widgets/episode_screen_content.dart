@@ -7,18 +7,17 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/bloc/app_navigation_bloc.dart';
+import 'package:phenopod/bloc/podcast_actions_bloc.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/widgets/html.dart';
 import 'package:phenopod/widgets/podcast_thumbnail.dart';
 
 class EpisodeScreenContent extends StatelessWidget {
-  final Episode episode;
-  final Podcast podcast;
+  final EpisodeScreenData screenData;
 
   const EpisodeScreenContent({
     Key key,
-    @required this.episode,
-    @required this.podcast,
+    @required this.screenData,
   }) : super(key: key);
 
   @override
@@ -35,7 +34,7 @@ class EpisodeScreenContent extends StatelessWidget {
           Container(
             margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 18.0),
             child: Text(
-              episode.title,
+              screenData.episode.title,
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
@@ -60,7 +59,9 @@ class EpisodeScreenContent extends StatelessWidget {
           /// Episode description
           Container(
             margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-            child: HTML(id: episode.id, document: episode.description),
+            child: HTML(
+                id: screenData.episode.id,
+                document: screenData.episode.description),
           ),
         ],
       ),
@@ -68,21 +69,24 @@ class EpisodeScreenContent extends StatelessWidget {
   }
 
   Widget _buildPodcastDetails(BuildContext context) {
-    final isSubscribed = false;
+    final isSubscribed = screenData.isPodcastSubscribed;
 
     return Row(
       children: [
-        PodcastThumbnail(podcast: podcast, size: PodcastThumbnailSize.xs),
+        PodcastThumbnail(
+          podcast: screenData.podcast,
+          size: PodcastThumbnailSize.xs,
+        ),
         Container(width: 10.0),
         Expanded(
           child: GestureDetector(
             onTap: () {
               Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
                 AppScreen.podcastScreen(
-                  urlParam: podcast.urlParam,
+                  urlParam: screenData.podcast.urlParam,
                   placeholder: PodcastPlaceholder(
-                    title: podcast.title,
-                    author: podcast.author,
+                    title: screenData.podcast.title,
+                    author: screenData.podcast.author,
                     isSubscribed: false,
                   ),
                 ),
@@ -93,14 +97,14 @@ class EpisodeScreenContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  podcast.title,
+                  screenData.podcast.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 Container(height: 6),
                 Text(
-                  podcast.author,
+                  screenData.podcast.author,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.subtitle1,
@@ -114,7 +118,19 @@ class EpisodeScreenContent extends StatelessWidget {
           height: 26,
           width: 120,
           child: FlatButton(
-            onPressed: () {},
+            onPressed: () => isSubscribed
+                ? Provider.of<PodcastActionsBloc>(
+                    context,
+                    listen: false,
+                  ).addAction(
+                    PodcastAction.unsubscribe(podcast: screenData.podcast),
+                  )
+                : Provider.of<PodcastActionsBloc>(
+                    context,
+                    listen: false,
+                  ).addAction(
+                    PodcastAction.subscribe(podcast: screenData.podcast),
+                  ),
             color:
                 isSubscribed ? Colors.grey.shade300 : TWColors.purple.shade600,
             textColor:

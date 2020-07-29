@@ -27,11 +27,9 @@ class EpisodeScreenBloc {
   final BehaviorSubject<EpisodeScreenData> _screenData =
       BehaviorSubject<EpisodeScreenData>();
 
-  // Stream of episode
-  Stream<Episode> _episodeStream;
-
   // subscriptions made in this bloc
   StreamSubscription<dynamic> _storeSubscription;
+  StreamSubscription<dynamic> _eventSubscription;
 
   EpisodeScreenBloc({
     @required this.store,
@@ -40,29 +38,66 @@ class EpisodeScreenBloc {
   }) : id = getIdFromUrlParam(urlParam) {
     /// load data from streams
     _handleDataFromStore();
+
+    /// Handle any changes as a result of podcast actions
+    _handleEvents();
   }
 
-  Future<void> _handleDataFromStore() async {
-    _episodeStream = store.episode.watchByUrlParam(urlParam);
-    _storeSubscription =
-        Rx.combineLatest3<Episode, Podcast, EpisodeMeta, EpisodeScreenData>(
-      _episodeStream,
-      Rx.switchLatest<Podcast>(
-        _episodeStream
-            .where((e) => e != null)
-            .map((e) => store.podcast.watchById(e.podcastId)),
-      ),
-      Rx.switchLatest<EpisodeMeta>(
-        _episodeStream
-            .where((e) => e != null)
-            .map((e) => store.episode.watchMeta(e.id)),
-      ),
-      (episode, podcast, episodeMeta) => EpisodeScreenData(
+  void _handleDataFromStore() async {
+    final episodeStream = store.episode.watchByUrlParam(urlParam);
+    final podcastStream = Rx.switchLatest<Podcast>(
+      episodeStream
+          .where((e) => e != null)
+          .map((e) => store.podcast.watchById(e.podcastId)),
+    ).asBroadcastStream();
+    final epiosdeMetaStream = Rx.switchLatest<EpisodeMeta>(
+      episodeStream
+          .where((e) => e != null)
+          .map((e) => store.episode.watchMeta(e.id)),
+    );
+    final subscriptionStream = Rx.switchLatest<Subscription>(
+      podcastStream
+          .where((p) => p != null)
+          .map((p) => store.subscription.watchByPodcast(p.id)),
+    );
+
+    _storeSubscription = Rx.combineLatest4<Episode, Podcast, EpisodeMeta,
+        Subscription, EpisodeScreenData>(
+      episodeStream,
+      podcastStream,
+      epiosdeMetaStream,
+      subscriptionStream,
+      (episode, podcast, episodeMeta, subscription) => EpisodeScreenData(
         episode: episode,
         podcast: podcast,
         episodeMeta: episodeMeta,
+        isPodcastSubscribed: subscription != null,
       ),
     ).distinct().listen(_screenData.add);
+  }
+
+  void _handleEvents() {
+    _eventSubscription = eventBus.on().listen((e) {
+      (e as AppEvent).maybeMap(
+        subscribeToPodcast: (data) async {
+          final screenData = await _screenData.first;
+          if (data.podcast.id == screenData.podcast.id) {
+            if (!screenData.isPodcastSubscribed) {
+              _screenData.add(screenData.copyWith(isPodcastSubscribed: true));
+            }
+          }
+        },
+        unsubscribeFromPodcast: (data) async {
+          final screenData = await _screenData.first;
+          if (data.podcast.id == screenData.podcast.id) {
+            if (screenData.isPodcastSubscribed) {
+              _screenData.add(screenData.copyWith(isPodcastSubscribed: false));
+            }
+          }
+        },
+        orElse: () {},
+      );
+    });
   }
 
   /// Stream of screenData
@@ -70,6 +105,7 @@ class EpisodeScreenBloc {
 
   Future<void> dispose() async {
     await _storeSubscription.cancel();
+    await _eventSubscription.cancel();
     await _screenData.close();
   }
 }
