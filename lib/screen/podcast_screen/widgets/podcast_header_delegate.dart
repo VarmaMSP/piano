@@ -50,7 +50,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    animation.aniamteTo(shrinkOffset, maxExtent, minExtent);
+    animation.animateTo(shrinkOffset, maxExtent, minExtent);
 
     return Container(
       height: maxExtent - shrinkOffset,

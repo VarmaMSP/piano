@@ -2,6 +2,10 @@
 import 'package:flutter/material.dart';
 
 class PodcastScreenAnimation {
+  final AnimationController controller;
+  final Animation<double> appBarTitleOpacity;
+  final Animation<double> podcastDetailsOpacity;
+
   PodcastScreenAnimation({
     @required this.controller,
   })  : appBarTitleOpacity = Tween<double>(
@@ -23,11 +27,7 @@ class PodcastScreenAnimation {
           ),
         );
 
-  final AnimationController controller;
-  final Animation<double> appBarTitleOpacity;
-  final Animation<double> podcastDetailsOpacity;
-
-  void aniamteTo(double shrinkOffset, double maxExtent, double minExtent) {
+  void animateTo(double shrinkOffset, double maxExtent, double minExtent) {
     controller.animateTo(
       shrinkOffset / (maxExtent - minExtent),
       duration: Duration.zero,

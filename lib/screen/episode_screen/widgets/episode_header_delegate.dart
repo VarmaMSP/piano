@@ -6,14 +6,17 @@ import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
+import 'package:phenopod/animation/episode_screen_animation.dart';
 import 'package:phenopod/screen/queue_screen/widgets/queue_screen_menu.dart';
 
 class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
   EpisodeHeaderDelegate({
+    @required this.animation,
     @required this.forceElevated,
     this.scrollToTop,
   });
 
+  final EpisodeScreenAnimation animation;
   final bool forceElevated;
   final void Function() scrollToTop;
 
@@ -34,7 +37,9 @@ class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
       padding: EdgeInsets.only(left: 18, right: 18),
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)],
+        boxShadow: forceElevated
+            ? [BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)]
+            : [],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -58,26 +63,30 @@ class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
           Expanded(
             child: GestureDetector(
               onTap: scrollToTop,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(top: 1),
-                    transform: Matrix4.translationValues(-12, 0, 0),
-                    child: Text(
-                      'Episode',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5
-                          .copyWith(color: TWColors.gray.shade900),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
+              behavior: HitTestBehavior.translucent,
+              child: FadeTransition(
+                opacity: animation.appBarTitleOpacity,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 1),
+                      transform: Matrix4.translationValues(-12, 0, 0),
+                      child: Text(
+                        'Episode',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline5
+                            .copyWith(color: TWColors.gray.shade900),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -5,6 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:phenopod/utils/utils.dart';
 
 class BottomAppBarAnimation {
+  static const double audioPlayerPreviewHeight = 46.0;
+  static const double bottomNavigationBarHeight = 56.0;
+  static const double bottomAppBarHeight =
+      audioPlayerPreviewHeight + bottomNavigationBarHeight;
+
+  final TabController tabController;
+  final AnimationController controller;
+  final double screenHeight;
+  final double controllerBeginWhenShow;
+  final Animation<double> appBarHeight;
+  final Animation<double> bottomNavigationBarSize;
+  final Animation<double> audioPlayerPreviewOpacity;
+  final Animation<double> audioPlayerPreviewSizeFactor;
+
+  bool _showAudioPlayer = false;
+  double _dragDistance = 0.0;
+
   BottomAppBarAnimation({
     @required this.tabController,
     @required this.controller,
@@ -71,23 +88,6 @@ class BottomAppBarAnimation {
       controllerBeginWhenShow: controllerBeginWhenShow,
     );
   }
-
-  static const double audioPlayerPreviewHeight = 46.0;
-  static const double bottomNavigationBarHeight = 56.0;
-  static const double bottomAppBarHeight =
-      audioPlayerPreviewHeight + bottomNavigationBarHeight;
-
-  final TabController tabController;
-  final AnimationController controller;
-  final double screenHeight;
-  final double controllerBeginWhenShow;
-  final Animation<double> appBarHeight;
-  final Animation<double> bottomNavigationBarSize;
-  final Animation<double> audioPlayerPreviewOpacity;
-  final Animation<double> audioPlayerPreviewSizeFactor;
-
-  bool _showAudioPlayer = false;
-  double _dragDistance = 0.0;
 
   double get controllerBeginValue =>
       _showAudioPlayer ? controllerBeginWhenShow : 0.0;

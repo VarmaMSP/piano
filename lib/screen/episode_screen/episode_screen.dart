@@ -1,20 +1,20 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
 // Package imports:
 import 'package:event_bus/event_bus.dart';
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' hide Store;
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
+import 'package:phenopod/animation/episode_screen_animation.dart';
 import 'package:phenopod/hook/use_provider.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/screen/episode_screen/widgets/episode_header_delegate.dart';
+import 'package:phenopod/screen/episode_screen/widgets/episode_screen_content.dart';
 import 'package:phenopod/store/store.dart';
 import 'episode_screen_bloc.dart';
-
-import 'package:flutter/material.dart'
-    hide NestedScrollView, NestedScrollViewState;
-
 
 class EpisodeScreen extends HookWidget {
   const EpisodeScreen({
@@ -35,28 +35,49 @@ class EpisodeScreen extends HookWidget {
       dispose: (_, value) => value.dispose(),
     );
 
+    final episodeScreenAnimation = EpisodeScreenAnimation(
+      controller: useAnimationController(),
+    );
+
+    final scrollController = useScrollController();
+    useEffect(() {
+      final scrollListner = () {
+        if (!scrollController.position.outOfRange) {
+          episodeScreenAnimation.animateTo(
+            scrollController.offset,
+            scrollController.position.maxScrollExtent,
+          );
+        }
+      };
+      scrollController.addListener(scrollListner);
+      return () => scrollController.removeListener(scrollListner);
+    }, []);
+
     return StreamBuilder<EpisodeScreenData>(
-        stream: episodeScreenBloc.screenData,
-        builder: (context, snapshot) {
-          return NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  SliverPersistentHeader(
-                    delegate: EpisodeHeaderDelegate(
-                      forceElevated: innerBoxIsScrolled,
-                    ),
-                  ),
-                ];
-              },
-              pinnedHeaderSliverHeightBuilder: () {
-                return 60.0;
-              },
-              body: !snapshot.hasData
-                  ? _buildLoader()
-                  : Container(
-                      child: Text(snapshot.data.episode.title),
-                    ));
-        });
+      stream: episodeScreenBloc.screenData,
+      builder: (context, snapshot) {
+        return NestedScrollView(
+          controller: scrollController,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: EpisodeHeaderDelegate(
+                  animation: episodeScreenAnimation,
+                  forceElevated: innerBoxIsScrolled,
+                ),
+              ),
+            ];
+          },
+          body: !snapshot.hasData
+              ? _buildLoader()
+              : EpisodeScreenContent(
+                  episode: snapshot.data.episode,
+                  podcast: snapshot.data.podcast,
+                ),
+        );
+      },
+    );
   }
 
   Widget _buildLoader() {
