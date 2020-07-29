@@ -7,7 +7,6 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/animation/episode_screen_animation.dart';
-import 'package:phenopod/screen/queue_screen/widgets/queue_screen_menu.dart';
 
 class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
   EpisodeHeaderDelegate({
@@ -91,8 +90,17 @@ class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
             ),
           ),
           Transform.translate(
-            offset: const Offset(18, 0),
-            child: QueueScreenMenu(),
+            offset: const Offset(12, 0),
+            child: IconButton(
+              icon: Icon(
+                Icons.search_rounded,
+                size: 24,
+                color: TWColors.gray.shade700,
+              ),
+              visualDensity: VisualDensity.comfortable,
+              onPressed: () => Navigator.of(context, rootNavigator: true)
+                  .pushNamed('/search'),
+            ),
           ),
         ],
       ),

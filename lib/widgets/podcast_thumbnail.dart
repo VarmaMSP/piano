@@ -26,7 +26,7 @@ class PodcastThumbnail extends StatelessWidget {
     var thumbnailSize = 90.0;
     var borderRadius = 8.0;
     if (size == PodcastThumbnailSize.xs) {
-      thumbnailSize = 36.0;
+      thumbnailSize = 38.0;
       borderRadius = 4.0;
     } else if (size == PodcastThumbnailSize.sm) {
       thumbnailSize = 80.0;

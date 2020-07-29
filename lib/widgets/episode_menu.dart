@@ -257,6 +257,12 @@ class EpisodeMenu extends StatelessWidget {
         break;
 
       case EpisodeOption.goToEpisode:
+        if (fromPlayer) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+        Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
+          AppScreen.episodeScreen(urlParam: episode.urlParam),
+        );
         break;
 
       case EpisodeOption.moveToQueueBottom:

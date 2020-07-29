@@ -69,12 +69,12 @@ class EpisodeScreen extends HookWidget {
               ),
             ];
           },
-          body: !snapshot.hasData
-              ? _buildLoader()
-              : EpisodeScreenContent(
+          body: snapshot.hasData
+              ? EpisodeScreenContent(
                   episode: snapshot.data.episode,
                   podcast: snapshot.data.podcast,
-                ),
+                )
+              : _buildLoader(),
         );
       },
     );
@@ -82,8 +82,6 @@ class EpisodeScreen extends HookWidget {
 
   Widget _buildLoader() {
     return Container(
-      constraints: BoxConstraints.expand(),
-      padding: EdgeInsets.only(bottom: 50),
       color: Colors.white,
       child: Center(
         child: Container(
