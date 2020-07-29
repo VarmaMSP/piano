@@ -2778,15 +2778,10 @@ class _$AppScreenTearOff {
 
 // ignore: unused_element
   _PodcastScreen podcastScreen(
-      {@required String urlParam,
-      @required String title,
-      @required String author,
-      bool isSubscribed = false}) {
+      {@required String urlParam, @required PodcastPlaceholder placeholder}) {
     return _PodcastScreen(
       urlParam: urlParam,
-      title: title,
-      author: author,
-      isSubscribed: isSubscribed,
+      placeholder: placeholder,
     );
   }
 
@@ -2810,15 +2805,13 @@ mixin _$AppScreen {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required
-        Result podcastScreen(
-            String urlParam, String title, String author, bool isSubscribed),
+        Result podcastScreen(String urlParam, PodcastPlaceholder placeholder),
     @required Result episodeScreen(String urlParam),
     @required Result downloadsScreen(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result podcastScreen(
-        String urlParam, String title, String author, bool isSubscribed),
+    Result podcastScreen(String urlParam, PodcastPlaceholder placeholder),
     Result episodeScreen(String urlParam),
     Result downloadsScreen(),
     @required Result orElse(),
@@ -2855,7 +2848,7 @@ abstract class _$PodcastScreenCopyWith<$Res> {
   factory _$PodcastScreenCopyWith(
           _PodcastScreen value, $Res Function(_PodcastScreen) then) =
       __$PodcastScreenCopyWithImpl<$Res>;
-  $Res call({String urlParam, String title, String author, bool isSubscribed});
+  $Res call({String urlParam, PodcastPlaceholder placeholder});
 }
 
 class __$PodcastScreenCopyWithImpl<$Res> extends _$AppScreenCopyWithImpl<$Res>
@@ -2870,44 +2863,30 @@ class __$PodcastScreenCopyWithImpl<$Res> extends _$AppScreenCopyWithImpl<$Res>
   @override
   $Res call({
     Object urlParam = freezed,
-    Object title = freezed,
-    Object author = freezed,
-    Object isSubscribed = freezed,
+    Object placeholder = freezed,
   }) {
     return _then(_PodcastScreen(
       urlParam: urlParam == freezed ? _value.urlParam : urlParam as String,
-      title: title == freezed ? _value.title : title as String,
-      author: author == freezed ? _value.author : author as String,
-      isSubscribed:
-          isSubscribed == freezed ? _value.isSubscribed : isSubscribed as bool,
+      placeholder: placeholder == freezed
+          ? _value.placeholder
+          : placeholder as PodcastPlaceholder,
     ));
   }
 }
 
 class _$_PodcastScreen implements _PodcastScreen {
-  const _$_PodcastScreen(
-      {@required this.urlParam,
-      @required this.title,
-      @required this.author,
-      this.isSubscribed = false})
+  const _$_PodcastScreen({@required this.urlParam, @required this.placeholder})
       : assert(urlParam != null),
-        assert(title != null),
-        assert(author != null),
-        assert(isSubscribed != null);
+        assert(placeholder != null);
 
   @override
   final String urlParam;
   @override
-  final String title;
-  @override
-  final String author;
-  @JsonKey(defaultValue: false)
-  @override
-  final bool isSubscribed;
+  final PodcastPlaceholder placeholder;
 
   @override
   String toString() {
-    return 'AppScreen.podcastScreen(urlParam: $urlParam, title: $title, author: $author, isSubscribed: $isSubscribed)';
+    return 'AppScreen.podcastScreen(urlParam: $urlParam, placeholder: $placeholder)';
   }
 
   @override
@@ -2917,22 +2896,16 @@ class _$_PodcastScreen implements _PodcastScreen {
             (identical(other.urlParam, urlParam) ||
                 const DeepCollectionEquality()
                     .equals(other.urlParam, urlParam)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.author, author) ||
-                const DeepCollectionEquality().equals(other.author, author)) &&
-            (identical(other.isSubscribed, isSubscribed) ||
+            (identical(other.placeholder, placeholder) ||
                 const DeepCollectionEquality()
-                    .equals(other.isSubscribed, isSubscribed)));
+                    .equals(other.placeholder, placeholder)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(urlParam) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(author) ^
-      const DeepCollectionEquality().hash(isSubscribed);
+      const DeepCollectionEquality().hash(placeholder);
 
   @override
   _$PodcastScreenCopyWith<_PodcastScreen> get copyWith =>
@@ -2942,29 +2915,27 @@ class _$_PodcastScreen implements _PodcastScreen {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required
-        Result podcastScreen(
-            String urlParam, String title, String author, bool isSubscribed),
+        Result podcastScreen(String urlParam, PodcastPlaceholder placeholder),
     @required Result episodeScreen(String urlParam),
     @required Result downloadsScreen(),
   }) {
     assert(podcastScreen != null);
     assert(episodeScreen != null);
     assert(downloadsScreen != null);
-    return podcastScreen(urlParam, title, author, isSubscribed);
+    return podcastScreen(urlParam, placeholder);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result podcastScreen(
-        String urlParam, String title, String author, bool isSubscribed),
+    Result podcastScreen(String urlParam, PodcastPlaceholder placeholder),
     Result episodeScreen(String urlParam),
     Result downloadsScreen(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (podcastScreen != null) {
-      return podcastScreen(urlParam, title, author, isSubscribed);
+      return podcastScreen(urlParam, placeholder);
     }
     return orElse();
   }
@@ -3001,14 +2972,10 @@ class _$_PodcastScreen implements _PodcastScreen {
 abstract class _PodcastScreen implements AppScreen {
   const factory _PodcastScreen(
       {@required String urlParam,
-      @required String title,
-      @required String author,
-      bool isSubscribed}) = _$_PodcastScreen;
+      @required PodcastPlaceholder placeholder}) = _$_PodcastScreen;
 
   String get urlParam;
-  String get title;
-  String get author;
-  bool get isSubscribed;
+  PodcastPlaceholder get placeholder;
   _$PodcastScreenCopyWith<_PodcastScreen> get copyWith;
 }
 
@@ -3070,8 +3037,7 @@ class _$_EpisodeScreen implements _EpisodeScreen {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required
-        Result podcastScreen(
-            String urlParam, String title, String author, bool isSubscribed),
+        Result podcastScreen(String urlParam, PodcastPlaceholder placeholder),
     @required Result episodeScreen(String urlParam),
     @required Result downloadsScreen(),
   }) {
@@ -3084,8 +3050,7 @@ class _$_EpisodeScreen implements _EpisodeScreen {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result podcastScreen(
-        String urlParam, String title, String author, bool isSubscribed),
+    Result podcastScreen(String urlParam, PodcastPlaceholder placeholder),
     Result episodeScreen(String urlParam),
     Result downloadsScreen(),
     @required Result orElse(),
@@ -3169,8 +3134,7 @@ class _$_DownloadsScreen implements _DownloadsScreen {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required
-        Result podcastScreen(
-            String urlParam, String title, String author, bool isSubscribed),
+        Result podcastScreen(String urlParam, PodcastPlaceholder placeholder),
     @required Result episodeScreen(String urlParam),
     @required Result downloadsScreen(),
   }) {
@@ -3183,8 +3147,7 @@ class _$_DownloadsScreen implements _DownloadsScreen {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result podcastScreen(
-        String urlParam, String title, String author, bool isSubscribed),
+    Result podcastScreen(String urlParam, PodcastPlaceholder placeholder),
     Result episodeScreen(String urlParam),
     Result downloadsScreen(),
     @required Result orElse(),

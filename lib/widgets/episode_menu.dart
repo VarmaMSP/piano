@@ -246,8 +246,11 @@ class EpisodeMenu extends StatelessWidget {
         Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
           AppScreen.podcastScreen(
             urlParam: podcast.urlParam,
-            title: podcast.title,
-            author: podcast.author,
+            placeholder: PodcastPlaceholder(
+              title: podcast.title,
+              author: podcast.author,
+              isSubscribed: false,
+            ),
           ),
         );
 

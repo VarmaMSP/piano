@@ -58,8 +58,11 @@ class SuggestionsList extends StatelessWidget {
           () => appNavigationBloc.pushScreen(
             AppScreen.podcastScreen(
               urlParam: suggestion.i,
-              title: suggestion.header,
-              author: suggestion.subHeader,
+              placeholder: PodcastPlaceholder(
+                title: suggestion.header,
+                author: suggestion.subHeader,
+                isSubscribed: false,
+              ),
             ),
           ),
         );

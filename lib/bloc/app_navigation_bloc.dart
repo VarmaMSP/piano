@@ -71,9 +71,7 @@ class AppNavigationBloc {
         '/podcast',
         arguments: {
           'urlParam': data.urlParam,
-          'title': data.title,
-          'author': data.author,
-          'isSubscribed': data.isSubscribed,
+          'placeholder': data.placeholder,
         },
       ),
       episodeScreen: (data) => navigator.currentState.pushNamed(

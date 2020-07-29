@@ -19,18 +19,11 @@ import 'package:flutter/material.dart'
     hide NestedScrollView, NestedScrollViewState;
 
 class PodcastScreen extends HookWidget {
-  PodcastScreen({
-    Key key,
-    @required this.urlParam,
-    this.title,
-    this.author,
-    this.isSubscribed,
-  }) : super(key: key);
+  PodcastScreen({Key key, @required this.urlParam, @required this.placeholder})
+      : super(key: key);
 
   final String urlParam;
-  final String title;
-  final String author;
-  final bool isSubscribed;
+  final PodcastPlaceholder placeholder;
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +59,10 @@ class PodcastScreen extends HookWidget {
               SliverPersistentHeader(
                 pinned: true,
                 delegate: PodcastHeaderDelegate(
-                  tabController: tabController,
                   urlParam: urlParam,
-                  title: title,
-                  author: author,
-                  isSubscribed: isSubscribed,
+                  placeholder: placeholder,
                   screenData: snapshot.data,
+                  tabController: tabController,
                   animation: podcastScreenAnimation,
                   forceElevated: innerBoxIsScrolled,
                   scrollToTop: () => nestedScrollViewKey

@@ -28,9 +28,7 @@ Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
         return SlideLeftPageRoute.d(
           builder: (_) => PodcastScreen(
             urlParam: args['urlParam'],
-            title: args['title'],
-            author: args['author'],
-            isSubscribed: args['isSubscribed'],
+            placeholder: args['placeholder'],
           ),
         );
       case '/episode':

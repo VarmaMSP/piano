@@ -10,9 +10,7 @@ enum AppTab {
 abstract class AppScreen with _$AppScreen {
   const factory AppScreen.podcastScreen({
     @required String urlParam,
-    @required String title,
-    @required String author,
-    @Default(false) bool isSubscribed,
+    @required PodcastPlaceholder placeholder,
   }) = _PodcastScreen;
 
   const factory AppScreen.episodeScreen({

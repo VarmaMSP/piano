@@ -17,12 +17,10 @@ import 'package:phenopod/utils/request.dart';
 
 class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   PodcastHeaderDelegate({
-    @required this.tabController,
     @required this.urlParam,
-    @required this.title,
-    @required this.author,
-    this.isSubscribed = false,
+    @required this.placeholder,
     @required this.screenData,
+    @required this.tabController,
     @required this.animation,
     @required this.forceElevated,
     @required this.scrollToTop,
@@ -32,12 +30,10 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
   static const double tabBarHeight = 35;
   static const double flexibleAreaHeight = 145;
 
-  final TabController tabController;
   final String urlParam;
-  final String title;
-  final String author;
-  final bool isSubscribed;
+  final PodcastPlaceholder placeholder;
   final PodcastScreenData screenData;
+  final TabController tabController;
   final PodcastScreenAnimation animation;
   final bool forceElevated;
   final Function scrollToTop;
@@ -69,7 +65,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       child: Stack(
         overflow: Overflow.visible,
         children: <Widget>[
-          if (!animation.ended && (screenData != null || title != null))
+          if (!animation.ended && (screenData != null || placeholder != null))
             Positioned(
               bottom: tabBarHeight,
               left: 0.0,
@@ -236,14 +232,14 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          screenData?.podcast?.title ?? title,
+          screenData?.podcast?.title ?? placeholder.title,
           style: Theme.of(context).textTheme.headline5,
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
         ),
         Container(height: 8),
         Text(
-          screenData?.podcast?.author ?? author,
+          screenData?.podcast?.author ?? placeholder.author,
           style: Theme.of(context).textTheme.headline6.copyWith(
                 fontWeight: FontWeight.w400,
                 color: TWColors.gray.shade900,
@@ -255,6 +251,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     );
 
     final podcastActionsBloc = Provider.of<PodcastActionsBloc>(context);
+    final isSubscribed =
+        screenData?.isSubscribed ?? placeholder?.isSubscribed ?? false;
 
     final Widget actions = Container(
       height: 24,
@@ -266,27 +264,23 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               heightFactor: 1.0,
               widthFactor: 0.65,
               child: FlatButton(
-                onPressed: () => screenData != null && screenData.isSubscribed
+                onPressed: () => screenData != null && isSubscribed
                     ? podcastActionsBloc.addAction(
                         PodcastAction.unsubscribe(podcast: screenData.podcast),
                       )
                     : podcastActionsBloc.addAction(
                         PodcastAction.subscribe(podcast: screenData.podcast),
                       ),
-                color: screenData?.isSubscribed ?? isSubscribed
+                color: isSubscribed
                     ? Colors.grey.shade300
                     : TWColors.purple.shade600,
-                textColor: screenData?.isSubscribed ?? isSubscribed
-                    ? Colors.grey.shade800
-                    : Colors.grey.shade100,
+                textColor:
+                    isSubscribed ? Colors.grey.shade800 : Colors.grey.shade100,
                 child: Text(
-                  screenData?.isSubscribed ?? isSubscribed
-                      ? 'SUBSCRIBED'
-                      : 'SUBSCRIBE',
+                  isSubscribed ? 'SUBSCRIBED' : 'SUBSCRIBE',
                   style: Theme.of(context).textTheme.headline6.copyWith(
-                        color: screenData?.isSubscribed ?? isSubscribed
-                            ? Colors.grey.shade900
-                            : Colors.white,
+                        color:
+                            isSubscribed ? Colors.grey.shade900 : Colors.white,
                         fontSize: 12.5,
                         letterSpacing: 0.6,
                       ),
