@@ -26,6 +26,9 @@ class PodcastScreenBloc {
   final StreamMap<int, List<Episode>> _episodePageMap =
       StreamMap<int, List<Episode>>();
 
+  /// Stream for podcast
+  Stream<Podcast> _podcastStream;
+
   /// Subscriptions made in this bloc
   StreamSubscription<dynamic> _storeSubscription;
   StreamSubscription<dynamic> _eventSubscription;
@@ -43,17 +46,15 @@ class PodcastScreenBloc {
   }
 
   Future<void> _handleDataFromStore(String urlParam) async {
-    final podcastStream = store.podcast.watchByUrlParam(urlParam);
-    final subscriptionStream = Rx.switchLatest<Subscription>(
-      podcastStream
-          .where((p) => p != null)
-          .map((p) => store.subscription.watchByPodcast(p.id)),
-    );
-
+    _podcastStream = store.podcast.watchByUrlParam(urlParam);
     _storeSubscription = Rx.combineLatest3<Podcast, Subscription,
         List<List<Episode>>, PodcastScreenData>(
-      podcastStream,
-      subscriptionStream,
+      _podcastStream,
+      Rx.switchLatest<Subscription>(
+        _podcastStream
+            .where((p) => p != null)
+            .map((p) => store.subscription.watchByPodcast(p.id)),
+      ),
       _episodePageMap.streamValues,
       (podcast, subscription, episodesPages) => PodcastScreenData(
         podcast: podcast,
@@ -65,12 +66,19 @@ class PodcastScreenBloc {
       ),
     ).distinct().listen(_screenData.add);
 
-    final podcast = await podcastStream.first;
     _episodePageMap.add(
       0,
-      store.episode
-          .watchByPodcastPaginated(podcastId: podcast.id, offset: 0, limit: 15)
-          .where((e) => e.isNotEmpty),
+      Rx.switchLatest<List<Episode>>(
+        _podcastStream.where((p) => p != null).map(
+              (p) => store.episode
+                  .watchByPodcastPaginated(
+                    podcastId: p.id,
+                    offset: 0,
+                    limit: 15,
+                  )
+                  .where((e) => e.isNotEmpty),
+            ),
+      ),
     );
   }
 
@@ -106,14 +114,18 @@ class PodcastScreenBloc {
     if (!_episodePageMap.contains(offset)) {
       _episodePageMap.add(
         offset,
-        StreamDelayTill<List<Episode>>(
-          store.episode.watchByPodcastPaginated(
-            podcastId: screenData.podcast.id,
-            offset: screenData.episodes.length,
-            limit: 30,
-          ),
-          (episodes) => episodes.isNotEmpty,
-        ).stream,
+        Rx.switchLatest<List<Episode>>(
+          _podcastStream.where((p) => p != null).map(
+                (p) => StreamDelayTill<List<Episode>>(
+                  store.episode.watchByPodcastPaginated(
+                    podcastId: p.id,
+                    offset: offset,
+                    limit: 30,
+                  ),
+                  (episodes) => episodes.isNotEmpty,
+                ).stream,
+              ),
+        ),
       );
     }
   }
