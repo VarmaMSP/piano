@@ -6,7 +6,7 @@ import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
-import 'package:phenopod/animation/bottom_app_bar_animation.dart';
+import 'package:phenopod/animations/bottom_app_bar_animation.dart';
 import 'package:phenopod/utils/utils.dart';
 
 class AudioPlayerBottomBar extends StatelessWidget {

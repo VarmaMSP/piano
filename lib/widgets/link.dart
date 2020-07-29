@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:phenopod/model/main.dart';
+import 'package:phenopod/models/main.dart';
 
 class PodcastLink extends StatelessWidget {
   const PodcastLink({

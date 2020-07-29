@@ -10,8 +10,8 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:tuple/tuple.dart';
 
 // Project imports:
-import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/model/main.dart';
+import 'package:phenopod/blocs/audio_player_bloc.dart';
+import 'package:phenopod/models/main.dart';
 import 'package:phenopod/utils/utils.dart';
 
 class SeekBar extends StatefulWidget {

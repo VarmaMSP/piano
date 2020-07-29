@@ -8,10 +8,10 @@ import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:phenopod/app/app_screen_content.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart';
-import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/blocs/app_navigation_bloc.dart';
+import 'package:phenopod/blocs/audio_player_bloc.dart';
+import 'package:phenopod/models/main.dart';
+import 'package:phenopod/services/db/db.dart';
 import 'package:phenopod/utils/chrome.dart' as chromeutils;
 import 'package:phenopod/widgets/bottom_app_bar/main.dart';
 

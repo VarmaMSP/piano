@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
-import 'package:phenopod/animation/bottom_app_bar_animation.dart';
-import 'package:phenopod/bloc/app_navigation_bloc.dart';
-import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/model/main.dart';
+import 'package:phenopod/animations/bottom_app_bar_animation.dart';
+import 'package:phenopod/blocs/app_navigation_bloc.dart';
+import 'package:phenopod/blocs/audio_player_bloc.dart';
+import 'package:phenopod/models/main.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/audio_player/main.dart';
 import 'navigation_bar.dart';

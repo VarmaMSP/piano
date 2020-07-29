@@ -6,8 +6,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
-import 'package:phenopod/animation/bottom_app_bar_animation.dart';
-import 'package:phenopod/model/main.dart';
+import 'package:phenopod/animations/bottom_app_bar_animation.dart';
+import 'package:phenopod/models/main.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/audio_player/widgets/playback_controls.dart';

@@ -13,9 +13,9 @@ import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
 // Project imports:
-import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/api/api.dart';
-import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/models/main.dart';
+import 'package:phenopod/services/api/api.dart';
+import 'package:phenopod/services/db/db.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
 import 'worker.dart';

@@ -6,9 +6,9 @@ import 'package:audio_service/audio_service.dart' as audioservice;
 import 'package:rxdart/subjects.dart';
 
 // Project imports:
-import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/api/api.dart';
-import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/models/main.dart';
+import 'package:phenopod/services/api/api.dart';
+import 'package:phenopod/services/db/db.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/audio_player.dart' as utils;
 import 'package:phenopod/utils/file.dart';

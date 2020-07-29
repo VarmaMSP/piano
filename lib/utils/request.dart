@@ -8,7 +8,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:path_provider/path_provider.dart';
 
 // Project imports:
-import 'package:phenopod/model/main.dart';
+import 'package:phenopod/models/main.dart';
 
 const String baseUrl = kReleaseMode
     ? 'https://phenopod.com/api'

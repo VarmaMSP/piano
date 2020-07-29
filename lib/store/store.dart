@@ -2,9 +2,9 @@
 import 'package:flutter/foundation.dart';
 
 // Project imports:
-import 'package:phenopod/service/alarm_service/alarm_service.dart';
-import 'package:phenopod/service/api/api.dart';
-import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/services/alarm_service/alarm_service.dart';
+import 'package:phenopod/services/api/api.dart';
+import 'package:phenopod/services/db/db.dart';
 import 'audio_file_store.dart';
 import 'audio_player_store.dart';
 import 'episode_store.dart';

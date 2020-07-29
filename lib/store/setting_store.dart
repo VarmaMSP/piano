@@ -8,10 +8,10 @@ import 'package:flutter/foundation.dart';
 import 'package:when_expression/when_expression.dart';
 
 // Project imports:
-import 'package:phenopod/model/main.dart';
-import 'package:phenopod/service/alarm_service/alarm_service.dart';
-import 'package:phenopod/service/api/api.dart';
-import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/models/main.dart';
+import 'package:phenopod/services/alarm_service/alarm_service.dart';
+import 'package:phenopod/services/api/api.dart';
+import 'package:phenopod/services/db/db.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
 
 SettingStore newSettingStore(Api api, Db db, [AlarmService alarmService]) {

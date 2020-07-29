@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:phenopod/page_route/slide_left_page_route.dart';
-import 'package:phenopod/screen/downloads_screen/download_screen.dart';
-import 'package:phenopod/screen/episode_screen/episode_screen.dart';
-import 'package:phenopod/screen/home_screen/home_screen.dart';
-import 'package:phenopod/screen/library_screen/library_screen.dart';
-import 'package:phenopod/screen/podcast_screen/podcast_screen.dart';
-import 'package:phenopod/screen/subscriptions_screen/subscriptions_screen.dart';
+import 'package:phenopod/screens/downloads_screen/download_screen.dart';
+import 'package:phenopod/screens/episode_screen/episode_screen.dart';
+import 'package:phenopod/screens/home_screen/home_screen.dart';
+import 'package:phenopod/screens/library_screen/library_screen.dart';
+import 'package:phenopod/screens/podcast_screen/podcast_screen.dart';
+import 'package:phenopod/screens/subscriptions_screen/subscriptions_screen.dart';
 
 Route<dynamic> Function(RouteSettings) makeGenerateRoute() {
   return (RouteSettings settings) {

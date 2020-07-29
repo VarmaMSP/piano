@@ -10,8 +10,8 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:when_expression/when_expression.dart';
 
 // Project imports:
-import 'package:phenopod/bloc/app_navigation_bloc.dart';
-import 'package:phenopod/model/main.dart';
+import 'package:phenopod/blocs/app_navigation_bloc.dart';
+import 'package:phenopod/models/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/episode_menu.dart';

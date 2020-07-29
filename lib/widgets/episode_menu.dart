@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
-import 'package:phenopod/bloc/app_navigation_bloc.dart';
-import 'package:phenopod/bloc/audio_player_bloc.dart';
-import 'package:phenopod/bloc/episode_actions_bloc.dart';
-import 'package:phenopod/model/main.dart';
+import 'package:phenopod/blocs/app_navigation_bloc.dart';
+import 'package:phenopod/blocs/audio_player_bloc.dart';
+import 'package:phenopod/blocs/episode_actions_bloc.dart';
+import 'package:phenopod/models/main.dart';
 
 enum EpisodeOption {
   playNext,

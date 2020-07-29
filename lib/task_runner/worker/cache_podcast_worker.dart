@@ -6,8 +6,8 @@ import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 
 // Project imports:
-import 'package:phenopod/service/api/api.dart';
-import 'package:phenopod/service/db/db.dart';
+import 'package:phenopod/services/api/api.dart';
+import 'package:phenopod/services/db/db.dart';
 import 'package:phenopod/store/store.dart';
 import 'worker.dart';
 
