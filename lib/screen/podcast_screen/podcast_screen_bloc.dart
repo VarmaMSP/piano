@@ -12,18 +12,11 @@ import 'package:rxdart/rxdart.dart';
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/stream.dart';
-import 'package:phenopod/utils/utils.dart';
 
 /// This bloc is used to represent local state of podcast screen
 class PodcastScreenBloc {
   final Store store;
   final EventBus eventBus;
-
-  /// id of current podcast
-  final String id;
-
-  /// urlParam of current podcast;
-  final String urlParam;
 
   /// Controller for screen data
   final BehaviorSubject<PodcastScreenData> _screenData =
@@ -40,20 +33,27 @@ class PodcastScreenBloc {
   PodcastScreenBloc({
     @required this.store,
     @required this.eventBus,
-    @required this.urlParam,
-  }) : id = getIdFromUrlParam(urlParam) {
+    @required String urlParam,
+  }) {
     /// load data from streams
-    _handleDataFromStore();
+    _handleDataFromStore(urlParam);
 
     /// Handle any changes as a result of podcast actions
     _handleEvents();
   }
 
-  Future<void> _handleDataFromStore() async {
+  Future<void> _handleDataFromStore(String urlParam) async {
+    final podcastStream = store.podcast.watchByUrlParam(urlParam);
+    final subscriptionStream = Rx.switchLatest<Subscription>(
+      podcastStream
+          .where((p) => p != null)
+          .map((p) => store.subscription.watchByPodcast(p.id)),
+    );
+
     _storeSubscription = Rx.combineLatest3<Podcast, Subscription,
         List<List<Episode>>, PodcastScreenData>(
-      store.podcast.watchByUrlParam(urlParam),
-      store.subscription.watchByPodcast(id),
+      podcastStream,
+      subscriptionStream,
       _episodePageMap.streamValues,
       (podcast, subscription, episodesPages) => PodcastScreenData(
         podcast: podcast,
@@ -65,10 +65,11 @@ class PodcastScreenBloc {
       ),
     ).distinct().listen(_screenData.add);
 
+    final podcast = await podcastStream.first;
     _episodePageMap.add(
       0,
       store.episode
-          .watchByPodcastPaginated(podcastId: id, offset: 0, limit: 15)
+          .watchByPodcastPaginated(podcastId: podcast.id, offset: 0, limit: 15)
           .where((e) => e.isNotEmpty),
     );
   }
@@ -77,19 +78,19 @@ class PodcastScreenBloc {
     _eventSubscription = eventBus.on().listen((e) {
       (e as AppEvent).maybeMap(
         subscribeToPodcast: (data) async {
-          if (data.podcast.id == id) {
-            final screenData = await _screenData.first;
-            if (!screenData.isSubscribed) {
-              _screenData.add(screenData.copyWith(isSubscribed: true));
-            }
+          final screenData = await _screenData.first;
+          final podcast = screenData.podcast;
+          final isSubscribed = screenData.isSubscribed;
+          if (data.podcast.id == podcast.id && !isSubscribed) {
+            _screenData.add(screenData.copyWith(isSubscribed: true));
           }
         },
         unsubscribeFromPodcast: (data) async {
-          if (data.podcast.id == id) {
-            final screenData = await _screenData.first;
-            if (screenData.isSubscribed) {
-              _screenData.add(screenData.copyWith(isSubscribed: false));
-            }
+          final screenData = await _screenData.first;
+          final podcast = screenData.podcast;
+          final isSubscribed = screenData.isSubscribed;
+          if (data.podcast.id == podcast.id && isSubscribed) {
+            _screenData.add(screenData.copyWith(isSubscribed: false));
           }
         },
         orElse: () {},
@@ -107,8 +108,8 @@ class PodcastScreenBloc {
         offset,
         StreamDelayTill<List<Episode>>(
           store.episode.watchByPodcastPaginated(
-            podcastId: id,
-            offset: offset,
+            podcastId: screenData.podcast.id,
+            offset: screenData.episodes.length,
             limit: 30,
           ),
           (episodes) => episodes.isNotEmpty,

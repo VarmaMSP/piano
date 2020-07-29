@@ -11,17 +11,10 @@ import 'package:rxdart/rxdart.dart';
 // Project imports:
 import 'package:phenopod/model/main.dart';
 import 'package:phenopod/store/store.dart';
-import 'package:phenopod/utils/utils.dart';
 
 class EpisodeScreenBloc {
   final Store store;
   final EventBus eventBus;
-
-  // id of current episode
-  final String id;
-
-  // urlParam of current episode
-  final String urlParam;
 
   // controller for screen data
   final BehaviorSubject<EpisodeScreenData> _screenData =
@@ -34,22 +27,22 @@ class EpisodeScreenBloc {
   EpisodeScreenBloc({
     @required this.store,
     @required this.eventBus,
-    @required this.urlParam,
-  }) : id = getIdFromUrlParam(urlParam) {
+    @required String urlParam,
+  }) {
     /// load data from streams
-    _handleDataFromStore();
+    _handleDataFromStore(urlParam);
 
     /// Handle any changes as a result of podcast actions
     _handleEvents();
   }
 
-  void _handleDataFromStore() async {
+  void _handleDataFromStore(String urlParam) async {
     final episodeStream = store.episode.watchByUrlParam(urlParam);
     final podcastStream = Rx.switchLatest<Podcast>(
       episodeStream
           .where((e) => e != null)
           .map((e) => store.podcast.watchById(e.podcastId)),
-    ).asBroadcastStream();
+    );
     final epiosdeMetaStream = Rx.switchLatest<EpisodeMeta>(
       episodeStream
           .where((e) => e != null)
@@ -81,18 +74,18 @@ class EpisodeScreenBloc {
       (e as AppEvent).maybeMap(
         subscribeToPodcast: (data) async {
           final screenData = await _screenData.first;
-          if (data.podcast.id == screenData.podcast.id) {
-            if (!screenData.isPodcastSubscribed) {
-              _screenData.add(screenData.copyWith(isPodcastSubscribed: true));
-            }
+          final podcast = screenData.podcast;
+          final isSubscribed = screenData.isPodcastSubscribed;
+          if (data.podcast.id == podcast.id && !isSubscribed) {
+            _screenData.add(screenData.copyWith(isPodcastSubscribed: true));
           }
         },
         unsubscribeFromPodcast: (data) async {
           final screenData = await _screenData.first;
-          if (data.podcast.id == screenData.podcast.id) {
-            if (screenData.isPodcastSubscribed) {
-              _screenData.add(screenData.copyWith(isPodcastSubscribed: false));
-            }
+          final podcast = screenData.podcast;
+          final isSubscribed = screenData.isPodcastSubscribed;
+          if (data.podcast.id == podcast.id && isSubscribed) {
+            _screenData.add(screenData.copyWith(isPodcastSubscribed: false));
           }
         },
         orElse: () {},
