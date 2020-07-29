@@ -42,7 +42,7 @@ class EpisodeScreenBloc {
       episodeStream
           .where((e) => e != null)
           .map((e) => store.podcast.watchById(e.podcastId)),
-    );
+    ).asBroadcastStream();
     final epiosdeMetaStream = Rx.switchLatest<EpisodeMeta>(
       episodeStream
           .where((e) => e != null)
