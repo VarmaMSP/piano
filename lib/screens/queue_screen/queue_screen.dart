@@ -35,7 +35,8 @@ class QueueScreen extends StatelessWidget {
         child: Container(),
       ),
       body: StreamBuilder<Queue>(
-        stream: audioPlayerBloc.queue,
+        initialData: audioPlayerBloc.queue,
+        stream: audioPlayerBloc.queueStream,
         builder: (context, snapshot) {
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {

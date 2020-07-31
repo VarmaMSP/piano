@@ -148,11 +148,17 @@ class AudioPlayerBloc {
 
   // Get now playing track
   Stream<AudioTrack> get nowPlaying =>
-      _queueSubject.stream.map((s) => s.nowPlaying);
+      _queueSubject.stream.distinct().map((s) => s.nowPlaying);
 
-  // Get queue if enabled
-  Stream<Queue> get queue =>
-      _queueSubject.stream.map((q) => !q.isEmpty ? q : null);
+  // Get last emitted queue value
+  Queue get queue {
+    final q = _queueSubject.value;
+    return q != null && !q.isEmpty ? q : null;
+  }
+
+  // Get queue stream
+  Stream<Queue> get queueStream =>
+      _queueSubject.stream.distinct().map((q) => !q.isEmpty ? q : null);
 
   // Get current audio state
   Stream<AudioState> get audioState => audioService.audioState;

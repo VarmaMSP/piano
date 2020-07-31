@@ -64,13 +64,13 @@ class SubscriptionsScreenBloc {
     _episodePageStreamMap.add(
       0,
       Rx.switchLatest<List<Episode>>(
-        _subscriptionsStream.map(
-          (podcasts) => store.episode.watchByPodcastsPaginated(
-            podcastIds: podcasts.map((x) => x.id).toList(),
-            offset: 0,
-            limit: 30,
-          ),
-        ),
+        _subscriptionsStream.where((x) => x.isNotEmpty).map(
+              (podcasts) => store.episode.watchByPodcastsPaginated(
+                podcastIds: podcasts.map((x) => x.id).toList(),
+                offset: 0,
+                limit: 30,
+              ),
+            ),
       ),
     );
   }
@@ -84,13 +84,13 @@ class SubscriptionsScreenBloc {
       _episodePageStreamMap.add(
         offset,
         Rx.switchLatest<List<Episode>>(
-          _subscriptionsStream.map(
-            (podcasts) => store.episode.watchByPodcastsPaginated(
-              podcastIds: podcasts.map((x) => x.id).toList(),
-              offset: offset,
-              limit: 30,
-            ),
-          ),
+          _subscriptionsStream.where((x) => x.isNotEmpty).map(
+                (podcasts) => store.episode.watchByPodcastsPaginated(
+                  podcastIds: podcasts.map((x) => x.id).toList(),
+                  offset: offset,
+                  limit: 30,
+                ),
+              ),
         ),
       );
     }
