@@ -26,35 +26,65 @@ import 'package:phenopod/utils/chrome.dart' as chromeutils;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Global Services
   final db = await newDb();
   final api = await newApi();
+  final eventBus = EventBus();
   final audioService = newAudioService();
   final alarmService = await newAlarmService();
+  final store = newStore(api, db, alarmService);
+
+  // Global Blocs
+  final userBloc = UserBloc(store);
+  final audioPlayerBloc = AudioPlayerBloc(store, audioService);
+  final podcastActionsBloc = PodcastActionsBloc(store, eventBus);
+  final episodeActionsBloc = EpisodeActionsBloc(store);
 
   await chromeutils.applyPreferredOrientations();
 
   // FIXME: calling this method, throwing error
   // await alarmService.scheduleTaskRunner();
 
-  runApp(Root(
-    db: db,
-    store: newStore(api, db, alarmService),
-    eventBus: EventBus(),
-    audioService: audioService,
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider.value(
+          value: db.sqlDb,
+          updateShouldNotify: (_, __) => false,
+        ),
+        Provider.value(
+          value: store,
+          updateShouldNotify: (_, __) => false,
+        ),
+        Provider.value(
+          value: eventBus,
+          updateShouldNotify: (_, __) => false,
+        ),
+        Provider.value(
+          value: userBloc,
+          updateShouldNotify: (_, __) => false,
+        ),
+        Provider.value(
+          value: audioPlayerBloc,
+          updateShouldNotify: (_, __) => false,
+        ),
+        Provider.value(
+          value: podcastActionsBloc,
+          updateShouldNotify: (_, __) => false,
+        ),
+        Provider.value(
+          value: episodeActionsBloc,
+          updateShouldNotify: (_, __) => false,
+        ),
+      ],
+      child: Root(audioService: audioService),
+    ),
+  );
 }
 
 class Root extends StatefulWidget {
-  Root({
-    @required this.db,
-    @required this.store,
-    @required this.eventBus,
-    @required this.audioService,
-  });
+  Root({@required this.audioService});
 
-  final Db db;
-  final Store store;
-  final EventBus eventBus;
   final AudioService audioService;
 
   @override
@@ -104,44 +134,12 @@ class _RootState extends State<Root>
   Widget build(BuildContext context) {
     chromeutils.applySystemUIOverlayStyle();
 
-    return MultiProvider(
-      providers: [
-        Provider.value(
-          value: widget.db.sqlDb,
-          updateShouldNotify: (_, __) => false,
-        ),
-        Provider.value(
-          value: widget.store,
-          updateShouldNotify: (_, __) => false,
-        ),
-        Provider.value(
-          value: widget.eventBus,
-          updateShouldNotify: (_, __) => false,
-        ),
-        Provider<AppNavigationBloc>(
-          create: (_) => AppNavigationBloc(
-            playerTabController: _tabController,
-            playerAnimationController: _animationController,
-          ),
-          dispose: (_, value) => value.dispose(),
-        ),
-        Provider<AudioPlayerBloc>(
-          create: (_) => AudioPlayerBloc(widget.store, widget.audioService),
-          dispose: (_, value) => value.dispose(),
-        ),
-        Provider<UserBloc>(
-          create: (_) => UserBloc(widget.store),
-          dispose: (_, value) => value.dispose(),
-        ),
-        Provider<PodcastActionsBloc>(
-          create: (_) => PodcastActionsBloc(widget.store, widget.eventBus),
-          dispose: (_, value) => value.dispose(),
-        ),
-        Provider<EpisodeActionsBloc>(
-          create: (_) => EpisodeActionsBloc(widget.store),
-          dispose: (_, value) => value.dispose(),
-        ),
-      ],
+    return Provider(
+      create: (_) => AppNavigationBloc(
+        playerTabController: _tabController,
+        playerAnimationController: _animationController,
+      ),
+      dispose: (_, value) => value.dispose(),
       child: Builder(builder: (context) {
         return MaterialApp(
           title: 'Phenopod',

@@ -64,7 +64,7 @@ class QueueScreen extends StatelessWidget {
                   )
                 : EmptyScreenPlaceholder(
                     emoji: '👻',
-                    text: 'You queue is empty',
+                    text: 'Your queue is empty',
                   ),
           );
         },
