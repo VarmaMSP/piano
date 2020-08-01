@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -8,6 +7,7 @@ import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:phenopod/blocs/user_bloc.dart';
+import 'package:phenopod/utils/chrome.dart' as chromeutils;
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({Key key}) : super(key: key);
@@ -16,12 +16,7 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userBloc = Provider.of<UserBloc>(context);
 
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
+    chromeutils.applySystemUIOverlayStyle();
 
     return StreamBuilder<bool>(
       stream: userBloc.userSigningIn,

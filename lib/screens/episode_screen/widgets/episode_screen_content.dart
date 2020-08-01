@@ -28,7 +28,7 @@ class EpisodeScreenContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           /// Padding for appbar
-          Container(height: 0),
+          Container(height: 10),
 
           /// Episode title
           Container(
@@ -39,21 +39,22 @@ class EpisodeScreenContent extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.headline4.copyWith(
+                    fontSize: 22,
                     height: 1.4,
                   ),
             ),
           ),
 
-          /// Actions
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 30.0),
-            child: _buildActions(context),
-          ),
-
           /// Podcast details
           Container(
-            margin: EdgeInsets.symmetric(vertical: 15.0, horizontal: 18.0),
+            margin: EdgeInsets.symmetric(vertical: 30.0, horizontal: 18.0),
             child: _buildPodcastDetails(context),
+          ),
+
+          /// Actions
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 15.0),
+            child: _buildActions(context),
           ),
 
           /// Episode description

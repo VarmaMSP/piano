@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/animations/bottom_app_bar_animation.dart';
+import 'package:phenopod/blocs/app_navigation_bloc.dart';
 import 'package:phenopod/models/main.dart';
 import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/utils/utils.dart';
@@ -31,13 +33,13 @@ class AudioPlayer extends StatelessWidget {
     return TabBarView(
       controller: tabController,
       children: <Widget>[
-        _buildNowPlayingTab(),
+        _buildNowPlayingTab(context),
         _buildNotesTab(),
       ],
     );
   }
 
-  Widget _buildNowPlayingTab() {
+  Widget _buildNowPlayingTab(BuildContext context) {
     return Container(
       color: Colors.white,
       padding: EdgeInsets.only(
@@ -59,7 +61,7 @@ class AudioPlayer extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(8),
                   child: AspectRatio(
                     aspectRatio: 1.0,
                     child: CachedNetworkImage(
@@ -97,21 +99,36 @@ class AudioPlayer extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            alignment: Alignment.topCenter,
-            child: Text(
-              nowPlaying.podcast.title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                height: 1.3,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 0.17,
-                color: TWColors.gray.shade700,
+          GestureDetector(
+            onTap: () {
+              Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
+                AppScreen.podcastScreen(
+                  urlParam: nowPlaying.podcast.urlParam,
+                  placeholder: PodcastPlaceholder(
+                    title: nowPlaying.podcast.title,
+                    author: nowPlaying.podcast.author,
+                    isSubscribed: false,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              alignment: Alignment.topCenter,
+              child: Text(
+                nowPlaying.podcast.title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  height: 1.3,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.17,
+                  color: TWColors.gray.shade700,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
           PlaybackControls(),

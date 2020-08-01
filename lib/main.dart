@@ -42,7 +42,7 @@ void main() async {
 
   await chromeutils.applyPreferredOrientations();
 
-  // FIXME: calling this method, throwing error
+  // FIXME: calling this method, throws an error
   // await alarmService.scheduleTaskRunner();
 
   runApp(

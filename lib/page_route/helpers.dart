@@ -84,7 +84,7 @@ Widget _buildShowAfterDelay(Widget child, Animation<double> animation) {
       child: child,
       builder: (context, routeTransitionComplete, child) {
         return FutureBuilder<bool>(
-          future: Future.delayed(Duration(milliseconds: 40), () => true),
+          future: Future.delayed(Duration(milliseconds: 50), () => true),
           builder: (context, snapshot) {
             return Stack(
               children: [

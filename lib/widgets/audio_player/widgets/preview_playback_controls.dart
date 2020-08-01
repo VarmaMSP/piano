@@ -21,8 +21,8 @@ class PreviewPlaybackControls extends StatelessWidget {
     return StreamBuilder<AudioState>(
       stream: audioPlayerBloc.audioState,
       builder: (context, snapshot) => Container(
-        height: 30,
-        width: 30,
+        height: 32,
+        width: 32,
         child: Stack(
           children: <Widget>[
             if (snapshot.data != AudioState.none &&
@@ -54,7 +54,7 @@ class PreviewPlaybackControls extends StatelessWidget {
           value: snapshot.hasData ? snapshot.data.percentage : 0.0,
           strokeWidth: 2.5,
           valueColor: AlwaysStoppedAnimation<Color>(
-            Colors.purple.shade600,
+            TWColors.purple.shade600,
           ),
           backgroundColor: Colors.blueGrey.shade100,
         );
