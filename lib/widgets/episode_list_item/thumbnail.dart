@@ -20,7 +20,7 @@ class Thumbnail extends StatelessWidget {
     @required this.podcast,
   }) : super(key: key);
 
-  static const double thumbnailSize = 90;
+  static const double thumbnailSize = 65;
 
   final Episode episode;
   final Podcast podcast;
@@ -50,8 +50,8 @@ class Thumbnail extends StatelessWidget {
         borderRadius: BorderRadius.circular(600.0),
         child: Container(
           color: const Color.fromRGBO(0, 0, 0, 0.4),
-          height: 34.0,
-          width: 34.0,
+          height: 28.0,
+          width: 28.0,
         ),
       ),
     );
@@ -63,59 +63,59 @@ class Thumbnail extends StatelessWidget {
       child: Icon(
         Icons.play_arrow_rounded,
         color: Colors.white,
-        size: 26,
+        size: 22,
       ),
     );
 
     final Widget duration = Container(
-      alignment: const Alignment(0.87, -0.92),
+      alignment: const Alignment(0.85, 0.9),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(1.0),
       ),
       child: _buildDuration(episode.duration),
     );
 
-    return GestureDetector(
-      onTap: () {
-        audioPlayerBloc.addQueueAction(QueueAction.playTrack(
-          audioTrack: AudioTrack(
-            episode: episode,
-            podcast: podcast,
-          ),
-        ));
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          border: Border.all(color: Colors.grey.shade400, width: 0.5),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          child: SizedBox(
-            height: thumbnailSize,
-            width: thumbnailSize,
-            child: Stack(
-              children: [
-                image,
-                playIconBg,
-                playIcon,
-                duration,
-                StreamBuilder<PlaybackPosition>(
-                  stream: store.playbackPosition.watchByEpisode(episode.id),
-                  builder: (context, snapshot) {
-                    return Positioned(
-                      bottom: 3.0,
-                      left: 4.0,
-                      right: 4.0,
-                      child: _buildProgressbar(snapshot.data),
-                    );
-                  },
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            audioPlayerBloc.addQueueAction(QueueAction.playTrack(
+              audioTrack: AudioTrack(
+                episode: episode,
+                podcast: podcast,
+              ),
+            ));
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(6.0)),
+              border: Border.all(color: Colors.grey.shade400, width: 0.25),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(6.0)),
+              child: SizedBox(
+                height: thumbnailSize,
+                width: thumbnailSize,
+                child: Stack(
+                  children: [
+                    image,
+                    // playIconBg,
+                    // playIcon,
+                    // duration,
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
+        // Container(height: 5),
+        // StreamBuilder<PlaybackPosition>(
+        //   stream: store.playbackPosition.watchByEpisode(episode.id),
+        //   builder: (context, snapshot) {
+        //     return _buildProgressbar(snapshot.data);
+        //   },
+        // ),
+      ],
     );
   }
 
@@ -140,7 +140,7 @@ class Thumbnail extends StatelessWidget {
       borderRadius: BorderRadius.circular(4.0),
       child: Container(
         color: const Color.fromRGBO(0, 0, 0, 0.65),
-        padding: const EdgeInsets.only(left: 4, right: 4, top: 2, bottom: 0.5),
+        padding: const EdgeInsets.only(left: 3, right: 3, top: 1.5, bottom: 0),
         child: Text(
           res ?? '00:00',
           style: TextStyle(
@@ -157,23 +157,21 @@ class Thumbnail extends StatelessWidget {
   }
 
   Widget _buildProgressbar(PlaybackPosition playback) {
-    // if (playback == null) {
-    //   return Container(height: 0);
-    // }
+    if (playback == null) {
+      return Container(height: 5);
+    }
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(100.0),
       child: Container(
-        height: 7,
+        height: 4,
         width: thumbnailSize,
-        color: Colors.blueGrey.shade300,
+        color: TWColors.gray.shade400,
         alignment: Alignment.centerLeft,
         child: FractionallySizedBox(
           heightFactor: 1.0,
-          widthFactor: 0.6, //playback.percentage,
-          child: Container(
-            color: Colors.white,
-          ),
+          widthFactor: playback.percentage,
+          child: Container(color: TWColors.red.shade600),
         ),
       ),
     );

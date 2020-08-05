@@ -149,34 +149,38 @@ class EpisodeMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<EpisodeOption>(
-      icon: Icon(
-        Icons.more_vert_rounded,
-        color: audioTrack != null && lighten
-            ? TWColors.gray.shade500
-            : TWColors.gray.shade700,
-        size: 22,
+    return SizedBox(
+      height: 38,
+      width: 38,
+      child: PopupMenuButton<EpisodeOption>(
+        icon: Icon(
+          Icons.more_vert_rounded,
+          color: audioTrack != null && lighten
+              ? TWColors.gray.shade500
+              : TWColors.gray.shade600,
+          size: 20,
+        ),
+        elevation: 8,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        ),
+        itemBuilder: (context) {
+          return options
+              .map(
+                (option) => PopupMenuItem<EpisodeOption>(
+                  value: option,
+                  height: 42,
+                  textStyle: Theme.of(context)
+                      .textTheme
+                      .subtitle1
+                      .copyWith(color: TWColors.gray.shade900, fontSize: 16.5),
+                  child: Text(_episodeOptionsToString(option)),
+                ),
+              )
+              .toList();
+        },
+        onSelected: (option) => _handleOnPress(context, option),
       ),
-      elevation: 8,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-      ),
-      itemBuilder: (context) {
-        return options
-            .map(
-              (option) => PopupMenuItem<EpisodeOption>(
-                value: option,
-                height: 42,
-                textStyle: Theme.of(context)
-                    .textTheme
-                    .subtitle1
-                    .copyWith(color: TWColors.gray.shade900, fontSize: 16.5),
-                child: Text(_episodeOptionsToString(option)),
-              ),
-            )
-            .toList();
-      },
-      onSelected: (option) => _handleOnPress(context, option),
     );
   }
 

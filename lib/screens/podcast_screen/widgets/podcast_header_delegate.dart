@@ -180,26 +180,28 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
       child: TabBar(
         isScrollable: true,
         indicator: MD2Indicator(
-          indicatorHeight: 4,
+          indicatorHeight: 3,
           indicatorColor: Color(0xffffbe0b),
           indicatorSize: MD2IndicatorSize.full,
         ),
         indicatorSize: TabBarIndicatorSize.label,
         labelColor: Colors.grey.shade900,
-        labelStyle: Theme.of(context)
-            .textTheme
-            .headline6
-            .copyWith(fontSize: 13, letterSpacing: 0.4),
+        labelStyle: Theme.of(context).textTheme.headline6.copyWith(
+              fontSize: 13.5,
+              letterSpacing: 0.3,
+              fontWeight: FontWeight.w500,
+            ),
         unselectedLabelColor: TWColors.gray.shade500,
-        unselectedLabelStyle: Theme.of(context)
-            .textTheme
-            .headline6
-            .copyWith(fontSize: 13, letterSpacing: 0.4),
-        labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 6),
+        unselectedLabelStyle: Theme.of(context).textTheme.headline6.copyWith(
+              fontSize: 13.5,
+              letterSpacing: 0.3,
+              fontWeight: FontWeight.w500,
+            ),
+        labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 2),
         controller: tabController,
         tabs: const <Widget>[
-          Tab(text: ' Episodes '),
-          Tab(text: ' About '),
+          Tab(text: 'Episodes'),
+          Tab(text: 'About'),
         ],
       ),
     );
@@ -209,10 +211,10 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     final Widget thumbnail = Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade400, width: 0.5),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(8),
         child: CachedNetworkImage(
           imageUrl:
               '$thumbnailUrl/${screenData?.podcast?.urlParam ?? urlParam}.jpg',

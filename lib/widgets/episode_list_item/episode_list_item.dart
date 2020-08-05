@@ -1,13 +1,14 @@
 // Flutter imports:
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 // Package imports:
 import 'package:html_unescape/html_unescape_small.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:phenopod/utils/request.dart';
+import 'package:phenopod/utils/time.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-import 'package:when_expression/when_expression.dart';
 
 // Project imports:
 import 'package:phenopod/blocs/app_navigation_bloc.dart';
@@ -15,7 +16,6 @@ import 'package:phenopod/models/main.dart';
 import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/episode_menu.dart';
-import 'thumbnail.dart';
 
 enum EpisodeListItemType {
   podcastItem,
@@ -30,6 +30,8 @@ class EpisodeListItem extends StatelessWidget {
     @required this.type,
   }) : super(key: key);
 
+  static const thumbnailSize = 65.0;
+
   final Episode episode;
   final Podcast podcast;
   final EpisodeListItemType type;
@@ -42,177 +44,147 @@ class EpisodeListItem extends StatelessWidget {
             .pushScreen(AppScreen.episodeScreen(urlParam: episode.urlParam));
       },
       child: Container(
-        padding: type == EpisodeListItemType.podcastItem
-            ? const EdgeInsets.only(top: 14, bottom: 14, left: 18, right: 4)
-            : const EdgeInsets.only(top: 18, bottom: 18, left: 18, right: 4),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Thumbnail(episode: episode, podcast: podcast),
-            Expanded(
-              child: Transform.translate(
-                offset: const Offset(0, -2),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 12),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      _buildDetails(context),
-                      Container(
-                        transform: Matrix4.translationValues(0, -1, 0),
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: Text(
-                          HtmlUnescape()
-                              .convert(episode.summary)
-                              .replaceAll('\n', ' ')
-                              .replaceAll('&amp', '&')
-                              .trim(),
-                          style: Theme.of(context).textTheme.subtitle2,
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
+        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+        padding: EdgeInsets.only(top: 12, right: 12, bottom: 10, left: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(14.0)),
+        ),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildThumbnail(context),
+                Container(width: 12),
+                StreamBuilder<EpisodeMeta>(
+                  stream:
+                      Provider.of<Store>(context).episode.watchMeta(episode.id),
+                  builder: (context, snapshot) {
+                    return Expanded(
+                      child: Container(
+                        height: 65,
+                        child: _buildInfo(context, snapshot.data),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-              ),
+              ],
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 6.0),
+              child: _buildEpisodeDescription(context),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildActionButton(context),
+                Transform.translate(
+                  offset: Offset(12, 3),
+                  child: type == EpisodeListItemType.podcastItem
+                      ? EpisodeMenu.episodeListItem(
+                          episode: episode,
+                          podcast: podcast,
+                          episodeMeta: null,
+                        )
+                      : EpisodeMenu.subscriptionListItem(
+                          episode: episode,
+                          podcast: podcast,
+                          episodeMeta: null,
+                        ),
+                ),
+              ],
+            )
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDetails(BuildContext context) {
-    final store = Provider.of<Store>(context);
-
-    return StreamBuilder<EpisodeMeta>(
-      stream: store.episode.watchMeta(episode.id),
-      builder: (context, snapshot) {
-        final subtitle = when<EpisodeMeta, Widget>({
-          (m) => m == null: (_) => _episodeInfo(context),
-          (_) => true: when<EpisodeMeta, Widget>({
-            (m) => m.downloadProgress != null && !m.downloadProgress.isComplete:
-                (m) => _episodeDownloadInfo(context, m.downloadProgress),
-            (_) => true: (m) => Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    if (m.audioTrack != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 0),
-                        child: Icon(
-                          Icons.playlist_add_check_rounded,
-                          size: 17,
-                          color: TWColors.green.shade700,
-                        ),
-                      ),
-                    if (m.audioTrack != null) Container(width: 12),
-                    if (m.downloadProgress != null &&
-                        m.downloadProgress.isComplete)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 1),
-                        child: Icon(
-                          MdiIcons.checkUnderlineCircle,
-                          size: 14,
-                          color: TWColors.blue.shade700,
-                        ),
-                      ),
-                    if (m.downloadProgress != null &&
-                        m.downloadProgress.isComplete)
-                      Container(width: 12),
-                    Expanded(child: _episodeInfo(context)),
-                  ],
-                ),
-          }),
-        })(snapshot.data);
-
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
-                    child: Text(
-                      episode.title,
-                      style: Theme.of(context).textTheme.headline6.copyWith(
-                            fontWeight: FontWeight.w600,
-                            height: 1.3,
-                          ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                  ),
-                  subtitle,
-                  Container(height: 4),
-                ],
-              ),
-            ),
-            Transform.translate(
-              offset: const Offset(6, -13),
-              child: type == EpisodeListItemType.podcastItem
-                  ? EpisodeMenu.episodeListItem(
-                      episode: episode,
-                      podcast: podcast,
-                      episodeMeta: snapshot.data,
-                    )
-                  : EpisodeMenu.subscriptionListItem(
-                      episode: episode,
-                      podcast: podcast,
-                      episodeMeta: snapshot.data,
-                    ),
-            ),
-          ],
-        );
-      },
+  Widget _buildThumbnail(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+        border: Border.all(color: Colors.grey.shade400, width: 0.25),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+        child: CachedNetworkImage(
+          imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
+          fit: BoxFit.fill,
+          height: thumbnailSize,
+          width: thumbnailSize,
+          placeholder: (BuildContext context, String url) => Container(
+            height: thumbnailSize,
+            width: thumbnailSize,
+            color: TWColors.gray.shade300,
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _episodeInfo(BuildContext context) {
-    String text;
-    if (episode.type == 'FULL' && episode.episode == 0) {
-      text = null;
-    } else if (episode.type == 'BONUS') {
-      text = 'BONUS';
-    } else if (episode.type == 'TRAILER') {
-      text = 'TRAILER';
-    } else if (episode.season > 0) {
-      text = 'S${episode.season} E${episode.episode}';
-    } else {
-      text = 'E${episode.episode}';
-    }
+  Widget _buildInfo(BuildContext context, EpisodeMeta episodeMeta) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                episode.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.headline6.copyWith(
+                      height: 1.35,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      color: TWColors.gray.shade900,
+                    ),
+              ),
+              Container(height: 4),
+              if (episodeMeta?.downloadProgress != null &&
+                  !episodeMeta.downloadProgress.isComplete)
+                _buildEpisodeDownloadInfo(context, episodeMeta.downloadProgress)
+              else
+                _buildEpisodeInfo(context),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
+  Widget _buildEpisodeDownloadInfo(
+    BuildContext context,
+    DownloadProgress downloadProgress,
+  ) {
+    return Text(
+      downloadProgress.isDownloading
+          ? 'Downloading...  ${(downloadProgress.downloadPercentage * 100).round()}%'
+          : 'Waiting to download...',
+      style: Theme.of(context)
+          .textTheme
+          .headline6
+          .copyWith(fontSize: 13, color: TWColors.blue.shade700),
+    );
+  }
+
+  Widget _buildEpisodeInfo(BuildContext context) {
     return RichText(
       text: TextSpan(
-        style: Theme.of(context)
-            .textTheme
-            .subtitle2
-            .copyWith(fontSize: 12.5, color: Colors.grey.shade900),
+        style: Theme.of(context).textTheme.headline6.copyWith(
+              color: TWColors.gray.shade700,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
         children: <TextSpan>[
-          // Episode number and type
-          if (type == EpisodeListItemType.podcastItem && text != null) ...[
-            TextSpan(
-              text: text,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle2
-                  .copyWith(fontSize: 12, color: Colors.grey.shade900),
-            ),
-            TextSpan(
-              text: '  ·  ',
-              style: TextStyle(fontWeight: FontWeight.w900),
-            ),
-          ],
-          // Episode pub date
           TextSpan(text: formatRelativeTime(episode.pubDate)),
-          // Podcas tytle
           if (type == EpisodeListItemType.subscriptionsItem) ...[
             TextSpan(
               text: '  ·  ',
@@ -222,31 +194,75 @@ class EpisodeListItem extends StatelessWidget {
           ]
         ],
       ),
-      overflow: TextOverflow.ellipsis,
       maxLines: 1,
+      overflow: TextOverflow.ellipsis,
     );
   }
 
-  Widget _episodeDownloadInfo(
-    BuildContext context,
-    DownloadProgress downloadProgress,
-  ) {
-    String text;
-    if (downloadProgress.isDownloading) {
-      text =
-          'Downloading...  ${(downloadProgress.downloadPercentage * 100).round()}%';
-    } else if (downloadProgress.isDownloading) {
-      text = 'Download complete.';
-    } else {
-      text = 'Waiting to download...';
-    }
-
+  Widget _buildEpisodeDescription(BuildContext context) {
     return Text(
-      text,
-      style: Theme.of(context)
-          .textTheme
-          .subtitle2
-          .copyWith(fontSize: 12.5, color: TWColors.blue.shade700),
+      HtmlUnescape()
+          .convert(episode.summary)
+          .replaceAll('\n', ' ')
+          .replaceAll('&amp', '&')
+          .trim(),
+      style: Theme.of(context).textTheme.headline6.copyWith(
+            fontSize: 13,
+            color: TWColors.gray.shade700,
+            fontWeight: FontWeight.w500,
+            height: 1.45,
+          ),
+      textAlign: TextAlign.left,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 2,
+    );
+  }
+
+  Widget _buildActionButton(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          height: 38,
+          width: 38,
+          alignment: Alignment.centerLeft,
+          child: SizedBox(
+            height: 30,
+            width: 30,
+            child: Stack(
+              children: <Widget>[
+                CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  value: 0.0,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.purple.shade600,
+                  ),
+                  backgroundColor: TWColors.gray.shade400,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    color: Colors.grey.shade600,
+                    size: 20,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Container(width: 6.0),
+        Text(
+          formatDurationToWords(Duration(seconds: episode.duration)),
+          style: Theme.of(context).textTheme.headline6.copyWith(
+                fontSize: 13,
+                color: TWColors.gray.shade700,
+                fontWeight: FontWeight.w500,
+              ),
+        ),
+      ],
     );
   }
 }

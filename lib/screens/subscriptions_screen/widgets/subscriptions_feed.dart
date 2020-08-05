@@ -30,6 +30,27 @@ class SubscriptionsFeed extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         _buildPodcasts(context, screenData),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.only(
+                top: 4.0, left: 18.0, right: 18.0, bottom: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Recent Episodes',
+                  style: Theme.of(context).textTheme.headline6.copyWith(
+                        fontSize: 13.5,
+                        letterSpacing: 0.15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey.shade900,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
         _buildAnimatedEpisodeList(
           screenData.feedItems.length <= 30
               ? screenData.feedItems

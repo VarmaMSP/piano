@@ -34,7 +34,7 @@ class EpisodesTab extends StatelessWidget {
             key: const PageStorageKey('episodes'),
             slivers: [
               SliverPadding(
-                padding: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(top: 4),
                 sliver: _buildAnimatedEpisodeList(
                   screenData.podcast,
                   screenData.episodes.length <= 15
