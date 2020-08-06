@@ -42,7 +42,7 @@ class PreviewPlaybackControls extends StatelessWidget {
     return CircularProgressIndicator(
       strokeWidth: 2.5,
       valueColor: AlwaysStoppedAnimation<Color>(Colors.purple.shade600),
-      backgroundColor: Colors.blueGrey.shade100,
+      backgroundColor: TWColors.gray.shade300,
     );
   }
 
@@ -53,10 +53,8 @@ class PreviewPlaybackControls extends StatelessWidget {
         return CircularProgressIndicator(
           value: snapshot.hasData ? snapshot.data.percentage : 0.0,
           strokeWidth: 2.5,
-          valueColor: AlwaysStoppedAnimation<Color>(
-            TWColors.purple.shade600,
-          ),
-          backgroundColor: Colors.blueGrey.shade100,
+          valueColor: AlwaysStoppedAnimation<Color>(TWColors.purple.shade600),
+          backgroundColor: TWColors.gray.shade300,
         );
       },
     );

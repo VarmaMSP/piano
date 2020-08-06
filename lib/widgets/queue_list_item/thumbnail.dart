@@ -53,7 +53,7 @@ class Thumbnail extends StatelessWidget {
             Container(
               height: thumbnailSize,
               width: thumbnailSize,
-              color: const Color.fromRGBO(255, 255, 255, 0.45),
+              color: const Color.fromRGBO(255, 255, 255, 0.7),
             )
         ],
       ),

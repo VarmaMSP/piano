@@ -158,7 +158,7 @@ class EpisodeMenu extends StatelessWidget {
           color: audioTrack != null && lighten
               ? TWColors.gray.shade500
               : TWColors.gray.shade600,
-          size: 20,
+          size: 22,
         ),
         elevation: 8,
         shape: const RoundedRectangleBorder(

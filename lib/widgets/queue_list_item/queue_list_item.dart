@@ -120,7 +120,7 @@ class QueueListItem extends StatelessWidget {
       padding: EdgeInsets.only(left: 6),
       child: Icon(
         MdiIcons.dragVertical,
-        color: lighten ? TWColors.gray.shade600 : TWColors.gray.shade900,
+        color: lighten ? TWColors.gray.shade500 : TWColors.gray.shade700,
         size: 24,
       ),
     );
@@ -139,8 +139,8 @@ class QueueListItem extends StatelessWidget {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.subtitle2.copyWith(
                     color: lighten
-                        ? TWColors.gray.shade600
-                        : TWColors.gray.shade900,
+                        ? TWColors.gray.shade500
+                        : TWColors.gray.shade700,
                   ),
             ),
     );
