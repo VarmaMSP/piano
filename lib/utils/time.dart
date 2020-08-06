@@ -4,10 +4,10 @@ String formatDurationToWords(Duration duration) {
   final minutes = duration.inMinutes - 60 * hours;
 
   if (totalSeconds < 60) {
-    return '1 min';
+    return '1 m';
   }
   if (totalSeconds < 60 * 60) {
-    return '${minutes} min';
+    return '${minutes} m';
   }
-  return '${hours} hr ${minutes} min';
+  return '${hours}h ${minutes}m';
 }

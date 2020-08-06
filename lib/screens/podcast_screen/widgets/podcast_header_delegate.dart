@@ -197,7 +197,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               letterSpacing: 0.3,
               fontWeight: FontWeight.w500,
             ),
-        labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 2),
+        labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 4),
         controller: tabController,
         tabs: const <Widget>[
           Tab(text: 'Episodes'),

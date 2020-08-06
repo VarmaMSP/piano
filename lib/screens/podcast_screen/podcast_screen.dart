@@ -73,7 +73,7 @@ class PodcastScreen extends HookWidget {
             ];
           },
           pinnedHeaderSliverHeightBuilder: () {
-            return 90.0;
+            return 95.0;
           },
           innerScrollPositionKeyBuilder: () {
             return Key('Tab${tabController.index.toString()}');
