@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:phenopod/blocs/audio_player_bloc.dart';
 import 'package:phenopod/models/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/chrome.dart' as chromeutils;
 import 'package:phenopod/widgets/empty_screen_placeholder.dart';
 import 'package:phenopod/widgets/queue_list_item/queue_list_item.dart';
@@ -23,7 +24,7 @@ class QueueScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+    final store = Provider.of<Store>(context);
 
     chromeutils.applySystemUIOverlayStyle();
 
@@ -35,8 +36,8 @@ class QueueScreen extends StatelessWidget {
         child: Container(),
       ),
       body: StreamBuilder<Queue>(
-        initialData: audioPlayerBloc.queue,
-        stream: audioPlayerBloc.queueStream,
+        initialData: store.audioPlayer.getQueue(),
+        stream: store.audioPlayer.watchQueue(),
         builder: (context, snapshot) {
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -57,11 +58,7 @@ class QueueScreen extends StatelessWidget {
               return Key('List');
             },
             body: snapshot.hasData
-                ? _buildList(
-                    context,
-                    audioPlayerBloc,
-                    snapshot.data,
-                  )
+                ? _buildList(context, snapshot.data)
                 : EmptyScreenPlaceholder(
                     emoji: '👻',
                     text: 'Your queue is empty',
@@ -72,11 +69,7 @@ class QueueScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildList(
-    BuildContext context,
-    AudioPlayerBloc audioPlayerBloc,
-    Queue queue,
-  ) {
+  Widget _buildList(BuildContext context, Queue queue) {
     Widget buildReorderable(
       AudioTrack audioTrack,
       Widget Function(Widget tile) transitionBuilder,
@@ -99,7 +92,7 @@ class QueueScreen extends StatelessWidget {
       shrinkWrap: true,
       areItemsTheSame: (a, b) => a.episode.id == b.episode.id,
       onReorderFinished: (item, from, to, newItems) {
-        audioPlayerBloc.addQueueAction(
+        Provider.of<AudioPlayerBloc>(context, listen: false).addQueueAction(
           QueueAction.changeTrackPosition(from: from, to: to),
         );
       },

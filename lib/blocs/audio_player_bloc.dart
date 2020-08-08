@@ -16,9 +16,6 @@ class AudioPlayerBloc {
   final AudioService audioService;
   final Logger logger = newLogger('audio_player_bloc');
 
-  /// Stream of snapshots
-  final BehaviorSubject<Queue> _queueSubject = BehaviorSubject<Queue>();
-
   /// Stream of positionStates
   final BehaviorSubject<PlaybackPosition> _playbackPositionSubject =
       BehaviorSubject<PlaybackPosition>();
@@ -69,11 +66,9 @@ class AudioPlayerBloc {
   }
 
   void _handleQueueActions() {
-    // Load audioplayer snapshot from db
-    store.audioPlayer.watchQueue().listen(_queueSubject.add);
-
     // set initial audio position when ever now playing changes
-    _queueSubject.stream
+    store.audioPlayer
+        .watchQueue()
         .map((queue) => queue.nowPlaying)
         .where((track) => track != null)
         .distinct()
@@ -86,7 +81,7 @@ class AudioPlayerBloc {
 
     // handle queue transitions
     _queueAction.stream.listen((action) async {
-      final prevQueue = await _queueSubject.first;
+      final prevQueue = store.audioPlayer.getQueue();
       await action.map(
         playTrack: (data) async {
           await store.audioPlayer
@@ -146,20 +141,6 @@ class AudioPlayerBloc {
   // Transition position
   void Function(Duration) get transitionPosition => _posistionTransition.add;
 
-  // Get now playing track
-  Stream<AudioTrack> get nowPlaying =>
-      _queueSubject.stream.distinct().map((s) => s.nowPlaying);
-
-  // Get last emitted queue value
-  Queue get queue {
-    final q = _queueSubject.value;
-    return q != null && !q.isEmpty ? q : null;
-  }
-
-  // Get queue stream
-  Stream<Queue> get queueStream =>
-      _queueSubject.stream.distinct().map((q) => !q.isEmpty ? q : null);
-
   // Get current audio state
   Stream<AudioState> get audioState => audioService.audioState;
 
@@ -167,7 +148,6 @@ class AudioPlayerBloc {
   Stream<PlaybackPosition> get positionState => _playbackPositionSubject.stream;
 
   Future<void> dispose() async {
-    await _queueSubject.close();
     await _playbackPositionSubject.close();
     await _queueAction.close();
     await _audioAction.close();

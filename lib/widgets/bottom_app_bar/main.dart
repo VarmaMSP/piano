@@ -8,8 +8,8 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 // Project imports:
 import 'package:phenopod/animations/bottom_app_bar_animation.dart';
 import 'package:phenopod/blocs/app_navigation_bloc.dart';
-import 'package:phenopod/blocs/audio_player_bloc.dart';
 import 'package:phenopod/models/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/audio_player/main.dart';
 import 'navigation_bar.dart';
@@ -42,6 +42,7 @@ class _BottomAppBarState extends State<BottomAppBar> {
 
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<Store>(context);
     final appNavigationBloc = Provider.of<AppNavigationBloc>(context);
     final bottomAppBarAnimation = appNavigationBloc.bottomAppBarAnimation;
     final audioPlayerTabController = appNavigationBloc.playerTabController;
@@ -53,7 +54,8 @@ class _BottomAppBarState extends State<BottomAppBar> {
         final currentTab = snapshot.data.currentTab;
 
         return StreamBuilder<AudioTrack>(
-          stream: Provider.of<AudioPlayerBloc>(context).nowPlaying,
+          initialData: store.audioPlayer.getQueue().nowPlaying,
+          stream: store.audioPlayer.watchQueue().map((q) => q.nowPlaying),
           builder: (context, snapshot) {
             !snapshot.hasData
                 ? bottomAppBarAnimation.hideAudioPlayerPreview()

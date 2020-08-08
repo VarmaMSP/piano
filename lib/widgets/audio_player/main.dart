@@ -7,8 +7,8 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 
 // Project imports:
 import 'package:phenopod/animations/bottom_app_bar_animation.dart';
-import 'package:phenopod/blocs/audio_player_bloc.dart';
 import 'package:phenopod/models/main.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/audio_player/audio_player_bottom_bar.dart';
 import 'audio_player.dart' as full_audio_player;
@@ -26,11 +26,12 @@ class AudioPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<Store>(context);
     final screenHeight = getScreenHeight();
-    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
 
     return StreamBuilder<AudioTrack>(
-      stream: audioPlayerBloc.nowPlaying,
+      initialData: store.audioPlayer.getQueue().nowPlaying,
+      stream: store.audioPlayer.watchQueue().map((q) => q.nowPlaying),
       builder: (context, snapshot) {
         Widget body;
         if (snapshot.hasData) {

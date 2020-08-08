@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:phenopod/app/app_screen_content.dart';
 import 'package:phenopod/blocs/app_navigation_bloc.dart';
-import 'package:phenopod/blocs/audio_player_bloc.dart';
 import 'package:phenopod/models/main.dart';
 import 'package:phenopod/services/db/db.dart';
+import 'package:phenopod/store/store.dart';
 import 'package:phenopod/utils/chrome.dart' as chromeutils;
 import 'package:phenopod/widgets/bottom_app_bar/main.dart';
 
@@ -20,7 +20,7 @@ class AppScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final audioPlayerBloc = Provider.of<AudioPlayerBloc>(context);
+    final store = Provider.of<Store>(context);
     final appNavigationBloc = Provider.of<AppNavigationBloc>(context);
 
     chromeutils.applySystemUIOverlayStyle();
@@ -36,7 +36,8 @@ class AppScreen extends StatelessWidget {
       body: WillPopScope(
         onWillPop: appNavigationBloc.onWillPop,
         child: StreamBuilder<AudioTrack>(
-          stream: audioPlayerBloc.nowPlaying,
+          initialData: store.audioPlayer.getQueue().nowPlaying,
+          stream: store.audioPlayer.watchQueue().map((q) => q.nowPlaying),
           builder: (context, snapshot) {
             return SafeArea(
               child: Stack(
