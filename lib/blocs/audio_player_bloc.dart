@@ -84,8 +84,15 @@ class AudioPlayerBloc {
       final prevQueue = store.audioPlayer.getQueue();
       await action.map(
         playTrack: (data) async {
-          await store.audioPlayer
-              .saveQueue(prevQueue.addToTop(data.audioTrack).skipToNextTrack());
+          final trackInQueue = prevQueue.audioTracks.firstWhere(
+            (track) => track.episode.id == data.audioTrack.episode.id,
+            orElse: () => null,
+          );
+          await store.audioPlayer.saveQueue(
+            trackInQueue != null
+                ? prevQueue.playTrackAt(trackInQueue.position)
+                : prevQueue.addToTop(data.audioTrack).skipToNextTrack(),
+          );
           await audioService.syncQueue(startTask: true);
         },
         playTrackAt: (data) async {
@@ -94,8 +101,20 @@ class AudioPlayerBloc {
           await audioService.syncQueue(startTask: true);
         },
         addToQueueTop: (data) async {
-          await store.audioPlayer
-              .saveQueue(prevQueue.addToTop(data.audioTrack));
+          if (data.audioTrack.episode.id != prevQueue.nowPlaying?.episode?.id) {
+            return;
+          }
+          final trackInQueue = prevQueue.audioTracks.firstWhere(
+            (track) => track.episode.id == data.audioTrack.episode.id,
+            orElse: () => null,
+          );
+          await store.audioPlayer.saveQueue(
+            trackInQueue != null
+                ? prevQueue
+                    .removeTrack(trackInQueue.position)
+                    .addToTop(data.audioTrack)
+                : prevQueue.addToTop(data.audioTrack),
+          );
           await audioService.syncQueue();
         },
         addToQueueBottom: (data) async {

@@ -211,25 +211,14 @@ class EpisodeMenu extends StatelessWidget {
   void _handleOnPress(BuildContext context, EpisodeOption option) {
     switch (option) {
       case EpisodeOption.playNext:
-        if (fromPlayer && audioTrack.position != nowPlayingPosition) {
-          Provider.of<AudioPlayerBloc>(context, listen: false).addQueueAction(
-            QueueAction.changeTrackPosition(
-              from: audioTrack.position,
-              to: nowPlayingPosition + 1 < trackCount
-                  ? nowPlayingPosition + 1
-                  : trackCount - 1,
+        Provider.of<AudioPlayerBloc>(context, listen: false).addQueueAction(
+          QueueAction.addToQueueTop(
+            audioTrack: AudioTrack(
+              episode: episode,
+              podcast: podcast,
             ),
-          );
-        } else {
-          Provider.of<AudioPlayerBloc>(context, listen: false).addQueueAction(
-            QueueAction.addToQueueTop(
-              audioTrack: AudioTrack(
-                episode: episode,
-                podcast: podcast,
-              ),
-            ),
-          );
-        }
+          ),
+        );
         break;
 
       case EpisodeOption.addToQueue:
@@ -257,7 +246,6 @@ class EpisodeMenu extends StatelessWidget {
             ),
           ),
         );
-
         break;
 
       case EpisodeOption.goToEpisode:
