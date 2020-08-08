@@ -1,6 +1,9 @@
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 
+// Package imports:
+import 'package:rxdart/subjects.dart';
+
 // Project imports:
 import 'package:phenopod/models/main.dart';
 import 'package:phenopod/services/alarm_service/alarm_service.dart';
@@ -19,9 +22,9 @@ abstract class AudioFileStore {
     @required Podcast podcast,
     @required String storagePath,
   });
+  AudioFile getByEpisode(String episodeId);
   Stream<AudioFile> watchByEpisode(String episodeId);
   Stream<List<AudioFile>> watchAll();
-  Stream<DownloadProgress> watchDownloadProgress(String episodeId);
   Future<void> updateDownloadProgress(DownloadProgress progress);
   Future<void> deleteByEpisode(String episodeId);
 }
@@ -30,6 +33,10 @@ class _AudioFileStoreImpl extends AudioFileStore {
   final Api api;
   final Db db;
   final AlarmService alarmService;
+
+  /// Keep entire table in memory
+  final BehaviorSubject<Map<String, AudioFile>> _byEpisodeId =
+      BehaviorSubject<Map<String, AudioFile>>.seeded({});
 
   _AudioFileStoreImpl({
     @required this.api,
@@ -78,18 +85,18 @@ class _AudioFileStoreImpl extends AudioFileStore {
   }
 
   @override
+  AudioFile getByEpisode(String episodeId) {
+    return _byEpisodeId.value[episodeId];
+  }
+
+  @override
   Stream<AudioFile> watchByEpisode(String episodeId) {
-    return db.audioFileDao.watchFileByEpisode(episodeId);
+    return _byEpisodeId.map((byEpisodeId) => byEpisodeId[episodeId]);
   }
 
   @override
   Stream<List<AudioFile>> watchAll() {
     return db.audioFileDao.watchAllFiles();
-  }
-
-  @override
-  Stream<DownloadProgress> watchDownloadProgress(String episodeId) {
-    return db.audioFileDao.watchProgressByEpisode(episodeId);
   }
 
   @override

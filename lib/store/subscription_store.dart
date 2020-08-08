@@ -1,6 +1,9 @@
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 
+// Package imports:
+import 'package:rxdart/subjects.dart';
+
 // Project imports:
 import 'package:phenopod/models/main.dart';
 import 'package:phenopod/services/alarm_service/alarm_service.dart';
@@ -23,6 +26,7 @@ abstract class SubscriptionStore {
   Future<void> refresh();
   Future<void> subscribe(Podcast podcast);
   Future<void> unsubscribe(Podcast podcast);
+  Subscription getByPodcast(String podcastId);
   Stream<Subscription> watchByPodcast(String podcastId);
   Stream<List<Podcast>> watchSubscribedPodcasts();
 }
@@ -32,11 +36,19 @@ class _SubscriptionStoreImpl extends SubscriptionStore {
   final Db db;
   final AlarmService alarmService;
 
+  /// Keep subscriptions table in memory
+  final BehaviorSubject<Map<String, Subscription>> _byPodcastId =
+      BehaviorSubject<Map<String, Subscription>>.seeded({});
+
   _SubscriptionStoreImpl({
     @required this.api,
     @required this.db,
     @required this.alarmService,
-  });
+  }) {
+    db.subscriptionDao.watchAll().listen((subscriptions) {
+      _byPodcastId.add({for (var sub in subscriptions) sub.podcastId: sub});
+    });
+  }
 
   @override
   Future<void> refresh() async {
@@ -94,8 +106,13 @@ class _SubscriptionStoreImpl extends SubscriptionStore {
   }
 
   @override
+  Subscription getByPodcast(String podcastId) {
+    return _byPodcastId.value[podcastId];
+  }
+
+  @override
   Stream<Subscription> watchByPodcast(String podcastId) {
-    return db.subscriptionDao.watchByPodcast(podcastId);
+    return _byPodcastId.map((byPodcastId) => byPodcastId[podcastId]);
   }
 
   @override
