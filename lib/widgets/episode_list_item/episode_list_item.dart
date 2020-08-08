@@ -1,12 +1,10 @@
 // Flutter imports:
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 // Package imports:
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html_unescape/html_unescape_small.dart';
-import 'package:phenopod/utils/request.dart';
-import 'package:phenopod/utils/time.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -14,15 +12,17 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:phenopod/blocs/app_navigation_bloc.dart';
 import 'package:phenopod/models/main.dart';
 import 'package:phenopod/store/store.dart';
+import 'package:phenopod/utils/request.dart';
 import 'package:phenopod/utils/utils.dart';
 import 'package:phenopod/widgets/episode_menu.dart';
+import 'widgets/playback_control.dart';
 
 enum EpisodeListItemType {
   podcastItem,
   subscriptionsItem,
 }
 
-class EpisodeListItem extends StatelessWidget {
+class EpisodeListItem extends StatefulWidget {
   const EpisodeListItem({
     Key key,
     @required this.episode,
@@ -37,69 +37,107 @@ class EpisodeListItem extends StatelessWidget {
   final EpisodeListItemType type;
 
   @override
+  _EpisodeListItemState createState() => _EpisodeListItemState();
+}
+
+class _EpisodeListItemState extends State<EpisodeListItem> {
+  bool _highlight = false;
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Provider.of<AppNavigationBloc>(context, listen: false)
-            .pushScreen(AppScreen.episodeScreen(urlParam: episode.urlParam));
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 6),
-        padding: EdgeInsets.only(top: 12, right: 10, bottom: 4, left: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(14.0)),
-        ),
-        child: Column(
+    final content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildThumbnail(context),
-                Expanded(
-                  child: Container(
-                    height: thumbnailSize,
-                    padding: const EdgeInsets.only(left: 12.0, right: 10.0),
-                    child: _buildInfo(context),
-                  ),
-                ),
-                Container(
-                  height: thumbnailSize,
-                  child: _buildActionButton(context),
-                ),
-              ],
+          children: <Widget>[
+            _buildThumbnail(context),
+            Expanded(
+              child: Container(
+                height: EpisodeListItem.thumbnailSize,
+                padding: const EdgeInsets.only(left: 12.0, right: 16.0),
+                child: _buildInfo(context),
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(child: _buildEpisodeDescription(context)),
-                  Container(width: 6.0),
-                  _buildMenu(context),
-                ],
+            Container(width: 10),
+            Container(
+              height: EpisodeListItem.thumbnailSize,
+              child: PlaybackControl(
+                episode: widget.episode,
+                podcast: widget.podcast,
               ),
             ),
           ],
         ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(child: _buildEpisodeDescription(context)),
+              Container(width: 2.0),
+              _buildMenu(context),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    final setHighlight = (bool highlight) {
+      return ([dynamic _]) => Future.delayed(
+            highlight ? Duration.zero : Duration(milliseconds: 200),
+            () => setState(() {
+              _highlight = highlight;
+            }),
+          );
+    };
+
+    return GestureDetector(
+      behavior: HitTestBehavior.deferToChild,
+      // Highlight
+      onTapDown: setHighlight(true),
+      onLongPressStart: setHighlight(true),
+      onSecondaryTapDown: setHighlight(true),
+
+      // Remove Highlight
+      onTapUp: setHighlight(false),
+      onTapCancel: setHighlight(false),
+      onLongPressEnd: setHighlight(false),
+      onSecondaryTapUp: setHighlight(false),
+      onSecondaryTapCancel: setHighlight(false),
+      onSecondaryLongPressEnd: setHighlight(false),
+      // Take Action
+      onTap: () => Future.delayed(Duration(milliseconds: 200), () {
+        Provider.of<AppNavigationBloc>(context, listen: false).pushScreen(
+          AppScreen.episodeScreen(urlParam: widget.episode.urlParam),
+        );
+      }),
+      child: AnimatedContainer(
+        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+        padding: EdgeInsets.only(top: 16, right: 8, bottom: 14, left: 12),
+        decoration: BoxDecoration(
+          color: _highlight ? Colors.grey.shade100 : Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(14.0)),
+        ),
+        duration: Duration(milliseconds: 100),
+        child: content,
       ),
     );
   }
 
   Widget _buildMenu(BuildContext context) {
     return StreamBuilder<EpisodeMeta>(
-      stream: Provider.of<Store>(context).episode.watchMeta(episode.id),
+      stream: Provider.of<Store>(context).episode.watchMeta(widget.episode.id),
       builder: (context, snapshot) {
-        return type == EpisodeListItemType.podcastItem
+        return widget.type == EpisodeListItemType.podcastItem
             ? EpisodeMenu.episodeListItem(
-                episode: episode,
-                podcast: podcast,
+                episode: widget.episode,
+                podcast: widget.podcast,
                 episodeMeta: snapshot.data,
               )
             : EpisodeMenu.subscriptionListItem(
-                episode: episode,
-                podcast: podcast,
+                episode: widget.episode,
+                podcast: widget.podcast,
                 episodeMeta: snapshot.data,
               );
       },
@@ -115,13 +153,13 @@ class EpisodeListItem extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(6.0)),
         child: CachedNetworkImage(
-          imageUrl: '$thumbnailUrl/${podcast.urlParam}.jpg',
+          imageUrl: '$thumbnailUrl/${widget.podcast.urlParam}.jpg',
           fit: BoxFit.fill,
-          height: thumbnailSize,
-          width: thumbnailSize,
+          height: EpisodeListItem.thumbnailSize,
+          width: EpisodeListItem.thumbnailSize,
           placeholder: (BuildContext context, String url) => Container(
-            height: thumbnailSize,
-            width: thumbnailSize,
+            height: EpisodeListItem.thumbnailSize,
+            width: EpisodeListItem.thumbnailSize,
             color: TWColors.gray.shade300,
           ),
         ),
@@ -131,7 +169,7 @@ class EpisodeListItem extends StatelessWidget {
 
   Widget _buildInfo(BuildContext context) {
     return StreamBuilder<EpisodeMeta>(
-      stream: Provider.of<Store>(context).episode.watchMeta(episode.id),
+      stream: Provider.of<Store>(context).episode.watchMeta(widget.episode.id),
       builder: (context, snapshot) {
         final progress = snapshot.data?.downloadProgress;
 
@@ -143,7 +181,7 @@ class EpisodeListItem extends StatelessWidget {
             Transform.translate(
               offset: Offset(0, -4),
               child: Text(
-                episode.title,
+                widget.episode.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.headline6.copyWith(
@@ -191,13 +229,13 @@ class EpisodeListItem extends StatelessWidget {
               height: 1.3,
             ),
         children: <TextSpan>[
-          TextSpan(text: formatRelativeTime(episode.pubDate)),
-          if (type == EpisodeListItemType.subscriptionsItem) ...[
+          TextSpan(text: formatRelativeTime(widget.episode.pubDate)),
+          if (widget.type == EpisodeListItemType.subscriptionsItem) ...[
             TextSpan(
-              text: '  ·  ',
+              text: ' · ',
               style: TextStyle(fontWeight: FontWeight.w900),
             ),
-            TextSpan(text: podcast.title),
+            TextSpan(text: widget.podcast.title),
           ]
         ],
       ),
@@ -209,7 +247,7 @@ class EpisodeListItem extends StatelessWidget {
   Widget _buildEpisodeDescription(BuildContext context) {
     return Text(
       HtmlUnescape()
-          .convert(episode.summary)
+          .convert(widget.episode.summary)
           .replaceAll('\n', ' ')
           .replaceAll('&amp', '&')
           .trim(),
@@ -222,55 +260,6 @@ class EpisodeListItem extends StatelessWidget {
       textAlign: TextAlign.left,
       overflow: TextOverflow.ellipsis,
       maxLines: 2,
-    );
-  }
-
-  Widget _buildActionButton(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          height: 38,
-          width: 38,
-          alignment: Alignment.center,
-          child: SizedBox(
-            height: 32,
-            width: 32,
-            child: Stack(
-              children: <Widget>[
-                CircularProgressIndicator(
-                  strokeWidth: 2.5,
-                  value: 0.0,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.purple.shade600,
-                  ),
-                  backgroundColor: TWColors.gray.shade300,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.play_arrow_rounded,
-                    color: Colors.grey.shade600,
-                    size: 20,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Container(height: 6.0),
-        Text(
-          formatDurationToWords(Duration(seconds: episode.duration)),
-          style: Theme.of(context).textTheme.subtitle1.copyWith(
-                fontSize: 11,
-                color: TWColors.gray.shade900,
-                fontWeight: FontWeight.w400,
-                letterSpacing: 0.15,
-              ),
-        ),
-      ],
     );
   }
 }
