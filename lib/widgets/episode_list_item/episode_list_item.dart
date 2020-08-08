@@ -75,7 +75,7 @@ class _EpisodeListItemState extends State<EpisodeListItem> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(child: _buildEpisodeDescription(context)),
-              Container(width: 8.0),
+              Container(width: 10.0),
               _buildMenu(context),
             ],
           ),
@@ -98,7 +98,6 @@ class _EpisodeListItemState extends State<EpisodeListItem> {
       onTapDown: setHighlight(true),
       onLongPressStart: setHighlight(true),
       onSecondaryTapDown: setHighlight(true),
-
       // Remove Highlight
       onTapUp: setHighlight(false),
       onTapCancel: setHighlight(false),
