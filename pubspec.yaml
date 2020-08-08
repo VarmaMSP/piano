@@ -14,6 +14,7 @@ dependencies:
   android_alarm_manager: ^0.4.5+11
   async: ^2.4.1
   audio_service: ^0.11.2
+  badges: ^1.1.1
   cached_network_image: ^2.2.0+1
   connectivity: ^0.4.9
   cookie_jar: ^1.0.1
@@ -92,4 +93,3 @@ flutter:
           weight: 500
         - asset: assets/fonts/inter/w600.ttf
           weight: 600
-
