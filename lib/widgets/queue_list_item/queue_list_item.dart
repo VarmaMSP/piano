@@ -120,7 +120,7 @@ class QueueListItem extends StatelessWidget {
       padding: EdgeInsets.only(left: 6),
       child: Icon(
         MdiIcons.dragVertical,
-        color: lighten ? TWColors.gray.shade500 : TWColors.gray.shade700,
+        color: lighten ? TWColors.gray.shade500 : TWColors.gray.shade600,
         size: 24,
       ),
     );
@@ -131,7 +131,7 @@ class QueueListItem extends StatelessWidget {
       child: nowPlayingPosition == audioTrack.position
           ? Icon(
               Icons.play_arrow_rounded,
-              color: TWColors.gray.shade700,
+              color: TWColors.gray.shade600,
               size: 18,
             )
           : Text(

@@ -114,7 +114,7 @@ class PlaybackControl extends StatelessWidget {
       style: Theme.of(context).textTheme.subtitle1.copyWith(
             fontSize: 11,
             color: TWColors.gray.shade900,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
             letterSpacing: 0.15,
           ),
     );

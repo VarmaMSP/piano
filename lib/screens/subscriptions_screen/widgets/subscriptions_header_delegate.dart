@@ -60,7 +60,7 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
                   icon: Icon(
                     Icons.search_rounded,
                     size: 24,
-                    color: TWColors.gray.shade700,
+                    color: TWColors.gray.shade600,
                   ),
                   onPressed: () => Navigator.of(context, rootNavigator: true)
                       .pushNamed('/search'),
@@ -69,7 +69,7 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
                   icon: Icon(
                     Icons.settings_outlined,
                     size: 24,
-                    color: TWColors.gray.shade700,
+                    color: TWColors.gray.shade600,
                   ),
                   onPressed: () => Navigator.of(context, rootNavigator: true)
                       .pushNamed('/search'),

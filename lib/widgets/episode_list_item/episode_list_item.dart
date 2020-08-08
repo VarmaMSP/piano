@@ -75,7 +75,7 @@ class _EpisodeListItemState extends State<EpisodeListItem> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(child: _buildEpisodeDescription(context)),
-              Container(width: 2.0),
+              Container(width: 8.0),
               _buildMenu(context),
             ],
           ),
@@ -148,7 +148,7 @@ class _EpisodeListItemState extends State<EpisodeListItem> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(6.0)),
-        border: Border.all(color: Colors.grey.shade400, width: 0.25),
+        border: Border.all(color: Colors.grey.shade500, width: 0.4),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(6.0)),
