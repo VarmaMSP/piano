@@ -57,7 +57,7 @@ class QueueScreen extends StatelessWidget {
             innerScrollPositionKeyBuilder: () {
               return Key('List');
             },
-            body: snapshot.hasData
+            body: !snapshot.data.isEmpty
                 ? _buildList(context, snapshot.data)
                 : EmptyScreenPlaceholder(
                     emoji: '👻',

@@ -80,6 +80,7 @@ class QueueListItem extends StatelessWidget {
             QueueAction.playTrackAt(position: audioTrack.position),
           ),
           child: StreamBuilder<AudioFile>(
+            initialData: store.audioFile.getByEpisode(audioTrack.episode.id),
             stream: store.audioFile.watchByEpisode(audioTrack.episode.id),
             builder: (context, snapshot) {
               return Container(
@@ -93,7 +94,7 @@ class QueueListItem extends StatelessWidget {
                     Expanded(
                       child: _buildDetails(
                         context,
-                        snapshot.data.downloadProgress,
+                        snapshot.data?.downloadProgress,
                         lighten: lighten,
                       ),
                     ),
@@ -102,7 +103,7 @@ class QueueListItem extends StatelessWidget {
                       trackCount: trackCount,
                       lighten: lighten,
                       nowPlayingPosition: nowPlayingPosition,
-                      downloadProgress: snapshot.data.downloadProgress,
+                      downloadProgress: snapshot.data?.downloadProgress,
                     ),
                   ],
                 ),
