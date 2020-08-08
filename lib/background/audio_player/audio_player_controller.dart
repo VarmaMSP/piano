@@ -97,11 +97,6 @@ class AudioPlayerController {
     _nowPlayingSubject.add(queue.nowPlaying);
   }
 
-  Future<void> syncNowPlaying() async {
-    final nowPlaying = await _store.audioPlayer.watchNowPlaying().first;
-    _nowPlayingSubject.add(nowPlaying);
-  }
-
   Future<void> syncSetting() async {
     final setting = await _store.setting.watchAudioPlayerSetting().first;
     _settingSubject.add(setting);

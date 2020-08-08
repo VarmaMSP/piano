@@ -8,14 +8,16 @@ part of '../db.dart';
 class AudioTrackDao extends DatabaseAccessor<SqlDb> with _$AudioTrackDaoMixin {
   AudioTrackDao(SqlDb db) : super(db);
 
-  Future<void> saveTracks(List<AudioTrack> tracks) {
-    return batch((b) {
-      b.insertAll(
-        audioTracks,
-        tracks.map(audioTrackRowFromModel).toList(),
-        mode: InsertMode.insertOrReplace,
-      );
-    });
+  Future<void> saveTracks(List<AudioTrack> tracks) async {
+    if (tracks.isNotEmpty) {
+      await batch((b) {
+        b.insertAll(
+          audioTracks,
+          tracks.map(audioTrackRowFromModel).toList(),
+          mode: InsertMode.insertOrReplace,
+        );
+      });
+    }
   }
 
   Stream<List<AudioTrack>> watchAllTracks() {

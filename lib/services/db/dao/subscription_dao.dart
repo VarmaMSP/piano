@@ -17,11 +17,10 @@ class SubscriptionDao extends DatabaseAccessor<SqlDb>
     }
   }
 
-  Stream<Subscription> watchByPodcast(String podcastId) {
-    return (select(subscriptions)
-          ..where((tbl) => tbl.podcastId.equals(podcastId)))
-        .watchSingle()
-        .map((row) => row?.toModel());
+  Stream<List<Subscription>> watchAll() {
+    return select(subscriptions)
+        .watch()
+        .map((rows) => rows.map((row) => row.toModel()).toList());
   }
 
   Future<void> deleteSubscription(String podcastId) {

@@ -20,10 +20,9 @@ class PlaybackPositionDao extends DatabaseAccessor<SqlDb>
     );
   }
 
-  Stream<PlaybackPosition> watchByEpisode(String episodeId) {
-    return (select(playbackPositions)
-          ..where((tbl) => tbl.episodeId.equals(episodeId)))
-        .watchSingle()
-        .map((row) => row?.toModel());
+  Stream<List<PlaybackPosition>> watchAll() {
+    return select(playbackPositions)
+        .watch()
+        .map((rows) => rows.map((row) => row.toModel()).toList());
   }
 }
