@@ -78,10 +78,10 @@ class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
                         style: Theme.of(context)
                             .textTheme
                             .headline5
-                            .copyWith(color: TWColors.gray.shade900),
+                            .copyWith(color: TWColors.gray.shade800),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],

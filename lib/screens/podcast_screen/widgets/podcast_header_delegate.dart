@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 // Package imports:
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
+import 'package:phenopod/screens/podcast_screen/widgets/podcast_actions.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -54,7 +55,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
     return Container(
       height: maxExtent - shrinkOffset,
-      padding: const EdgeInsets.symmetric(horizontal: 18),
+      // padding: const EdgeInsets.symmetric(horizontal: 18),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -99,7 +100,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Transform.translate(
-            offset: const Offset(-15, 0),
+            offset: const Offset(4, 0),
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back_rounded,
@@ -121,42 +122,33 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
-                        padding: EdgeInsets.only(bottom: 2, right: 40),
-                        transform: Matrix4.translationValues(-12, 0, 0),
-                        child: Text(
-                          screenData.podcast.title,
-                          style: Theme.of(context).textTheme.headline5.copyWith(
-                                color: TWColors.gray.shade800,
-                                fontSize: 16,
-                              ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
+                      if (screenData != null)
+                        Container(
+                          padding: EdgeInsets.only(bottom: 2),
+                          child: Text(
+                            screenData.podcast.title,
+                            style:
+                                Theme.of(context).textTheme.headline5.copyWith(
+                                      color: TWColors.gray.shade800,
+                                      fontSize: 16,
+                                    ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
               ),
             ),
           Transform.translate(
-            offset: const Offset(20, 0),
+            offset: const Offset(-4, 0),
             child: Row(
               children: <Widget>[
                 IconButton(
                   icon: Icon(
                     Icons.search_rounded,
-                    size: 24,
-                    color: TWColors.gray.shade700,
-                  ),
-                  visualDensity: VisualDensity.comfortable,
-                  onPressed: () => Navigator.of(context, rootNavigator: true)
-                      .pushNamed('/search'),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.more_vert_rounded,
                     size: 24,
                     color: TWColors.gray.shade700,
                   ),
@@ -176,7 +168,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     return Container(
       height: tabBarHeight,
       alignment: Alignment.bottomLeft,
-      transform: Matrix4.translationValues(-14, 0, 0),
+      transform: Matrix4.translationValues(4, 0, 0),
       child: TabBar(
         isScrollable: true,
         indicator: MD2Indicator(
@@ -197,7 +189,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               letterSpacing: 0.3,
               fontWeight: FontWeight.w500,
             ),
-        labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 4),
+        labelPadding: EdgeInsets.only(left: 14, right: 14, bottom: 6),
         controller: tabController,
         tabs: const <Widget>[
           Tab(text: 'Episodes'),
@@ -209,6 +201,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
   Widget _flexibleArea(BuildContext context) {
     final Widget thumbnail = Container(
+      margin: EdgeInsets.only(left: 18),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade400, width: 0.5),
         borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -259,12 +252,12 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
     final Widget actions = Container(
       height: 24,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Flexible(
-            child: FractionallySizedBox(
-              heightFactor: 1.0,
-              widthFactor: 0.65,
+            child: SizedBox(
+              height: 24,
+              width: 140,
               child: FlatButton(
                 onPressed: () => screenData != null && isSubscribed
                     ? podcastActionsBloc.addAction(
@@ -293,6 +286,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               ),
             ),
           ),
+          if (screenData != null) PodcastActions(podcast: screenData.podcast),
         ],
       ),
     );
@@ -312,8 +306,9 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                 padding: const EdgeInsets.only(left: 14),
                 child: Column(
                   children: <Widget>[
-                    Transform.translate(
-                      offset: Offset(0, -4),
+                    Container(
+                      transform: Matrix4.translationValues(0, -4, 0),
+                      padding: EdgeInsets.only(right: 18),
                       child: details,
                     ),
                     const Spacer(),

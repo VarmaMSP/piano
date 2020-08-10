@@ -22,11 +22,11 @@ class PodcastActions extends StatelessWidget {
     return PopupMenuButton<String>(
       icon: Icon(
         Icons.more_vert,
-        color: TWColors.gray.shade800,
+        color: TWColors.gray.shade600,
         size: 24,
       ),
-      padding: const EdgeInsets.all(0),
-      elevation: 3,
+      padding: const EdgeInsets.only(top: 0, bottom: 0),
+      elevation: 8,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ),
@@ -36,6 +36,10 @@ class PodcastActions extends StatelessWidget {
         ].map((String t) {
           return PopupMenuItem<String>(
             value: t,
+            textStyle: Theme.of(context)
+                .textTheme
+                .subtitle1
+                .copyWith(color: TWColors.gray.shade900, fontSize: 16.5),
             child: Text(t),
           );
         }).toList();
