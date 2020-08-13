@@ -55,11 +55,10 @@ class _EpisodeListItemState extends State<EpisodeListItem> {
             Expanded(
               child: Container(
                 height: EpisodeListItem.thumbnailSize,
-                padding: const EdgeInsets.only(left: 12.0, right: 16.0),
+                padding: const EdgeInsets.only(left: 12.0, right: 8.0),
                 child: _buildInfo(context),
               ),
             ),
-            Container(width: 10),
             Container(
               height: EpisodeListItem.thumbnailSize,
               child: PlaybackControl(
@@ -75,7 +74,7 @@ class _EpisodeListItemState extends State<EpisodeListItem> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(child: _buildEpisodeDescription(context)),
-              Container(width: 10.0),
+              Container(width: 8.0),
               _buildMenu(context),
             ],
           ),

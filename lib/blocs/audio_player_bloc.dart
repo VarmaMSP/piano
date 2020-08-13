@@ -101,7 +101,7 @@ class AudioPlayerBloc {
           await audioService.syncQueue(startTask: true);
         },
         addToQueueTop: (data) async {
-          if (data.audioTrack.episode.id != prevQueue.nowPlaying?.episode?.id) {
+          if (data.audioTrack.episode.id == prevQueue.nowPlaying?.episode?.id) {
             return;
           }
           final trackInQueue = prevQueue.audioTracks.firstWhere(

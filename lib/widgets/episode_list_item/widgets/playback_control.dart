@@ -42,7 +42,7 @@ class PlaybackControl extends StatelessWidget {
                 badgeContent: _buildQueueBadge(context, queue),
                 elevation: 0,
                 padding: EdgeInsets.zero,
-                position: BadgePosition(left: -12),
+                position: BadgePosition(top: 0, right: 0),
                 badgeColor: Colors.transparent,
                 toAnimate: true,
                 animationType: BadgeAnimationType.scale,
@@ -64,43 +64,30 @@ class PlaybackControl extends StatelessWidget {
   }
 
   Widget _buildQueueBadge(BuildContext context, Queue queue) {
-    final nowPlaying = queue.nowPlaying;
-    final audioTrack = queue.audioTracks.firstWhere(
-      (t) => t.episode.id == episode.id,
-      orElse: () => null,
-    );
+    final isInQueue = queue.audioTracks.firstWhere(
+          (t) => t.episode.id == episode.id,
+          orElse: () => null,
+        ) !=
+        null;
 
-    if (queue.isEmpty || nowPlaying == null || audioTrack == null) {
+    if (queue.isEmpty || !isInQueue) {
       return Container();
     }
 
     return Container(
-      width: 26,
-      height: 26,
+      width: 16,
+      height: 16,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(100)),
       ),
       alignment: Alignment.center,
       child: Container(
-        width: 20,
-        height: 20,
+        width: 10,
+        height: 10,
         decoration: BoxDecoration(
-          color: TWColors.gray.shade700,
+          color: TWColors.green.shade600,
           borderRadius: BorderRadius.all(Radius.circular(100)),
-        ),
-        alignment: Alignment.center,
-        child: Padding(
-          padding: EdgeInsets.only(top: 1.0),
-          child: Text(
-            '${audioTrack.position - nowPlaying.position}',
-            style: Theme.of(context).textTheme.subtitle1.copyWith(
-                  fontSize: 10,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 0.15,
-                ),
-          ),
         ),
       ),
     );

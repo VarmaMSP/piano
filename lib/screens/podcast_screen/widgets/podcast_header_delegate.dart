@@ -55,13 +55,11 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
 
     return Container(
       height: maxExtent - shrinkOffset,
-      // padding: const EdgeInsets.symmetric(horizontal: 18),
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [
-          if (forceElevated)
-            BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)
-        ],
+        boxShadow: forceElevated
+            ? [BoxShadow(color: TWColors.gray.shade400, blurRadius: 2)]
+            : [],
       ),
       child: Stack(
         overflow: Overflow.visible,
@@ -105,7 +103,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
               icon: Icon(
                 Icons.arrow_back_rounded,
                 size: 24,
-                color: TWColors.gray.shade700,
+                color: Colors.blueGrey.shade600,
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),
@@ -124,7 +122,8 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                     children: [
                       if (screenData != null)
                         Container(
-                          padding: EdgeInsets.only(bottom: 2),
+                          padding:
+                              EdgeInsets.only(bottom: 2, left: 2, right: 2),
                           child: Text(
                             screenData.podcast.title,
                             style:
@@ -150,7 +149,7 @@ class PodcastHeaderDelegate implements SliverPersistentHeaderDelegate {
                   icon: Icon(
                     Icons.search_rounded,
                     size: 24,
-                    color: TWColors.gray.shade700,
+                    color: Colors.blueGrey.shade600,
                   ),
                   visualDensity: VisualDensity.comfortable,
                   onPressed: () => Navigator.of(context, rootNavigator: true)

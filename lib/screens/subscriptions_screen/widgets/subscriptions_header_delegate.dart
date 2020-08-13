@@ -28,7 +28,6 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
   ) {
     return Container(
       height: maxExtent,
-      padding: const EdgeInsets.symmetric(horizontal: 18),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: forceElevated
@@ -36,41 +35,60 @@ class SubscriptionsHeaderDelegate implements SliverPersistentHeaderDelegate {
             : [],
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          Transform.translate(
+            offset: const Offset(4, 0),
+            child: IconButton(
+              icon: Icon(
+                Icons.settings_outlined,
+                size: 24,
+                color: Colors.blueGrey.shade600,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
           Expanded(
             child: GestureDetector(
               onTap: scrollToTop,
-              child: Text(
-                'Phenopod',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.purple.shade700,
-                  letterSpacing: 0.4,
-                  fontWeight: FontWeight.w500,
-                ),
+              behavior: HitTestBehavior.translucent,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(bottom: 2),
+                    child: Text(
+                      'phenopod',
+                      style: Theme.of(context).textTheme.headline5.copyWith(
+                            fontSize: 21,
+                            color: Colors.purple.shade700,
+                            letterSpacing: 0.4,
+                            fontWeight: FontWeight.w600,
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
           Transform.translate(
-            offset: const Offset(14, 0),
+            offset: const Offset(-4, 0),
             child: Row(
               children: <Widget>[
                 IconButton(
                   icon: Icon(
                     Icons.search_rounded,
                     size: 24,
-                    color: TWColors.gray.shade600,
+                    color: Colors.blueGrey.shade600,
                   ),
-                  onPressed: () => Navigator.of(context, rootNavigator: true)
-                      .pushNamed('/search'),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.settings_outlined,
-                    size: 24,
-                    color: TWColors.gray.shade600,
-                  ),
+                  visualDensity: VisualDensity.comfortable,
                   onPressed: () => Navigator.of(context, rootNavigator: true)
                       .pushNamed('/search'),
                 ),
