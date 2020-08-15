@@ -113,15 +113,15 @@ class _AudioFileStoreImpl extends AudioFileStore {
   @override
   Stream<AudioFile> watchByEpisode(String episodeId) {
     return lazyQueries
-        ? db.audioFileDao.watchFileByEpisode(episodeId)
-        : _byEpisodeId.map((byEpisodeId) => byEpisodeId[episodeId]);
+        ? _byEpisodeId.map((byEpisodeId) => byEpisodeId[episodeId])
+        : db.audioFileDao.watchFileByEpisode(episodeId);
   }
 
   @override
   Stream<List<AudioFile>> watchAll() {
     return lazyQueries
-        ? db.audioFileDao.watchAllFiles()
-        : _byEpisodeId.map((byEpisodeId) => byEpisodeId.values.toList());
+        ? _byEpisodeId.map((byEpisodeId) => byEpisodeId.values.toList())
+        : db.audioFileDao.watchAllFiles();
   }
 
   @override

@@ -24,7 +24,7 @@ abstract class Worker {
     try {
       await shouldExecute() ? await execute() : await deleteTask();
     } catch (err) {
-      print(err);
+      print('Worker Error: ${err}');
     } finally {
       await dispose();
     }

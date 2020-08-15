@@ -65,7 +65,6 @@ class SearchScreen extends HookWidget {
           return NestedScrollView(
             key: nestedScrollViewKey,
             headerSliverBuilder: (context, hasScrolled) {
-              print(hasScrolled);
               return [
                 SliverPersistentHeader(
                   pinned: true,
