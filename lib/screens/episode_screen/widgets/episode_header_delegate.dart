@@ -33,7 +33,6 @@ class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
   ) {
     return Container(
       height: maxExtent,
-      padding: EdgeInsets.only(left: 18, right: 18),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: forceElevated
@@ -46,14 +45,14 @@ class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Transform.translate(
-            offset: const Offset(-15, 0),
+            offset: const Offset(4, 0),
             child: Material(
               color: Colors.white,
               child: IconButton(
                 icon: Icon(
                   Icons.arrow_back_rounded,
                   size: 24,
-                  color: TWColors.gray.shade700,
+                  color: Colors.blueGrey.shade600,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -72,7 +71,6 @@ class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
                   children: [
                     Container(
                       padding: EdgeInsets.only(top: 1),
-                      transform: Matrix4.translationValues(-12, 0, 0),
                       child: Text(
                         'Episode',
                         style: Theme.of(context)
@@ -80,7 +78,6 @@ class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
                             .headline5
                             .copyWith(color: TWColors.gray.shade800),
                         maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -90,14 +87,13 @@ class EpisodeHeaderDelegate implements SliverPersistentHeaderDelegate {
             ),
           ),
           Transform.translate(
-            offset: const Offset(12, 0),
+            offset: const Offset(-4, 0),
             child: IconButton(
               icon: Icon(
                 Icons.search_rounded,
                 size: 24,
-                color: TWColors.gray.shade700,
+                color: Colors.blueGrey.shade600,
               ),
-              visualDensity: VisualDensity.comfortable,
               onPressed: () => Navigator.of(context, rootNavigator: true)
                   .pushNamed('/search'),
             ),

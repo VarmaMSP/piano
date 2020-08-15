@@ -41,8 +41,8 @@ class PreviewPlaybackControls extends StatelessWidget {
   Widget _buildLoadingIndicator() {
     return CircularProgressIndicator(
       strokeWidth: 2.5,
-      valueColor: AlwaysStoppedAnimation<Color>(Colors.purple.shade600),
-      backgroundColor: TWColors.gray.shade300,
+      valueColor: AlwaysStoppedAnimation<Color>(TWColors.gray.shade300),
+      backgroundColor: Colors.white,
     );
   }
 
