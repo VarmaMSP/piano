@@ -8,7 +8,12 @@ import 'package:phenopod/services/api/api.dart';
 import 'package:phenopod/services/db/db.dart';
 import 'package:phenopod/utils/utils.dart';
 
-PodcastStore newPodcastStore(Api api, Db db, [AlarmService alarmService]) {
+PodcastStore newPodcastStore(
+  Api api,
+  Db db,
+  AlarmService alarmService,
+  bool lazyQueries,
+) {
   return _PodcastStoreImpl(api: api, db: db, alarmService: alarmService);
 }
 

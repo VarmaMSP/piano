@@ -11,7 +11,12 @@ import 'package:phenopod/services/api/api.dart';
 import 'package:phenopod/services/db/db.dart';
 import 'package:phenopod/utils/utils.dart';
 
-EpisodeStore newEpisodeStore(Api api, Db db, [AlarmService alarmService]) {
+EpisodeStore newEpisodeStore(
+  Api api,
+  Db db,
+  AlarmService alarmService,
+  bool lazyQueries,
+) {
   return _EpisodeStoreImpl(api: api, db: db, alarmService: alarmService);
 }
 

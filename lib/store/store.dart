@@ -16,8 +16,22 @@ import 'subscription_store.dart';
 import 'task_store.dart';
 import 'user_store.dart';
 
-Store newStore(Api api, Db db, [AlarmService alarmService]) {
-  return _StoreImpl(api: api, db: db, alarmService: alarmService);
+Store newStore(Api api, Db db, AlarmService alarmService) {
+  return _StoreImpl(
+    api: api,
+    db: db,
+    alarmService: alarmService,
+    lazyQueries: true,
+  );
+}
+
+Store newStoreForBackground(Api api, Db db) {
+  return _StoreImpl(
+    api: api,
+    db: db,
+    alarmService: null,
+    lazyQueries: false,
+  );
 }
 
 abstract class Store {
@@ -49,17 +63,20 @@ class _StoreImpl extends Store {
     @required Api api,
     @required Db db,
     @required AlarmService alarmService,
-  })  : _userStore = newUserStore(api, db, alarmService),
-        _podcastStore = newPodcastStore(api, db, alarmService),
-        _episodeStore = newEpisodeStore(api, db, alarmService),
-        _subscriptionStore = newSubscriptionStore(api, db, alarmService),
-        _audioPlayerStore = newAudioPlayerStore(api, db, alarmService),
+    @required bool lazyQueries,
+  })  : _userStore = newUserStore(api, db, alarmService, lazyQueries),
+        _podcastStore = newPodcastStore(api, db, alarmService, lazyQueries),
+        _episodeStore = newEpisodeStore(api, db, alarmService, lazyQueries),
+        _subscriptionStore =
+            newSubscriptionStore(api, db, alarmService, lazyQueries),
+        _audioPlayerStore =
+            newAudioPlayerStore(api, db, alarmService, lazyQueries),
         _playbackPositionStore =
-            newPlaybackPositionStore(api, db, alarmService),
-        _taskStore = newTaskStore(api, db, alarmService),
-        _audioFileStore = newAudioFileStore(api, db, alarmService),
-        _settingStore = newSettingStore(api, db, alarmService),
-        _searchStore = newSearchStore(api, db, alarmService);
+            newPlaybackPositionStore(api, db, alarmService, lazyQueries),
+        _taskStore = newTaskStore(api, db, alarmService, lazyQueries),
+        _audioFileStore = newAudioFileStore(api, db, alarmService, lazyQueries),
+        _settingStore = newSettingStore(api, db, alarmService, lazyQueries),
+        _searchStore = newSearchStore(api, db, alarmService, lazyQueries);
 
   @override
   AudioPlayerStore get audioPlayer => _audioPlayerStore;

@@ -14,11 +14,13 @@ PlaybackPositionStore newPlaybackPositionStore(
   Api api,
   Db db, [
   AlarmService alarmService,
+  bool lazyQueries,
 ]) {
   return _PlaybackPositionStoreImpl(
     api: api,
     db: db,
     alarmService: alarmService,
+    lazyQueries: lazyQueries,
   );
 }
 
@@ -32,6 +34,7 @@ class _PlaybackPositionStoreImpl extends PlaybackPositionStore {
   final Api api;
   final Db db;
   final AlarmService alarmService;
+  final bool lazyQueries;
 
   /// Keep entire table in memory
   final BehaviorSubject<Map<String, PlaybackPosition>> _byEpisodeId =
@@ -41,10 +44,13 @@ class _PlaybackPositionStoreImpl extends PlaybackPositionStore {
     @required this.api,
     @required this.db,
     @required this.alarmService,
+    @required this.lazyQueries,
   }) {
-    db.playbackPositionDao.watchAll().listen((positions) {
-      _byEpisodeId.add({for (var pos in positions) pos.episodeId: pos});
-    });
+    if (lazyQueries) {
+      db.playbackPositionDao.watchAll().listen((positions) {
+        _byEpisodeId.add({for (var pos in positions) pos.episodeId: pos});
+      });
+    }
   }
 
   @override
@@ -54,11 +60,16 @@ class _PlaybackPositionStoreImpl extends PlaybackPositionStore {
 
   @override
   PlaybackPosition getByEpisode(String episodeId) {
-    return _byEpisodeId.value[episodeId];
+    if (lazyQueries) {
+      return _byEpisodeId.value[episodeId];
+    }
+    throw ('Lazy Queries not enabled');
   }
 
   @override
   Stream<PlaybackPosition> watchByEpisode(String episodeId) {
-    return _byEpisodeId.map((byEpisodeId) => byEpisodeId[episodeId]);
+    return lazyQueries
+        ? _byEpisodeId.map((byEpisodeId) => byEpisodeId[episodeId])
+        : db.playbackPositionDao.watchAll();
   }
 }

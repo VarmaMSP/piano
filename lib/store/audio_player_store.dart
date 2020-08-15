@@ -14,11 +14,13 @@ AudioPlayerStore newAudioPlayerStore(
   Api api,
   Db db, [
   AlarmService alarmService,
+  bool lazyQueries,
 ]) {
   return _AudioPlayerStoreImpl(
     api: api,
     db: db,
     alarmService: alarmService,
+    lazyQueries: lazyQueries,
   );
 }
 
@@ -32,6 +34,7 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
   final Api api;
   final Db db;
   final AlarmService alarmService;
+  final bool lazyQueries;
 
   final String _queueDetailsKey = 'QUEUE_DETAILS';
 
@@ -43,19 +46,11 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
     @required this.api,
     @required this.db,
     @required this.alarmService,
+    @required this.lazyQueries,
   }) {
-    Rx.combineLatest2<QueueDetails, List<AudioTrack>, Queue>(
-      db.preferenceDao
-          .watchPreferenceByKey(_queueDetailsKey)
-          .where((pref) => pref != null)
-          .map((pref) => pref?.value),
-      db.audioTrackDao.watchAllTracks(),
-      (details, tracks) {
-        return details.position < 0 || details.position >= tracks.length
-            ? Queue.empty()
-            : Queue(audioTracks: tracks, position: details.position);
-      },
-    ).listen(_queue.add);
+    if (lazyQueries) {
+      _watchQueue().listen(_queue.add);
+    }
   }
 
   @override
@@ -78,11 +73,29 @@ class _AudioPlayerStoreImpl extends AudioPlayerStore {
 
   @override
   Queue getQueue() {
-    return _queue.value;
+    if (lazyQueries) {
+      return _queue.value;
+    }
+    throw ('Lazy Queries not enabled');
   }
 
   @override
   Stream<Queue> watchQueue() {
-    return _queue.stream;
+    return lazyQueries ? _queue.stream : _watchQueue();
+  }
+
+  Stream<Queue> _watchQueue() {
+    return Rx.combineLatest2<QueueDetails, List<AudioTrack>, Queue>(
+      db.preferenceDao
+          .watchPreferenceByKey(_queueDetailsKey)
+          .where((pref) => pref != null)
+          .map((pref) => pref?.value),
+      db.audioTrackDao.watchAllTracks(),
+      (details, tracks) {
+        return details.position < 0 || details.position >= tracks.length
+            ? Queue.empty()
+            : Queue(audioTracks: tracks, position: details.position);
+      },
+    );
   }
 }

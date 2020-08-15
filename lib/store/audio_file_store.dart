@@ -12,8 +12,18 @@ import 'package:phenopod/services/db/db.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
 import 'package:phenopod/utils/file.dart';
 
-AudioFileStore newAudioFileStore(Api api, Db db, [AlarmService alarmService]) {
-  return _AudioFileStoreImpl(api: api, db: db, alarmService: alarmService);
+AudioFileStore newAudioFileStore(
+  Api api,
+  Db db,
+  AlarmService alarmService,
+  bool lazyQueries,
+) {
+  return _AudioFileStoreImpl(
+    api: api,
+    db: db,
+    alarmService: alarmService,
+    lazyQueries: lazyQueries,
+  );
 }
 
 abstract class AudioFileStore {
@@ -33,6 +43,7 @@ class _AudioFileStoreImpl extends AudioFileStore {
   final Api api;
   final Db db;
   final AlarmService alarmService;
+  final bool lazyQueries;
 
   /// Keep entire table in memory
   final BehaviorSubject<Map<String, AudioFile>> _byEpisodeId =
@@ -42,7 +53,14 @@ class _AudioFileStoreImpl extends AudioFileStore {
     @required this.api,
     @required this.db,
     @required this.alarmService,
-  });
+    @required this.lazyQueries,
+  }) {
+    if (lazyQueries) {
+      db.audioFileDao.watchAllFiles().listen((files) {
+        _byEpisodeId.add({for (var file in files) file.episode.id: file});
+      });
+    }
+  }
 
   @override
   Future<void> download({
@@ -86,17 +104,24 @@ class _AudioFileStoreImpl extends AudioFileStore {
 
   @override
   AudioFile getByEpisode(String episodeId) {
-    return _byEpisodeId.value[episodeId];
+    if (lazyQueries) {
+      return _byEpisodeId.value[episodeId];
+    }
+    throw ('Lazy Queries not enabled');
   }
 
   @override
   Stream<AudioFile> watchByEpisode(String episodeId) {
-    return _byEpisodeId.map((byEpisodeId) => byEpisodeId[episodeId]);
+    return lazyQueries
+        ? db.audioFileDao.watchFileByEpisode(episodeId)
+        : _byEpisodeId.map((byEpisodeId) => byEpisodeId[episodeId]);
   }
 
   @override
   Stream<List<AudioFile>> watchAll() {
-    return db.audioFileDao.watchAllFiles();
+    return lazyQueries
+        ? db.audioFileDao.watchAllFiles()
+        : _byEpisodeId.map((byEpisodeId) => byEpisodeId.values.toList());
   }
 
   @override

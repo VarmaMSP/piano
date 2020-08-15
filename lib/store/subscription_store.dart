@@ -14,11 +14,13 @@ SubscriptionStore newSubscriptionStore(
   Api api,
   Db db, [
   AlarmService alarmService,
+  bool lazyQueries,
 ]) {
   return _SubscriptionStoreImpl(
     api: api,
     db: db,
     alarmService: alarmService,
+    lazyQueries: lazyQueries,
   );
 }
 
@@ -35,6 +37,7 @@ class _SubscriptionStoreImpl extends SubscriptionStore {
   final Api api;
   final Db db;
   final AlarmService alarmService;
+  final bool lazyQueries;
 
   /// Keep subscriptions table in memory
   final BehaviorSubject<Map<String, Subscription>> _byPodcastId =
@@ -44,10 +47,13 @@ class _SubscriptionStoreImpl extends SubscriptionStore {
     @required this.api,
     @required this.db,
     @required this.alarmService,
+    @required this.lazyQueries,
   }) {
-    db.subscriptionDao.watchAll().listen((subscriptions) {
-      _byPodcastId.add({for (var sub in subscriptions) sub.podcastId: sub});
-    });
+    if (lazyQueries) {
+      db.subscriptionDao.watchAll().listen((subscriptions) {
+        _byPodcastId.add({for (var sub in subscriptions) sub.podcastId: sub});
+      });
+    }
   }
 
   @override
@@ -107,12 +113,17 @@ class _SubscriptionStoreImpl extends SubscriptionStore {
 
   @override
   Subscription getByPodcast(String podcastId) {
-    return _byPodcastId.value[podcastId];
+    if (lazyQueries) {
+      return _byPodcastId.value[podcastId];
+    }
+    throw ('Lazy Queries not enabled');
   }
 
   @override
   Stream<Subscription> watchByPodcast(String podcastId) {
-    return _byPodcastId.map((byPodcastId) => byPodcastId[podcastId]);
+    return lazyQueries
+        ? _byPodcastId.map((byPodcastId) => byPodcastId[podcastId])
+        : db.subscriptionDao.watchAll();
   }
 
   @override

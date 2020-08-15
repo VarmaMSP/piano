@@ -23,6 +23,8 @@ abstract class Worker {
   Future<void> run() async {
     try {
       await shouldExecute() ? await execute() : await deleteTask();
+    } catch (err) {
+      print(err);
     } finally {
       await dispose();
     }

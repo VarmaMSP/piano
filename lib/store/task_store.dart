@@ -7,7 +7,12 @@ import 'package:phenopod/services/alarm_service/alarm_service.dart';
 import 'package:phenopod/services/api/api.dart';
 import 'package:phenopod/services/db/db.dart';
 
-TaskStore newTaskStore(Api api, Db db, [AlarmService alarmService]) {
+TaskStore newTaskStore(
+  Api api,
+  Db db,
+  AlarmService alarmService,
+  bool lazyQueries,
+) {
   return _TaskStoreImpl(api: api, db: db, alarmService: alarmService);
 }
 

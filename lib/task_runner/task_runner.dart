@@ -37,7 +37,7 @@ class TaskRunner {
     @required this.api,
     @required this.alarmService,
     @required this.mode,
-  }) : store = newStore(api, db);
+  }) : store = newStoreForBackground(api, db);
 
   Future<void> start() async {
     await Future.wait([

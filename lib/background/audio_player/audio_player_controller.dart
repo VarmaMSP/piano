@@ -38,7 +38,7 @@ class AudioPlayerController {
   StreamSubscription<dynamic> _tickerSubscription;
 
   AudioPlayerController({Api api, Db db, this.onQueueExhausted}) {
-    _store = newStore(api, db);
+    _store = newStoreForBackground(api, db);
     _audioPlayer = AudioPlayer(
       onComplete: () async {
         await _stopPlaybackSync();

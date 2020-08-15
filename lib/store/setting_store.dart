@@ -14,7 +14,12 @@ import 'package:phenopod/services/api/api.dart';
 import 'package:phenopod/services/db/db.dart';
 import 'package:phenopod/utils/file.dart' as fileutils;
 
-SettingStore newSettingStore(Api api, Db db, [AlarmService alarmService]) {
+SettingStore newSettingStore(
+  Api api,
+  Db db,
+  AlarmService alarmService,
+  bool lazyQueries,
+) {
   return _SettingStoreImpl(api: api, db: db, alarmService: alarmService);
 }
 
