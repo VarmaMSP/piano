@@ -1,13 +1,13 @@
 
-<p align="center"><img width=40% src="https://cdn0.iconfinder.com/data/icons/musical-instruments-icons-set-cartoon-style/512/a1112-512.png"></p>
+<p align="center"><img width=25% src="https://cdn0.iconfinder.com/data/icons/musical-instruments-icons-set-cartoon-style/512/a1112-512.png"></p>
 <h1 align="center">P I A N O</h1>
 <h3 align="center">Phenopod's Mobile Client</h3>
 
 ####  Screenshots:
 
 <p float="left">
-  <img src="https://raw.githubusercontent.com/VarmaMSP/piano/master/screenshots/screenshot-2.jpg" width="340" />
-  <img src="https://raw.githubusercontent.com/VarmaMSP/piano/master/screenshots/screenshot-1.jpg" width="340" />
+  <img src="https://raw.githubusercontent.com/VarmaMSP/piano/master/screenshots/screenshot-2.jpg" width="300" />
+  <img src="https://raw.githubusercontent.com/VarmaMSP/piano/master/screenshots/screenshot-1.jpg" width="300" />
 </p>
 
 ####  Known Issues with 3rd party libraries:
